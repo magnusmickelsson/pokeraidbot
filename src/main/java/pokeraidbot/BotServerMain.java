@@ -18,7 +18,7 @@ import org.apache.http.HttpHost;
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.context.ApplicationContext;
 //import org.springframework.context.annotation.Bean;
-import pokeraidbot.commands.HelpCommand;
+import pokeraidbot.commands.*;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -49,6 +49,8 @@ public class BotServerMain {
     public static final int NO_USERNAME_PASS_COMBO = 32;
 
     private static JDA api;
+    private static final GymRepository gymRepository = new GymRepository();
+    private static final RaidRepository raidRepository = new RaidRepository();
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -71,7 +73,11 @@ public class BotServerMain {
                 new String[]{}, Permission.ADMINISTRATOR),
                 new PingCommand(),
                 new HelpCommand(),
-                new ShutdownCommand()
+                new ShutdownCommand(),
+                new NewRaidCommand(gymRepository, raidRepository),
+                new RaidStatusCommand(gymRepository, raidRepository),
+                new SignUpCommand(gymRepository, raidRepository),
+                new WhereIsGymCommand(gymRepository)
                 );
 
         new JDABuilder(AccountType.BOT)
