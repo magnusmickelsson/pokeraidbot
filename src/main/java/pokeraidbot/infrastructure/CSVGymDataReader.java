@@ -19,7 +19,7 @@ public class CSVGymDataReader {
         String line;
         Set<Gym> gyms = new HashSet<>();
         try {
-            final InputStreamReader inputStreamReader = new InputStreamReader(CSVGymDataReader.class.getResourceAsStream(resourceName));
+            final InputStreamReader inputStreamReader = new InputStreamReader(CSVGymDataReader.class.getResourceAsStream(resourceName), "UTF-8");
             BufferedReader br = new BufferedReader(inputStreamReader);
 
             while ((line = br.readLine()) != null) {

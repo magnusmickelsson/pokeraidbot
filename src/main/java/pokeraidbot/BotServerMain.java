@@ -5,15 +5,13 @@ import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
-import net.dv8tion.jda.core.*;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import org.springframework.context.ApplicationContext;
-//import org.springframework.context.annotation.Bean;
 import pokeraidbot.commands.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
@@ -22,6 +20,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+//import org.springframework.boot.CommandLineRunner;
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.context.ApplicationContext;
+//import org.springframework.context.annotation.Bean;
 
 //@SpringBootApplication
 public class BotServerMain {
@@ -59,7 +63,7 @@ public class BotServerMain {
                 new SignUpCommand(gymRepository, raidRepository),
                 new WhereIsGymCommand(gymRepository),
                 new RemoveSignUpCommand(gymRepository, raidRepository)
-                );
+        );
 
         new JDABuilder(AccountType.BOT)
                 // set the token

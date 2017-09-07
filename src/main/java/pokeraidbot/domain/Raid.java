@@ -1,10 +1,12 @@
 package pokeraidbot.domain;
 
-import pokeraidbot.Utils;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static pokeraidbot.Utils.printTime;
@@ -57,7 +59,7 @@ public class Raid {
 
     @Override
     public String toString() {
-        return "Raid for " + pokemon + " at gym " + gym +", ends at " + printTime(endOfRaid);
+        return "Raid for " + pokemon + " at gym " + gym + ", ends at " + printTime(endOfRaid);
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime) {

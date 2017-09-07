@@ -7,7 +7,6 @@ import pokeraidbot.PokemonRepository;
 import pokeraidbot.RaidRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.Pokemons;
 import pokeraidbot.domain.Raid;
 
 import java.time.LocalTime;

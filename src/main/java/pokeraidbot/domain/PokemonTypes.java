@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class PokemonTypes {
     private Set<String> types;
-    public PokemonTypes(String ... types) {
+
+    public PokemonTypes(String... types) {
         this.types = new HashSet<>(Arrays.asList(types));
     }
 

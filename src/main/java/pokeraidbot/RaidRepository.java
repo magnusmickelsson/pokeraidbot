@@ -1,14 +1,12 @@
 package pokeraidbot;
 
 import org.apache.commons.lang3.tuple.Pair;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
 
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RaidRepository {

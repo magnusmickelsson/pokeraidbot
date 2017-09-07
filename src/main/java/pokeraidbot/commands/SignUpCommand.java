@@ -18,8 +18,8 @@ public class SignUpCommand extends Command {
     private final RaidRepository raidRepository;
 
     public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository) {
-        this.name="add";
-        this.help="Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Pokestop name]";
+        this.name = "add";
+        this.help = "Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Pokestop name]";
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }

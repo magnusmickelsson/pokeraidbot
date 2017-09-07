@@ -1,7 +1,5 @@
 package pokeraidbot.domain;
 
-import pokeraidbot.Utils;
-
 import java.time.LocalTime;
 
 import static pokeraidbot.Utils.printTime;

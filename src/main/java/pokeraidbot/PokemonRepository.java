@@ -3,7 +3,6 @@ package pokeraidbot;
 import org.codehaus.jackson.map.ObjectMapper;
 import pokeraidbot.domain.Pokemon;
 import pokeraidbot.domain.PokemonTypes;
-import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.JsonPokemon;
 import pokeraidbot.infrastructure.JsonPokemons;
 
@@ -11,10 +10,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class PokemonRepository {
     private Map<String, Pokemon> pokemons = new HashMap<>();
+
     public PokemonRepository(String resourceName) {
         final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
         ObjectMapper mapper = new ObjectMapper();

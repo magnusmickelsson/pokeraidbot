@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import pokeraidbot.GymRepository;
 import pokeraidbot.RaidRepository;
-import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.SignUp;
@@ -39,9 +38,9 @@ public class RaidStatusCommand extends Command {
             final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
             commandEvent.reply("Status for raid at " + gymName + ":\n" +
                     "Pokemon: " + raid.getPokemon() + "\n" +
-            "Ends at: " + printTime(raid.getEndOfRaid()) + "\n" +
-            numberOfPeople + " signed up.\n" +
-            signUps);
+                    "Ends at: " + printTime(raid.getEndOfRaid()) + "\n" +
+                    numberOfPeople + " signed up.\n" +
+                    signUps);
         } catch (Throwable e) {
             commandEvent.reply(e.getMessage());
         }
