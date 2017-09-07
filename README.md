@@ -35,6 +35,9 @@ https://github.com/FoglyOgly/Meowth
 
 http://pokeapi.co/docsv2/
 
+http://pokeapi.co/api/v2/pokemon/200/
+https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/200.png
+
 Google static map API key: AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU
 
 https://maps.googleapis.com/maps/api/staticmap?center=59.883035,17.661403&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C59.883035,17.661403&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU
