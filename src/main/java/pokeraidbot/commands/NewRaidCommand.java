@@ -4,20 +4,23 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import pokeraidbot.GymRepository;
 import pokeraidbot.RaidRepository;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonName;
 import pokeraidbot.domain.Pokemons;
 import pokeraidbot.domain.Raid;
 
 import java.time.LocalTime;
 
+/**
+ * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]
+ */
 public class NewRaidCommand extends Command {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
 
     public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository) {
         this.name = "new";
-        this.help = "Create new raid - !raid new [Name of Pokemon] [Ends in (hours:minutes)] [Pokestop/Gym name].";
+        this.help = "Create new raid - !raid new [Name of Pokemon] [Ends at (HH:MM)] [Pokestop/Gym name].";
 
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -33,11 +36,12 @@ public class NewRaidCommand extends Command {
             String timeString = args[1];
             // todo: handle different separators
             // todo: time checking
-            final String[] timeStringSplit = timeString.split(":");
-            Integer hours = new Integer(timeStringSplit[0]);
-            Integer minutes = new Integer(timeStringSplit[1]);
-            LocalTime endsAt = LocalTime.now().plusHours(hours).plusMinutes(minutes);
-            String gymName = args[2];
+            LocalTime endsAt = LocalTime.parse(timeString, Utils.dateTimeFormatter);
+            StringBuilder gymNameBuilder = new StringBuilder();
+            for (int i = 2; i < args.length; i++) {
+                gymNameBuilder.append(args[i]).append(" ");
+            }
+            String gymName = gymNameBuilder.toString().trim();
             final Raid raid = new Raid(pokemon, endsAt, gymRepository.findByName(gymName));
             raidRepository.newRaid(commandEvent.getAuthor().getId(), raid);
             commandEvent.reply("Raid created: " + raid);

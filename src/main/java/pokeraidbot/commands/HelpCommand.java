@@ -11,11 +11,11 @@ public class HelpCommand extends Command {
 
     @Override
     protected void execute(CommandEvent commandEvent) {
-        commandEvent.reply("To register a new raid: !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]");
-        commandEvent.reply("List all raids for a certain Pokemon: !raid listfor [Pokemon]");
-        commandEvent.reply("Check status for a raid in a certain gym: !raid status [Pokestop name]");
-        commandEvent.reply("Get map link for a certain gym: !raid map [Pokestop name]");
-        commandEvent.reply("Sign up for a certain raid: !raid add [number of people] [due time (HH:MM)] [Pokestop name]");
-        commandEvent.reply("Unsign your signups for a certain raid: !raid remove [Pokestop name]");
+        commandEvent.reply("To register a new raid: !raid new [Pokemon] [Ends at (HH:MM)] [Pokestop name]\n" +
+                "Check status for a raid in a certain gym: !raid status [Pokestop name]\n" +
+                "Get map link for a certain gym: !raid map [Pokestop name]\n" +
+                "Sign up for a certain raid: !raid add [number of people] [ETA (HH:MM)] [Pokestop name]\n" +
+        "Unsign your signups for a certain raid: !raid remove [Pokestop name]\n" +
+        "Note: bot is currently in development and may not work ok. Only two pokemons added; Tyranitar and Entei.");
     }
 }

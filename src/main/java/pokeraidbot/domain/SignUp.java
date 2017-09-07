@@ -1,6 +1,10 @@
 package pokeraidbot.domain;
 
+import pokeraidbot.Utils;
+
 import java.time.LocalTime;
+
+import static pokeraidbot.Utils.printTime;
 
 public class SignUp {
     private final String userName;
@@ -48,10 +52,6 @@ public class SignUp {
 
     @Override
     public String toString() {
-        return "SignUp{" +
-                "userName='" + userName + '\'' +
-                ", howManyPeople=" + howManyPeople +
-                ", arrivalTime=" + arrivalTime +
-                '}';
+        return userName + ", " + howManyPeople + " people ETA " + printTime(arrivalTime);
     }
 }

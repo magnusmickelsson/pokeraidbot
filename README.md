@@ -16,7 +16,13 @@ https://discordapp.com/oauth2/authorize?&client_id=354980212112621570&scope=bot&
 * Go to your Discord server, verify that the bot has logged in and is present.
 * In the chat, try running the command "!raid usage".
 
+## Who?
+
+Bot created by Magnus Mickelsson, with support from Johan Millert and the people from the Pokemon Uppsala Discord server.
+
 ## Notes
+
+...
 
 ## Data
 

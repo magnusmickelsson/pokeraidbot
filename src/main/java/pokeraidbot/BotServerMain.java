@@ -66,7 +66,8 @@ public class BotServerMain {
                 new NewRaidCommand(gymRepository, raidRepository),
                 new RaidStatusCommand(gymRepository, raidRepository),
                 new SignUpCommand(gymRepository, raidRepository),
-                new WhereIsGymCommand(gymRepository)
+                new WhereIsGymCommand(gymRepository),
+                new RemoveSignUpCommand(gymRepository, raidRepository)
                 );
 
         new JDABuilder(AccountType.BOT)

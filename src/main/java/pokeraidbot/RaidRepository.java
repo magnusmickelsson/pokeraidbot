@@ -9,9 +9,10 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RaidRepository {
-    private Map<Gym, Pair<String, Raid>> raids = new HashMap<>();
+    private Map<Gym, Pair<String, Raid>> raids = new ConcurrentHashMap<>();
 
     public void newRaid(String raidCreatorName, Raid raid) {
         final Pair<String, Raid> pair = raids.get(raid.getGym());

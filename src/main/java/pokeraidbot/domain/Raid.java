@@ -1,15 +1,19 @@
 package pokeraidbot.domain;
 
+import pokeraidbot.Utils;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static pokeraidbot.Utils.printTime;
 
 public class Raid {
     private final Pokemon pokemon;
     private final LocalTime endOfRaid;
     private final Gym gym;
-    private final Map<String, SignUp> signUps = new HashMap<>();
+    private final Map<String, SignUp> signUps = new ConcurrentHashMap<>();
 
     public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym) {
         this.pokemon = pokemon;
@@ -53,7 +57,7 @@ public class Raid {
 
     @Override
     public String toString() {
-        return "Raid for " + pokemon + " at gym " + gym +", ends at " + endOfRaid;
+        return "Raid for " + pokemon + " at gym " + gym +", ends at " + printTime(endOfRaid);
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime) {
@@ -71,5 +75,10 @@ public class Raid {
 
     public int getNumberOfPeopleSignedUp() {
         return signUps.values().stream().mapToInt(signup -> signup.getHowManyPeople()).sum();
+    }
+
+    public SignUp remove(String userName) {
+        final SignUp removed = signUps.remove(userName);
+        return removed;
     }
 }

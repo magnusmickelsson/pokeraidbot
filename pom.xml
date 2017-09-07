@@ -81,6 +81,18 @@
         </repository>
     </repositories>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.csv</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
     <!--<build>-->
         <!--<plugins>-->
             <!--<plugin>-->
