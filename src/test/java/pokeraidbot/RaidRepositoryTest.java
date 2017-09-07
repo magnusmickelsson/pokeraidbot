@@ -2,9 +2,10 @@ package pokeraidbot;
 
 import org.junit.Before;
 import org.junit.Test;
-import pokeraidbot.domain.Gyms;
+import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Pokemons;
 import pokeraidbot.domain.Raid;
+import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import java.time.LocalTime;
 
@@ -13,19 +14,22 @@ import static org.junit.Assert.assertThat;
 
 public class RaidRepositoryTest {
     RaidRepository repo;
+    GymRepository gymRepository;
 
     @Before
     public void setUp() throws Exception {
         repo = new RaidRepository();
+        gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
     }
 
     @Test
     public void testSignUp() throws Exception {
         LocalTime endOfRaid = LocalTime.of(11, 05);
-        Raid enteiRaid = new Raid(Pokemons.ENTEI.getPokemon(), endOfRaid, Gyms.HÄSTEN);
+        final Gym hästen = gymRepository.findByName("Hästen");
+        Raid enteiRaid = new Raid(Pokemons.ENTEI.getPokemon(), endOfRaid, hästen);
         String raidCreatorName = "testUser1";
         repo.newRaid(raidCreatorName, enteiRaid);
-        Raid raid = repo.getRaid(Gyms.HÄSTEN);
+        Raid raid = repo.getRaid(hästen);
         assertThat(raid, is(enteiRaid));
         String userName = "testUser2";
         int howManyPeople = 3;

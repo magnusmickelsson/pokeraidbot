@@ -2,19 +2,25 @@ package pokeraidbot;
 
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.errors.GymNotFoundException;
-import pokeraidbot.domain.Gyms;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GymRepository {
     private Map<String, Gym> gyms = new HashMap<>();
-    public GymRepository() {
-        gyms.put(Gyms.HÄSTEN.getName(), Gyms.HÄSTEN);
+
+    public GymRepository(Set<Gym> gyms) {
+        for (Gym gym : gyms) {
+            this.gyms.put(prepareNameForFuzzySearch(gym.getName()), gym);
+        }
+    }
+
+    public static String prepareNameForFuzzySearch(String name) {
+        return name.toUpperCase().replaceAll("Ä", "A").replaceAll("Ö", "O").replaceAll("Ä", "A").replaceAll("É", "E");
+        // todo: add more replacements
     }
 
     public Gym findByName(String name) {
-        final Gym gym = gyms.get(name.toUpperCase());
+        final Gym gym = gyms.get(prepareNameForFuzzySearch(name));
         if (gym == null) {
             throw new GymNotFoundException(name);
         }
@@ -27,5 +33,9 @@ public class GymRepository {
                 return gym;
         }
         throw new GymNotFoundException();
+    }
+
+    public Collection<Gym> getAllGyms() {
+        return Collections.unmodifiableCollection(gyms.values());
     }
 }

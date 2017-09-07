@@ -19,6 +19,7 @@ import org.apache.http.HttpHost;
 //import org.springframework.context.ApplicationContext;
 //import org.springframework.context.annotation.Bean;
 import pokeraidbot.commands.*;
+import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -34,22 +35,7 @@ import java.util.Properties;
 
 //@SpringBootApplication
 public class BotServerMain {
-    //Non error, no action exit codes.
-    public static final int NORMAL_SHUTDOWN = 10;
-    public static final int RESTART_EXITCODE = 11;
-    public static final int NEWLY_CREATED_CONFIG = 12;
-
-    //Non error, action required exit codes.
-    public static final int UPDATE_LATEST_EXITCODE = 20;
-    public static final int UPDATE_RECOMMENDED_EXITCODE = 21;
-
-    //error exit codes.
-    public static final int UNABLE_TO_CONNECT_TO_DISCORD = 30;
-    public static final int BAD_USERNAME_PASS_COMBO = 31;
-    public static final int NO_USERNAME_PASS_COMBO = 32;
-
-    private static JDA api;
-    private static final GymRepository gymRepository = new GymRepository();
+    private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
     private static final RaidRepository raidRepository = new RaidRepository();
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
@@ -67,10 +53,13 @@ public class BotServerMain {
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(properties.getProperty("ownerId"));
         client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
-        client.setPrefix("!raid");
+        client.setPrefix("!raid ");
         client.setGame(new GameImpl("Type !raid usage", "", Game.GameType.DEFAULT));
-        client.addCommands(new AboutCommand(Color.BLUE, "PokeRaidBot reporting for duty!",
-                new String[]{}, Permission.ADMINISTRATOR),
+        client.addCommands(
+                new AboutCommand(
+                        Color.BLUE, "PokeRaidBot reporting for duty!",
+                        new String[]{}, Permission.ADMINISTRATOR
+                ),
                 new PingCommand(),
                 new HelpCommand(),
                 new ShutdownCommand(),
