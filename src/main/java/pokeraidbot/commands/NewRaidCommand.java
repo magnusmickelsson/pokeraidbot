@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import pokeraidbot.GymRepository;
+import pokeraidbot.PokemonRepository;
 import pokeraidbot.RaidRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Pokemon;
@@ -17,8 +18,10 @@ import java.time.LocalTime;
 public class NewRaidCommand extends Command {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
+    private final PokemonRepository pokemonRepository;
 
-    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository) {
+    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository, PokemonRepository pokemonRepository) {
+        this.pokemonRepository = pokemonRepository;
         this.name = "new";
         this.help = "Create new raid - !raid new [Name of Pokemon] [Ends at (HH:MM)] [Pokestop/Gym name].";
 
@@ -32,7 +35,7 @@ public class NewRaidCommand extends Command {
             final String[] args = commandEvent.getArgs().split(" ");
             // todo: error handling
             String pokemonName = args[0];
-            final Pokemon pokemon = Pokemons.valueOf(pokemonName.toUpperCase()).getPokemon();
+            final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
             String timeString = args[1];
             // todo: handle different separators
             // todo: time checking

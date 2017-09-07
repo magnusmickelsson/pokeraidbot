@@ -2,10 +2,10 @@ package pokeraidbot.domain;
 
 public class Pokemon {
 
-    private PokemonName name;
+    private String name;
     private PokemonTypes types;
 
-    public Pokemon(PokemonName name, PokemonTypes types) {
+    public Pokemon(String name, PokemonTypes types) {
         this.name = name;
         this.types = types;
     }
@@ -30,10 +30,10 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        return "Pokemon{" + name + ", types=" + types + '}';
+        return name + " (" + types + ")";
     }
 
-    public PokemonName getName() {
+    public String getName() {
         return name;
     }
 

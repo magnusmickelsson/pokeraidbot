@@ -7,12 +7,8 @@ import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.boot.SpringApplication;
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,20 +19,15 @@ import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 //@SpringBootApplication
 public class BotServerMain {
     private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
     private static final RaidRepository raidRepository = new RaidRepository();
+    private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json");
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -63,7 +54,7 @@ public class BotServerMain {
                 new PingCommand(),
                 new HelpCommand(),
                 new ShutdownCommand(),
-                new NewRaidCommand(gymRepository, raidRepository),
+                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository),
                 new RaidStatusCommand(gymRepository, raidRepository),
                 new SignUpCommand(gymRepository, raidRepository),
                 new WhereIsGymCommand(gymRepository),

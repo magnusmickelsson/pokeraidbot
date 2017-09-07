@@ -1,8 +1,8 @@
 package pokeraidbot.domain;
 
 public enum Pokemons {
-    ENTEI(new Pokemon(PokemonName.ENTEI, new PokemonTypes(PokemonType.FIRE))),
-    TYRANITAR(new Pokemon(PokemonName.TYRANITAR, new PokemonTypes(PokemonType.DARK, PokemonType.ROCK)));
+    ENTEI(new Pokemon("Entei", new PokemonTypes("Fire"))),
+    TYRANITAR(new Pokemon("Tyranitar", new PokemonTypes("Dark", "Rock")));
 
     private Pokemon pokemon;
 
