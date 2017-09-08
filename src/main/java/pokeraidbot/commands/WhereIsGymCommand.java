@@ -20,7 +20,7 @@ public class WhereIsGymCommand extends Command {
         try {
             // todo: error handling
             String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.findByName(gymName);
+            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
             String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + gym.getX() + "," + gym.getY() +
                     "&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C" +
                     gym.getX() + "," + gym.getY() + "&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU";

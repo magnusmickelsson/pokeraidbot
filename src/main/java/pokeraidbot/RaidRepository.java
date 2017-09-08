@@ -6,8 +6,12 @@ import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
 
+import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class RaidRepository {
     private Map<Gym, Pair<String, Raid>> raids = new ConcurrentHashMap<>();
@@ -28,6 +32,25 @@ public class RaidRepository {
         if (pair == null) {
             throw new RaidNotFoundException(gym);
         }
-        return pair.getRight();
+        final Raid raid = pair.getRight();
+        if (raid.getEndOfRaid().isBefore(LocalTime.now())) {
+            raids.remove(raid.getGym());
+            throw new RaidNotFoundException(gym);
+        }
+        return raid;
+    }
+
+    public Set<Raid> getAllRaids() {
+        LocalTime now = LocalTime.now();
+        final Set<Raid> currentRaids = new HashSet<>(this.raids.values().stream().filter(pair -> pair.getRight().getEndOfRaid().isAfter(now)).map(Pair::getRight).collect(Collectors.toSet()));
+        removeExpiredRaids(now);
+        return currentRaids;
+    }
+
+    private void removeExpiredRaids(LocalTime now) {
+        final Set<Raid> oldRaids = new HashSet<>(this.raids.values().stream().filter(pair -> pair.getRight().getEndOfRaid().isBefore(now)).map(Pair::getRight).collect(Collectors.toSet()));
+        for (Raid r : oldRaids) {
+            raids.remove(r.getGym());
+        }
     }
 }

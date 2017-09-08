@@ -8,7 +8,9 @@ import pokeraidbot.infrastructure.JsonPokemons;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class PokemonRepository {
@@ -20,9 +22,12 @@ public class PokemonRepository {
         try {
             JsonPokemons jsonPokemons = mapper.readValue(inputStream, JsonPokemons.class);
             for (JsonPokemon p : jsonPokemons.getPokemons()) {
-                // todo: add more attributes to pokemon
                 if (p != null && p.getName() != null && p.getTypes() != null) {
-                    pokemons.put(p.getName().toUpperCase(), new Pokemon(p.getName(), new PokemonTypes(p.getTypes())));
+                    final Pokemon pokemon = new Pokemon(p.getNumber(), p.getName(), p.getAbout(),
+                            new PokemonTypes(p.getTypes()), p.getBuddyDistance(),
+                            new HashSet<>(Arrays.asList(p.getWeaknesses())),
+                            new HashSet<>(Arrays.asList(p.getResistant())));
+                    pokemons.put(p.getName().toUpperCase(), pokemon);
                 }
             }
         } catch (IOException e) {

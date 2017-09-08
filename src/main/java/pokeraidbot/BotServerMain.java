@@ -60,9 +60,11 @@ public class BotServerMain {
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository),
                 new RaidStatusCommand(gymRepository, raidRepository),
+                new RaidListCommand(gymRepository, raidRepository),
                 new SignUpCommand(gymRepository, raidRepository),
                 new WhereIsGymCommand(gymRepository),
-                new RemoveSignUpCommand(gymRepository, raidRepository)
+                new RemoveSignUpCommand(gymRepository, raidRepository),
+                new PokemonVsCommand(pokemonRepository)
         );
 
         new JDABuilder(AccountType.BOT)

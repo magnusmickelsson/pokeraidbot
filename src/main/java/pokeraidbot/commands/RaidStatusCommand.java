@@ -32,7 +32,7 @@ public class RaidStatusCommand extends Command {
         try {
             // todo: error handling
             String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.findByName(gymName);
+            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
             final Raid raid = raidRepository.getRaid(gym);
             final Set<SignUp> signUps = raid.getSignUps();
             final int numberOfPeople = raid.getNumberOfPeopleSignedUp();

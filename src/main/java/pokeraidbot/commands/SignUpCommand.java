@@ -7,8 +7,12 @@ import pokeraidbot.RaidRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Raid;
+import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;
+
+import static pokeraidbot.Utils.assertEtaNotAfterRaidEnd;
+import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
 
 /**
  * !raid add [number of people] [due time (HH:MM)] [Pokestop name]
@@ -27,14 +31,22 @@ public class SignUpCommand extends Command {
     @Override
     protected void execute(CommandEvent commandEvent) {
         try {
+            final String userName = commandEvent.getAuthor().getName();
             final String[] args = commandEvent.getArgs().split(" ");
             // todo: error handling
             String people = args[0];
-            Integer numberOfPeople = new Integer(people);
+            Integer numberOfPeople;
+            try {
+                numberOfPeople = new Integer(people);
+                if (numberOfPeople < 1 || numberOfPeople > 100) {
+                    throw new RuntimeException();
+                }
+            } catch (RuntimeException e) {
+                throw new UserMessedUpException(userName, "Can't parse this number of people: " + people + " - give a valid number 1-100.");
+            }
+
             String timeString = args[1];
-            // todo: handle different separators
-            // todo: time checking
-            LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeFormatter);
+
             StringBuilder gymNameBuilder = new StringBuilder();
             for (int i = 2; i < args.length; i++) {
                 gymNameBuilder.append(args[i]).append(" ");
@@ -42,10 +54,20 @@ public class SignUpCommand extends Command {
             String gymName = gymNameBuilder.toString().trim();
             final Gym gym = gymRepository.findByName(gymName);
             final Raid raid = raidRepository.getRaid(gym);
-            raid.signUp(commandEvent.getAuthor().getName(), numberOfPeople, eta);
-            commandEvent.reply(commandEvent.getAuthor().getName() + " sign up added to raid at " + gym.getName() + ". Current signups: \n" + raid.getSignUps());
+
+            // todo: handle different separators
+            // todo: time checking
+            LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeFormatter);
+
+            assertEtaNotAfterRaidEnd(userName, raid, eta);
+            assertGivenTimeNotBeforeNow(userName, eta);
+
+            raid.signUp(userName, numberOfPeople, eta);
+            commandEvent.reply(userName + " sign up added to raid at " + gym.getName() +
+                    ". Current signups: \n" + raid.getSignUps());
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }
     }
+
 }
