@@ -4,13 +4,13 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import pokeraidbot.PokemonRepository;
 import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonRaidInfoService;
+import pokeraidbot.domain.PokemonRaidStrategyService;
 
 public class PokemonVsCommand extends Command {
-    private final PokemonRaidInfoService raidInfoService;
+    private final PokemonRaidStrategyService raidInfoService;
     private final PokemonRepository repo;
 
-    public PokemonVsCommand(PokemonRepository repo, PokemonRaidInfoService raidInfoService) {
+    public PokemonVsCommand(PokemonRepository repo, PokemonRaidStrategyService raidInfoService) {
         this.raidInfoService = raidInfoService;
         this.name = "vs";
         this.help = "!raid vs [Pokemon] - lists information about a pokemon, it's types, weaknesses etc.";

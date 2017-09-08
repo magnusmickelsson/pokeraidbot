@@ -2,7 +2,7 @@ package pokeraidbot.domain;
 
 import java.util.*;
 
-public class PokemonRaidInfoService {
+public class PokemonRaidStrategyService {
     private static final List<String> VS_WATER = Arrays.asList("Exeggutor", "Venusaur", "Jolteon");
     private static final List<String> VS_GRASS = Arrays.asList("Flareon", "Charizard", "Gengar");
     private static final List<String> VS_FIRE = Arrays.asList("Golem", "Starmie", "Vaporeon");
@@ -11,7 +11,7 @@ public class PokemonRaidInfoService {
     private Map<String, Collection<String>> counters = new HashMap<>();
     private Map<String,String> maxCp = new HashMap<>();
 
-    public PokemonRaidInfoService() {
+    public PokemonRaidStrategyService() {
         counters.put("BAYLEEF", VS_GRASS);
         maxCp.put("BAYLEEF", "740");
 
