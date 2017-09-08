@@ -12,6 +12,8 @@ import pokeraidbot.domain.Raid;
 import java.time.LocalTime;
 
 import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
+import static pokeraidbot.Utils.assertTimeNotInNoRaidTimespan;
+import static pokeraidbot.Utils.assertTimeNotMoreThanTwoHoursFromNow;
 
 /**
  * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]
@@ -35,13 +37,13 @@ public class NewRaidCommand extends Command {
         try {
             final String userName = commandEvent.getAuthor().getName();
             final String[] args = commandEvent.getArgs().split(" ");
-            // todo: error handling
             String pokemonName = args[0];
             final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
             String timeString = args[1];
-            // todo: handle different separators
-            LocalTime endsAt = LocalTime.parse(timeString, Utils.dateTimeFormatter);
+            LocalTime endsAt = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
 
+            assertTimeNotMoreThanTwoHoursFromNow(userName, endsAt);
+            assertTimeNotInNoRaidTimespan(userName, endsAt);
             assertGivenTimeNotBeforeNow(userName, endsAt);
 
             StringBuilder gymNameBuilder = new StringBuilder();

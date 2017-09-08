@@ -58,7 +58,7 @@ public class SignUpCommand extends Command {
 
             // todo: handle different separators
             // todo: time checking
-            LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeFormatter);
+            LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
 
             assertEtaNotAfterRaidEnd(userName, raid, eta);
             assertGivenTimeNotBeforeNow(userName, eta);

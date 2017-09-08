@@ -3,8 +3,8 @@ package pokeraidbot.domain.errors;
 import pokeraidbot.domain.Raid;
 
 public class RaidExistsException extends RuntimeException {
-    public RaidExistsException(String raidCreatorName, Raid raid) {
+    public RaidExistsException(String raidCreatorName, Raid existingRaid) {
         super("Sorry, " + raidCreatorName + ", a raid at gym " +
-                raid.getGym().getName() + " already exists (for " + raid.getPokemon().getName() + "). Sign up for it!");
+                existingRaid.getGym().getName() + " already exists (for " + existingRaid.getPokemon().getName() + "). Sign up for it!");
     }
 }

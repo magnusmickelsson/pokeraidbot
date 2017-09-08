@@ -22,8 +22,9 @@ public class WhereIsGymCommand extends Command {
             // todo: error handling
             String gymName = commandEvent.getArgs();
             final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
-            String url = Utils.getMapUrl(gym);
-            commandEvent.reply(new EmbedBuilder().setImage(url).setTitle(gym.getName(), url).build());
+            String staticUrl = Utils.getStaticMapUrl(gym);
+            String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
+            commandEvent.reply(new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }
