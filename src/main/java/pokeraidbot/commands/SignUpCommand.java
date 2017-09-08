@@ -20,6 +20,7 @@ import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
 public class SignUpCommand extends Command {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
+    private static final int highLimitForSignUps = 20;
 
     public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository) {
         this.name = "add";
@@ -38,11 +39,11 @@ public class SignUpCommand extends Command {
             Integer numberOfPeople;
             try {
                 numberOfPeople = new Integer(people);
-                if (numberOfPeople < 1 || numberOfPeople > 100) {
+                if (numberOfPeople < 1 || numberOfPeople > highLimitForSignUps) {
                     throw new RuntimeException();
                 }
             } catch (RuntimeException e) {
-                throw new UserMessedUpException(userName, "Can't parse this number of people: " + people + " - give a valid number 1-100.");
+                throw new UserMessedUpException(userName, "Can't parse this number of people: " + people + " - give a valid number 1-" + highLimitForSignUps + ".");
             }
 
             String timeString = args[1];

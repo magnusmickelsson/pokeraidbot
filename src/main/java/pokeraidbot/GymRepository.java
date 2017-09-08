@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -21,6 +22,9 @@ public class GymRepository {
     }
 
     public Gym search(String userName, String query) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(query)) {
+            throw new UserMessedUpException(userName, "Empty input for gym name, try giving me a proper name to search for. :(");
+        }
         final String queryFuzzySearch = prepareNameForFuzzySearch(query);
         final Gym gym = get(query);
         if (gym != null) {
@@ -28,8 +32,9 @@ public class GymRepository {
         } else {
             Set<String> candidates = new HashSet<>();
             for (String gymName : gyms.keySet()) {
-                if (gymName.toLowerCase().contains(queryFuzzySearch)) {
-                    candidates.add(gymName);
+                String fuzzyGymName = prepareNameForFuzzySearch(gymName);
+                if (fuzzyGymName.contains(queryFuzzySearch)) {
+                    candidates.add(gyms.get(gymName).getName());
                 }
             }
             if (candidates.size() == 1) {

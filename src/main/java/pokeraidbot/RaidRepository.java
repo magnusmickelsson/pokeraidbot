@@ -18,7 +18,7 @@ public class RaidRepository {
 
     public void newRaid(String raidCreatorName, Raid raid) {
         final Pair<String, Raid> pair = raids.get(raid.getGym());
-        if (pair != null && raid.equals(pair.getRight())) {
+        if (pair != null && (raid.equals(pair.getRight()) || raid.getGym().equals(pair.getRight().getGym()))) {
             throw new RaidExistsException(raidCreatorName, raid);
         } else if (pair == null) {
             raids.put(raid.getGym(), Pair.of(raidCreatorName, raid));
