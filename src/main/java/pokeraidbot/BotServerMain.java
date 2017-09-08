@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
+import pokeraidbot.domain.PokemonRaidInfoService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import javax.security.auth.login.LoginException;
@@ -32,6 +33,7 @@ public class BotServerMain {
     private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
     private static final RaidRepository raidRepository = new RaidRepository();
     private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json");
+    private static final PokemonRaidInfoService raidInfoService = new PokemonRaidInfoService();
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -64,7 +66,7 @@ public class BotServerMain {
                 new SignUpCommand(gymRepository, raidRepository),
                 new WhereIsGymCommand(gymRepository),
                 new RemoveSignUpCommand(gymRepository, raidRepository),
-                new PokemonVsCommand(pokemonRepository)
+                new PokemonVsCommand(pokemonRepository, raidInfoService)
         );
 
         new JDABuilder(AccountType.BOT)

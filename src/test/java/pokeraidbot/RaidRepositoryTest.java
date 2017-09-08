@@ -25,7 +25,7 @@ public class RaidRepositoryTest {
 
     @Test
     public void testSignUp() throws Exception {
-        LocalTime endOfRaid = LocalTime.of(11, 05);
+        LocalTime endOfRaid = LocalTime.now().plusHours(2);
         final Gym hästen = gymRepository.findByName("Hästen");
         Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, hästen);
         String raidCreatorName = "testUser1";
@@ -34,7 +34,7 @@ public class RaidRepositoryTest {
         assertThat(raid, is(enteiRaid));
         String userName = "testUser2";
         int howManyPeople = 3;
-        LocalTime arrivalTime = LocalTime.of(10, 0);
+        LocalTime arrivalTime = LocalTime.now().plusHours(1);
         raid.signUp(userName, howManyPeople, arrivalTime);
         assertThat(raid.getSignUps().size(), is(1));
         assertThat(raid.getNumberOfPeopleSignedUp(), is(howManyPeople));
