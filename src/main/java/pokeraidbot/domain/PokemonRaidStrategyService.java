@@ -81,8 +81,29 @@ public class PokemonRaidStrategyService {
         counters.put("Venusaur".toUpperCase(), Arrays.asList("Alakazam", "Flareon", "Espeon"));
         maxCp.put("Venusaur".toUpperCase(), "1467");
 
-        counters.put("Entei".toUpperCase(), Arrays.asList("Golem", "Omastar", "Vaporeon"));
+        counters.put("Entei".toUpperCase(), Arrays.asList("Golem", "Rhydon", "Vaporeon", "Tyranitar", "Omastar"));
         maxCp.put("Entei".toUpperCase(), "1930");
+
+        counters.put("Articuno".toUpperCase(), Arrays.asList("Golem", "Flareon", "Moltres"));
+        maxCp.put("Articuno".toUpperCase(), "1676");
+
+        counters.put("Moltres".toUpperCase(), Arrays.asList("Golem", "Tyranitar", "Rhydon", "Vaporeon", "Omastar"));
+        maxCp.put("Moltres".toUpperCase(), "1870");
+
+        counters.put("Zapdos".toUpperCase(), Arrays.asList("Golem", "Tyranitar", "Dragonite"));
+        maxCp.put("Zapdos".toUpperCase(), "1902");
+
+        counters.put("Lugia".toUpperCase(), Arrays.asList("Tyranitar", "Houndoom", "Jolteon", "Zapdos"));
+        maxCp.put("Lugia".toUpperCase(), "2056");
+
+        counters.put("Raikou".toUpperCase(), VS_ELECTRIC);
+        maxCp.put("Raikou".toUpperCase(), "1913");
+
+        counters.put("Suicune".toUpperCase(), VS_WATER);
+        maxCp.put("Suicune".toUpperCase(), "1613");
+
+        counters.put("Mewtwo".toUpperCase(), Arrays.asList("Tyranitar", "Houndoom", "Scizor"));
+        maxCp.put("Mewtwo".toUpperCase(), "2275");
     }
 
     public String getCounters(Pokemon pokemon) {

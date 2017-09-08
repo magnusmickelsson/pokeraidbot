@@ -1,13 +1,13 @@
 package pokeraidbot.domain;
 
+import pokeraidbot.Utils;
+
 public class Gym {
     private String name;
     private String id;
     private String x;
     private String y;
     private String imageLink;
-//    private MapCoordinates coordinates;
-//    private Country country;
 
     public Gym(String name, String id, String x, String y, String imageLink) {
         this.name = name;
@@ -43,7 +43,7 @@ public class Gym {
 
     @Override
     public String toString() {
-        return name + " (id=" + id + ")";
+        return name; //"[" + name + "](" + Utils.getMapUrl(this) + ")";
     }
 
     public String getId() {

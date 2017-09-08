@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
@@ -28,5 +29,11 @@ public class Utils {
                     "Can't arrive after raid has ended. Your given time is " + printTime(eta) +
                             ", raid ends at " + printTime(raid.getEndOfRaid()));
         }
+    }
+
+    public static String getMapUrl(Gym gym) {
+        return "https://maps.googleapis.com/maps/api/staticmap?center=" + gym.getX() + "," + gym.getY() +
+                "&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C" +
+                gym.getX() + "," + gym.getY() + "&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU";
     }
 }

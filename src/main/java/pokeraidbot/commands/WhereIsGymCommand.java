@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.GymRepository;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
 
 public class WhereIsGymCommand extends Command {
@@ -21,12 +22,11 @@ public class WhereIsGymCommand extends Command {
             // todo: error handling
             String gymName = commandEvent.getArgs();
             final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
-            String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + gym.getX() + "," + gym.getY() +
-                    "&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C" +
-                    gym.getX() + "," + gym.getY() + "&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU";
+            String url = Utils.getMapUrl(gym);
             commandEvent.reply(new EmbedBuilder().setImage(url).setTitle(gym.getName(), url).build());
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }
     }
+
 }

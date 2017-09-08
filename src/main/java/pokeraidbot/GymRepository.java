@@ -37,7 +37,11 @@ public class GymRepository {
             } else if (candidates.size() < 1) {
                 throw new GymNotFoundException(query);
             } else {
-                throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop. Did you want any of these? " + candidates);
+                if (candidates.size() < 5) {
+                    throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop. Did you want any of these? " + candidates);
+                } else {
+                    throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
+                }
             }
         }
     }
