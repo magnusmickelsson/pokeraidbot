@@ -1,6 +1,7 @@
 package pokeraidbot;
 
 import org.apache.commons.lang3.tuple.Pair;
+import pokeraidbot.domain.ClockService;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.RaidExistsException;
@@ -14,7 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class RaidRepository {
+    private final ClockService clockService;
     private Map<Gym, Pair<String, Raid>> raids = new ConcurrentHashMap<>();
+
+    public RaidRepository(ClockService clockService) {
+        this.clockService = clockService;
+    }
 
     public void newRaid(String raidCreatorName, Raid raid) {
         final Pair<String, Raid> pair = raids.get(raid.getGym());
@@ -33,7 +39,7 @@ public class RaidRepository {
             throw new RaidNotFoundException(gym);
         }
         final Raid raid = pair.getRight();
-        if (raid.getEndOfRaid().isBefore(LocalTime.now())) {
+        if (raid.getEndOfRaid().isBefore(clockService.getCurrentTime())) {
             raids.remove(raid.getGym());
             throw new RaidNotFoundException(gym);
         }
@@ -41,7 +47,7 @@ public class RaidRepository {
     }
 
     public Set<Raid> getAllRaids() {
-        LocalTime now = LocalTime.now();
+        LocalTime now = clockService.getCurrentTime();
         final Set<Raid> currentRaids = new HashSet<>(this.raids.values().stream().filter(pair -> pair.getRight().getEndOfRaid().isAfter(now)).map(Pair::getRight).collect(Collectors.toSet()));
         removeExpiredRaids(now);
         return currentRaids;

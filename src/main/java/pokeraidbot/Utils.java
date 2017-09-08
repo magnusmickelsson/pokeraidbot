@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import pokeraidbot.domain.ClockService;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -8,19 +9,28 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Utils {
-
     public static final DateTimeFormatter dateTimeParseFormatter = DateTimeFormatter.ofPattern("HH[:][.]mm");
     public static final DateTimeFormatter dateTimePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private static ClockService clockService = new ClockService();
+
+    public static ClockService getClockService() {
+        return clockService;
+    }
+
+    public static void setClockService(ClockService clockService) {
+        Utils.clockService = clockService;
+    }
 
     public static String printTime(LocalTime time) {
         return time.format(dateTimePrintFormatter);
     }
 
     public static void assertGivenTimeNotBeforeNow(String userName, LocalTime time) {
-        if (time.isBefore(LocalTime.now())) {
+        final LocalTime now = clockService.getCurrentTime();
+        if (time.isBefore(now)) {
             throw new UserMessedUpException(userName,
                     "You seem to be living in a different timezone. Your given time is " + printTime(time) +
-                            ", while the current time is " + printTime(LocalTime.now()));
+                            ", while the current time is " + printTime(now));
         }
     }
 
@@ -32,7 +42,7 @@ public class Utils {
     }
 
     public static void assertTimeNotMoreThanTwoHoursFromNow(String userName, LocalTime time) {
-        final LocalTime now = LocalTime.now();
+        final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(userName,
                     "You can't create raids which are later than 2 hours from the current time " + printTime(now) + " - your time was " + printTime(time) + ".");

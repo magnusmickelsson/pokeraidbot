@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
+import pokeraidbot.domain.ClockService;
 import pokeraidbot.domain.PokemonRaidStrategyService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
@@ -31,7 +32,7 @@ import java.util.Properties;
 //@SpringBootApplication
 public class BotServerMain {
     private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
-    private static final RaidRepository raidRepository = new RaidRepository();
+    private static final RaidRepository raidRepository = new RaidRepository(new ClockService());
     private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json");
     private static final PokemonRaidStrategyService raidInfoService = new PokemonRaidStrategyService();
 
