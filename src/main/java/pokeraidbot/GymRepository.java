@@ -21,13 +21,14 @@ public class GymRepository {
     }
 
     public Gym search(String userName, String query) {
+        final String queryFuzzySearch = prepareNameForFuzzySearch(query);
         final Gym gym = get(query);
         if (gym != null) {
             return gym;
         } else {
             Set<String> candidates = new HashSet<>();
             for (String gymName : gyms.keySet()) {
-                if (gymName.toLowerCase().contains(query.toLowerCase())) {
+                if (gymName.toLowerCase().contains(queryFuzzySearch)) {
                     candidates.add(gymName);
                 }
             }

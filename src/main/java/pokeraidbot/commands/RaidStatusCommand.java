@@ -36,11 +36,11 @@ public class RaidStatusCommand extends Command {
             final Raid raid = raidRepository.getRaid(gym);
             final Set<SignUp> signUps = raid.getSignUps();
             final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
-            commandEvent.reply("Status for raid at " + gym.getName() + ":\n" +
+            commandEvent.reply("**Status for raid at " + gym.getName() + ":**\n" +
                     "Pokemon: " + raid.getPokemon() + "\n" +
                     "Ends at: " + printTime(raid.getEndOfRaid()) + "\n" +
-                    numberOfPeople + " signed up.\n" +
-                    signUps);
+                    numberOfPeople + " signed up." +
+                    (signUps.size() > 0 ? "\n" + signUps : ""));
         } catch (Throwable e) {
             commandEvent.reply(e.getMessage());
         }

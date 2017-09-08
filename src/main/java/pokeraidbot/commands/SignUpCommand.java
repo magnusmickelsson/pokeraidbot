@@ -64,7 +64,7 @@ public class SignUpCommand extends Command {
 
             raid.signUp(userName, numberOfPeople, eta);
             commandEvent.reply(userName + " sign up added to raid at " + gym.getName() +
-                    ". Current signups: \n" + raid.getSignUps());
+                    ". " + (raid.getSignUps().size() > 1 ? "Current signups: \n" + raid.getSignUps() : ""));
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }

@@ -35,7 +35,7 @@ public class RaidListCommand extends Command {
                 commandEvent.reply("There are currently no active raids.");
             } else {
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("Current raids:\n");
+                stringBuilder.append("**Current raids:**\n");
                 for (Raid raid : raids) {
                     final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                     stringBuilder.append(raid.getGym().getName()).append(" (")

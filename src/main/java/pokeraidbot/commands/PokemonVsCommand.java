@@ -22,11 +22,11 @@ public class PokemonVsCommand extends Command {
         try {
             String pokemonName = commandEvent.getArgs();
             final Pokemon pokemon = repo.getByName(pokemonName);
-            commandEvent.reply("" + pokemon + "\n" +
+            commandEvent.reply("**" + pokemon + "**\n" +
 //                    pokemon.getAbout() + "\n" +
                     "Weaknesses: " + pokemon.getWeaknesses() + "\n" +
                     "Resistant to: " + pokemon.getResistant() + "\n" +
-                    "Top DPS counters: " + raidInfoService.getCounters(pokemon) + " (if moveset in weakness list)\n" +
+                    "Top DPS counters: " + raidInfoService.getCounters(pokemon) + " **(if correct moveset)**\n" +
                             "Max CP (100% IV): " + raidInfoService.getMaxCp(pokemon) + "\n"
 //                    "Buddy distance: " + pokemon.getBuddyDistance() + "\n"
             );

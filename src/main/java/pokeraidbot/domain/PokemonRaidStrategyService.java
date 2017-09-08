@@ -75,7 +75,7 @@ public class PokemonRaidStrategyService {
         counters.put("Snorlax".toUpperCase(), Arrays.asList("Machamp", "Heracross", "Alakazam"));
         maxCp.put("Snorlax".toUpperCase(), "1917");
 
-        counters.put("Tyranitar".toUpperCase(), Arrays.asList("Machamp", "Heracross", "Primeape"));
+        counters.put("Tyranitar".toUpperCase(), Arrays.asList("Machamp", "Poliwrath", "Donphan", "Vaporeon", "Ursaring"));
         maxCp.put("Tyranitar".toUpperCase(), "2097");
 
         counters.put("Venusaur".toUpperCase(), Arrays.asList("Alakazam", "Flareon", "Espeon"));

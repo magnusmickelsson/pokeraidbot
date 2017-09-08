@@ -16212,7 +16212,95 @@
   },
   {},
   {},
+  {"Number": "248",
+    "Name": "Tyranitar",
+    "Generation": "Generation II",
+    "About": "Tyranitar is so overwhelmingly powerful, it can bring down a whole mountain to make its nest. This Pokémon wanders about in mountains seeking new opponents to fight.",
+    "Types": [
+      "Rock",
+      "Dark"
+    ],
+    "Resistant": [
+      "Fire",
+      "Normal",
+      "Dark",
+      "Flying",
+      "Poison",
+      "Ghost",
+      "Psychic"
+    ],
+    "Weaknesses": [
+      "Fighting",
+      "Bug",
+      "Fairy",
+      "Steel",
+      "Water",
+      "Ground"
+    ],
+    "Fast Attack(s)": [
+
+    ],
+    "Special Attack(s)": [
+    ],
+    "Buddy Distance": "5km"
+  },
   {},
+  {
+    "Number": "251",
+    "Name": "Celebi",
+    "Generation": "Generation II",
+    "About": "This Pokémon came from the future by crossing over time. It is thought that so long as Celebi appears, a bright and shining future awaits us.",
+    "Types": [
+      "Psychic",
+      "Grass"
+    ],
+    "Resistant": [
+      "Water",
+      "Electric",
+      "Grass",
+      "Fighting",
+      "Ground",
+      "Psychic"
+    ],
+    "Weaknesses": [
+      "Fire",
+      "Ice",
+      "Poison",
+      "Flying",
+      "Bug",
+      "Ghost",
+      "Dark"
+    ],
+    "Fast Attack(s)": [
+      {
+        "Name": "Tackle",
+        "Type": "Normal",
+        "Damage": 12
+      }
+    ],
+    "Special Attack(s)": [
+      {
+        "Name": "Struggle",
+        "Type": "Normal",
+        "Damage": 15
+      }
+    ],
+    "Weight": {
+      "Minimum": "4.38kg",
+      "Maximum": "5.63kg"
+    },
+    "Height": {
+      "Minimum": "0.53m",
+      "Maximum": "0.69m"
+    },
+    "Buddy Distance": "1km (Medium)",
+    "Base Stamina": "200 stamina points.",
+    "Base Attack": "210 attack points.",
+    "Base Defense": "210 defense points.",
+    "Base Flee Rate": "5% chance to flee.",
+    "Pokèmon Class": "This is a MYTHIC Pokèmon.",
+    "MYTHIC": "Pokèmon Class"
+  },
   {
     "Number": "249",
     "Name": "Lugia",

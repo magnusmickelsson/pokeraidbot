@@ -26,6 +26,10 @@ public class RemoveSignUpCommand extends Command {
         final Raid raid = raidRepository.getRaid(gym);
         final String user = commandEvent.getAuthor().getName();
         final SignUp removed = raid.remove(user);
-        commandEvent.reply("Signup removed for gym " + gym.getName() + ": " + removed);
+        if (removed != null) {
+            commandEvent.reply("Signup removed for gym " + gym.getName() + ": " + removed);
+        } else {
+            commandEvent.reply(user + " had no signup to remove for gym " + gym.getName());
+        }
     }
 }
