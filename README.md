@@ -18,11 +18,16 @@ https://discordapp.com/oauth2/authorize?&client_id=354980212112621570&scope=bot&
 
 ## Who?
 
-Bot created by Magnus Mickelsson, with support from Johan Millert and the people from the Pokemon Uppsala Discord server.
+Bot created by Magnus Mickelsson (right now, < 20h work has been put into it so cut me some slack).
+
+Thanks for the support from Johan Millert and the people from the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
 
 ## Notes
 
-...
+Right now, the application is not backed by a database. That means, that if the bot is restarted,
+all active raids are gone.
+
+Suffice to say, database support will be added asap.
 
 ## Data
 
