@@ -24,6 +24,7 @@ public class CounterTextFileParser {
                 throw new IllegalStateException("Not properly formatted file!");
             }
             boolean supreme = true;
+            boolean supremeDone = false;
             br.readLine();
             while (line != null) {
                 line = br.readLine();
@@ -35,6 +36,11 @@ public class CounterTextFileParser {
                     break;
                 }
                 String counterPokemonName = line.trim();
+                // Ensure we can get the pokemon from the repository
+                final Pokemon p = pokemonRepository.getByName(counterPokemonName);
+                if (p == null) {
+                    throw new IllegalStateException("Could not find pokemon in repository: " + counterPokemonName);
+                }
                 if (counterPokemonName != null && counterPokemonName.length() > 0) {
                     Set<String> moves = new HashSet<>();
                     while (((line = br.readLine()) != null) && !(line.equals(""))) {
@@ -43,12 +49,12 @@ public class CounterTextFileParser {
                         if (pokemon != null) {
                             break;
                         }
-                        if ((!trimmedLine.contains("Counters")) && (!trimmedLine.contains(" Move"))) {
+                        if ((!trimmedLine.contains("Counters")) && (!trimmedLine.contains("Quick Move")) && (!trimmedLine.contains("Charge Move"))) {
                             moves.add(trimmedLine);
                         }
                         if (trimmedLine.contains("Good Counters")) {
                             line = br.readLine();
-                            supreme = false;
+                            supremeDone = true;
                             break;
                         }
                     }
@@ -59,6 +65,9 @@ public class CounterTextFileParser {
                     } else {
                         System.out.println("Good counter found: " + counterPokemon);
                         goodCounters.add(counterPokemon);
+                    }
+                    if (supremeDone) {
+                        supreme = false;
                     }
                 }
             }

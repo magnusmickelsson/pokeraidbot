@@ -10097,7 +10097,38 @@
     "MaxCP": 992,
     "MaxHP": 1119
   },
-  {},
+  {
+    "Number": "139",
+    "Name": "Omastar",
+    "Generation": "Generation I",
+    "About": "Omastar uses its tentacles to capture its prey. It is believed to have become extinct because its shell grew too large and heavy, causing its movements to become too slow and ponderous.",
+    "Types": [
+      "Rock",
+      "Water"
+    ],
+    "Resistant": [
+      "Normal",
+      "Fire",
+      "Ice",
+      "Poison",
+      "Flying"
+    ],
+    "Weaknesses": [
+      "Electric",
+      "Grass",
+      "Fighting",
+      "Ground"
+    ],
+    "Buddy Distance": "5km (Medium)",
+    "Next evolution(s)": [
+      {
+        "Number": 139,
+        "Name": "Omastar"
+      }
+    ],
+    "MaxCP": 2685,
+    "MaxHP": 1119
+  },
   {
     "Number": "140",
     "Name": "Kabuto",
