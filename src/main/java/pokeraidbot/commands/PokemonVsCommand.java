@@ -40,12 +40,15 @@ public class PokemonVsCommand extends Command {
 //                    "Buddy distance: " + pokemon.getBuddyDistance() + "\n"
             StringBuilder builder = new StringBuilder();
             final Locale localeForUser = localeService.getLocaleForUser(commandEvent.getAuthor().getName());
-            builder.append("**").append(pokemon).append("**\n").append(
-                    localeService.getMessageFor(LocaleService.WEAKNESSES, localeForUser))
+            builder.append("**").append(pokemon).append("**\n");
+            builder.append(localeService.getMessageFor(LocaleService.WEAKNESSES, localeForUser))
                     .append(pokemon.getWeaknesses()).append("\n").append(
                     localeService.getMessageFor(LocaleService.RESISTANT, localeForUser))
                     .append(pokemon.getResistant()).append("\n");
-            appendBestCounters(counters, builder, localeForUser);
+
+            if (counters != null) {
+                appendBestCounters(counters, builder, localeForUser);
+            }
 
             if (maxCp != null) {
                 builder.append("Max CP (100% IV): ").append(maxCp).append("\n");

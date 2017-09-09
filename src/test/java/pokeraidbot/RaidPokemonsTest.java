@@ -2,8 +2,14 @@ package pokeraidbot;
 
 import org.junit.Test;
 import pokeraidbot.domain.LocaleService;
+import pokeraidbot.domain.Pokemon;
 import pokeraidbot.domain.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,6 +32,27 @@ public class RaidPokemonsTest {
                     System.err.println(e.getMessage());
                 }
             }
+        }
+    }
+
+    @Test
+    public void verifyAllPokemonsInPokemonGoInRepo() throws Exception {
+        Set<Integer> numbers = new HashSet<>();
+        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        try {
+            for (int n = 1; n < 252; n++) {
+                numbers.add(n);
+            }
+            for (Pokemon pokemon : repo.getAll()) {
+                System.out.println("" + pokemon.getNumber() + " " + pokemon);
+                numbers.remove(pokemon.getNumber());
+            }
+            assertThat("" + numbers, numbers.size(), is(0));
+        } catch (Throwable e) {
+            for (Integer pokemonNumber : numbers) {
+                System.out.println(repo.getByNumber(pokemonNumber));
+            }
+            throw e;
         }
     }
 }

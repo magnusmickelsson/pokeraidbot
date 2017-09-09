@@ -9,10 +9,7 @@ import pokeraidbot.infrastructure.JsonPokemons;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class PokemonRepository {
     private final LocaleService localeService;
@@ -48,5 +45,18 @@ public class PokemonRepository {
 
     public Pokemon getPokemon(String name) {
         return pokemons.get(name.trim().toUpperCase());
+    }
+
+    public Set<Pokemon> getAll() {
+        return Collections.unmodifiableSet(new HashSet<>(pokemons.values()));
+    }
+
+    public Pokemon getByNumber(Integer pokemonNumber) {
+        for (Pokemon p : getAll()) {
+            if (Objects.equals(p.getNumber(), pokemonNumber)) {
+                return p;
+            }
+        }
+        throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, LocaleService.DEFAULT, "" + pokemonNumber));
     }
 }
