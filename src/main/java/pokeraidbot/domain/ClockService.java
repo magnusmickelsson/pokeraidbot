@@ -5,6 +5,9 @@ import java.time.LocalTime;
 public class ClockService {
     private LocalTime mockTime = null;
 
+    public ClockService() {
+    }
+
     public void setMockTime(LocalTime mockTime) {
         this.mockTime = mockTime;
     }

@@ -2,6 +2,7 @@ package pokeraidbot;
 
 import pokeraidbot.domain.ClockService;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
@@ -25,35 +26,33 @@ public class Utils {
         return time.format(dateTimePrintFormatter);
     }
 
-    public static void assertGivenTimeNotBeforeNow(String userName, LocalTime time) {
+    public static void assertGivenTimeNotBeforeNow(String userName, LocalTime time, LocaleService localeService) {
         final LocalTime now = clockService.getCurrentTime();
         if (time.isBefore(now)) {
             throw new UserMessedUpException(userName,
-                    "You seem to be living in a different timezone. Your given time is " + printTime(time) +
-                            ", while the current time is " + printTime(now));
+                    localeService.getMessageFor(LocaleService.TIMEZONE, LocaleService.DEFAULT, printTime(time), printTime(now)));
         }
     }
 
-    public static void assertTimeNotInNoRaidTimespan(String userName, LocalTime time) {
+    public static void assertTimeNotInNoRaidTimespan(String userName, LocalTime time, LocaleService localeService) {
         if (time.isAfter(LocalTime.of(22, 00)) || time.isBefore(LocalTime.of(7, 0))) {
             throw new UserMessedUpException(userName,
-                    "You can't create raids between 22:00 and 07:00 - your time was " + printTime(time) + ".");
+                    localeService.getMessageFor(LocaleService.NO_RAIDS_NOW, LocaleService.DEFAULT, printTime(time)));
         }
     }
 
-    public static void assertTimeNotMoreThanTwoHoursFromNow(String userName, LocalTime time) {
+    public static void assertTimeNotMoreThanTwoHoursFromNow(String userName, LocalTime time, LocaleService localeService) {
         final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(userName,
-                    "You can't create raids which are later than 2 hours from the current time " + printTime(now) + " - your time was " + printTime(time) + ".");
+                    localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, LocaleService.DEFAULT, printTime(time), printTime(now)));
         }
     }
 
-    public static void assertEtaNotAfterRaidEnd(String userName, Raid raid, LocalTime eta) {
+    public static void assertEtaNotAfterRaidEnd(String userName, Raid raid, LocalTime eta, LocaleService localeService) {
         if (eta.isAfter(raid.getEndOfRaid())) {
             throw new UserMessedUpException(userName,
-                    "Can't arrive after raid has ended. Your given time is " + printTime(eta) +
-                            ", raid ends at " + printTime(raid.getEndOfRaid()));
+                    localeService.getMessageFor(LocaleService.NO_ETA_AFTER_RAID, LocaleService.DEFAULT, printTime(eta), printTime(raid.getEndOfRaid())));
         }
     }
 

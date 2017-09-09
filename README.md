@@ -2,53 +2,96 @@
 A Discord Pokemon go raiding bot, used to announce raids, sign up for them and get an overview.
 Also contains commands for getting information about pokemons, pokestops and gyms.
 
+## What is this?
+
+Best to show some screenshots I guess. These are in Swedish, but there is also English locale.
+
+Command to get map of a gym:
+
+![Map command](mapcmd.png)
+![Map response](mapcmdresponse.png)
+
+Command to get raid boss info:
+
+![Raidboss info command](pokecmd.png)
+![Raidboss response](pokecmdresponse.png)
+
+Raid commands:
+
+![Raid commands](raidcmd.png)
+
+## Prerequisities
+
+* You need to have Java 8 installed
+* You need to have Maven 3+ installed
+* You need to be administrator on your local machine
+* It's probably a good idea if you know a bit about Java development, and Spring Boot
+* You need to be administrator of a Discord server with permission to add a bot
+
 ## How?
 
-* To get started, you need to create a Discord application via their developer site, and
-register a Bot account for it. When doing this, you get an owner id (client id) and a token for your bot account.
-* Add a property file to the classpath called pokeraidbot.properties, containing these properties:
+* To get started, you need to create a Discord application via their 
+[developer site](https://discordapp.com/developers/docs/intro), and register a Bot account for it. 
+When doing this, you get an owner id (client id) and a token for your bot account.
+* Clone this Git repository to your local machine: https://github.com/magnusmickelsson/pokeraidbot.git
+* Add a property file to the classpath called pokeraidbot.properties (put it under src/main/resources/ and it's ok), 
+containing these properties:
     * ownerId=(Bot application's ownerId)
     * token=(Bot user token)
-* Use this link to allow the application to access a Discord server:
-https://discordapp.com/oauth2/authorize?&client_id=354980212112621570&scope=bot&permissions=0
+* Build your application via [Maven](https://maven.apache.org) or a Java-IDE, for example 
+[IntelliJ](https://www.jetbrains.com/idea/).
+* Start the bot via the executable class main.BotServermain (or java -jar pokeraidbot.jar)
+* Try browse 127.0.0.1:5000 - if it works you'll get a response from the bot
+* Use this link to allow the application to access your Discord server:
+https://discordapp.com/oauth2/authorize?&client_id=356483458316632074&scope=bot&permissions=0
 (Replace client_id={something} with the client id you get when registering an application)
-* Compile/build, then start the executable class BotServerMain.
 * Go to your Discord server, verify that the bot has logged in and is present.
 * In the chat, try running the command "!raid usage".
 
+## Going into production
+
+* First off, you probably don't want the gyms in your bot to be those in Uppsala, Sweden, like it is
+in the repo (due to this bot being made for the Uppsala discord). 
+
+Check the file gyms_uppsala.csv -
+ensure you have a similar file with the gyms you want, and then configure the application to use your
+file instead of the uppsala one. You can keep the uppsala file around so you don't have to change the JUnit test suite.
+
+* I'd recommend you deploy your adapted bot to a cloud service, or use a local server.
+
+Personally, I used Heroku's free service, available here:
+
+http://herokuapp.com
+
+To get started, follow these instructions (after you've got it working locally, obviously):
+
+https://devcenter.heroku.com/articles/getting-started-with-java#introduction
+
+## Branches
+
+The simple bot, with command for map and showing pokemon information, is right now on master branch.
+
+The full feature bot, with raid management, is right now on branch raid-features. 
+This branch has not been released yet and may contain bugs.
+
 ## Who?
 
-Bot created by Magnus Mickelsson, with support from Johan Millert and the people from the Pokemon Uppsala Discord server.
+Bot created by Magnus Mickelsson (right now, < 35h work has been put into it so cut me some slack).
+
+Thanks for the support from Johan Millert and the people from the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
 
 ## Notes
 
-...
+It's very likely you need to know a bit of Java and Spring Boot for this application to be useful to you,
+in its current, source-code state.
 
 ## Data
 
+Raid boss counter data copied from:
+
+https://pokemongo.gamepress.gg/raid-boss-counters
+
 Some data from https://raw.githubusercontent.com/BrunnerLivio/PokemonDataGraber/master/output.json
 
-https://gist.github.com/anonymous/077d6dea82d58b8febde54ae9729b1bf
-
-Gyms:
+Gyms from Swepocks:
 https://fusiontables.google.com/DataSource?docid=1hdTwBGdlonfgdZfU_zqeTTZYY5UgzVwT0Sh3iboA#rows:id=1
-
-## See
-
-https://github.com/gnufred/pgmicrotypedex
-
-https://github.com/FoglyOgly/Meowth
-
-http://pokeapi.co/docsv2/
-
-http://pokeapi.co/api/v2/pokemon/200/
-https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/200.png
-
-Google static map API key: AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU
-
-https://maps.googleapis.com/maps/api/staticmap?center=59.883035,17.661403&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C59.883035,17.661403&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU
-
-https://maps.googleapis.com/maps/api/staticmap?center=59.844542,17.63993&zoom=14&size=400x400&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C59.844542,17.63993
-
-## Reply to (when done)
-https://www.reddit.com/r/pokemongodev/comments/6yk2ld/discord_bot_for_raid/

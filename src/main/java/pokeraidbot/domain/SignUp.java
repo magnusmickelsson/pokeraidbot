@@ -50,6 +50,6 @@ public class SignUp {
 
     @Override
     public String toString() {
-        return userName + ", " + howManyPeople + " people ETA " + printTime(arrivalTime);
+        return userName + ", " + howManyPeople + " ETA " + printTime(arrivalTime);
     }
 }

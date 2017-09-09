@@ -2,12 +2,14 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.GymRepository;
-import pokeraidbot.RaidRepository;
+import pokeraidbot.domain.GymRepository;
+import pokeraidbot.domain.RaidRepository;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.SignUp;
 
+import java.util.Locale;
 import java.util.Set;
 
 import static pokeraidbot.Utils.printTime;
@@ -18,10 +20,12 @@ import static pokeraidbot.Utils.printTime;
 public class RaidStatusCommand extends Command {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
+    private final LocaleService localeService;
 
-    public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository) {
+    public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService) {
+        this.localeService = localeService;
         this.name = "status";
-        this.help = "Check status for raid - !raid status [Gym name].";
+        this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);
 
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -30,16 +34,19 @@ public class RaidStatusCommand extends Command {
     @Override
     protected void execute(CommandEvent commandEvent) {
         try {
-            // todo: error handling
             String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
+            final String userName = commandEvent.getAuthor().getName();
+            final Gym gym = gymRepository.search(userName, gymName);
             final Raid raid = raidRepository.getRaid(gym);
             final Set<SignUp> signUps = raid.getSignUps();
             final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
-            commandEvent.reply("**Status for raid at " + gym.getName() + ":**\n" +
+
+            final Locale localeForUser = localeService.getLocaleForUser(userName);
+            commandEvent.reply("**" +
+                    localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
                     "Pokemon: " + raid.getPokemon() + "\n" +
-                    "Ends at: " + printTime(raid.getEndOfRaid()) + "\n" +
-                    numberOfPeople + " signed up." +
+                    localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
+                    numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
                     (signUps.size() > 0 ? "\n" + signUps : ""));
         } catch (Throwable e) {
             commandEvent.reply(e.getMessage());

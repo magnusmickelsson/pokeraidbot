@@ -1302,7 +1302,28 @@
     "MaxCP": 1096,
     "MaxHP": 1223
   },
-  {},
+  {
+    "Number": "018",
+    "Name": "Pidgeot",
+    "Generation": "Generation I",
+    "About": "This Pokémon has a dazzling plumage of beautifully glossy feathers. Many Trainers are captivated by the striking beauty of the feathers on its head, compelling them to choose Pidgeot as their Pokémon.",
+    "Types": [
+      "Normal",
+      "Flying"
+    ],
+    "Resistant": [
+      "Grass",
+      "Ground",
+      "Bug",
+      "Ghost"
+    ],
+    "Weaknesses": [
+      "Electric",
+      "Ice",
+      "Rock"
+    ],
+    "Buddy Distance": "1km (Flying)"
+  },
   {
     "Number": "019",
     "Name": "Rattata",
@@ -10119,15 +10140,7 @@
       "Fighting",
       "Ground"
     ],
-    "Buddy Distance": "5km (Medium)",
-    "Next evolution(s)": [
-      {
-        "Number": 139,
-        "Name": "Omastar"
-      }
-    ],
-    "MaxCP": 2685,
-    "MaxHP": 1119
+    "Buddy Distance": "5km (Medium)"
   },
   {
     "Number": "140",
@@ -16241,8 +16254,72 @@
     "Pokèmon Class": "This is a LEGENDARY Pokèmon.",
     "LEGENDARY": "Pokèmon Class"
   },
-  {},
-  {},
+  {"Number": "246",
+    "Name": "Larvitar",
+    "Generation": "Generation II",
+    "About": "A Pokémon that eats soil. Once it has eaten a large mountain, it goes to sleep so it can grow.",
+    "Types": [
+      "Rock",
+      "Ground"
+    ],
+    "Resistant": [
+      "Fire",
+      "Normal",
+      "Electric",
+      "Flying",
+      "Poison",
+      "Rock"
+    ],
+    "Weaknesses": [
+      "Fighting",
+      "Water",
+      "Bug",
+      "Fairy",
+      "Grass",
+      "Ice",
+      "Steel",
+      "Ground"
+    ],
+    "Fast Attack(s)": [
+
+    ],
+    "Special Attack(s)": [
+    ],
+    "Buddy Distance": "5km"
+  },
+  {"Number": "247",
+    "Name": "Pupitar",
+    "Generation": "Generation II",
+    "About": "Its body is as hard as bedrock. By venting pressurized gas, it can launch itself like a rocket.",
+    "Types": [
+      "Rock",
+      "Ground"
+    ],
+    "Resistant": [
+      "Fire",
+      "Normal",
+      "Electric",
+      "Flying",
+      "Poison",
+      "Rock"
+    ],
+    "Weaknesses": [
+      "Fighting",
+      "Water",
+      "Bug",
+      "Fairy",
+      "Grass",
+      "Ice",
+      "Steel",
+      "Ground"
+    ],
+    "Fast Attack(s)": [
+
+    ],
+    "Special Attack(s)": [
+    ],
+    "Buddy Distance": "5km"
+  },
   {"Number": "248",
     "Name": "Tyranitar",
     "Generation": "Generation II",
@@ -16275,7 +16352,84 @@
     ],
     "Buddy Distance": "5km"
   },
-  {},
+  {
+    "Number": "249",
+    "Name": "Lugia",
+    "Generation": "Generation II",
+    "About": "Lugia's wings pack devastating power—a light fluttering of its wings can blow apart regular houses. As a result, this Pokémon chooses to live out of sight deep under the sea.",
+    "Types": [
+      "Psychic",
+      "Flying"
+    ],
+    "Resistant": [
+      "Grass",
+      "Fighting",
+      "Ground",
+      "Psychic"
+    ],
+    "Weaknesses": [
+      "Electric",
+      "Ice",
+      "Rock",
+      "Ghost",
+      "Dark"
+    ],
+    "Fast Attack(s)": [
+      {
+        "Name": "Tackle",
+        "Type": "Normal",
+        "Damage": 12
+      }
+    ],
+    "Special Attack(s)": [
+      {
+        "Name": "Struggle",
+        "Type": "Normal",
+        "Damage": 15
+      }
+    ],
+    "Weight": {
+      "Minimum": "189kg",
+      "Maximum": "243kg"
+    },
+    "Height": {
+      "Minimum": "4.56m",
+      "Maximum": "5.86m"
+    },
+    "Buddy Distance": "1km (Medium)",
+    "Base Stamina": "212 stamina points.",
+    "Base Attack": "193 attack points.",
+    "Base Defense": "323 defense points.",
+    "Base Flee Rate": "5% chance to flee.",
+    "Pokèmon Class": "This is a LEGENDARY Pokèmon.",
+    "LEGENDARY": "Pokèmon Class"
+  },
+  {
+    "Number": "250",
+    "Name": "Ho-oh",
+    "Generation": "Generation III?",
+    "About": "Its feathers are in seven colors. It is said that anyone seeing it is promised eternal happiness. Legends claim this Pokémon flies the world's skies continuously on its magnificent, seven-colored wings. A legend says that its body glows in seven colors. A rainbow is said to form behind it when it flies.",
+    "Types": [
+      "Fire",
+      "Flying"
+    ],
+    "Resistant": [
+      "Fire",
+      "Grass",
+      "Fighting",
+      "Bug",
+      "Steel",
+      "Fairy"
+    ],
+    "Weaknesses": [
+      "Water",
+      "Electric",
+      "Rock"
+    ],
+    "Buddy Distance": "5km (Big)",
+    "Pokèmon Class": "This is a LEGENDARY Pokèmon.",
+    "LEGENDARY": "Pokèmon Class"
+  },
   {
     "Number": "251",
     "Name": "Celebi",
@@ -16332,59 +16486,6 @@
     "Pokèmon Class": "This is a MYTHIC Pokèmon.",
     "MYTHIC": "Pokèmon Class"
   },
-  {
-    "Number": "249",
-    "Name": "Lugia",
-    "Generation": "Generation II",
-    "About": "Lugia's wings pack devastating power—a light fluttering of its wings can blow apart regular houses. As a result, this Pokémon chooses to live out of sight deep under the sea.",
-    "Types": [
-      "Psychic",
-      "Flying"
-    ],
-    "Resistant": [
-      "Grass",
-      "Fighting",
-      "Ground",
-      "Psychic"
-    ],
-    "Weaknesses": [
-      "Electric",
-      "Ice",
-      "Rock",
-      "Ghost",
-      "Dark"
-    ],
-    "Fast Attack(s)": [
-      {
-        "Name": "Tackle",
-        "Type": "Normal",
-        "Damage": 12
-      }
-    ],
-    "Special Attack(s)": [
-      {
-        "Name": "Struggle",
-        "Type": "Normal",
-        "Damage": 15
-      }
-    ],
-    "Weight": {
-      "Minimum": "189kg",
-      "Maximum": "243kg"
-    },
-    "Height": {
-      "Minimum": "4.56m",
-      "Maximum": "5.86m"
-    },
-    "Buddy Distance": "1km (Medium)",
-    "Base Stamina": "212 stamina points.",
-    "Base Attack": "193 attack points.",
-    "Base Defense": "323 defense points.",
-    "Base Flee Rate": "5% chance to flee.",
-    "Pokèmon Class": "This is a LEGENDARY Pokèmon.",
-    "LEGENDARY": "Pokèmon Class"
-  },
-  {},
   {
     "Number": "251",
     "Name": "Celebi",

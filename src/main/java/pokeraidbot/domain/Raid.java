@@ -3,11 +3,7 @@ package pokeraidbot.domain;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 import static pokeraidbot.Utils.printTime;
 
@@ -15,12 +11,14 @@ public class Raid {
     private final Pokemon pokemon;
     private final LocalTime endOfRaid;
     private final Gym gym;
-    private final Map<String, SignUp> signUps = new ConcurrentHashMap<>();
+    private final LocaleService localeService;
+    private Map<String, SignUp> signUps = new HashMap<>();
 
-    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym) {
+    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym, LocaleService localeService) {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
+        this.localeService = localeService;
     }
 
     public Pokemon getPokemon() {
@@ -59,16 +57,18 @@ public class Raid {
 
     @Override
     public String toString() {
-        return "Raid for " + pokemon + " at gym " + gym + ", ends at " + printTime(endOfRaid);
+        return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(), gym.toString(), printTime(endOfRaid));
     }
 
-    public void signUp(String userName, int howManyPeople, LocalTime arrivalTime) {
+    public void signUp(String userName, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
         final SignUp signUp = signUps.get(userName);
         if (signUp != null) {
-            throw new UserMessedUpException(userName, "You're already signed up for: " + this + " ... " +
-                    signUp + " - remove your current signup then signup again.");
+            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.ALREADY_SIGNED_UP,
+                    LocaleService.DEFAULT, this.toString(), signUp.toString()));
         }
-        signUps.put(userName, new SignUp(userName, howManyPeople, arrivalTime));
+        final SignUp theSignUp = new SignUp(userName, howManyPeople, arrivalTime);
+        signUps.put(userName, theSignUp);
+        repository.addSignUp(userName, this, theSignUp);
     }
 
     public Set<SignUp> getSignUps() {
@@ -79,8 +79,13 @@ public class Raid {
         return signUps.values().stream().mapToInt(signup -> signup.getHowManyPeople()).sum();
     }
 
-    public SignUp remove(String userName) {
+    public SignUp remove(String userName, RaidRepository raidRepository) {
         final SignUp removed = signUps.remove(userName);
+        raidRepository.removeSignUp(userName, this, removed);
         return removed;
+    }
+
+    public void setSignUps(Map<String, SignUp> signUps) {
+        this.signUps = signUps;
     }
 }

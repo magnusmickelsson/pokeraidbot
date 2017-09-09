@@ -1,8 +1,10 @@
-package pokeraidbot;
+package pokeraidbot.domain;
 
 import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.GymRepository;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,12 +17,12 @@ public class GymRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        repo = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
+        repo = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), new LocaleService());
     }
 
     @Test
     public void allGymsAreRead() {
-        assertThat(repo.getAllGyms().size(), is(373));
+        assertThat(repo.getAllGyms().size(), is(186));
     }
 
     @Test
