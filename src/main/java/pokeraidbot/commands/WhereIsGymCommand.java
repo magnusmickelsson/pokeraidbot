@@ -3,7 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import pokeraidbot.GymRepository;
+import pokeraidbot.domain.GymRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
 import pokeraidbot.domain.LocaleService;

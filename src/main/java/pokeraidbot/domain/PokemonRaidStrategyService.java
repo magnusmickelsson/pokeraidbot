@@ -1,7 +1,5 @@
 package pokeraidbot.domain;
 
-import org.w3c.dom.css.Counter;
-import pokeraidbot.PokemonRepository;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
 import java.util.*;

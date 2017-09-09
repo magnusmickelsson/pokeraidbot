@@ -1,11 +1,9 @@
-package pokeraidbot;
+package pokeraidbot.domain;
 
 import org.junit.Before;
 import org.junit.Test;
-import pokeraidbot.domain.ClockService;
-import pokeraidbot.domain.Gym;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Raid;
+import pokeraidbot.Utils;
+import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import java.time.LocalTime;

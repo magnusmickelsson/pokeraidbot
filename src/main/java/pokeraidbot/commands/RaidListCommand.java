@@ -2,8 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.GymRepository;
-import pokeraidbot.RaidRepository;
+import pokeraidbot.domain.RaidRepository;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Raid;
 

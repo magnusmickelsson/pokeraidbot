@@ -1,9 +1,6 @@
-package pokeraidbot;
+package pokeraidbot.domain;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonTypes;
 import pokeraidbot.infrastructure.JsonPokemon;
 import pokeraidbot.infrastructure.JsonPokemons;
 

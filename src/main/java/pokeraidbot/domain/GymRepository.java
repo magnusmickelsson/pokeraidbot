@@ -1,4 +1,4 @@
-package pokeraidbot;
+package pokeraidbot.domain;
 
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.Gym;

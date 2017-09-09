@@ -1,15 +1,14 @@
-package pokeraidbot;
+package pokeraidbot.domain;
 
 import org.junit.Test;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Pokemon;
+import pokeraidbot.domain.PokemonRepository;
 import pokeraidbot.domain.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

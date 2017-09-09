@@ -3,7 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.apache.commons.lang3.StringUtils;
-import pokeraidbot.PokemonRepository;
+import pokeraidbot.domain.PokemonRepository;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Pokemon;
 import pokeraidbot.domain.PokemonRaidStrategyService;

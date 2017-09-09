@@ -1,7 +1,7 @@
 package pokeraidbot.infrastructure;
 
 import org.junit.Test;
-import pokeraidbot.PokemonRepository;
+import pokeraidbot.domain.PokemonRepository;
 import pokeraidbot.domain.LocaleService;
 
 import static org.hamcrest.CoreMatchers.is;

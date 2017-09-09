@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure;
 
-import pokeraidbot.PokemonRepository;
+import pokeraidbot.domain.PokemonRepository;
 import pokeraidbot.domain.Pokemon;
 
 import java.io.BufferedReader;

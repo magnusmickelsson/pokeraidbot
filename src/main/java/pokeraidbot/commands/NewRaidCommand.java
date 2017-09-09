@@ -2,9 +2,9 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.GymRepository;
-import pokeraidbot.PokemonRepository;
-import pokeraidbot.RaidRepository;
+import pokeraidbot.domain.GymRepository;
+import pokeraidbot.domain.PokemonRepository;
+import pokeraidbot.domain.RaidRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Pokemon;
