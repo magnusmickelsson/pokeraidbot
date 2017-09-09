@@ -2,6 +2,7 @@ package pokeraidbot;
 
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
@@ -9,8 +10,10 @@ import java.util.*;
 
 public class GymRepository {
     private Map<String, Gym> gyms = new HashMap<>();
+    private final LocaleService localeService;
 
-    public GymRepository(Set<Gym> gyms) {
+    public GymRepository(Set<Gym> gyms, LocaleService localeService) {
+        this.localeService = localeService;
         for (Gym gym : gyms) {
             this.gyms.put(prepareNameForFuzzySearch(gym.getName()), gym);
         }
@@ -40,7 +43,7 @@ public class GymRepository {
             if (candidates.size() == 1) {
                 return findByName(candidates.iterator().next());
             } else if (candidates.size() < 1) {
-                throw new GymNotFoundException(query);
+                throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
             } else {
                 if (candidates.size() < 5) {
                     throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop. Did you want any of these? " + candidates);
@@ -54,7 +57,7 @@ public class GymRepository {
     public Gym findByName(String name) {
         final Gym gym = get(name);
         if (gym == null) {
-            throw new GymNotFoundException(name);
+            throw new GymNotFoundException(name, localeService, LocaleService.SWEDISH);
         }
         return gym;
     }
@@ -68,7 +71,7 @@ public class GymRepository {
             if (gym.getId().equals(id))
                 return gym;
         }
-        throw new GymNotFoundException();
+        throw new GymNotFoundException("[No entry]", localeService, LocaleService.SWEDISH);
     }
 
     public Collection<Gym> getAllGyms() {

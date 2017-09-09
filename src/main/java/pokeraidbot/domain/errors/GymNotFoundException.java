@@ -1,11 +1,11 @@
 package pokeraidbot.domain.errors;
 
-public class GymNotFoundException extends RuntimeException {
-    public GymNotFoundException() {
-        super("Could not find a Gym from your input. Please try again.");
-    }
+import pokeraidbot.domain.LocaleService;
 
-    public GymNotFoundException(String name) {
-        super("Could not find Gym with name \"" + name + "\"");
+import java.util.Locale;
+
+public class GymNotFoundException extends RuntimeException {
+    public GymNotFoundException(String name, LocaleService localeService, Locale locale) {
+        super(localeService.getMessageFor(LocaleService.GYM_NOT_FOUND, locale, name));
     }
 }

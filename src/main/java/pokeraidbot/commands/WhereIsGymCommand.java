@@ -6,20 +6,22 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.GymRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 
 public class WhereIsGymCommand extends Command {
     private final GymRepository gymRepository;
+    private final LocaleService localeService;
 
-    public WhereIsGymCommand(GymRepository gymRepository) {
+    public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService) {
+        this.localeService = localeService;
         this.name = "map";
-        this.help = "Get map link for gym - !raid map [Gym name]";
+        this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
     }
 
     @Override
     protected void execute(CommandEvent commandEvent) {
         try {
-            // todo: error handling
             String gymName = commandEvent.getArgs();
             final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
             String staticUrl = Utils.getStaticMapUrl(gym);

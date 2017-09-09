@@ -2,24 +2,29 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import pokeraidbot.domain.LocaleService;
+
+import java.util.Locale;
 
 public class HelpCommand extends Command {
-    public static String featuresString = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n\n" +
-            "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n\n" +
-            "**Get a list of all active raids:**\n!raid list\n\n" +
-            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
-            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n\n" +
-            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n\n" +
-            "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
+    private final LocaleService localeService;
 
-    public HelpCommand() {
+    public HelpCommand(LocaleService localeService) {
+        this.localeService = localeService;
         this.name = "usage";
-        this.help = "Shows usage of bot.";
+        this.help = localeService.getMessageFor(LocaleService.USAGE_HELP, LocaleService.DEFAULT);
     }
 
     @Override
     protected void execute(CommandEvent commandEvent) {
+        final String args = commandEvent.getArgs();
+        Locale locale;
+        if (args != null && args.length() > 0) {
+            locale = new Locale(args);
+        } else {
+            locale = localeService.getLocaleForUser(commandEvent.getAuthor().getName());
+        }
         commandEvent.reply(
-                featuresString);
+                localeService.getMessageFor(LocaleService.USAGE, locale));
     }
 }

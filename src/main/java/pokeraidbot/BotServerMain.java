@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.ClockService;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.PokemonRaidStrategyService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
@@ -31,9 +32,10 @@ import java.util.Properties;
 
 //@SpringBootApplication
 public class BotServerMain {
-    private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
-    private static final RaidRepository raidRepository = new RaidRepository(new ClockService());
-    private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json");
+    private static final LocaleService localeService = new LocaleService();
+    private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), localeService);
+    private static final RaidRepository raidRepository = new RaidRepository(new ClockService(), localeService);
+    private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json", localeService);
     private static final PokemonRaidStrategyService raidInfoService = new PokemonRaidStrategyService(pokemonRepository);
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
@@ -55,19 +57,19 @@ public class BotServerMain {
         client.setGame(new GameImpl("Type !raid usage", "", Game.GameType.DEFAULT));
         client.addCommands(
                 new AboutCommand(
-                        Color.BLUE, "PokeRaidBot reporting for duty!",
-                        new String[]{HelpCommand.featuresString}, Permission.ADMINISTRATOR
+                        Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
+                        new String[]{LocaleService.featuresString_EN}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new HelpCommand(),
+                new HelpCommand(localeService),
                 new ShutdownCommand(),
-                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository),
-                new RaidStatusCommand(gymRepository, raidRepository),
-                new RaidListCommand(gymRepository, raidRepository),
-                new SignUpCommand(gymRepository, raidRepository),
-                new WhereIsGymCommand(gymRepository),
-                new RemoveSignUpCommand(gymRepository, raidRepository),
-                new PokemonVsCommand(pokemonRepository, raidInfoService)
+                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService),
+                new RaidStatusCommand(gymRepository, raidRepository, localeService),
+                new RaidListCommand(raidRepository, localeService),
+                new SignUpCommand(gymRepository, raidRepository, localeService),
+                new WhereIsGymCommand(gymRepository, localeService),
+                new RemoveSignUpCommand(gymRepository, raidRepository, localeService),
+                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService)
         );
 
         new JDABuilder(AccountType.BOT)

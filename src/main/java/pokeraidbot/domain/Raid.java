@@ -15,12 +15,14 @@ public class Raid {
     private final Pokemon pokemon;
     private final LocalTime endOfRaid;
     private final Gym gym;
+    private final LocaleService localeService;
     private final Map<String, SignUp> signUps = new ConcurrentHashMap<>();
 
-    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym) {
+    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym, LocaleService localeService) {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
+        this.localeService = localeService;
     }
 
     public Pokemon getPokemon() {
@@ -59,14 +61,14 @@ public class Raid {
 
     @Override
     public String toString() {
-        return "Raid for " + pokemon + " at gym " + gym + ", ends at " + printTime(endOfRaid);
+        return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(), gym.toString(), printTime(endOfRaid));
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime) {
         final SignUp signUp = signUps.get(userName);
         if (signUp != null) {
-            throw new UserMessedUpException(userName, "You're already signed up for: " + this + " ... " +
-                    signUp + " - remove your current signup then signup again.");
+            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.ALREADY_SIGNED_UP,
+                    LocaleService.DEFAULT, this.toString(), signUp.toString()));
         }
         signUps.put(userName, new SignUp(userName, howManyPeople, arrivalTime));
     }

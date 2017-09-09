@@ -6,10 +6,12 @@ import pokeraidbot.GymRepository;
 import pokeraidbot.RaidRepository;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;
+import java.util.Locale;
 
 import static pokeraidbot.Utils.assertEtaNotAfterRaidEnd;
 import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
@@ -21,10 +23,12 @@ public class SignUpCommand extends Command {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private static final int highLimitForSignUps = 20;
+    private final LocaleService localeService;
 
-    public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository) {
+    public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService) {
+        this.localeService = localeService;
         this.name = "add";
-        this.help = "Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Gym name]";
+        this.help = localeService.getMessageFor(LocaleService.SIGNUP_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }
@@ -33,8 +37,8 @@ public class SignUpCommand extends Command {
     protected void execute(CommandEvent commandEvent) {
         try {
             final String userName = commandEvent.getAuthor().getName();
+            final Locale localeForUser = localeService.getLocaleForUser(userName);
             final String[] args = commandEvent.getArgs().split(" ");
-            // todo: error handling
             String people = args[0];
             Integer numberOfPeople;
             try {
@@ -43,7 +47,8 @@ public class SignUpCommand extends Command {
                     throw new RuntimeException();
                 }
             } catch (RuntimeException e) {
-                throw new UserMessedUpException(userName, "Can't parse this number of people: " + people + " - give a valid number 1-" + highLimitForSignUps + ".");
+                throw new UserMessedUpException(userName,
+                        localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeForUser, people, String.valueOf(highLimitForSignUps)));
             }
 
             String timeString = args[1];
@@ -56,16 +61,15 @@ public class SignUpCommand extends Command {
             final Gym gym = gymRepository.findByName(gymName);
             final Raid raid = raidRepository.getRaid(gym);
 
-            // todo: handle different separators
-            // todo: time checking
             LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
 
             assertEtaNotAfterRaidEnd(userName, raid, eta);
             assertGivenTimeNotBeforeNow(userName, eta);
 
             raid.signUp(userName, numberOfPeople, eta);
-            commandEvent.reply(userName + " sign up added to raid at " + gym.getName() +
-                    ". " + (raid.getSignUps().size() > 1 ? "Current signups: \n" + raid.getSignUps() : ""));
+            final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
+            final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + raid.getSignUps() : "";
+            commandEvent.reply(localeService.getMessageFor(LocaleService.SIGNUPS, localeForUser, userName, gym.getName(), signUpText));
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }

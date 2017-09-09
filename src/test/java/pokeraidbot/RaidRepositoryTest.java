@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.domain.ClockService;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Raid;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
@@ -20,10 +21,11 @@ public class RaidRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        repo = new RaidRepository(clockService);
+        final LocaleService localeService = new LocaleService();
+        repo = new RaidRepository(clockService, localeService);
         Utils.setClockService(clockService);
-        gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
-        pokemonRepository = new PokemonRepository("/mons.json");
+        gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), localeService);
+        pokemonRepository = new PokemonRepository("/mons.json", localeService);
     }
 
     @Test
@@ -32,7 +34,7 @@ public class RaidRepositoryTest {
         final LocalTime now = clockService.getCurrentTime();
         LocalTime endOfRaid = now.plusHours(1);
         final Gym gym = gymRepository.findByName("Blenda");
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService());
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);

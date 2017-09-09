@@ -10119,15 +10119,7 @@
       "Fighting",
       "Ground"
     ],
-    "Buddy Distance": "5km (Medium)",
-    "Next evolution(s)": [
-      {
-        "Number": 139,
-        "Name": "Omastar"
-      }
-    ],
-    "MaxCP": 2685,
-    "MaxHP": 1119
+    "Buddy Distance": "5km (Medium)"
   },
   {
     "Number": "140",

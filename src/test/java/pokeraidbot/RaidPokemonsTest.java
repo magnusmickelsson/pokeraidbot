@@ -1,6 +1,7 @@
 package pokeraidbot;
 
 import org.junit.Test;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
@@ -10,7 +11,7 @@ import static org.junit.Assert.assertThat;
 public class RaidPokemonsTest {
     @Test
     public void verifyAllRaidBossesInRepo() throws Exception {
-        PokemonRepository repo = new PokemonRepository("/mons.json");
+        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
         for (RaidBossPokemons raidBoss : RaidBossPokemons.values()) {
             try {
                 assertThat(repo.getByName(raidBoss.name()) != null, is(true));

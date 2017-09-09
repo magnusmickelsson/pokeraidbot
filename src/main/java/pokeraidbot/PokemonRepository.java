@@ -1,6 +1,7 @@
 package pokeraidbot;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Pokemon;
 import pokeraidbot.domain.PokemonTypes;
 import pokeraidbot.infrastructure.JsonPokemon;
@@ -14,9 +15,11 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class PokemonRepository {
+    private final LocaleService localeService;
     private Map<String, Pokemon> pokemons = new HashMap<>();
 
-    public PokemonRepository(String resourceName) {
+    public PokemonRepository(String resourceName, LocaleService localeService) {
+        this.localeService = localeService;
         final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -38,7 +41,7 @@ public class PokemonRepository {
     public Pokemon getByName(String name) {
         final Pokemon pokemon = getPokemon(name);
         if (pokemon == null) {
-            throw new RuntimeException("Could not find a pokemon with name " + name + ".");
+            throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, LocaleService.DEFAULT, name));
         }
         return pokemon;
     }

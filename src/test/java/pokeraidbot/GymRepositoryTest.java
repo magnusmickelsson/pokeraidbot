@@ -3,6 +3,7 @@ package pokeraidbot;
 import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.LocaleService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,7 +16,7 @@ public class GymRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        repo = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
+        repo = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), new LocaleService());
     }
 
     @Test
