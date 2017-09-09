@@ -34,7 +34,7 @@ public class BotServerMain {
     private static final GymRepository gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll());
     private static final RaidRepository raidRepository = new RaidRepository(new ClockService());
     private static final PokemonRepository pokemonRepository = new PokemonRepository("/mons.json");
-    private static final PokemonRaidStrategyService raidInfoService = new PokemonRaidStrategyService();
+    private static final PokemonRaidStrategyService raidInfoService = new PokemonRaidStrategyService(pokemonRepository);
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -56,7 +56,7 @@ public class BotServerMain {
         client.addCommands(
                 new AboutCommand(
                         Color.BLUE, "PokeRaidBot reporting for duty!",
-                        new String[]{}, Permission.ADMINISTRATOR
+                        new String[]{HelpCommand.featuresString}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
                 new HelpCommand(),

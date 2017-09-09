@@ -26,7 +26,7 @@ public class NewRaidCommand extends Command {
     public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository, PokemonRepository pokemonRepository) {
         this.pokemonRepository = pokemonRepository;
         this.name = "new";
-        this.help = "Create new raid - !raid new [Name of Pokemon] [Ends at (HH:MM)] [Pokestop/Gym name].";
+        this.help = "Create new raid - !raid new [Name of Pokemon] [Ends at (HH:MM)] [Pokestop/Gym name]";
 
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

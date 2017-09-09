@@ -1,0 +1,80 @@
+Supreme Counters
+Pinsir
+
+Pinsir
+Quick Move	Charge Move
+Fury Cutter
+Bug Bite
+X-Scissor
+Scizor
+
+Scizor
+Quick Move	Charge Move
+Fury Cutter
+X-Scissor
+Good Counters
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Mewtwo
+
+Mewtwo
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Shadow Ball
+Flareon
+
+Flareon
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Flamethrower
+Arcanine
+
+Arcanine
+Quick Move	Charge Move
+Fire Fang
+Flamethrower
+Charizard
+
+Charizard
+Quick Move	Charge Move
+Fire Spin
+Air Slash
+Wing Attack
+Overheat
+Flamethrower
+Typhlosion
+
+Typhlosion
+Quick Move	Charge Move
+Ember
+Shadow Claw
+Overheat
+Houndoom
+
+Houndoom
+Quick Move	Charge Move
+Snarl
+Fire Fang
+Foul Play
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Tail
+Dragon Breath
+Outrage
+Hurricane
+Dragon Claw
+Tyranitar
+
+Tyranitar
+Quick Move	Charge Move
+Bite
+Stone Edge
+Crunch

@@ -21,7 +21,7 @@ public class RaidStatusCommand extends Command {
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository) {
         this.name = "status";
-        this.help = "Check status for raid - !raid status [Pokestop/Gym name].";
+        this.help = "Check status for raid - !raid status [Gym name].";
 
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

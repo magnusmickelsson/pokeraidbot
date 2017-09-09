@@ -12,7 +12,7 @@ public class WhereIsGymCommand extends Command {
 
     public WhereIsGymCommand(GymRepository gymRepository) {
         this.name = "map";
-        this.help = "Get map link for gym - !raid map [Pokestop/Gym name].";
+        this.help = "Get map link for gym - !raid map [Gym name]";
         this.gymRepository = gymRepository;
     }
 

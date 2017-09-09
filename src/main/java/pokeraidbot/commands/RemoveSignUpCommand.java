@@ -16,7 +16,7 @@ public class RemoveSignUpCommand extends Command {
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
         this.name = "remove";
-        this.help = "!raid remove [gym] - remove signups for this gym.";
+        this.help = "Remove signups for this gym: !raid remove [Gym]";
     }
 
     @Override

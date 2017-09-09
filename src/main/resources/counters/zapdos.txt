@@ -1,0 +1,38 @@
+Supreme Counters
+Golem
+
+Golem
+Quick Move	Charge Move
+Rock Throw
+Stone Edge
+Rock Blast
+Good Counters
+Mewtwo
+
+Mewtwo
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Psychic
+Shadow Ball
+Tyranitar
+
+Tyranitar
+Quick Move	Charge Move
+Bite
+Stone Edge
+Piloswine
+
+Piloswine
+Quick Move	Charge Move
+Ice Shard
+Powder Snow
+Avalanche
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage

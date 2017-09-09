@@ -36,10 +36,14 @@ public class PokemonRepository {
     }
 
     public Pokemon getByName(String name) {
-        final Pokemon pokemon = pokemons.get(name.trim().toUpperCase());
+        final Pokemon pokemon = getPokemon(name);
         if (pokemon == null) {
             throw new RuntimeException("Could not find a pokemon with name " + name + ".");
         }
         return pokemon;
+    }
+
+    public Pokemon getPokemon(String name) {
+        return pokemons.get(name.trim().toUpperCase());
     }
 }

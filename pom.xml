@@ -95,6 +95,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.csv</include>
                     <include>**/*.json</include>
+                    <include>**/*.txt</include>
                 </includes>
             </resource>
         </resources>

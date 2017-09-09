@@ -1,0 +1,59 @@
+Supreme Counter
+Mewtwo
+
+Mewtwo
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Focus Blast
+Machamp
+
+Machamp
+Quick Move	Charge Move
+Counter
+Karate Chop
+Dynamic Punch
+Close Combat
+Cross Chop
+Good Counters
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Heracross
+
+Heracross
+Quick Move	Charge Move
+Counter
+Close Combat
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Tail
+Dragon Breath
+Outrage
+Hurricane
+Dragon Claw
+Ursaring
+
+Ursaring
+Quick Move	Charge Move
+Counter
+Close Combat
+Poliwrath
+
+Poliwrath
+Quick Move	Charge Move
+Rock Smash
+Dynamic Punch
+Alakazam
+
+Alakazam
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Focus Blast
+Future Sight

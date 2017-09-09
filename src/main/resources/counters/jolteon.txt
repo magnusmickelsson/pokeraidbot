@@ -1,0 +1,33 @@
+Supreme Counters
+Rhydon
+
+Rhydon
+Quick Move	Charge Move
+Mud Slap
+Earthquake
+Golem
+
+Golem
+Quick Move	Charge Move
+Mud Slap
+Mud Shot
+Earthquake
+Good Counters
+Donphan
+
+Donphan
+Quick Move	Charge Move
+Counter
+Earthquake
+Sandslash
+
+Sandslash
+Quick Move	Charge Move
+Mud Shot
+Earthquake
+Nidoking
+
+Nidoking
+Quick Move	Charge Move
+Fury Cutter
+Earthquake

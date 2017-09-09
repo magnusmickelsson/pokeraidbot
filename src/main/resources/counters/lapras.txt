@@ -1,0 +1,69 @@
+Supreme Counter
+Machamp
+
+Machamp
+Quick Move	Charge Move
+Counter
+Karate Chop
+Dynamic Punch
+Close Combat
+Cross Chop
+Good Counters
+Mewtwo
+
+Mewtwo
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Focus Blast
+Shadow Ball
+Zapdos
+
+Zapdos
+Quick Move	Charge Move
+Charge Beam
+Thunderbolt
+Zap Cannon
+Omastar
+
+Omastar
+Quick Move	Charge Move
+Rock Throw
+Rock Slide
+Rock Blast
+Heracross
+
+Heracross
+Quick Move	Charge Move
+Counter
+Close Combat
+Jolteon
+
+Jolteon
+Quick Move	Charge Move
+Thunder Shock
+Thunderbolt
+Magneton
+
+Magneton
+Quick Move	Charge Move
+Spark
+Charge Beam
+Thunder Shock
+Zap Cannon
+Exeggutor
+
+Exeggutor
+Quick Move	Charge Move
+Bullet Seed
+Confusion
+Extrasensory
+Solar Beam
+Seed Bomb
+Victreebel
+
+Victreebel
+Quick Move	Charge Move
+Razor Leaf
+Solar Beam
+Leaf Blade
