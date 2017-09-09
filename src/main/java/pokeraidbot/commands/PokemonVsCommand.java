@@ -38,19 +38,7 @@ public class PokemonVsCommand extends Command {
             builder.append("**").append(pokemon).append("**\n").append("Weaknesses: ")
                     .append(pokemon.getWeaknesses()).append("\n").append("Resistant to: ")
                     .append(pokemon.getResistant()).append("\n");
-            if (counters != null && counters.getSupremeCounters().size() > 0) {
-                builder.append("Best counter: ");
-                final Optional<CounterPokemon> bestCounterPokemon = counters.getSupremeCounters().stream().findFirst();
-                builder.append(bestCounterPokemon.get());
-                if (counters.getSupremeCounters().size() > 1 || counters.getGoodCounters().size() > 0) {
-                    final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(counters.getSupremeCounters());
-                    totalCounters.addAll(counters.getGoodCounters());
-                    List<String> otherCounters = totalCounters.stream().skip(1).map(CounterPokemon::getCounterPokemonName).collect(Collectors.toList());
-                    builder.append("\nOther counters: [");
-                    builder.append(StringUtils.join(otherCounters.toArray(), ", "));
-                    builder.append("] **(if correct moveset)**\n");
-                }
-            }
+            appendBestCounters(counters, builder);
 
             if (maxCp != null) {
                 builder.append("Max CP (100% IV): ").append(maxCp).append("\n");
@@ -59,6 +47,33 @@ public class PokemonVsCommand extends Command {
             commandEvent.reply(builder.toString());
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
+        }
+    }
+
+    private void appendBestCounters(RaidBossCounters counters, StringBuilder builder) {
+        if (counters != null && counters.getSupremeCounters().size() > 0) {
+            builder.append("Best counter: ");
+            final Optional<CounterPokemon> bestCounterPokemon = counters.getSupremeCounters().stream().findFirst();
+            builder.append(bestCounterPokemon.get());
+            if (counters.getSupremeCounters().size() > 1 || counters.getGoodCounters().size() > 0) {
+                final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(counters.getSupremeCounters());
+                totalCounters.addAll(counters.getGoodCounters());
+                List<String> otherCounters = totalCounters.stream().skip(1).map(CounterPokemon::getCounterPokemonName).collect(Collectors.toList());
+                builder.append("\nOther counters: [");
+                builder.append(StringUtils.join(otherCounters.toArray(), ", "));
+                builder.append("] **(if correct moveset)**\n");
+            }
+        } else {
+            builder.append("Best counter: ");
+            final Optional<CounterPokemon> bestCounterPokemon = counters.getGoodCounters().stream().findFirst();
+            builder.append(bestCounterPokemon.get());
+            if (counters.getGoodCounters().size() > 1) {
+                final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(counters.getGoodCounters());
+                List<String> otherCounters = totalCounters.stream().skip(1).map(CounterPokemon::getCounterPokemonName).collect(Collectors.toList());
+                builder.append("\nOther counters: [");
+                builder.append(StringUtils.join(otherCounters.toArray(), ", "));
+                builder.append("] **(if correct moveset)**\n");
+            }
         }
     }
 }
