@@ -10,7 +10,7 @@ register a Bot account for it. When doing this, you get an owner id (client id) 
     * ownerId=(Bot application's ownerId)
     * token=(Bot user token)
 * Use this link to allow the application to access a Discord server:
-https://discordapp.com/oauth2/authorize?&client_id=354980212112621570&scope=bot&permissions=0
+https://discordapp.com/oauth2/authorize?&client_id=356483458316632074&scope=bot&permissions=0
 (Replace client_id={something} with the client id you get when registering an application)
 * Compile/build, then start the executable class BotServerMain.
 * Go to your Discord server, verify that the bot has logged in and is present.
@@ -18,7 +18,7 @@ https://discordapp.com/oauth2/authorize?&client_id=354980212112621570&scope=bot&
 
 ## Who?
 
-Bot created by Magnus Mickelsson (right now, < 20h work has been put into it so cut me some slack).
+Bot created by Magnus Mickelsson (right now, < 30h work has been put into it so cut me some slack).
 
 Thanks for the support from Johan Millert and the people from the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
 

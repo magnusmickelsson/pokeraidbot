@@ -56,7 +56,7 @@ public class BotService {
                 ),
                 new PingCommand(),
                 new HelpCommand(localeService),
-                new ShutdownCommand(),
+//                new ShutdownCommand(),
 //                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService),
 //                new RaidStatusCommand(gymRepository, raidRepository, localeService),
 //                new RaidListCommand(raidRepository, localeService),
