@@ -19,6 +19,10 @@ public class LocaleService {
     public static final String WHERE_GYM_HELP = "WHERE_GYM_HELP";
     public static final String ALREADY_SIGNED_UP = "ALREADY_SIGNED_UP";
     public static final String NO_POKEMON = "NO_POKEMON";
+    public static final String TIMEZONE = "TIMEZONE";
+    public static final String NO_RAIDS_NOW = "NO_RAIDS_NOW";
+    public static final String NO_RAID_TOO_LONG = "NO_RAID_TOO_LONG";
+    public static final String NO_ETA_AFTER_RAID = "NO_ETA_AFTER_RAID";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -49,6 +53,26 @@ public class LocaleService {
     public static final Locale DEFAULT = SWEDISH;
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, Locale.ENGLISH),
+                "Can't arrive after raid has ended. Your given time is %1, raid ends at %2");
+        i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, SWEDISH),
+                "Det är väl inte så lämpligt att anlända efter att raiden slutat? Din ETA är %1, raiden slutar %2.");
+
+        i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, Locale.ENGLISH),
+                "You can't create raids which are later than 2 hours from the current time %2 - your time was %1.");
+        i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, SWEDISH),
+                "Du kan inte skapa en raid senare än 2 timmar från vad klockan är nu (%2). Tiden du gav var %1.");
+
+        i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, Locale.ENGLISH),
+                "You can't create raids between 22:00 and 07:00 - your time was %1.");
+        i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, SWEDISH),
+                "Du kan inte skapa en raid som slutar mellan 22.00 och 07:00. Tiden du gav var %1.");
+
+        i18nMessages.put(new I18nLookup(TIMEZONE, Locale.ENGLISH),
+                "You seem to be living in a different timezone. Your given time is %1, while the current time is %2.");
+        i18nMessages.put(new I18nLookup(TIMEZONE, SWEDISH),
+                "Du kan inte skapa en raid som slutar innan nuvarande tid. Tiden du gav var %1, men klockan är %2.");
+
         i18nMessages.put(new I18nLookup(NO_POKEMON, Locale.ENGLISH), "Could not find a pokemon with name \"%1\".");
         i18nMessages.put(new I18nLookup(NO_POKEMON, SWEDISH), "Kunde inte hitta pokemon med namn \"%1\".");
 

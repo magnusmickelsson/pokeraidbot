@@ -52,7 +52,7 @@ public class BotService {
         client.addCommands(
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
-                        new String[]{LocaleService.featuresString_EN}, Permission.ADMINISTRATOR
+                        new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
                 new HelpCommand(localeService),

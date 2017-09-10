@@ -63,8 +63,8 @@ public class SignUpCommand extends Command {
 
             LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
 
-            assertEtaNotAfterRaidEnd(userName, raid, eta);
-            assertGivenTimeNotBeforeNow(userName, eta);
+            assertEtaNotAfterRaidEnd(userName, raid, eta, localeService);
+            assertGivenTimeNotBeforeNow(userName, eta, localeService);
 
             raid.signUp(userName, numberOfPeople, eta);
             final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);

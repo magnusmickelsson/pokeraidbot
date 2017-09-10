@@ -1,12 +1,11 @@
 package pokeraidbot.domain;
 
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.infrastructure.jpa.RaidEntity;
+import pokeraidbot.infrastructure.jpa.RaidEntityRepository;
 
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static pokeraidbot.Utils.printTime;
@@ -23,6 +22,10 @@ public class Raid {
         this.endOfRaid = endOfRaid;
         this.gym = gym;
         this.localeService = localeService;
+    }
+
+    public RaidEntity createNewEntity() {
+        return new RaidEntity(UUID.randomUUID().toString(), pokemon.getName(), endOfRaid, gym.getName());
     }
 
     public Pokemon getPokemon() {
