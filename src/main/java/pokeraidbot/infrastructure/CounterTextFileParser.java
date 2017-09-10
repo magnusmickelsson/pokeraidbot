@@ -15,7 +15,7 @@ public class CounterTextFileParser {
 
     public CounterTextFileParser(String path, String pokemonName, PokemonRepository pokemonRepository) {
         try {
-            System.out.println("Parsing counters for " + pokemonName + " ...");
+//            System.out.println("Parsing counters for " + pokemonName + " ...");
             final InputStream inputStream = CounterTextFileParser.class.getResourceAsStream(path + "/" + pokemonName.toLowerCase() + ".txt");
             final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(inputStreamReader);
@@ -60,10 +60,10 @@ public class CounterTextFileParser {
                     }
                     CounterPokemon counterPokemon = new CounterPokemon(counterPokemonName, moves);
                     if (supreme) {
-                        System.out.println("Supreme counter found: " + counterPokemon);
+//                        System.out.println("Supreme counter found: " + counterPokemon);
                         bestCounters.add(counterPokemon);
                     } else {
-                        System.out.println("Good counter found: " + counterPokemon);
+//                        System.out.println("Good counter found: " + counterPokemon);
                         goodCounters.add(counterPokemon);
                     }
                     if (supremeDone) {
@@ -74,6 +74,7 @@ public class CounterTextFileParser {
         } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
         }
+        System.out.println("Parsed counters OK.");
     }
 
     public Set<CounterPokemon> getBestCounters() {
