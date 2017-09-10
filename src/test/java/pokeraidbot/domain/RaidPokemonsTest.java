@@ -43,7 +43,6 @@ public class RaidPokemonsTest {
                 numbers.add(n);
             }
             for (Pokemon pokemon : repo.getAll()) {
-                System.out.println("" + pokemon.getNumber() + " " + pokemon);
                 numbers.remove(pokemon.getNumber());
             }
             assertThat("" + numbers, numbers.size(), is(0));

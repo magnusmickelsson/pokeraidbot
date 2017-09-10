@@ -255,19 +255,27 @@ public class LocaleService {
         }
     }
 
-    public static String featuresString_EN = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n\n" +
-            "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n\n" +
-            "**Get a list of all active raids:**\n!raid list\n\n" +
+    public static String featuresString_EN =
             "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
-            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n\n" +
-            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n\n" +
             "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
-    public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n\n" +
-            "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n\n" +
-            "**Visa alla registrerade aktiva raider:**\n!raid list\n\n" +
+    public static String featuresString_SV =
             "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n\n" +
-            "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n\n" +
-            "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
             "**If you want this information in english** - type !raid usage en";
+
+//    public static String featuresString_EN = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n\n" +
+//            "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n\n" +
+//            "**Get a list of all active raids:**\n!raid list\n\n" +
+//            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
+//            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n\n" +
+//            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n\n" +
+//            "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
+//    public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n\n" +
+//            "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n\n" +
+//            "**Visa alla registrerade aktiva raider:**\n!raid list\n\n" +
+//            "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n\n" +
+//            "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n\n" +
+//            "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n\n" +
+//            "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
+//            "**If you want this information in english** - type !raid usage en";
 }
