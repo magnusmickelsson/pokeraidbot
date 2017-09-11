@@ -14,6 +14,5 @@ public class RaidEntityRepositoryTest {
 
     @Test
     public void createAndGet() throws Exception {
-
     }
 }

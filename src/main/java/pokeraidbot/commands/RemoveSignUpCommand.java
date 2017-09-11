@@ -32,7 +32,7 @@ public class RemoveSignUpCommand extends Command {
             String gymName = commandEvent.getArgs();
             final Gym gym = gymRepository.findByName(gymName);
             final Raid raid = raidRepository.getRaid(gym);
-            final SignUp removed = raid.remove(user);
+            final SignUp removed = raid.remove(user, raidRepository);
             if (removed != null) {
                 commandEvent.reply(localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
                         gym.getName(), removed.toString()));

@@ -12,8 +12,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
 
@@ -23,9 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Service
 public class BotService {
-    @Autowired
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService) {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -34,7 +30,7 @@ public class BotService {
         }
 
         // todo: turn into spring resource bundle
-        final InputStream propsAsStream = BotServerMain.class.getResourceAsStream("/pokeraidbot.properties");
+        final InputStream propsAsStream = BotService.class.getResourceAsStream("/pokeraidbot.properties");
         Properties properties = new Properties();
         try {
             properties.load(propsAsStream);

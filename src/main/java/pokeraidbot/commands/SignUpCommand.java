@@ -66,7 +66,7 @@ public class SignUpCommand extends Command {
             assertEtaNotAfterRaidEnd(userName, raid, eta, localeService);
             assertGivenTimeNotBeforeNow(userName, eta, localeService);
 
-            raid.signUp(userName, numberOfPeople, eta);
+            raid.signUp(userName, numberOfPeople, eta, raidRepository);
             final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
             final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + raid.getSignUps() : "";
             commandEvent.reply(localeService.getMessageFor(LocaleService.SIGNUPS, localeForUser, userName, gym.getName(), signUpText));

@@ -45,8 +45,8 @@ public class NewRaidCommand extends Command {
             String timeString = args[1];
             LocalTime endsAt = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
 
-            assertTimeNotMoreThanTwoHoursFromNow(userName, endsAt, localeService);
             assertTimeNotInNoRaidTimespan(userName, endsAt, localeService);
+            assertTimeNotMoreThanTwoHoursFromNow(userName, endsAt, localeService);
             assertGivenTimeNotBeforeNow(userName, endsAt, localeService);
 
             StringBuilder gymNameBuilder = new StringBuilder();

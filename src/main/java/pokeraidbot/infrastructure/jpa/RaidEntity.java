@@ -34,6 +34,7 @@ public class RaidEntity {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
+        this.creator = creator;
     }
 
     public String getCreator() {
