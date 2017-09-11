@@ -1,7 +1,10 @@
 package pokeraidbot.domain;
 
+import org.springframework.stereotype.Service;
+
 import java.time.LocalTime;
 
+@Service
 public class ClockService {
     private LocalTime mockTime = null;
 

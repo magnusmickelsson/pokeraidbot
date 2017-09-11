@@ -31,7 +31,7 @@ public class BotServerMain {
 
     @Bean
     public RaidRepository getRaidRepository(LocaleService localeService) {
-        return new RaidRepository(new ClockService(), localeService);
+        return new RaidRepository(new ClockService(), localeService, , );
     }
 
     @Bean

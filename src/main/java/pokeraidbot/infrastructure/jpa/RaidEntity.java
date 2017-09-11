@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure.jpa;
 
+import pokeraidbot.domain.ClockService;
+
 import javax.persistence.Basic;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -18,6 +20,8 @@ public class RaidEntity {
     private LocalTime endOfRaid;
     @Basic(optional = false)
     private String gym;
+    @Basic(optional = false)
+    private String creator;
     @ElementCollection
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
 
@@ -25,11 +29,15 @@ public class RaidEntity {
     protected RaidEntity() {
     }
 
-    public RaidEntity(String id, String pokemon, LocalTime endOfRaid, String gym) {
+    public RaidEntity(String id, String pokemon, LocalTime endOfRaid, String gym, String creator) {
         this.id = id;
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
+    }
+
+    public String getCreator() {
+        return creator;
     }
 
     public String getId() {
@@ -68,5 +76,46 @@ public class RaidEntity {
             signUps.remove(signUp);
             return signUp;
         }
+    }
+
+    public boolean isActive(ClockService clockService) {
+        return clockService.getCurrentTime().isBefore(endOfRaid);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RaidEntity)) return false;
+
+        RaidEntity that = (RaidEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (pokemon != null ? !pokemon.equals(that.pokemon) : that.pokemon != null) return false;
+        if (endOfRaid != null ? !endOfRaid.equals(that.endOfRaid) : that.endOfRaid != null) return false;
+        if (gym != null ? !gym.equals(that.gym) : that.gym != null) return false;
+        if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
+        return signUps != null ? signUps.equals(that.signUps) : that.signUps == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (pokemon != null ? pokemon.hashCode() : 0);
+        result = 31 * result + (endOfRaid != null ? endOfRaid.hashCode() : 0);
+        result = 31 * result + (gym != null ? gym.hashCode() : 0);
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+        result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RaidEntity{" +
+                "id='" + id + '\'' +
+                ", pokemon='" + pokemon + '\'' +
+                ", endOfRaid=" + endOfRaid +
+                ", gym='" + gym + '\'' +
+                ", creator='" + creator + '\'' +
+                '}';
     }
 }

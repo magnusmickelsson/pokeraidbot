@@ -3,7 +3,6 @@ package pokeraidbot.domain;
 import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import java.time.LocalTime;
@@ -20,7 +19,7 @@ public class RaidRepositoryTest {
     @Before
     public void setUp() throws Exception {
         final LocaleService localeService = new LocaleService();
-        repo = new RaidRepository(clockService, localeService);
+        repo = new RaidRepository(clockService, localeService, , );
         Utils.setClockService(clockService);
         gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), localeService);
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
