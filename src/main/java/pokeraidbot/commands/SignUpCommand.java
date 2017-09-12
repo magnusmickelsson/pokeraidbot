@@ -58,7 +58,7 @@ public class SignUpCommand extends Command {
                 gymNameBuilder.append(args[i]).append(" ");
             }
             String gymName = gymNameBuilder.toString().trim();
-            final Gym gym = gymRepository.findByName(gymName);
+            final Gym gym = gymRepository.search(userName, gymName);
             final Raid raid = raidRepository.getRaid(gym);
 
             LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);

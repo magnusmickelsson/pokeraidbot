@@ -74,7 +74,6 @@ public class CounterTextFileParser {
         } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
         }
-        System.out.println("Parsed counters OK.");
     }
 
     public Set<CounterPokemon> getBestCounters() {

@@ -50,6 +50,7 @@ public class PokemonRaidStrategyService {
                 // No file for this boss, skip it
             }
         }
+        System.out.println("Parsed counters OK.");
         maxCp.put("BAYLEEF", "740");
 
         maxCp.put("CROCONAW", "913");
@@ -111,6 +112,7 @@ public class PokemonRaidStrategyService {
         maxCp.put("Suicune".toUpperCase(), "1613");
 
         maxCp.put("Mewtwo".toUpperCase(), "2275");
+        System.out.println("Added max cp notes.");
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {
