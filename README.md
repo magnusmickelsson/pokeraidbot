@@ -22,6 +22,25 @@ https://discordapp.com/oauth2/authorize?&client_id=356483458316632074&scope=bot&
 * Go to your Discord server, verify that the bot has logged in and is present.
 * In the chat, try running the command "!raid usage".
 
+## Going into production
+
+* First off, you probably don't want the gyms in your bot to be those in Uppsala, Sweden, like it is
+in the repo (due to this bot being made for the Uppsala discord). 
+
+Check the file gyms_uppsala.csv -
+ensure you have a similar file with the gyms you want, and then configure the application to use your
+file instead of the uppsala one. You can keep the uppsala file around so you don't have to change the JUnit test suite.
+
+* I'd recommend you deploy your adapted bot to a cloud service, or use a local server.
+
+Personally, I used Heroku's free service, available here:
+
+http://herokuapp.com
+
+To get started, follow these instructions (after you've got it working locally, obviously):
+
+https://devcenter.heroku.com/articles/getting-started-with-java#introduction
+
 ## Branches
 
 The simple bot, with command for map and showing pokemon information, is right now on master branch.
