@@ -2,6 +2,14 @@
 A Discord Pokemon go raiding bot, used to announce raids, sign up for them and get an overview.
 Also contains commands for getting information about pokemons, pokestops and gyms.
 
+## Prerequisities
+
+* You need to have Java 8 installed
+* You need to have Maven 3+ installed
+* You need to be administrator on your local machine
+* It's probably a good idea if you know a bit about Java development, and Spring Boot
+* You need to be administrator of a Discord server with permission to add a bot
+
 ## How?
 
 * To get started, you need to create a Discord application via their 
