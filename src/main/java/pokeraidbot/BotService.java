@@ -3,7 +3,6 @@ package pokeraidbot;
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
-import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
@@ -34,7 +33,7 @@ public class BotService {
         }
 
         // todo: turn into spring resource bundle
-        final InputStream propsAsStream = BotServerMain.class.getResourceAsStream("/pokeraidbot.properties");
+        final InputStream propsAsStream = BotService.class.getResourceAsStream("/pokeraidbot.properties");
         Properties properties = new Properties();
         try {
             properties.load(propsAsStream);

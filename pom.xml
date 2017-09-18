@@ -87,6 +87,10 @@
                     <include>**/*.csv</include>
                     <include>**/*.json</include>
                     <include>**/*.txt</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.png</include>
+                    <include>**/*.gif</include>
+                    <include>**/*.jpg</include>
                 </includes>
             </resource>
         </resources>
@@ -98,7 +102,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pokeraidbot.BotServerMain</mainClass>
+                            <mainClass>BotServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

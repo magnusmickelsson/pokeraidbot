@@ -22,7 +22,7 @@ public class GymRepositoryTest {
 
     @Test
     public void allGymsAreRead() {
-        assertThat(repo.getAllGyms().size(), is(373));
+        assertThat(repo.getAllGyms().size(), is(186));
     }
 
     @Test

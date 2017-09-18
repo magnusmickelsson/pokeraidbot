@@ -1,17 +1,12 @@
-package pokeraidbot;
-
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.util.Arrays;
 
 @SpringBootApplication
 public class BotServerMain {
