@@ -2,6 +2,7 @@ package pokeraidbot;
 
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import pokeraidbot.domain.*;
@@ -11,6 +12,7 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 
 @SpringBootApplication
+@EnableAutoConfiguration
 public class BotServerMain {
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         SpringApplication.run(BotServerMain.class, args);
