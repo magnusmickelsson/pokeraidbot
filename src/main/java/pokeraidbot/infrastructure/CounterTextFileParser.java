@@ -15,7 +15,6 @@ public class CounterTextFileParser {
 
     public CounterTextFileParser(String path, String pokemonName, PokemonRepository pokemonRepository) {
         try {
-//            System.out.println("Parsing counters for " + pokemonName + " ...");
             final InputStream inputStream = CounterTextFileParser.class.getResourceAsStream(path + "/" + pokemonName.toLowerCase() + ".txt");
             final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(inputStreamReader);

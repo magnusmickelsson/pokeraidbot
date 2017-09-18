@@ -26,6 +26,9 @@ public class LocaleService {
     public static final String NO_RAIDS_NOW = "NO_RAIDS_NOW";
     public static final String NO_RAID_TOO_LONG = "NO_RAID_TOO_LONG";
     public static final String NO_ETA_AFTER_RAID = "NO_ETA_AFTER_RAID";
+    public static final String GYM_SEARCH = "GYM_SEARCH";
+    public static final String GYM_SEARCH_OPTIONS = "GYM_SEARCH_OPTIONS";
+    public static final String GYM_SEARCH_MANY_RESULTS = "GYM_SEARCH_MANY_RESULTS";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -56,6 +59,17 @@ public class LocaleService {
     public static final Locale DEFAULT = SWEDISH;
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, Locale.ENGLISH),
+                "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, SWEDISH),
+                "Kunde inte hitta ett unikt gym/pokestop, din sökning returnerade mer än 5 resultat. Försök vara mer precis.");
+
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, Locale.ENGLISH), "Could not find one unique gym/pokestop. Did you want any of these? %1");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, SWEDISH), "Kunde inte hitta ett unikt gym/pokestop. Var det någon av dessa du sökte efter? %1");
+
+        i18nMessages.put(new I18nLookup(GYM_SEARCH, Locale.ENGLISH), "Empty input for gym name, try giving me a proper name to search for. :(");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH), "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
+
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, Locale.ENGLISH),
                 "Can't arrive after raid has ended. Your given time is %1, raid ends at %2");
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, SWEDISH),
@@ -143,11 +157,11 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(BEST_COUNTERS, Locale.ENGLISH), "Best counter: ");
         i18nMessages.put(new I18nLookup(BEST_COUNTERS, SWEDISH), "Bästa valet: ");
 
-        i18nMessages.put(new I18nLookup(RESISTANT, Locale.ENGLISH), "Resistant to: ");
-        i18nMessages.put(new I18nLookup(RESISTANT, SWEDISH), "Bra motstånd mot: ");
+        i18nMessages.put(new I18nLookup(RESISTANT, Locale.ENGLISH), "Avoid using: ");
+        i18nMessages.put(new I18nLookup(RESISTANT, SWEDISH), "Undvik: ");
 
-        i18nMessages.put(new I18nLookup(WEAKNESSES, Locale.ENGLISH), "Weaknesses: ");
-        i18nMessages.put(new I18nLookup(WEAKNESSES, SWEDISH), "Svagheter: ");
+        i18nMessages.put(new I18nLookup(WEAKNESSES, Locale.ENGLISH), "Use: ");
+        i18nMessages.put(new I18nLookup(WEAKNESSES, SWEDISH), "Använd: ");
 
         i18nMessages.put(new I18nLookup(VS_HELP, Locale.ENGLISH),
                 "List information about a pokemon, it's types, weaknesses etc. - !raid vs [Pokemon]");

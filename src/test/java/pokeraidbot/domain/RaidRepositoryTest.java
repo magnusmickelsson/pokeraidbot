@@ -39,7 +39,7 @@ public class RaidRepositoryTest {
 
     @Test
     public void testSignUp() throws Exception {
-        clockService.setMockTime(LocalTime.of(10, 0));
+        clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
         final LocalTime now = clockService.getCurrentTime();
         LocalTime endOfRaid = now.plusHours(1);
         final Gym gym = gymRepository.findByName("Blenda");

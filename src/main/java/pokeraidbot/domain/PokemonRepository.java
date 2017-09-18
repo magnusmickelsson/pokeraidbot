@@ -14,9 +14,9 @@ public class PokemonRepository {
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
         this.localeService = localeService;
-        final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
-        ObjectMapper mapper = new ObjectMapper();
         try {
+            final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
+            ObjectMapper mapper = new ObjectMapper();
             JsonPokemons jsonPokemons = mapper.readValue(inputStream, JsonPokemons.class);
             for (JsonPokemon p : jsonPokemons.getPokemons()) {
                 if (p != null && p.getName() != null && p.getTypes() != null) {
@@ -27,6 +27,7 @@ public class PokemonRepository {
                     pokemons.put(p.getName().toUpperCase(), pokemon);
                 }
             }
+            System.out.println("Parsed " + jsonPokemons.getPokemons().size() + " pokemons.");
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

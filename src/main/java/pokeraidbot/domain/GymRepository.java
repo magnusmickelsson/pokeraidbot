@@ -26,8 +26,9 @@ public class GymRepository {
 
     public Gym search(String userName, String query) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(query)) {
-            throw new UserMessedUpException(userName, "Empty input for gym name, try giving me a proper name to search for. :(");
+            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.GYM_SEARCH, LocaleService.DEFAULT));
         }
+        final Locale localeForUser = localeService.getLocaleForUser(userName);
         final String queryFuzzySearch = prepareNameForFuzzySearch(query);
         final Gym gym = get(query);
         if (gym != null) {
@@ -46,9 +47,10 @@ public class GymRepository {
                 throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
             } else {
                 if (candidates.size() < 5) {
-                    throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop. Did you want any of these? " + candidates);
+                    throw new UserMessedUpException(userName,
+                            localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, String.valueOf(candidates)));
                 } else {
-                    throw new UserMessedUpException(userName, "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
+                    throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
                 }
             }
         }

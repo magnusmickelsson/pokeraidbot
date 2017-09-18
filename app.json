@@ -1,5 +1,5 @@
 {
-  "name": pokeraidbot
-  "description": "A simple discord bot for pokemon go players in Uppsala.",
+  "name": "pokeraidbot",
+  "description": "A simple discord bot for pokemon go players. Handles gym map, pokemon info, raid boss counters and raid management. Try !raid usage",
   "addons": []
 }

@@ -5,11 +5,6 @@ import pokeraidbot.infrastructure.CounterTextFileParser;
 import java.util.*;
 
 public class PokemonRaidStrategyService {
-    private static final List<String> VS_WATER = Arrays.asList("Exeggutor", "Venusaur", "Jolteon");
-    private static final List<String> VS_GRASS = Arrays.asList("Flareon", "Charizard", "Gengar");
-    private static final List<String> VS_FIRE = Arrays.asList("Golem", "Starmie", "Vaporeon");
-    private static final List<String> VS_ELECTRIC = Arrays.asList("Gengar", "Dragonite", "Alakazam", "Flareon");
-    private static final List<String> VS_POISON = Arrays.asList("Alakazam", "Espeon", "Exeggutor");
     private Map<String, RaidBossCounters> counters = new HashMap<>();
     private Map<String,String> maxCp = new HashMap<>();
     private static String[] raidBosses = {
@@ -50,7 +45,8 @@ public class PokemonRaidStrategyService {
                 // No file for this boss, skip it
             }
         }
-        System.out.println("Parsed counters OK.");
+        System.out.println("Parsed " + counters.size() + " counters OK.");
+
         maxCp.put("BAYLEEF", "740");
 
         maxCp.put("CROCONAW", "913");
@@ -112,7 +108,8 @@ public class PokemonRaidStrategyService {
         maxCp.put("Suicune".toUpperCase(), "1613");
 
         maxCp.put("Mewtwo".toUpperCase(), "2275");
-        System.out.println("Added max cp notes.");
+
+        System.out.println("Configured " + maxCp.size() + " raid boss max CP.");
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {
