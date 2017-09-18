@@ -103,7 +103,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>BotServerMain</mainClass>
+                            <mainClass>pokeraidbot.BotServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
