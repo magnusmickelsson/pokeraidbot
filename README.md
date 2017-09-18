@@ -45,7 +45,7 @@ https://devcenter.heroku.com/articles/getting-started-with-java#introduction
 
 The simple bot, with command for map and showing pokemon information, is right now on master branch.
 
-The full feature bot, with raid management, is right now on branch spring-boot. 
+The full feature bot, with raid management, is right now on branch raid-features. 
 This branch has not been released yet and may contain bugs.
 
 ## Who?
