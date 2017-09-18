@@ -45,7 +45,7 @@ public class PokemonRaidStrategyService {
                 // No file for this boss, skip it
             }
         }
-        System.out.println("Parsed counters OK.");
+        System.out.println("Parsed " + counters.size() + " counters OK.");
 
         maxCp.put("BAYLEEF", "740");
 
@@ -109,7 +109,7 @@ public class PokemonRaidStrategyService {
 
         maxCp.put("Mewtwo".toUpperCase(), "2275");
 
-        System.out.println("Configured raid boss max CP.");
+        System.out.println("Configured " + maxCp.size() + " raid boss max CP.");
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {

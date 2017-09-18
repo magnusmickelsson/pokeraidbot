@@ -39,7 +39,10 @@ public class CSVGymDataReader {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
+
+        System.out.println("Parsed " + gyms.size() + " gyms.");
 
         return gyms;
     }

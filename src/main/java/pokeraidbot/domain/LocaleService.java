@@ -154,11 +154,11 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(BEST_COUNTERS, Locale.ENGLISH), "Best counter: ");
         i18nMessages.put(new I18nLookup(BEST_COUNTERS, SWEDISH), "Bästa valet: ");
 
-        i18nMessages.put(new I18nLookup(RESISTANT, Locale.ENGLISH), "Resistant to: ");
-        i18nMessages.put(new I18nLookup(RESISTANT, SWEDISH), "Bra motstånd mot: ");
+        i18nMessages.put(new I18nLookup(RESISTANT, Locale.ENGLISH), "Avoid using: ");
+        i18nMessages.put(new I18nLookup(RESISTANT, SWEDISH), "Undvik: ");
 
-        i18nMessages.put(new I18nLookup(WEAKNESSES, Locale.ENGLISH), "Weaknesses: ");
-        i18nMessages.put(new I18nLookup(WEAKNESSES, SWEDISH), "Svagheter: ");
+        i18nMessages.put(new I18nLookup(WEAKNESSES, Locale.ENGLISH), "Use: ");
+        i18nMessages.put(new I18nLookup(WEAKNESSES, SWEDISH), "Använd: ");
 
         i18nMessages.put(new I18nLookup(VS_HELP, Locale.ENGLISH),
                 "List information about a pokemon, it's types, weaknesses etc. - !raid vs [Pokemon]");
