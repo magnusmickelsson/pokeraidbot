@@ -1,4 +1,4 @@
-package pokeraidbot;
+package main;
 
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.springframework.boot.SpringApplication;
@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import pokeraidbot.BotService;
 import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.RaidEntityRepository;

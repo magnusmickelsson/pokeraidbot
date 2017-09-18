@@ -13,7 +13,6 @@ import pokeraidbot.infrastructure.jpa.RaidEntitySignUp;
 import java.time.LocalTime;
 import java.util.*;
 
-@Service
 @Transactional
 public class RaidRepository {
     private ClockService clockService;
@@ -21,7 +20,6 @@ public class RaidRepository {
     private RaidEntityRepository raidEntityRepository;
     private PokemonRepository pokemonRepository;
     private GymRepository gymRepository;
-//    private Map<Gym, Pair<String, Raid>> raids = new ConcurrentHashMap<>();
 
     // Byte code instrumentation
     protected RaidRepository() {
@@ -35,14 +33,14 @@ public class RaidRepository {
         this.raidEntityRepository = raidEntityRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
+        // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
 //        clockService.setMockTime(LocalTime.of(10, 30));
         Utils.setClockService(clockService);
     }
 
     public void newRaid(String raidCreatorName, Raid raid) {
         RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGym(raid.getGym().getName());
-//        final Pair<String, Raid> pair = raids.get(raid.getGym());
-//        if (pair != null && (raid.equals(pair.getRight()) || raid.getGym().equals(pair.getRight().getGym()))) {
+
         if (raidEntity != null) {
             if (raidEntity.isActive(clockService)) {
                 throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity), localeService, LocaleService.SWEDISH);
@@ -73,13 +71,12 @@ public class RaidRepository {
 
     public Raid getRaid(Gym gym) {
         RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGym(gym.getName());
-//        final Pair<String, Raid> pair = raids.get(gym);
+
         if (raidEntity == null) {
             throw new RaidNotFoundException(gym, localeService);
         }
         if (raidEntity.getEndOfRaid().isBefore(clockService.getCurrentTime())) {
             raidEntityRepository.delete(raidEntity);
-//            raids.remove(raid.getGym());
             throw new RaidNotFoundException(gym, localeService);
         }
         final Raid raid = getRaidInstance(raidEntity);
@@ -87,7 +84,6 @@ public class RaidRepository {
     }
 
     public Set<Raid> getAllRaids() {
-        LocalTime now = clockService.getCurrentTime();
         removeExpiredRaids();
         List<RaidEntity> raidEntityList = raidEntityRepository.findAll();
         Set<Raid> activeRaids = new HashSet<>();

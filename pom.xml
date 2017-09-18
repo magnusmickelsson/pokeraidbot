@@ -84,6 +84,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -120,7 +126,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pokeraidbot.BotServerMain</mainClass>
+                            <mainClass>main.BotServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -128,6 +134,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>-Dfile.encoding=UTF8</jvmArguments>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

@@ -12,7 +12,7 @@ register a Bot account for it. When doing this, you get an owner id (client id) 
 * Use this link to allow the application to access a Discord server:
 https://discordapp.com/oauth2/authorize?&client_id=356483458316632074&scope=bot&permissions=0
 (Replace client_id={something} with the client id you get when registering an application)
-* Compile/build, then start the executable class pokeraidbot.BotServerMain.
+* Compile/build, then start the executable class pokeraidbot.main.BotServerMain.
 * Go to your Discord server, verify that the bot has logged in and is present.
 * In the chat, try running the command "!raid usage".
 

@@ -1,14 +1,9 @@
 package pokeraidbot.domain;
 
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static pokeraidbot.Utils.printTime;
-
-@Service
 public class LocaleService {
     public static final String RAIDSTATUS = "RAIDSTATUS";
     public static final String NO_RAID_AT_GYM = "NO_RAID_AT_GYM";
@@ -62,13 +57,18 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, Locale.ENGLISH),
                 "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, SWEDISH),
-                "Kunde inte hitta ett unikt gym/pokestop, din sökning returnerade mer än 5 resultat. Försök vara mer precis.");
+                "Kunde inte hitta ett unikt gym/pokestop, din sökning returnerade mer än 5 resultat. " +
+                        "Försök vara mer precis.");
 
-        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, Locale.ENGLISH), "Could not find one unique gym/pokestop. Did you want any of these? %1");
-        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, SWEDISH), "Kunde inte hitta ett unikt gym/pokestop. Var det någon av dessa du sökte efter? %1");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, Locale.ENGLISH),
+                "Could not find one unique gym/pokestop. Did you want any of these? %1");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, SWEDISH),
+                "Kunde inte hitta ett unikt gym/pokestop. Var det någon av dessa du sökte efter? %1");
 
-        i18nMessages.put(new I18nLookup(GYM_SEARCH, Locale.ENGLISH), "Empty input for gym name, try giving me a proper name to search for. :(");
-        i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH), "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH, Locale.ENGLISH),
+                "Empty input for gym name, try giving me a proper name to search for. :(");
+        i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH),
+                "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
 
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, Locale.ENGLISH),
                 "Can't arrive after raid has ended. Your given time is %1, raid ends at %2");
@@ -112,8 +112,10 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(ERROR_PARSE_PLAYERS, SWEDISH),
                 "Felaktigt antal personer: %1 - ange ett korrekt antal 1-%2.");
 
-        i18nMessages.put(new I18nLookup(SIGNUP_HELP, Locale.ENGLISH), "Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Gym]");
-        i18nMessages.put(new I18nLookup(SIGNUP_HELP, SWEDISH), "Anmäl dig till en raid: !raid add [antal spelare] [ETA (HH:MM)] [Gym]");
+        i18nMessages.put(new I18nLookup(SIGNUP_HELP, Locale.ENGLISH),
+                "Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Gym]");
+        i18nMessages.put(new I18nLookup(SIGNUP_HELP, SWEDISH),
+                "Anmäl dig till en raid: !raid add [antal spelare] [ETA (HH:MM)] [Gym]");
 
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, Locale.ENGLISH), "%1 had no signup to remove for gym %2");
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH), "%1 hade ingen anmälan att ta bort för raid vid %2");
@@ -121,17 +123,23 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(SIGNUP_REMOVED, Locale.ENGLISH), "Signup removed for gym %1: %2");
         i18nMessages.put(new I18nLookup(SIGNUP_REMOVED, SWEDISH), "Tog bort din anmälan för gym %1: %2");
 
-        i18nMessages.put(new I18nLookup(REMOVE_SIGNUP_HELP, Locale.ENGLISH), "Remove your signup for this gym: !raid remove [Gym]");
-        i18nMessages.put(new I18nLookup(REMOVE_SIGNUP_HELP, SWEDISH), "Ta bort din anmälan för raid på ett gym: !raid remove [Gym]");
+        i18nMessages.put(new I18nLookup(REMOVE_SIGNUP_HELP, Locale.ENGLISH),
+                "Remove your signup for this gym: !raid remove [Gym]");
+        i18nMessages.put(new I18nLookup(REMOVE_SIGNUP_HELP, SWEDISH),
+                "Ta bort din anmälan för raid på ett gym: !raid remove [Gym]");
 
-        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, Locale.ENGLISH), "Could not find an active raid for this gym: \"%1\".");
-        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH), "Kunde inte hitta någon aktiv raid för \"%1\".");
+        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, Locale.ENGLISH),
+                "Could not find an active raid for this gym: \"%1\".");
+        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH),
+                "Kunde inte hitta någon aktiv raid för \"%1\".");
 
         i18nMessages.put(new I18nLookup(RAIDSTATUS, Locale.ENGLISH), "Status for raid at %1:");
         i18nMessages.put(new I18nLookup(RAIDSTATUS, SWEDISH), "Status för raid vid %1:");
 
-        i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, Locale.ENGLISH), "Check status for raid - !raid status [Gym name].");
-        i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, SWEDISH), "Se status för raid - !raid status [Gym].");
+        i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, Locale.ENGLISH),
+                "Check status for raid - !raid status [Gym name].");
+        i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, SWEDISH),
+                "Se status för raid - !raid status [Gym].");
 
         i18nMessages.put(new I18nLookup(SIGNED_UP, Locale.ENGLISH), "signed up");
         i18nMessages.put(new I18nLookup(SIGNED_UP, SWEDISH), "anmäld(a)");
@@ -231,7 +239,8 @@ public class LocaleService {
             message = i18nMessages.get(new I18nLookup(messageKey.toUpperCase(), DEFAULT));
         }
         if (message == null || message.length() < 1) {
-            throw new RuntimeException("Could not find text for message key " + messageKey + " - an admin needs to add it to the LocaleService!");
+            throw new RuntimeException("Could not find text for message key " + messageKey +
+                    " - an admin needs to add it to the LocaleService!");
         }
         return message;
     }
@@ -271,14 +280,6 @@ public class LocaleService {
             return result;
         }
     }
-
-//    public static String featuresString_EN =
-//            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
-//            "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
-//    public static String featuresString_SV =
-//            "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n\n" +
-//            "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
-//            "**If you want this information in english** - type !raid usage en";
 
     public static String featuresString_EN = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n\n" +
             "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n\n" +
