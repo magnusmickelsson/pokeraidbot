@@ -7,12 +7,15 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class CounterTextFileParser {
-    private Set<CounterPokemon> bestCounters = new HashSet<>();
-    private Set<CounterPokemon> goodCounters = new HashSet<>();
+    private Set<CounterPokemon> bestCounters = new LinkedHashSet<>();
+    private Set<CounterPokemon> goodCounters = new LinkedHashSet<>();
 
+    // Yes, the parsing code here is as fugly as it gets, but hey it works
+    // The data files were just copy pasted text from a raid boss web site, because I'm lazy
     public CounterTextFileParser(String path, String pokemonName, PokemonRepository pokemonRepository) {
         try {
             final InputStream inputStream = CounterTextFileParser.class.getResourceAsStream(path + "/" + pokemonName.toLowerCase() + ".txt");
@@ -59,10 +62,8 @@ public class CounterTextFileParser {
                     }
                     CounterPokemon counterPokemon = new CounterPokemon(counterPokemonName, moves);
                     if (supreme) {
-//                        System.out.println("Supreme counter found: " + counterPokemon);
                         bestCounters.add(counterPokemon);
                     } else {
-//                        System.out.println("Good counter found: " + counterPokemon);
                         goodCounters.add(counterPokemon);
                     }
                     if (supremeDone) {

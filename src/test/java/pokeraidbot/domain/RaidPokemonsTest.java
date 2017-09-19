@@ -35,6 +35,15 @@ public class RaidPokemonsTest {
     }
 
     @Test
+    public void verifyTyranitarBestCounter() throws Exception {
+        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRaidStrategyService strategyService = new PokemonRaidStrategyService(repo);
+        final String tyranitarBestCounter = strategyService.getCounters(repo.getByName("Tyranitar"))
+                .getSupremeCounters().iterator().next().getCounterPokemonName();
+        assertThat(tyranitarBestCounter, is("Machamp"));
+    }
+
+    @Test
     public void verifyAllPokemonsInPokemonGoInRepo() throws Exception {
         Set<Integer> numbers = new HashSet<>();
         PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
