@@ -59,28 +59,10 @@ public class GymsResponseTest {
         GymsResponse response = new GymsResponse(new ObjectMapper().readValue(json, new TypeReference<Map<String, GymResponse>>(){}));
         assertThat(response != null, is(true));
         assertThat(response.getGyms().size(), is(3));
-        final GymResponse firstGym = response.getGyms().values().iterator().next();
-        final Double coord = new Double(firstGym.getF24sfvs());
-        for (int i = 1; i < 100000000; i++) {
-            Double c = coord / i;
-            if ((c < 60d && c > 59d) || (c < 18d && c > 17d)) {
-                System.out.println("Divider is: " + i);
-                break;
-            }
-        }
-        // 31876586.96
-        //"markerlat":59.909227,"markerlng":17.212883
-        assertThat(firstGym.getF24sfvs(), is(new Double("59.909227")));
-        assertThat(firstGym.getG74jsdg(), is(""));
-        assertThat(firstGym.getRfs21d(), is(""));
-        assertThat(firstGym.getRgqaca(), is(""));
-        assertThat(firstGym.getXgxg35(), is(""));
-        assertThat(firstGym.getY74hda(), is(""));
-        assertThat(firstGym.getZ3iafj(), is(""));
-        assertThat(firstGym.getZfgs62(), is(""));
-        assertThat(firstGym.getLureTimer(), is(0));
-        assertThat(firstGym.getRaidLevel(), is(0));
-        assertThat(firstGym.getRaidStatus(), is(0));
-        assertThat(firstGym.getRaidTimer(), is(0));
+        final GymResponse jarlasaKyrka = response.getGyms().get("118412");
+        assertThat(jarlasaKyrka.getId(), is("118412"));
+        assertThat(jarlasaKyrka.getLatitude(), is(59.909227d));
+        assertThat(jarlasaKyrka.getLongitude(), is(17.212883d));
+        assertThat(jarlasaKyrka.getName(), is("Järlåsa Kyrka"));
     }
 }

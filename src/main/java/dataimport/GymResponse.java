@@ -14,12 +14,12 @@ public class GymResponse {
      "raid_timer":0,
      "raid_level":0,
      "lure_timer":0,
-     "z3iafj":"MTEwOTUyMzQ3Ljc=",
-     "f24sfvs":"MzE4NzY1ODYuOTY=",
+     "latitude":"MTEwOTUyMzQ3Ljc=",
+     "longitude":"MzE4NzY1ODYuOTY=",
      "g74jsdg":"MA==",
      "xgxg35":"MQ==",
      "y74hda":"MQ==",
-     "zfgs62":"MTAxODk2NA==",
+     "id":"MTAxODk2NA==",
      "rgqaca":"jarlasa-barhus",
      "rfs21d":"J\u00e4rl\u00e5sa B\u00e5rhus"
      */
@@ -36,10 +36,10 @@ public class GymResponse {
     private Integer lureTimer;
 
     @JsonProperty("z3iafj")
-    private String z3iafj;
+    private String latitude;
 
     @JsonProperty("f24sfvs")
-    private String f24sfvs;
+    private String longitude;
 
     @JsonProperty("g74jsdg")
     private String g74jsdg;
@@ -51,13 +51,13 @@ public class GymResponse {
     private String y74hda;
 
     @JsonProperty("zfgs62")
-    private String zfgs62;
+    private String id;
 
     @JsonProperty("rgqaca")
     private String rgqaca;
 
     @JsonProperty("rfs21d")
-    private String rfs21d;
+    private String name;
 
     public GymResponse() {
     }
@@ -94,8 +94,8 @@ public class GymResponse {
         this.lureTimer = lureTimer;
     }
 
-    public Double getZ3iafj() { // 531277
-        return convertFromObfuscation(convertFromBase64(z3iafj));
+    public Double getLatitude() { // 531277
+        return convertLat(convertFromBase64(latitude));
     }
 
     private String convertFromBase64(String s) {
@@ -108,20 +108,24 @@ public class GymResponse {
         }
     }
 
-    private Double convertFromObfuscation(String s) {
-        return new Double(s) / 531277;
+    private Double convertLat(String s) {
+        return new Double(s) / 1852000;
     }
 
-    public void setZ3iafj(String z3iafj) {
-        this.z3iafj = z3iafj;
+    private Double convertLong(String s) {
+        return new Double(s) / 1852000;
     }
 
-    public Double getF24sfvs() {
-        return convertFromObfuscation(convertFromBase64(f24sfvs));
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public void setF24sfvs(String f24sfvs) {
-        this.f24sfvs = f24sfvs;
+    public Double getLongitude() {
+        return convertLong(convertFromBase64(longitude));
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getG74jsdg() {
@@ -148,27 +152,45 @@ public class GymResponse {
         this.y74hda = y74hda;
     }
 
-    public String getZfgs62() {
-        return convertFromBase64(zfgs62);
+    public String getId() {
+        return convertFromBase64(id);
     }
 
-    public void setZfgs62(String zfgs62) {
-        this.zfgs62 = zfgs62;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getRgqaca() {
-        return convertFromBase64(rgqaca);
+        return rgqaca;
     }
 
     public void setRgqaca(String rgqaca) {
         this.rgqaca = rgqaca;
     }
 
-    public String getRfs21d() {
-        return convertFromBase64(rfs21d);
+    public String getName() {
+        return name;
     }
 
-    public void setRfs21d(String rfs21d) {
-        this.rfs21d = rfs21d;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "GymResponse{" +
+                "raidStatus=" + raidStatus +
+                ", raidTimer=" + raidTimer +
+                ", raidLevel=" + raidLevel +
+                ", lureTimer=" + lureTimer +
+                ", latitude='" + getLatitude() + '\'' +
+                ", longitude='" + getLongitude() + '\'' +
+                ", g74jsdg='" + getG74jsdg() + '\'' +
+                ", xgxg35='" + getXgxg35() + '\'' +
+                ", y74hda='" + getY74hda() + '\'' +
+                ", id='" + getId() + '\'' +
+                ", rgqaca='" + getRgqaca() + '\'' +
+                ", rfs21d='" + getName() + '\'' +
+                '}';
     }
 }

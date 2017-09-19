@@ -48,7 +48,7 @@ public class BotServerMain {
 
     @Bean
     public GymRepository getGymRepository(LocaleService localeService) {
-        return new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), localeService);
+        return new GymRepository(new CSVGymDataReader("/gyms_ängelholm.csv").readAll(), localeService);
     }
 
     @Bean
