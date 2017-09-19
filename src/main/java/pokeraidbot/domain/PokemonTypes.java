@@ -2,15 +2,13 @@ package pokeraidbot.domain;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class PokemonTypes {
     private Set<String> types;
 
     public PokemonTypes(String... types) {
-        this.types = new HashSet<>(Arrays.asList(types));
+        this.types = new LinkedHashSet<>(Arrays.asList(types));
     }
 
     public boolean isOfType(String type) {
@@ -25,6 +23,10 @@ public class PokemonTypes {
         PokemonTypes that = (PokemonTypes) o;
 
         return types != null ? types.equals(that.types) : that.types == null;
+    }
+
+    public Set<String> getTypeSet() {
+        return Collections.unmodifiableSet(types);
     }
 
     @Override

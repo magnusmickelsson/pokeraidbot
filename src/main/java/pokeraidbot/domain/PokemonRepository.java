@@ -10,7 +10,7 @@ import java.util.*;
 
 public class PokemonRepository {
     private final LocaleService localeService;
-    private Map<String, Pokemon> pokemons = new HashMap<>();
+    private Map<String, Pokemon> pokemons = new LinkedHashMap<>();
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
         this.localeService = localeService;
@@ -41,6 +41,7 @@ public class PokemonRepository {
         return pokemon;
     }
 
+    // This method is a getter that doesn't throw an exception if it doesn't find a pokemon, just returns null
     public Pokemon getPokemon(String name) {
         return pokemons.get(name.trim().toUpperCase());
     }

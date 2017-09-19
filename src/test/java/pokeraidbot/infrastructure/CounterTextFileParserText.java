@@ -31,4 +31,12 @@ public class CounterTextFileParserText {
         assertThat(parser.getBestCounters().size(), is(2));
         assertThat(parser.getGoodCounters().size(), is(6));
     }
+
+    @Test
+    public void checkTyranitarFile() throws Exception {
+        CounterTextFileParser parser = new CounterTextFileParser("/counters", "Tyranitar",
+                new PokemonRepository("/mons.json", new LocaleService()));
+        assertThat(parser.getBestCounters().size(), is(2));
+        assertThat(parser.getGoodCounters().size(), is(5));
+    }
 }

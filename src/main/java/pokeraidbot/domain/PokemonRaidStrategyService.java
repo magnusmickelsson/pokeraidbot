@@ -6,7 +6,7 @@ import java.util.*;
 
 public class PokemonRaidStrategyService {
     private Map<String, RaidBossCounters> counters = new HashMap<>();
-    private Map<String,String> maxCp = new HashMap<>();
+    private Map<String, String> maxCp = new HashMap<>();
     private static String[] raidBosses = {
             "BAYLEEF",
             "CROCONAW",

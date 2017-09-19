@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.apache.commons.lang3.StringUtils;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.PokemonRepository;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.Pokemon;
@@ -42,7 +43,7 @@ public class PokemonVsCommand extends Command {
             final Locale localeForUser = localeService.getLocaleForUser(commandEvent.getAuthor().getName());
             builder.append("**").append(pokemon).append("**\n");
             builder.append(localeService.getMessageFor(LocaleService.WEAKNESSES, localeForUser))
-                    .append(pokemon.getWeaknesses()).append("\n").append(
+                    .append(Utils.printWeaknesses(pokemon)).append("\n").append(
                     localeService.getMessageFor(LocaleService.RESISTANT, localeForUser))
                     .append(pokemon.getResistant()).append("\n");
 

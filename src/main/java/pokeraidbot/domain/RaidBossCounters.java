@@ -2,26 +2,28 @@ package pokeraidbot.domain;
 
 import pokeraidbot.infrastructure.CounterPokemon;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class RaidBossCounters {
     private Pokemon pokemon;
-    private Set<CounterPokemon> supremeCounters = new HashSet<>();
-    private Set<CounterPokemon> goodCounters = new HashSet<>();
+    private Set<CounterPokemon> supremeCounters = new LinkedHashSet<>();
+    private Set<CounterPokemon> goodCounters = new LinkedHashSet<>();
 
     public RaidBossCounters(Pokemon pokemon, Set<CounterPokemon> supremeCounters, Set<CounterPokemon> goodCounters) {
         this.pokemon = pokemon;
-        this.supremeCounters = supremeCounters;
-        this.goodCounters = goodCounters;
+        this.supremeCounters.addAll(supremeCounters);
+        this.goodCounters.addAll(goodCounters);
     }
 
     public Set<CounterPokemon> getSupremeCounters() {
-        return supremeCounters;
+        return Collections.unmodifiableSet(supremeCounters);
     }
 
     public Set<CounterPokemon> getGoodCounters() {
-        return goodCounters;
+        return Collections.unmodifiableSet(goodCounters);
     }
 
     @Override
