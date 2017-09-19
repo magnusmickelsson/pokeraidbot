@@ -4,8 +4,12 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CSVGymDataReader;
@@ -15,8 +19,12 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 
 @SpringBootApplication
+@Configuration
 @EnableAutoConfiguration
+@EntityScan(basePackages = "pokeraidbot.infrastructure.jpa")
+@EnableJpaRepositories(basePackages = "pokeraidbot.infrastructure.jpa")
 @ComponentScan(basePackages = {"pokeraidbot"})
+@EnableTransactionManagement
 public class BotServerMain {
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         SpringApplication.run(BotServerMain.class, args);
