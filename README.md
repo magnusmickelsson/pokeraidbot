@@ -67,13 +67,6 @@ To get started, follow these instructions (after you've got it working locally, 
 
 https://devcenter.heroku.com/articles/getting-started-with-java#introduction
 
-## Branches
-
-The simple bot, with command for map and showing pokemon information, is right now on master branch.
-
-The full feature bot, with raid management, is right now on branch raid-features. 
-This branch has not been released yet and may contain bugs.
-
 ## Who?
 
 Bot created by Magnus Mickelsson (right now, < 35h work has been put into it so cut me some slack).
