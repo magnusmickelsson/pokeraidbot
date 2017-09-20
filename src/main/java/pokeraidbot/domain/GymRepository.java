@@ -16,7 +16,12 @@ public class GymRepository {
         for (String region : gyms.keySet()) {
             Map<String, Gym> gymsForRegion = new HashMap<>();
             for (Gym gym : gyms.get(region)) {
-                gymsForRegion.put(prepareNameForFuzzySearch(gym.getName()), gym);
+                String gymName = prepareNameForFuzzySearch(gym.getName());
+                if (gymsForRegion.get(gymName) != null) {
+                    throw new RuntimeException("There are duplicate gymnames in the data for region " + region + ": \"" +
+                            gym.getName() + "\"! Fix this manually as you want it (you can't have good name searching without it)!");
+                }
+                gymsForRegion.put(gymName, gym);
             }
             this.gymsPerRegion.put(region, gymsForRegion);
         }

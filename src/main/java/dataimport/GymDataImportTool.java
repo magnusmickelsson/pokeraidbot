@@ -111,11 +111,11 @@ public class GymDataImportTool {
             body.put("tolat", asList("" + (lat + cubeInDegrees)));
             body.put("fromlng", asList("" + (lng - cubeInDegrees)));
             body.put("tolng", asList("" + (lng + cubeInDegrees)));
-            body.put("fpoke", asList("0"));
-            body.put("fgym", asList("1"));
-            body.put("farm", asList("0"));
-            body.put("nests", asList("0"));
-            body.put("raid", asList("1"));
+            body.put("fpoke", asList("0")); // 1 = include pokestops
+            body.put("fgym", asList("1")); // 1 = include gyms
+            body.put("farm", asList("0")); // 1 = ??
+            body.put("nests", asList("0")); // 1 = include nest locations (don't use this)
+            body.put("raid", asList("1")); // 1 = include raids
             request = new RequestEntity<>(body, headers, HttpMethod.POST, new URI(pokeStopUrl));
             responseEntity = restTemplate.postForEntity(address, request, String.class);
 

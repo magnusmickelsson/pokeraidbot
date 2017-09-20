@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         "confirm", "lure_timer", "description", "guard_id",
         "gym_prestige", "pokemon_data", "gym_last", "gym_change",
         "pmon_status", "pmon_data", "raid_status", "raid_timer",
-        "raid_level", "raid_boss", "raid_boss_cp"
+        "raid_level", "raid_boss", "raid_boss_cp", "cluster_rating"
 })
 public class GymData {
     @JsonProperty("poke_id")
