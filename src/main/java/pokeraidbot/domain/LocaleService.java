@@ -26,6 +26,7 @@ public class LocaleService {
     public static final String GYM_SEARCH = "GYM_SEARCH";
     public static final String GYM_SEARCH_OPTIONS = "GYM_SEARCH_OPTIONS";
     public static final String GYM_SEARCH_MANY_RESULTS = "GYM_SEARCH_MANY_RESULTS";
+    public static final String GYM_CONFIG_ERROR = "GYM_CONFIG_ERROR";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -56,6 +57,12 @@ public class LocaleService {
     public static final Locale DEFAULT = SWEDISH;
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(GYM_CONFIG_ERROR, Locale.ENGLISH),
+                "There are no gyms for this region. " +
+                        "Please check configuration and/or notify administrator!");
+        i18nMessages.put(new I18nLookup(GYM_CONFIG_ERROR, SWEDISH),
+                "Det finns inga gym för din valda region. Kontrollera konfigurationen av servern och/eller meddela" +
+                        " en administratör så de kan hjälpa dig.");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, Locale.ENGLISH),
                 "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, SWEDISH),

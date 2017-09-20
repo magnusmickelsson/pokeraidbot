@@ -24,17 +24,20 @@ public class RaidEntity {
     private String creator;
     @ElementCollection
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
+    @Basic(optional = false)
+    private String region;
 
     // JPA
     protected RaidEntity() {
     }
 
-    public RaidEntity(String id, String pokemon, LocalTime endOfRaid, String gym, String creator) {
+    public RaidEntity(String id, String pokemon, LocalTime endOfRaid, String gym, String creator, String region) {
         this.id = id;
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
         this.creator = creator;
+        this.region = region;
     }
 
     public String getCreator() {
@@ -55,6 +58,10 @@ public class RaidEntity {
 
     public String getGym() {
         return gym;
+    }
+
+    public String getRegion() {
+        return region;
     }
 
     public Set<RaidEntitySignUp> getSignUps() {
@@ -95,7 +102,8 @@ public class RaidEntity {
         if (endOfRaid != null ? !endOfRaid.equals(that.endOfRaid) : that.endOfRaid != null) return false;
         if (gym != null ? !gym.equals(that.gym) : that.gym != null) return false;
         if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
-        return signUps != null ? signUps.equals(that.signUps) : that.signUps == null;
+        if (signUps != null ? !signUps.equals(that.signUps) : that.signUps != null) return false;
+        return region != null ? region.equals(that.region) : that.region == null;
     }
 
     @Override
@@ -106,6 +114,7 @@ public class RaidEntity {
         result = 31 * result + (gym != null ? gym.hashCode() : 0);
         result = 31 * result + (creator != null ? creator.hashCode() : 0);
         result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
         return result;
     }
 
@@ -117,6 +126,7 @@ public class RaidEntity {
                 ", endOfRaid=" + endOfRaid +
                 ", gym='" + gym + '\'' +
                 ", creator='" + creator + '\'' +
+                ", region='" + region + '\'' +
                 '}';
     }
 }

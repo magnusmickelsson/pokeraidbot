@@ -2,9 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.domain.RaidRepository;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Raid;
+import pokeraidbot.domain.*;
 
 import java.util.Locale;
 import java.util.Set;
@@ -14,11 +12,13 @@ import static pokeraidbot.Utils.printTime;
 /**
  * !raid status [Pokestop name]
  */
-public class RaidListCommand extends Command {
+public class RaidListCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
 
-    public RaidListCommand(RaidRepository raidRepository, LocaleService localeService) {
+    public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
+                           ConfigRepository configRepository) {
+        super(configRepository);
         this.localeService = localeService;
         this.name = "list";
         this.help = localeService.getMessageFor(LocaleService.LIST_HELP, LocaleService.DEFAULT);
@@ -27,11 +27,11 @@ public class RaidListCommand extends Command {
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String userName = commandEvent.getAuthor().getName();
         try {
             final Locale locale = localeService.getLocaleForUser(userName);
-            Set<Raid> raids = raidRepository.getAllRaids();
+            Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.region);
             if (raids.size() == 0) {
                 commandEvent.reply(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, LocaleService.DEFAULT));
             } else {

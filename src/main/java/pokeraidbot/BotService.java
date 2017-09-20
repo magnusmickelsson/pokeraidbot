@@ -23,7 +23,8 @@ import java.util.Properties;
 
 public class BotService {
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
-                      PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService) {
+                      PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
+                      ConfigRepository configRepository) {
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
             System.err.println("ERROR: Not using UTF-8 encoding");
             System.exit(-1);
@@ -34,7 +35,7 @@ public class BotService {
         Properties properties = new Properties();
         try {
             properties.load(propsAsStream);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -52,13 +53,18 @@ public class BotService {
                 ),
                 new PingCommand(),
                 new HelpCommand(localeService),
-//                new ShutdownCommand(),
-//                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService),
-//                new RaidStatusCommand(gymRepository, raidRepository, localeService),
-//                new RaidListCommand(raidRepository, localeService),
-//                new SignUpCommand(gymRepository, raidRepository, localeService),
-                new WhereIsGymCommand(gymRepository, localeService),
-//                new RemoveSignUpCommand(gymRepository, raidRepository, localeService),
+                new ShutdownCommand(),
+                new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository),
+                new RaidStatusCommand(gymRepository, raidRepository, localeService,
+                        configRepository),
+                new RaidListCommand(raidRepository, localeService, configRepository),
+                new SignUpCommand(gymRepository, raidRepository, localeService,
+                        configRepository),
+                new WhereIsGymCommand(gymRepository, localeService,
+                        configRepository),
+                new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
+                        configRepository),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService)
         );
 
