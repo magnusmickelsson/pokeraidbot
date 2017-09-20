@@ -1,6 +1,7 @@
 package dataimport;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.codec.binary.Base64;
 
@@ -8,21 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 @JsonAutoDetect
+@JsonIgnoreProperties(value = {"cluster_rating", "cluster_ratingclose", "maxclusters"})
 public class GymResponse {
-    /**
-    "raid_status":0,
-     "raid_timer":0,
-     "raid_level":0,
-     "lure_timer":0,
-     "latitude":"MTEwOTUyMzQ3Ljc=",
-     "longitude":"MzE4NzY1ODYuOTY=",
-     "g74jsdg":"MA==",
-     "xgxg35":"MQ==",
-     "y74hda":"MQ==",
-     "id":"MTAxODk2NA==",
-     "rgqaca":"jarlasa-barhus",
-     "rfs21d":"J\u00e4rl\u00e5sa B\u00e5rhus"
-     */
     @JsonProperty("raid_status")
     private Integer raidStatus;
 
@@ -102,10 +90,14 @@ public class GymResponse {
         String result;
         try {
             result = new String(Base64.decodeBase64(s.getBytes("UTF-8")), Charset.forName("UTF-8"));
-            return result;
+            return cleanUpString(result);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String cleanUpString(String result) {
+        return result.replaceAll("[&][#][0][3][9][;]", "'").trim();
     }
 
     private Double convertLat(String s) {
@@ -169,7 +161,7 @@ public class GymResponse {
     }
 
     public String getName() {
-        return name;
+        return cleanUpString(name);
     }
 
     public void setName(String name) {
