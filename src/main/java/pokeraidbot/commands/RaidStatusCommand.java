@@ -1,13 +1,7 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.domain.GymRepository;
-import pokeraidbot.domain.RaidRepository;
-import pokeraidbot.domain.Gym;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Raid;
-import pokeraidbot.domain.SignUp;
+import pokeraidbot.domain.*;
 
 import java.util.Locale;
 import java.util.Set;
@@ -17,12 +11,14 @@ import static pokeraidbot.Utils.printTime;
 /**
  * !raid status [Pokestop name]
  */
-public class RaidStatusCommand extends Command {
+public class RaidStatusCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
 
-    public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService) {
+    public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
+                             ConfigRepository configRepository) {
+        super(configRepository);
         this.localeService = localeService;
         this.name = "status";
         this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);
@@ -32,12 +28,12 @@ public class RaidStatusCommand extends Command {
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         try {
             String gymName = commandEvent.getArgs();
             final String userName = commandEvent.getAuthor().getName();
-            final Gym gym = gymRepository.search(userName, gymName);
-            final Raid raid = raidRepository.getRaid(gym);
+            final Gym gym = gymRepository.search(userName, gymName, config.region);
+            final Raid raid = raidRepository.getRaid(gym, config.region);
             final Set<SignUp> signUps = raid.getSignUps();
             final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 

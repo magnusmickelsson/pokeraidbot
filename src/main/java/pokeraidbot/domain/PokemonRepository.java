@@ -56,6 +56,7 @@ public class PokemonRepository {
                 return p;
             }
         }
-        throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, LocaleService.DEFAULT, "" + pokemonNumber));
+        throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, LocaleService.DEFAULT, "" +
+                pokemonNumber));
     }
 }

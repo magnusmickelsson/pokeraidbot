@@ -42,7 +42,7 @@ public class CSVGymDataReader {
             System.exit(-1);
         }
 
-        System.out.println("Parsed " + gyms.size() + " gyms.");
+        System.out.println("Parsed " + gyms.size() + " gyms from \"" + resourceName + "\".");
 
         return gyms;
     }

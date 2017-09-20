@@ -1,14 +1,8 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.domain.GymRepository;
-import pokeraidbot.domain.PokemonRepository;
-import pokeraidbot.domain.RaidRepository;
+import pokeraidbot.domain.*;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.Raid;
 
 import java.time.LocalTime;
 
@@ -19,13 +13,16 @@ import static pokeraidbot.Utils.assertTimeNotMoreThanTwoHoursFromNow;
 /**
  * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]
  */
-public class NewRaidCommand extends Command {
+public class NewRaidCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
 
-    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository, PokemonRepository pokemonRepository, LocaleService localeService) {
+    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
+                          PokemonRepository pokemonRepository, LocaleService localeService,
+                          ConfigRepository configRepository) {
+        super(configRepository);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "new";
@@ -36,7 +33,7 @@ public class NewRaidCommand extends Command {
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         try {
             final String userName = commandEvent.getAuthor().getName();
             final String[] args = commandEvent.getArgs().split(" ");
@@ -54,9 +51,11 @@ public class NewRaidCommand extends Command {
                 gymNameBuilder.append(args[i]).append(" ");
             }
             String gymName = gymNameBuilder.toString().trim();
-            final Raid raid = new Raid(pokemon, endsAt, gymRepository.search(userName, gymName), localeService);
+            final Gym gym = gymRepository.search(userName, gymName, config.region);
+            final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.region);
             raidRepository.newRaid(userName, raid);
-            commandEvent.reply(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED, localeService.getLocaleForUser(userName), raid.toString()));
+            commandEvent.reply(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
+                    localeService.getLocaleForUser(userName), raid.toString()));
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }

@@ -13,12 +13,14 @@ public class Raid {
     private final Gym gym;
     private final LocaleService localeService;
     private Map<String, SignUp> signUps = new HashMap<>();
+    private String region;
 
-    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym, LocaleService localeService) {
+    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym, LocaleService localeService, String region) {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
         this.localeService = localeService;
+        this.region = region;
     }
 
     public Pokemon getPokemon() {
@@ -43,7 +45,8 @@ public class Raid {
         if (pokemon != null ? !pokemon.equals(raid.pokemon) : raid.pokemon != null) return false;
         if (endOfRaid != null ? !endOfRaid.equals(raid.endOfRaid) : raid.endOfRaid != null) return false;
         if (gym != null ? !gym.equals(raid.gym) : raid.gym != null) return false;
-        return signUps != null ? signUps.equals(raid.signUps) : raid.signUps == null;
+        if (signUps != null ? !signUps.equals(raid.signUps) : raid.signUps != null) return false;
+        return region != null ? region.equals(raid.region) : raid.region == null;
     }
 
     @Override
@@ -52,12 +55,14 @@ public class Raid {
         result = 31 * result + (endOfRaid != null ? endOfRaid.hashCode() : 0);
         result = 31 * result + (gym != null ? gym.hashCode() : 0);
         result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(), gym.toString(), printTime(endOfRaid));
+        return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(),
+                gym.toString(), printTime(endOfRaid));
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
@@ -87,5 +92,9 @@ public class Raid {
 
     public void setSignUps(Map<String, SignUp> signUps) {
         this.signUps = signUps;
+    }
+
+    public String getRegion() {
+        return region;
     }
 }

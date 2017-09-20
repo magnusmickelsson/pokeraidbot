@@ -3,16 +3,16 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import pokeraidbot.domain.GymRepository;
+import pokeraidbot.domain.*;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.Gym;
-import pokeraidbot.domain.LocaleService;
 
-public class WhereIsGymCommand extends Command {
+public class WhereIsGymCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final LocaleService localeService;
 
-    public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService) {
+    public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService,
+                             ConfigRepository configRepository) {
+        super(configRepository);
         this.localeService = localeService;
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);
@@ -20,10 +20,10 @@ public class WhereIsGymCommand extends Command {
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         try {
             String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName);
+            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName, config.region);
             String staticUrl = Utils.getStaticMapUrl(gym);
             String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
             commandEvent.replyInDM(new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
@@ -32,5 +32,4 @@ public class WhereIsGymCommand extends Command {
             commandEvent.reply(t.getMessage());
         }
     }
-
 }

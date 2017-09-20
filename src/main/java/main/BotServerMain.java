@@ -17,6 +17,9 @@ import pokeraidbot.infrastructure.jpa.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @SpringBootApplication
 @Configuration
@@ -42,13 +45,27 @@ public class BotServerMain {
 
     @Bean
     public BotService getBotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
-                                    PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService) {
-        return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService);
+                                    PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
+                                    ConfigRepository configRepository) {
+        return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
+                configRepository);
     }
 
     @Bean
-    public GymRepository getGymRepository(LocaleService localeService) {
-        return new GymRepository(new CSVGymDataReader("/gyms_ängelholm.csv").readAll(), localeService);
+    public GymRepository getGymRepository(LocaleService localeService, ConfigRepository configRepository) {
+        Map<String, Config> configMap = configRepository.getAllConfig();
+        Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
+        System.out.println("Config has following servers: " + configMap.keySet());
+        for (String server : configMap.keySet()) {
+            final Config config = configRepository.getConfigForServer(server);
+            final Set<Gym> existingGyms = gymsPerRegion.get(config.region);
+            if (existingGyms == null) {
+                final Set<Gym> gymsInRegion = new CSVGymDataReader("/gyms_" + config.region + ".csv").readAll();
+                gymsPerRegion.put(config.region, gymsInRegion);
+                System.out.println("Loaded " + gymsInRegion.size() + " gyms for region " + config.region + ".");
+            }
+        }
+        return new GymRepository(gymsPerRegion, localeService);
     }
 
     @Bean
@@ -66,5 +83,14 @@ public class BotServerMain {
     @Bean
     public PokemonRaidStrategyService getRaidInfoService(PokemonRepository pokemonRepository) {
         return new PokemonRaidStrategyService(pokemonRepository);
+    }
+
+    @Bean
+    public ConfigRepository getConfigRepository() {
+        final HashMap<String, Config> configurationMap = new HashMap<>();
+        configurationMap.put("zhorhn tests stuff", new Config("uppsala"));
+        configurationMap.put("pokeraidbot_beta", new Config("stockholm"));
+        configurationMap.put("pokeraidbot_testing", new Config("skellefteå"));
+        return new ConfigRepository(configurationMap);
     }
 }

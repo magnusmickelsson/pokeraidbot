@@ -1,7 +1,7 @@
 package pokeraidbot.domain;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.errors.RaidExistsException;
@@ -27,7 +27,8 @@ public class RaidRepository {
 
     @Autowired
     public RaidRepository(ClockService clockService, LocaleService localeService,
-                          RaidEntityRepository raidEntityRepository, PokemonRepository pokemonRepository, GymRepository gymRepository) {
+                          RaidEntityRepository raidEntityRepository, PokemonRepository pokemonRepository,
+                          GymRepository gymRepository) {
         this.clockService = clockService;
         this.localeService = localeService;
         this.raidEntityRepository = raidEntityRepository;
@@ -39,11 +40,13 @@ public class RaidRepository {
     }
 
     public void newRaid(String raidCreatorName, Raid raid) {
-        RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGym(raid.getGym().getName());
+        RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGymAndRegion(raid.getGym().getName(),
+                raid.getRegion());
 
         if (raidEntity != null) {
             if (raidEntity.isActive(clockService)) {
-                throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity), localeService, LocaleService.SWEDISH);
+                throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity),
+                        localeService, LocaleService.DEFAULT);
             } else {
                 // Clean up expired raid
                 raidEntityRepository.delete(raidEntity);
@@ -54,23 +57,27 @@ public class RaidRepository {
                 raid.getPokemon().getName(),
                 raid.getEndOfRaid(),
                 raid.getGym().getName(),
-                raidCreatorName
-        ));
+                raidCreatorName,
+                raid.getRegion()));
     }
 
     private Raid getRaidInstance(RaidEntity raidEntity) {
-        final Raid raid = new Raid(pokemonRepository.getPokemon(raidEntity.getPokemon()), raidEntity.getEndOfRaid(),
-                gymRepository.findByName(raidEntity.getGym()), localeService);
+        Validate.notNull(raidEntity);
+        final String region = raidEntity.getRegion();
+        final Raid raid = new Raid(pokemonRepository.getPokemon(raidEntity.getPokemon()),
+                raidEntity.getEndOfRaid(),
+                gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
         Map<String, SignUp> signUps = new HashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
-            signUps.put(signUp.getUser(), new SignUp(signUp.getUser(), signUp.getNumberOfPeople(), LocalTime.parse(signUp.getEta(), Utils.dateTimeParseFormatter)));
+            signUps.put(signUp.getUser(), new SignUp(signUp.getUser(), signUp.getNumberOfPeople(),
+                    LocalTime.parse(signUp.getEta(), Utils.dateTimeParseFormatter)));
         }
         raid.setSignUps(signUps);
         return raid;
     }
 
-    public Raid getRaid(Gym gym) {
-        RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGym(gym.getName());
+    public Raid getRaid(Gym gym, String region) {
+        RaidEntity raidEntity = raidEntityRepository.findDistinctFirstByGymAndRegion(gym.getName(), region);
 
         if (raidEntity == null) {
             throw new RaidNotFoundException(gym, localeService);
@@ -83,9 +90,9 @@ public class RaidRepository {
         return raid;
     }
 
-    public Set<Raid> getAllRaids() {
+    public Set<Raid> getAllRaidsForRegion(String region) {
         removeExpiredRaids();
-        List<RaidEntity> raidEntityList = raidEntityRepository.findAll();
+        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegion(region);
         Set<Raid> activeRaids = new HashSet<>();
         for (RaidEntity entity : raidEntityList) {
             activeRaids.add(getRaidInstance(entity));
@@ -108,14 +115,18 @@ public class RaidRepository {
     }
 
     public void addSignUp(String userName, Raid raid, SignUp theSignUp) {
-        RaidEntity entity = raidEntityRepository.findDistinctFirstByGym(raid.getGym().getName());
-        entity.addSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(), Utils.printTime(theSignUp.getArrivalTime())));
+        RaidEntity entity = raidEntityRepository.findDistinctFirstByGymAndRegion(raid.getGym().getName(),
+                raid.getRegion());
+        entity.addSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
+                Utils.printTime(theSignUp.getArrivalTime())));
         raidEntityRepository.save(entity);
     }
 
     public void removeSignUp(String userName, Raid raid, SignUp theSignUp) {
-        RaidEntity entity = raidEntityRepository.findDistinctFirstByGym(raid.getGym().getName());
-        entity.removeSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(), Utils.printTime(theSignUp.getArrivalTime())));
+        RaidEntity entity = raidEntityRepository.findDistinctFirstByGymAndRegion(raid.getGym().getName(),
+                raid.getRegion());
+        entity.removeSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
+                Utils.printTime(theSignUp.getArrivalTime())));
         raidEntityRepository.save(entity);
     }
 }

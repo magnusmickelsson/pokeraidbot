@@ -19,6 +19,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {TestServerMain.class})
 public class RaidRepositoryTest {
+    private static final String uppsalaRegion = "uppsala";
     @Autowired
     RaidRepository repo;
     @Autowired
@@ -33,7 +34,7 @@ public class RaidRepositoryTest {
     @Before
     public void setUp() throws Exception {
         Utils.setClockService(clockService);
-        gymRepository = new GymRepository(new CSVGymDataReader("/gyms_uppsala.csv").readAll(), localeService);
+        gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, TestServerMain.configRepositoryForTests());
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
     }
 
@@ -42,15 +43,15 @@ public class RaidRepositoryTest {
         clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
         final LocalTime now = clockService.getCurrentTime();
         LocalTime endOfRaid = now.plusHours(1);
-        final Gym gym = gymRepository.findByName("Blenda");
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService());
+        final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
-        Raid raid = repo.getRaid(gym);
+        Raid raid = repo.getRaid(gym, uppsalaRegion);
         assertThat(raid, is(enteiRaid));
         String userName = "testUser2";
         int howManyPeople = 3;
@@ -59,7 +60,7 @@ public class RaidRepositoryTest {
         assertThat(raid.getSignUps().size(), is(1));
         assertThat(raid.getNumberOfPeopleSignedUp(), is(howManyPeople));
 
-        final Raid raidFromDb = repo.getRaid(gym);
+        final Raid raidFromDb = repo.getRaid(gym, uppsalaRegion);
         assertThat(raidFromDb, is(raid));
         assertThat(raidFromDb.getSignUps().size(), is(1));
     }
