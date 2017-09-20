@@ -2,6 +2,24 @@
 A Discord Pokemon go raiding bot, used to announce raids, sign up for them and get an overview.
 Also contains commands for getting information about pokemons, pokestops and gyms.
 
+## What is this?
+
+Best to show some screenshots I guess. These are in Swedish, but there is also English locale.
+
+Command to get map of a gym:
+
+![Map command](mapcmd.png)
+![Map response](mapcmdresponse.png)
+
+Command to get raid boss info:
+
+![Raidboss info command](pokecmd.png)
+![Raidboss response](pokecmdresponse.png)
+
+Raid commands:
+
+![Raid commands](raidcmd.png)
+
 ## How?
 
 * To get started, you need to create a Discord application via their 
