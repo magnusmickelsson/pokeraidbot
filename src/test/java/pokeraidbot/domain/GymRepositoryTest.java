@@ -37,9 +37,9 @@ public class GymRepositoryTest {
 
     @Test
     public void findGymByFuzzySearch() throws Exception {
-        assertThat(repo.findByName("hasten", "uppsala"), is(gym));
+        assertThat(repo.search("Greger","hosten", "uppsala"), is(gym));
     }
-
+    
     @Test
     public void findGymById() throws Exception {
         assertThat(repo.findById("3690325", "uppsala"), is(gym));

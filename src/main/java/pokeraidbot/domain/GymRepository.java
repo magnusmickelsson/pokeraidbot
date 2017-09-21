@@ -1,35 +1,25 @@
 package pokeraidbot.domain;
 
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static me.xdrop.fuzzywuzzy.FuzzySearch.extractTop;
 
 public class GymRepository {
-    private Map<String, Map<String, Gym>> gymsPerRegion = new HashMap<>();
-//    private Map<String, Gym> gyms = new HashMap<>();
+    private Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
     private final LocaleService localeService;
 
     public GymRepository(Map<String, Set<Gym>> gyms, LocaleService localeService) {
         this.localeService = localeService;
         for (String region : gyms.keySet()) {
-            Map<String, Gym> gymsForRegion = new HashMap<>();
-            for (Gym gym : gyms.get(region)) {
-                String gymName = prepareNameForFuzzySearch(gym.getName());
-                if (gymsForRegion.get(gymName) != null) {
-                    throw new RuntimeException("There are duplicate gymnames in the data for region " + region + ": \"" +
-                            gym.getName() + "\"! Fix this manually as you want it (you can't have good name searching without it)!");
-                }
-                gymsForRegion.put(gymName, gym);
-            }
+            Set<Gym> gymsForRegion = gyms.get(region);
             this.gymsPerRegion.put(region, gymsForRegion);
         }
-    }
-
-    public static String prepareNameForFuzzySearch(String name) {
-        return name.toUpperCase().replaceAll("Ä", "A").replaceAll("Ö", "O").replaceAll("Ä", "A").replaceAll("É", "E");
-        // todo: add more replacements?
     }
 
     public Gym search(String userName, String query, String region) {
@@ -38,29 +28,24 @@ public class GymRepository {
                     LocaleService.DEFAULT));
         }
 
-        final Map<String, Gym> gyms = getGymMapForRegion(region);
+        final Set<Gym> gyms = getAllGymsForRegion(region);
 
         final Locale localeForUser = localeService.getLocaleForUser(userName);
-        final String queryFuzzySearch = prepareNameForFuzzySearch(query);
-        final Gym gym = get(query, region);
-        if (gym != null) {
-            return gym;
+        final Optional<Gym> gym = get(query, region);
+        if (gym.isPresent()) {
+            return gym.get();
         } else {
-            Set<String> candidates = new HashSet<>();
-            for (String gymName : gyms.keySet()) {
-                String fuzzyGymName = prepareNameForFuzzySearch(gymName);
-                if (fuzzyGymName.contains(queryFuzzySearch)) {
-                    candidates.add(gyms.get(gymName).getName());
-                }
-            }
+            //70 seems like a reasonable cutoff here...
+            List<ExtractedResult> candidates = extractTop(query, gyms.stream().map(s -> s.getName()).collect(Collectors.toList()), 5, 70);
             if (candidates.size() == 1) {
-                return findByName(candidates.iterator().next(), region);
+                return findByName(candidates.iterator().next().getString(), region);
             } else if (candidates.size() < 1) {
                 throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
             } else {
                 if (candidates.size() < 5) {
+                    String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region).getName()).collect(Collectors.joining(", "));
                     throw new UserMessedUpException(userName,
-                            localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, String.valueOf(candidates)));
+                            localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, possibleMatches));
                 } else {
                     throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
                 }
@@ -69,40 +54,30 @@ public class GymRepository {
     }
 
     public Gym findByName(String name, String region) {
-        final Gym gym = get(name, region);
-        if (gym == null) {
+        final Optional<Gym> gym = get(name, region);
+        if (!gym.isPresent()) {
             throw new GymNotFoundException(name, localeService, LocaleService.SWEDISH);
         }
-        return gym;
-    }
-
-    private Gym get(String name, String region) {
-        return getGymMapForRegion(region).get(prepareNameForFuzzySearch(name));
-    }
-
-    private Map<String, Gym> getGymMapForRegion(String region) {
-        final Map<String, Gym> gyms = gymsPerRegion.get(region);
-        if (gyms == null || gyms.size() < 1) {
-            throw new RuntimeException(localeService.getMessageFor(LocaleService.GYM_CONFIG_ERROR, LocaleService.DEFAULT));
-        }
-        return gyms;
+        return gym.get();
     }
 
     public Gym findById(String id, String region) {
-        for (Gym gym : getGymMapForRegion(region).values()) {
+        for (Gym gym : getAllGymsForRegion(region)) {
             if (gym.getId().equals(id))
                 return gym;
         }
         throw new GymNotFoundException("[No entry]", localeService, LocaleService.SWEDISH);
     }
 
-    public Collection<Gym> getAllGymsForRegion(String region) {
-        return Collections.unmodifiableCollection(getGymMapForRegion(region).values());
+    public Set<Gym> getAllGymsForRegion(String region) {
+        final Set<Gym> gyms = gymsPerRegion.get(region);
+        if (gyms == null || gyms.size() < 1) {
+            throw new RuntimeException(localeService.getMessageFor(LocaleService.GYM_CONFIG_ERROR, LocaleService.DEFAULT));
+        }
+        return gyms;
     }
 
-    public Collection<Gym> getAllUniqueGyms() {
-        Set<Gym> gyms = new HashSet<>();
-        gymsPerRegion.values().stream().map(e -> gyms.addAll(e.values()));
-        return Collections.unmodifiableSet(gyms);
+    private Optional<Gym> get(String name, String region) {
+        return getAllGymsForRegion(region).stream().filter(s -> s.getName().equals(name)).findFirst();
     }
 }
