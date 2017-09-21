@@ -1,6 +1,7 @@
 package main;
 
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +30,11 @@ import java.util.Set;
 @ComponentScan(basePackages = {"pokeraidbot"})
 @EnableTransactionManagement
 public class BotServerMain {
+    @Value("${ownerId}")
+    private String ownerId;
+    @Value("${token}")
+    private String token;
+
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         SpringApplication.run(BotServerMain.class, args);
     }
@@ -48,7 +54,7 @@ public class BotServerMain {
                                     PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                                     ConfigRepository configRepository) {
         return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
-                configRepository);
+                configRepository, ownerId, token);
     }
 
     @Bean

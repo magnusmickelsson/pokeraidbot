@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pokeraidbot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container" style="margin-top: 10px">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="row">
+                <div class="text-center alert alert-info">
+                    <div class="headline"><h1 class="mylogo">POKERAIDBOT</h1></div>
+                    <div class="mute small">Support for Pokemon Go raiders using Discord</div>
+                </div>
+            </div>
+            <div class="row top10 well card">
+                <div class="col-lg-12">
+                    <strong>So what's this about?</strong>
+                    <p>
+                        This is a Discord Pokemon go raiding bot, used to announce raids, sign up for them and get an overview.
+                        Also contains commands for getting information about pokemons, raid bosses and gyms.
+                    </p>
+                </div>
+                <div class="col-lg-12 top5">
+                    <p>
+                        To add me to your server, please use this link: <a th:href="${link}" th:text="${link}"></a>
+                    </p>
+                    <p>
+                        Usage in chat: !raid usage
+                    </p>
+                    <p>
+                        Source code and example screenshots available at <a href="https://github.com/magnusmickelsson/pokeraidbot">Github</a>.
+                    </p>
+                    <p>
+                        <a href='https://pledgie.com/campaigns/34823'>
+                            <img alt='Click here to lend your support to: pokeraidbot and make a donation at pledgie.com !'
+                                 src='https://pledgie.com/campaigns/34823.png?skin_name=chrome' border='0'/></a>
+                    </p>
+                </div>
+                <div class="col-lg-12 top5">
+                    <p class="footer mute small">
+                        &copy; 2017 <a href="mailto:magnus.mickelsson@gmail.com">Magnus Mickelsson</a>. All rights reserved (but it's free
+                        to use as long as you don't sue me for any malfunctions).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</body>
+</html>

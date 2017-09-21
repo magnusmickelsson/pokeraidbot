@@ -18,41 +18,25 @@ import pokeraidbot.domain.*;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class BotService {
-//    @Value("${ownerId}")
-//    private String ownerId;
-//    @Value("${token}")
-//    private String token;
+    private String ownerId;
+    private String token;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
-                      ConfigRepository configRepository) {
+                      ConfigRepository configRepository, String ownerId, String token) {
+        this.ownerId = ownerId;
+        this.token = token;
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
             System.err.println("ERROR: Not using UTF-8 encoding");
             System.exit(-1);
         }
 
-        // todo: turn into spring resource bundle
-        final InputStream propsAsStream = BotService.class.getResourceAsStream("/pokeraidbot.properties");
-        if (propsAsStream == null){
-            throw new RuntimeException("Could not load property file pokeraidbot.properties!");
-        }
-
-        Properties properties = new Properties();
-        try {
-            properties.load(propsAsStream);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
         EventWaiter waiter = new EventWaiter();
 
         CommandClientBuilder client = new CommandClientBuilder();
-        client.setOwnerId(properties.getProperty("ownerId"));
+        client.setOwnerId(this.ownerId);
         client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
         client.setPrefix("!raid ");
         client.setGame(new GameImpl("Type !raid usage", "", Game.GameType.DEFAULT));
@@ -81,7 +65,7 @@ public class BotService {
         try {
             new JDABuilder(AccountType.BOT)
                     // set the token
-                    .setToken(properties.getProperty("token"))
+                    .setToken(this.token)
 
                     // set the game for when the bot is loading
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
@@ -92,8 +76,8 @@ public class BotService {
                     .addEventListener(client.build())
 
                     // start it up!
-                    .buildAsync();
-        } catch (LoginException | RateLimitedException e) {
+                    .buildBlocking();
+        } catch (LoginException | RateLimitedException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
