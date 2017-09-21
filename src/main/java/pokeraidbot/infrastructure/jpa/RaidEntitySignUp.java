@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class RaidEntitySignUp {
-    private String user;
+    private String responsible;
     private Integer numberOfPeople;
     private String eta;
 
@@ -12,14 +12,14 @@ public class RaidEntitySignUp {
     protected RaidEntitySignUp() {
     }
 
-    public RaidEntitySignUp(String user, Integer numberOfPeople, String eta) {
-        this.user = user;
+    public RaidEntitySignUp(String responsible, Integer numberOfPeople, String eta) {
+        this.responsible = responsible;
         this.numberOfPeople = numberOfPeople;
         this.eta = eta;
     }
 
-    public String getUser() {
-        return user;
+    public String getResponsible() {
+        return responsible;
     }
 
     public Integer getNumberOfPeople() {
@@ -37,7 +37,7 @@ public class RaidEntitySignUp {
 
         RaidEntitySignUp that = (RaidEntitySignUp) o;
 
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+        if (responsible != null ? !responsible.equals(that.responsible) : that.responsible != null) return false;
         if (numberOfPeople != null ? !numberOfPeople.equals(that.numberOfPeople) : that.numberOfPeople != null)
             return false;
         return eta != null ? eta.equals(that.eta) : that.eta == null;
@@ -45,7 +45,7 @@ public class RaidEntitySignUp {
 
     @Override
     public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
+        int result = responsible != null ? responsible.hashCode() : 0;
         result = 31 * result + (numberOfPeople != null ? numberOfPeople.hashCode() : 0);
         result = 31 * result + (eta != null ? eta.hashCode() : 0);
         return result;
@@ -54,7 +54,7 @@ public class RaidEntitySignUp {
     @Override
     public String toString() {
         return "RaidEntitySignUp{" +
-                "user='" + user + '\'' +
+                "user='" + responsible + '\'' +
                 ", numberOfPeople=" + numberOfPeople +
                 ", eta='" + eta + '\'' +
                 '}';

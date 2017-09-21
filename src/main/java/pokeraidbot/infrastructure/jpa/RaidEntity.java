@@ -2,10 +2,7 @@ package pokeraidbot.infrastructure.jpa;
 
 import pokeraidbot.domain.ClockService;
 
-import javax.persistence.Basic;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,16 +12,21 @@ public class RaidEntity {
     @Id
     private String id;
     @Basic(optional = false)
+    @Column(nullable = false)
     private String pokemon;
     @Basic(optional = false)
+    @Column(nullable = false)
     private LocalTime endOfRaid;
     @Basic(optional = false)
+    @Column(nullable = false)
     private String gym;
     @Basic(optional = false)
+    @Column(nullable = false)
     private String creator;
     @ElementCollection
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
+    @Column(nullable = false)
     private String region;
 
     // JPA

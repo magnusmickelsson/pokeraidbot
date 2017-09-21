@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import org.springframework.beans.factory.annotation.Value;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
 
@@ -22,6 +23,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class BotService {
+//    @Value("${ownerId}")
+//    private String ownerId;
+//    @Value("${token}")
+//    private String token;
+
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                       ConfigRepository configRepository) {
@@ -32,6 +38,10 @@ public class BotService {
 
         // todo: turn into spring resource bundle
         final InputStream propsAsStream = BotService.class.getResourceAsStream("/pokeraidbot.properties");
+        if (propsAsStream == null){
+            throw new RuntimeException("Could not load property file pokeraidbot.properties!");
+        }
+
         Properties properties = new Properties();
         try {
             properties.load(propsAsStream);

@@ -35,7 +35,7 @@ public class RaidRepository {
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-//        clockService.setMockTime(LocalTime.of(10, 30));
+        clockService.setMockTime(LocalTime.of(10, 30));
         Utils.setClockService(clockService);
     }
 
@@ -69,7 +69,7 @@ public class RaidRepository {
                 gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
         Map<String, SignUp> signUps = new HashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
-            signUps.put(signUp.getUser(), new SignUp(signUp.getUser(), signUp.getNumberOfPeople(),
+            signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
                     LocalTime.parse(signUp.getEta(), Utils.dateTimeParseFormatter)));
         }
         raid.setSignUps(signUps);
@@ -92,8 +92,8 @@ public class RaidRepository {
 
     public Set<Raid> getAllRaidsForRegion(String region) {
         removeExpiredRaids();
-        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegion(region);
-        Set<Raid> activeRaids = new HashSet<>();
+        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegionOrderByPokemon(region);
+        Set<Raid> activeRaids = new LinkedHashSet<>();
         for (RaidEntity entity : raidEntityList) {
             activeRaids.add(getRaidInstance(entity));
         }

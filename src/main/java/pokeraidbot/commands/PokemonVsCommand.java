@@ -55,8 +55,7 @@ public class PokemonVsCommand extends Command {
                 builder.append("Max CP (100% IV): ").append(maxCp).append("\n");
             }
 
-            commandEvent.replyInDM(builder.toString());
-            commandEvent.reactSuccess();
+            commandEvent.reply(builder.toString());
         } catch (Throwable t) {
             commandEvent.reply(t.getMessage());
         }
