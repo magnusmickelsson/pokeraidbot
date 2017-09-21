@@ -93,6 +93,7 @@ public class BotServerMain {
         configurationMap.put("pokeraidbot_testing", new Config("luleå"));
         configurationMap.put("pokémon luleå", new Config("luleå"));
         configurationMap.put("test pokemongo ängelholm", new Config("ängelholm"));
+        configurationMap.put("raid-test-nkpg", new Config("norrköping"));
         return new ConfigRepository(configurationMap);
     }
 }
