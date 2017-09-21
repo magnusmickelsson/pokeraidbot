@@ -78,6 +78,6 @@ public class GymRepository {
     }
 
     private Optional<Gym> get(String name, String region) {
-        return getAllGymsForRegion(region).stream().filter(s -> s.getName().equals(name)).findFirst();
+        return getAllGymsForRegion(region).stream().filter(s -> s.getName().equalsIgnoreCase(name)).findFirst();
     }
 }
