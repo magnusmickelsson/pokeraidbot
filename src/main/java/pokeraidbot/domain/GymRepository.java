@@ -36,13 +36,13 @@ public class GymRepository {
             return gym.get();
         } else {
             //70 seems like a reasonable cutoff here...
-            List<ExtractedResult> candidates = extractTop(query, gyms.stream().map(s -> s.getName()).collect(Collectors.toList()), 5, 70);
+            List<ExtractedResult> candidates = extractTop(query, gyms.stream().map(s -> s.getName()).collect(Collectors.toList()), 6, 70);
             if (candidates.size() == 1) {
                 return findByName(candidates.iterator().next().getString(), region);
             } else if (candidates.size() < 1) {
                 throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
             } else {
-                if (candidates.size() < 5) {
+                if (candidates.size() <= 5) {
                     String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region).getName()).collect(Collectors.joining(", "));
                     throw new UserMessedUpException(userName,
                             localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, possibleMatches));
