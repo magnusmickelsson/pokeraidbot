@@ -87,9 +87,10 @@ public class GymRepository {
     }
 
     private List<Gym> getMatchingPartial(String query, String region, List<ExtractedResult> candidates) {
+        String cleanQuery = query.trim().replaceAll(" +", " ");
         List<Gym> mathingGyms = new ArrayList<>();
         for (ExtractedResult result : candidates) {
-            if (containsIgnoreCase(result.getString(), query)) {
+            if (containsIgnoreCase(result.getString(), cleanQuery)) {
                 mathingGyms.add(findByName(result.getString(), region));
             }
         }
