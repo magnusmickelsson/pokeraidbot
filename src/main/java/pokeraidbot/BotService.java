@@ -59,7 +59,8 @@ public class BotService {
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
                         configRepository),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService),
-                new ServerInfoCommand(configRepository, localeService)
+                new ServerInfoCommand(configRepository, localeService),
+                new DonateCommand(localeService)
         );
 
         try {
