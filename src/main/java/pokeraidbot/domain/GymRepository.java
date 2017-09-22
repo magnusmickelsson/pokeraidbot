@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static me.xdrop.fuzzywuzzy.FuzzySearch.extractTop;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class GymRepository {
     private Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
@@ -42,6 +43,10 @@ public class GymRepository {
             } else if (candidates.size() < 1) {
                 throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
             } else {
+                List<Gym> matchingPartial = getMatchingPartial(query, region, candidates);
+                if (matchingPartial.size() == 1) {
+                    return matchingPartial.get(0);
+                }
                 if (candidates.size() <= 5) {
                     String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region).getName()).collect(Collectors.joining(", "));
                     throw new UserMessedUpException(userName,
@@ -79,5 +84,16 @@ public class GymRepository {
 
     private Optional<Gym> get(String name, String region) {
         return getAllGymsForRegion(region).stream().filter(s -> s.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    private List<Gym> getMatchingPartial(String query, String region, List<ExtractedResult> candidates) {
+        String cleanQuery = query.trim().replaceAll(" +", " ");
+        List<Gym> mathingGyms = new ArrayList<>();
+        for (ExtractedResult result : candidates) {
+            if (containsIgnoreCase(result.getString(), cleanQuery)) {
+                mathingGyms.add(findByName(result.getString(), region));
+            }
+        }
+        return mathingGyms;
     }
 }
