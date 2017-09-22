@@ -2,7 +2,8 @@ package pokeraidbot.domain;
 
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PokemonRaidStrategyService {
     private Map<String, RaidBossCounters> counters = new HashMap<>();
@@ -45,7 +46,7 @@ public class PokemonRaidStrategyService {
                 // No file for this boss, skip it
             }
         }
-        System.out.println("Parsed " + counters.size() + " counters OK.");
+        System.out.println("Parsed " + counters.size() + " raid boss counters.");
 
         maxCp.put("BAYLEEF", "740");
 
@@ -109,7 +110,7 @@ public class PokemonRaidStrategyService {
 
         maxCp.put("Mewtwo".toUpperCase(), "2275");
 
-        System.out.println("Configured " + maxCp.size() + " raid boss max CP.");
+        System.out.println("Configured " + maxCp.size() + " raid boss max CP entries.");
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {

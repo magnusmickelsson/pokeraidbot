@@ -4,11 +4,7 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.PokemonRepository;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonRaidStrategyService;
-import pokeraidbot.domain.RaidBossCounters;
+import pokeraidbot.domain.*;
 import pokeraidbot.infrastructure.CounterPokemon;
 
 import java.util.LinkedList;

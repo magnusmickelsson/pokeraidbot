@@ -2,7 +2,10 @@ package pokeraidbot.domain;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class PokemonTypes {
     private Set<String> types;

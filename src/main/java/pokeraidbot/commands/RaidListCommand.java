@@ -1,6 +1,5 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import pokeraidbot.domain.*;
 

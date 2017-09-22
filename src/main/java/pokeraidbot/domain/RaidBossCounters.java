@@ -3,7 +3,6 @@ package pokeraidbot.domain;
 import pokeraidbot.infrastructure.CounterPokemon;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

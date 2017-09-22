@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.Utils;
-import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import java.time.LocalTime;
 

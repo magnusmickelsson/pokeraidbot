@@ -1,8 +1,8 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.domain.*;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.*;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import java.time.LocalTime;

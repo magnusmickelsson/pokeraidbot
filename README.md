@@ -31,6 +31,7 @@ Raid commands:
 * You need to be administrator on your local machine
 * It's probably a good idea if you know a bit about Java development, and Spring Boot
 * You need to be administrator of a Discord server with permission to add a bot
+* USE **UTF-8** ENCODING. In your server configuration, in your IDE, errwhere.
 
 ## How?
 
@@ -38,19 +39,26 @@ Raid commands:
 [developer site](https://discordapp.com/developers/docs/intro), and register a Bot account for it. 
 When doing this, you get an owner id (client id) and a token for your bot account.
 * Clone this Git repository to your local machine: https://github.com/magnusmickelsson/pokeraidbot.git
-* Add a property file to the classpath called pokeraidbot.properties (put it under src/main/resources/ and it's ok), 
-containing these properties:
-    * ownerId=(Bot application's ownerId)
-    * token=(Bot user token)
 * Build your application via [Maven](https://maven.apache.org) or a Java-IDE, for example 
 [IntelliJ](https://www.jetbrains.com/idea/).
 * Start the bot via the executable class **main.BotServerMain** (or java -jar pokeraidbot.jar)
-* Try browse 127.0.0.1:5000 - if it works you'll get a response from the bot
-* Use this link to allow the application to access your Discord server:
-https://discordapp.com/oauth2/authorize?&client_id=356483458316632074&scope=bot&permissions=0
-(Replace client_id={something} with the client id you get when registering an application)
+
+NOTE: You need to provide two application properties so it can start, ownerId and token. Example:
+
+    java -jar pokeraidbot.jar --ownerId={your owner_id from registering a bot app/account above} --token={bot secret token as above}
+    
+In IntelliJ, add
+
+    --ownerId={your owner_id from registering a bot app/account above} --token={bot secret token as above}
+    
+to the "Program Arguments" field when creating a run configuration.
+
+If you don't Spring will complain that the properties are not available, and the application won't start.
+
+* Try browse http://127.0.0.1:5000/ - if it works you'll get a response from the bot
+* Use the Discord link from the response above to invite the bot into a Discord server of your choice
 * Go to your Discord server, verify that the bot has logged in and is present.
-* In the chat, try running the command "!raid usage".
+* In the chat, try running the command "!raid usage". Take it from there.
 
 ## Going into production
 
@@ -111,18 +119,12 @@ Things to note about Heroku:
 The bot is currently deployed on a Heroku node in EU backed by a Postgresql database, at Stockholm timezone,
 here: https://pokeraidbot2.herokuapp.com
 
-## Branches
-
-The simple bot, with command for map and showing pokemon information, is right now on master branch.
-
-The full feature bot, with raid management, is right now on branch raid-features. 
-This branch has not been released yet and may contain bugs.
-
 ## Who?
 
-Bot created by Magnus Mickelsson (right now, < 35h work has been put into it so cut me some slack).
+Bot created by Magnus Mickelsson (right now, < 40h work has been put into it so cut me some slack).
+Valuable contributions also by Johan Millert.
 
-Thanks for the support from Johan Millert and the people from the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
+Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
 
 ## Notes
 
@@ -137,5 +139,4 @@ https://pokemongo.gamepress.gg/raid-boss-counters
 
 Some data from https://raw.githubusercontent.com/BrunnerLivio/PokemonDataGraber/master/output.json
 
-Gyms from Swepocks:
-https://fusiontables.google.com/DataSource?docid=1hdTwBGdlonfgdZfU_zqeTTZYY5UgzVwT0Sh3iboA#rows:id=1
+Gym data retrieved with the assistance of Johan Millert.

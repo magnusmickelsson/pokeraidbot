@@ -1,7 +1,5 @@
 package pokeraidbot.domain;
 
-import pokeraidbot.Utils;
-
 public class Gym {
     private String name;
     private String id;
@@ -43,7 +41,7 @@ public class Gym {
 
     @Override
     public String toString() {
-        return name; //"[" + name + "](" + Utils.getMapUrl(this) + ")";
+        return name;
     }
 
     public String getId() {

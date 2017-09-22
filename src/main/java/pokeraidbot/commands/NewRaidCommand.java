@@ -1,14 +1,12 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import pokeraidbot.domain.*;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.*;
 
 import java.time.LocalTime;
 
-import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
-import static pokeraidbot.Utils.assertTimeNotInNoRaidTimespan;
-import static pokeraidbot.Utils.assertTimeNotMoreThanTwoHoursFromNow;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]

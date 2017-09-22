@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.springframework.beans.factory.annotation.Value;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
 

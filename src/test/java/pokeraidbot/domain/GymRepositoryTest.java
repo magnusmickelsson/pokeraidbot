@@ -3,7 +3,6 @@ package pokeraidbot.domain;
 import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.TestServerMain;
-import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import java.util.HashMap;
 

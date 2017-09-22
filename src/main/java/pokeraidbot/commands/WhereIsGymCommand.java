@@ -1,10 +1,9 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import pokeraidbot.domain.*;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.*;
 
 public class WhereIsGymCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
