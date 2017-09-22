@@ -27,6 +27,7 @@ public class LocaleService {
     public static final String GYM_SEARCH_OPTIONS = "GYM_SEARCH_OPTIONS";
     public static final String GYM_SEARCH_MANY_RESULTS = "GYM_SEARCH_MANY_RESULTS";
     public static final String GYM_CONFIG_ERROR = "GYM_CONFIG_ERROR";
+    public static final String SERVER_HELP = "SERVER_HELP";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -120,6 +121,11 @@ public class LocaleService {
                 "Can't parse this number of people: %1 - give a valid number 1-%2.");
         i18nMessages.put(new I18nLookup(ERROR_PARSE_PLAYERS, SWEDISH),
                 "Felaktigt antal personer: %1 - ange ett korrekt antal 1-%2.");
+
+        i18nMessages.put(new I18nLookup(SERVER_HELP, Locale.ENGLISH),
+                "Info about your server's configuration: !raid server");
+        i18nMessages.put(new I18nLookup(SERVER_HELP, SWEDISH),
+                "Information om serverns konfiguration: !raid server");
 
         i18nMessages.put(new I18nLookup(SIGNUP_HELP, Locale.ENGLISH),
                 "Sign up for a raid: !raid add [number of people] [ETA (HH:MM)] [Gym]");

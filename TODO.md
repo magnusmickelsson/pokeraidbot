@@ -7,9 +7,9 @@ Maybe:
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
 * Kommando för att veta vilken region servern är på
-* Flytta raidbot2 till EU region för Heroku
-
-* Funderade på pokestopen Kronparken, dom kunde väl Heta typ Kronparken (Ulleråker) och Kronparken (DagH)
-  ..när dom ändå är manuellt tillagda
+* Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
+* Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
+* Embeddedlänkar vid sökning som möjliggör att köra kommandot igen för bara det resultatet
+* Donate-command
 
 ...

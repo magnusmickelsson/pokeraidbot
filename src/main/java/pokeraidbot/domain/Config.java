@@ -6,4 +6,11 @@ public class Config {
     public Config(String region) {
         this.region = region;
     }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "region='" + region + '\'' +
+                '}';
+    }
 }
