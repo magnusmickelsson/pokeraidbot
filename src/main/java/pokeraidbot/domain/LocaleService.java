@@ -304,5 +304,5 @@ public class LocaleService {
             "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n\n" +
             "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
-            "**If you want this information in english** - type !raid usage en";
+            "**If you want this information in english:**\n!raid usage en";
 }
