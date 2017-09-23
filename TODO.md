@@ -3,7 +3,7 @@ Done:
 * Raid list, sort by pokemon then by time (The FInal Shadow)
 * Command to list server config
 * Donate-command
-* !raid list {pokemon} visar bara raider för viss pokemon
+* !raid list {pokemon} filters raids based on pokemon
 
 Maybe:
 
