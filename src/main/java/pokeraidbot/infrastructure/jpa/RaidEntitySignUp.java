@@ -1,9 +1,10 @@
 package pokeraidbot.infrastructure.jpa;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
-public class RaidEntitySignUp {
+public class RaidEntitySignUp implements Serializable {
     private String responsible;
     private Integer numberOfPeople;
     private String eta;

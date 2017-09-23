@@ -129,4 +129,14 @@ public class RaidRepository {
                 Utils.printTime(theSignUp.getArrivalTime())));
         raidEntityRepository.save(entity);
     }
+
+    public Set<Raid> getRaidsInRegionForPokemon(String region, Pokemon pokemon) {
+        removeExpiredRaids();
+        List<RaidEntity> raidEntityList = raidEntityRepository.findByPokemonAndRegionOrderByEndOfRaidAsc(pokemon.getName(), region);
+        Set<Raid> activeRaids = new LinkedHashSet<>();
+        for (RaidEntity entity : raidEntityList) {
+            activeRaids.add(getRaidInstance(entity));
+        }
+        return activeRaids;
+    }
 }

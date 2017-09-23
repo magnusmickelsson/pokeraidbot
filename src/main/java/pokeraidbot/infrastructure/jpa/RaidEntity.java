@@ -4,12 +4,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import pokeraidbot.domain.ClockService;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class RaidEntity {
+public class RaidEntity implements Serializable {
     @Id
     private String id;
     @Basic(optional = false)

@@ -174,8 +174,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, Locale.ENGLISH), "There are currently no active raids.");
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, SWEDISH), "Det finns just nu inga aktiva raids.");
 
-        i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH), "Check current raids - !raid list");
-        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - !raid list");
+        i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH), "Check current raids - !raid list [optional: Pokemon]");
+        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - !raid list [Pokemon (filtrering, frivillig)]");
 
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, Locale.ENGLISH), "(if correct moveset)");
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, SWEDISH), "(om bra \"moves\")");
@@ -302,21 +302,35 @@ public class LocaleService {
         }
     }
 
-    public static String featuresString_EN = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n\n" +
-            "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n\n" +
-            "**Get a list of all active raids:**\n!raid list\n\n" +
-            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
-            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n\n" +
-            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n\n" +
-            "**How do I support development of this bot?**\n!raid donate\n\n" +
-            "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
-    public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n\n" +
-            "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n\n" +
-            "**Visa alla registrerade aktiva raider:**\n!raid list\n\n" +
-            "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n\n" +
-            "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n\n" +
-            "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n\n" +
-            "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
+    public static String featuresString_EN = "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +
+            "*Example:* !raid new entei 09:25 Solna Platform\n\n" +
+            "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n" +
+            "*Example:* !raid status Solna Platform\n\n" +
+            "**Get a list of all active raids:**\n!raid list\n" +
+            "*Examples:* !raid list Entei - list all raids for Entei. !raid list - list all active raids.\n\n" +
+            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n" +
+            "*Example:* !raid map Solna Platform\n\n" +
+            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
+            "*Example:* !raid add 3 09:15 Solna Platform\n\n" +
+            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n" +
+            "*Example:* !raid remove Solna Platform\n\n" +
+            "**Info about the raid boss:**\n!raid vs *[Pokemon]*\n" +
+            "*Example:* !raid vs Entei\n\n" +
+            "**How do I support development of this bot?**\n!raid donate";
+    public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
+            "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
+            "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
+            "*Exempel:* !raid status Solna Platform\n\n" +
+            "**Visa alla registrerade aktiva raider:**\n!raid list\n" +
+            "*Exempel:* !raid list Entei - visa alla aktiva raider med Entei som boss. !raid list - lista alla aktiva raider oavsett boss.\n\n" +
+            "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n" +
+            "*Exempel:* !raid map Solna Platform\n\n" +
+            "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
+            "*Exempel:* !raid add 3 09:15 Solna Platform\n\n" +
+            "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n" +
+            "*Exempel:* !raid remove Solna Platform\n\n" +
+            "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
+            "*Exempel:* !raid vs Entei\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

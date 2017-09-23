@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.*;

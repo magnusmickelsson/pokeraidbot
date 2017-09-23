@@ -14,11 +14,13 @@ import static pokeraidbot.Utils.printTime;
 public class RaidListCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
+    private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ConfigRepository configRepository) {
+                           ConfigRepository configRepository, PokemonRepository pokemonRepository) {
         super(configRepository);
         this.localeService = localeService;
+        this.pokemonRepository = pokemonRepository;
         this.name = "list";
         this.help = localeService.getMessageFor(LocaleService.LIST_HELP, LocaleService.DEFAULT);
         this.aliases = new String[]{"info"};
@@ -28,28 +30,36 @@ public class RaidListCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String userName = commandEvent.getAuthor().getName();
-        try {
-            final Locale locale = localeService.getLocaleForUser(userName);
-            Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.region);
-            if (raids.size() == 0) {
-                commandEvent.reply(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, LocaleService.DEFAULT));
-            } else {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("**" + localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale) + ":**\n");
-                for (Raid raid : raids) {
-                    final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
-                    stringBuilder.append(raid.getGym().getName()).append(" (")
-                            .append(raid.getPokemon().getName()).append(") - ")
-                            .append(localeService.getMessageFor(LocaleService.ENDS_AT, locale, printTime(raid.getEndOfRaid())))
-                            .append(". ").append(numberOfPeople)
-                            .append(" ")
-                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(".\n");
-                }
-                commandEvent.reply(stringBuilder.toString());
+        final String args = commandEvent.getArgs();
+        final Locale locale = localeService.getLocaleForUser(userName);
+        Set<Raid> raids;
+        if (args != null && args.length() > 0) {
+            raids = raidRepository.getRaidsInRegionForPokemon(config.region, pokemonRepository.getByName(args));
+        } else {
+            raids = raidRepository.getAllRaidsForRegion(config.region);
+        }
+
+        if (raids.size() == 0) {
+            replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
+            if (args != null && args.length() > 0) {
+                stringBuilder.append(" (").append(args).append(")");
             }
-        } catch (Throwable e) {
-            commandEvent.reply(e.getMessage());
+            stringBuilder.append(":**\n");
+
+            for (Raid raid : raids) {
+                final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
+                stringBuilder.append(raid.getGym().getName()).append(" (")
+                        .append(raid.getPokemon().getName()).append(") - ")
+                        .append(localeService.getMessageFor(LocaleService.ENDS_AT, locale, printTime(raid.getEndOfRaid())))
+                        .append(". ").append(numberOfPeople)
+                        .append(" ")
+                        .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                        .append(".\n");
+            }
+            commandEvent.reply(stringBuilder.toString());
         }
     }
 }

@@ -96,7 +96,7 @@ public class BotServerMain {
         final HashMap<String, Config> configurationMap = new HashMap<>();
         configurationMap.put("zhorhn tests stuff", new Config("uppsala"));
         configurationMap.put("pokeraidbot_stage", new Config("stockholm"));
-        configurationMap.put("pokeraidbot_test", new Config("luleå"));
+        configurationMap.put("pokeraidbot_test", new Config("luleå", true));
         configurationMap.put("pokémon luleå", new Config("luleå"));
         configurationMap.put("test pokemongo ängelholm", new Config("ängelholm"));
         configurationMap.put("raid-test-nkpg", new Config("norrköping"));

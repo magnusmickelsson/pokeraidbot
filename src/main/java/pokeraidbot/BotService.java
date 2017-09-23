@@ -5,10 +5,7 @@ import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
@@ -20,6 +17,7 @@ import java.awt.*;
 public class BotService {
     private String ownerId;
     private String token;
+    private JDA botInstance;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
@@ -44,26 +42,26 @@ public class BotService {
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new HelpCommand(localeService),
+                new HelpCommand(localeService, configRepository),
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         configRepository),
-                new RaidListCommand(raidRepository, localeService, configRepository),
+                new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository),
                 new SignUpCommand(gymRepository, raidRepository, localeService,
                         configRepository),
                 new WhereIsGymCommand(gymRepository, localeService,
                         configRepository),
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
                         configRepository),
-                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService),
+                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository),
                 new ServerInfoCommand(configRepository, localeService),
-                new DonateCommand(localeService)
+                new DonateCommand(localeService, configRepository)
         );
 
         try {
-            new JDABuilder(AccountType.BOT)
+            botInstance = new JDABuilder(AccountType.BOT)
                     // set the token
                     .setToken(this.token)
 
@@ -80,5 +78,9 @@ public class BotService {
         } catch (LoginException | RateLimitedException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public JDA getBot() {
+        return botInstance;
     }
 }

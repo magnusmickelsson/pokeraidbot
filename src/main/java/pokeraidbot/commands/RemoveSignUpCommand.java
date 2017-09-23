@@ -22,23 +22,20 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        try {
-            final String user = commandEvent.getAuthor().getName();
-            final Locale localeForUser = localeService.getLocaleForUser(user);
-            String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.search(user, gymName, config.region);
-            final Raid raid = raidRepository.getRaid(gym, config.region);
-            final SignUp removed = raid.remove(user, raidRepository);
-            if (removed != null) {
-                commandEvent.reply(localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
-                        gym.getName(), removed.toString()));
-            } else {
-                final String message =
-                        localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, user, gym.getName());
-                commandEvent.reply(message);
-            }
-        } catch (RuntimeException e) {
-            commandEvent.reply(e.getMessage());
+        final String user = commandEvent.getAuthor().getName();
+        final Locale localeForUser = localeService.getLocaleForUser(user);
+        String gymName = commandEvent.getArgs();
+        final Gym gym = gymRepository.search(user, gymName, config.region);
+        final Raid raid = raidRepository.getRaid(gym, config.region);
+        final SignUp removed = raid.remove(user, raidRepository);
+        if (removed != null) {
+            replyBasedOnConfig(config, commandEvent,
+                    localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
+                    gym.getName(), removed.toString()));
+        } else {
+            final String message =
+                    localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, user, gym.getName());
+            replyBasedOnConfig(config, commandEvent, message);
         }
     }
 }

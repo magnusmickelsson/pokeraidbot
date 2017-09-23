@@ -20,14 +20,11 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        try {
-            String gymName = commandEvent.getArgs();
-            final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName, config.region);
-            String staticUrl = Utils.getStaticMapUrl(gym);
-            String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
-            commandEvent.reply(new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
-        } catch (Throwable t) {
-            commandEvent.reply(t.getMessage());
-        }
+        String gymName = commandEvent.getArgs();
+        final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName, config.region);
+        String staticUrl = Utils.getStaticMapUrl(gym);
+        String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
+        replyBasedOnConfig(config, commandEvent,
+                new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
     }
 }

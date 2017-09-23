@@ -17,6 +17,6 @@ public class ServerInfoCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        commandEvent.reply(String.valueOf(config));
+        replyBasedOnConfig(config, commandEvent, String.valueOf(config));
     }
 }

@@ -29,23 +29,19 @@ public class RaidStatusCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        try {
-            String gymName = commandEvent.getArgs();
-            final String userName = commandEvent.getAuthor().getName();
-            final Gym gym = gymRepository.search(userName, gymName, config.region);
-            final Raid raid = raidRepository.getRaid(gym, config.region);
-            final Set<SignUp> signUps = raid.getSignUps();
-            final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
+        String gymName = commandEvent.getArgs();
+        final String userName = commandEvent.getAuthor().getName();
+        final Gym gym = gymRepository.search(userName, gymName, config.region);
+        final Raid raid = raidRepository.getRaid(gym, config.region);
+        final Set<SignUp> signUps = raid.getSignUps();
+        final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 
-            final Locale localeForUser = localeService.getLocaleForUser(userName);
-            commandEvent.reply("**" +
-                    localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
-                    "Pokemon: " + raid.getPokemon() + "\n" +
-                    localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
-                    numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
-                    (signUps.size() > 0 ? "\n" + signUps : ""));
-        } catch (Throwable e) {
-            commandEvent.reply(e.getMessage());
-        }
+        final Locale localeForUser = localeService.getLocaleForUser(userName);
+        replyBasedOnConfig(config, commandEvent, "**" +
+                localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
+                "Pokemon: " + raid.getPokemon() + "\n" +
+                localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
+                numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
+                (signUps.size() > 0 ? "\n" + signUps : ""));
     }
 }
