@@ -15,7 +15,8 @@ public class ConfigRepository {
         final Config config = configurationMap.get(server);
         if (config == null) {
             // todo: i18n
-            throw new RuntimeException("Configuration not found for server: " + server);
+            throw new RuntimeException("Configuration not found for server: \"" + server +
+                    "\" - contact bot developer at magnus.mickelsson@gmail.com to fix this.");
         }
 
         return config;

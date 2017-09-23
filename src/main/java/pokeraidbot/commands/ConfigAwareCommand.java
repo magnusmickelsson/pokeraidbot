@@ -17,7 +17,11 @@ public abstract class ConfigAwareCommand extends Command {
     @Override
     protected void execute(CommandEvent commandEvent) {
         final String server = commandEvent.getGuild().getName().trim().toLowerCase();
-        executeWithConfig(commandEvent, configRepository.getConfigForServer(server));
+        try {
+            executeWithConfig(commandEvent, configRepository.getConfigForServer(server));
+        } catch (Throwable t) {
+            commandEvent.reply(t.getMessage());
+        }
     };
 
     protected abstract void executeWithConfig(CommandEvent commandEvent, Config config);
