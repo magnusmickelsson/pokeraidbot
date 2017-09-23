@@ -92,7 +92,7 @@ public class RaidRepository {
 
     public Set<Raid> getAllRaidsForRegion(String region) {
         removeExpiredRaids();
-        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegionOrderByPokemon(region);
+        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegionOrderByPokemonAscEndOfRaidAsc(region);
         Set<Raid> activeRaids = new LinkedHashSet<>();
         for (RaidEntity entity : raidEntityList) {
             activeRaids.add(getRaidInstance(entity));

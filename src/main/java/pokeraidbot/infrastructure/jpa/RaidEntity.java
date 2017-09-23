@@ -1,5 +1,6 @@
 package pokeraidbot.infrastructure.jpa;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pokeraidbot.domain.ClockService;
 
 import javax.persistence.*;
@@ -14,8 +15,8 @@ public class RaidEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     private String pokemon;
-    @Basic(optional = false)
     @Column(nullable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime endOfRaid;
     @Basic(optional = false)
     @Column(nullable = false)

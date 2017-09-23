@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface RaidEntityRepository extends JpaRepository<RaidEntity, String> {
     RaidEntity findDistinctFirstByGymAndRegion(String gym, String region);
-    List<RaidEntity> findByPokemonAndRegion(String pokemon, String region);
-    List<RaidEntity> findByRegionOrderByPokemon(String region);
+    List<RaidEntity> findByPokemonAndRegionOrderByEndOfRaidAsc(String pokemon, String region);
+    List<RaidEntity> findByRegionOrderByPokemonAscEndOfRaidAsc(String region);
 }
