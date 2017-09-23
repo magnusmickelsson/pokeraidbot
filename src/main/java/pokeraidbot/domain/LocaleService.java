@@ -308,7 +308,7 @@ public class LocaleService {
             "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n\n" +
             "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n\n" +
             "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n\n" +
-            "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
+            "**How do I support development of this bot?**\n!raid donate\n\n" +
             "**Info about the raid boss:**\n!raid vs *[Pokemon]*";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n\n" +
             "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n\n" +
@@ -317,6 +317,6 @@ public class LocaleService {
             "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n\n" +
             "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n\n" +
-            "**How do I support development of this bot?**\n!raid donate\n\n" +
+            "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

@@ -100,6 +100,8 @@ public class BotServerMain {
         configurationMap.put("pokémon luleå", new Config("luleå"));
         configurationMap.put("test pokemongo ängelholm", new Config("ängelholm"));
         configurationMap.put("raid-test-nkpg", new Config("norrköping"));
+        configurationMap.put("raid - pokemon go norrköping", new Config("norrköping"));
+
         return new ConfigRepository(configurationMap);
     }
 }

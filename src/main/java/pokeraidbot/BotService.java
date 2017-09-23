@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.impl.GameImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
@@ -38,7 +37,7 @@ public class BotService {
         client.setOwnerId(this.ownerId);
         client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
         client.setPrefix("!raid ");
-        client.setGame(new GameImpl("Type !raid usage", "", Game.GameType.DEFAULT));
+        client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
