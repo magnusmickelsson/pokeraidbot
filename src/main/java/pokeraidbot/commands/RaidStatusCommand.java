@@ -37,7 +37,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 
         final Locale localeForUser = localeService.getLocaleForUser(userName);
-        replyBasedOnConfig(config, commandEvent, "**" +
+        commandEvent.reply("**" +
                 localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
                 "Pokemon: " + raid.getPokemon() + "\n" +
                 localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
