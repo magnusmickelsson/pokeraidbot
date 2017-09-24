@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.Config;
 import pokeraidbot.domain.ConfigRepository;
+import pokeraidbot.domain.errors.UserMessedUpException;
 
 public abstract class ConfigAwareCommand extends Command {
     private final ConfigRepository configRepository;
@@ -52,7 +53,12 @@ public abstract class ConfigAwareCommand extends Command {
             configForServer = configRepository.getConfigForServer(server);
             executeWithConfig(commandEvent, configForServer);
         } catch (Throwable t) {
-            replyErrorBasedOnConfig(configForServer, commandEvent, t);
+            if (t instanceof IllegalArgumentException) {
+                replyErrorBasedOnConfig(configForServer, commandEvent,
+                        new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()));
+            } else {
+                replyErrorBasedOnConfig(configForServer, commandEvent, t);
+            }
         }
     };
 

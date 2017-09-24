@@ -1,6 +1,8 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import net.dv8tion.jda.core.EmbedBuilder;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
 
 import java.util.Locale;
@@ -40,7 +42,7 @@ public class RaidListCommand extends ConfigAwareCommand {
         }
 
         if (raids.size() == 0) {
-            replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
+            commandEvent.reply(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
@@ -49,9 +51,13 @@ public class RaidListCommand extends ConfigAwareCommand {
             }
             stringBuilder.append(":**\n");
 
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(stringBuilder.toString());
+            stringBuilder = new StringBuilder();
             for (Raid raid : raids) {
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
-                stringBuilder.append(raid.getGym().getName()).append(" (")
+                stringBuilder.append("[").append(raid.getGym().getName()).append("](")
+                        .append(Utils.getStaticMapUrl(raid.getGym())).append(") (")
                         .append(raid.getPokemon().getName()).append(") - ")
                         .append(localeService.getMessageFor(LocaleService.ENDS_AT, locale, printTime(raid.getEndOfRaid())))
                         .append(". ").append(numberOfPeople)
@@ -59,7 +65,8 @@ public class RaidListCommand extends ConfigAwareCommand {
                         .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
                         .append(".\n");
             }
-            commandEvent.reply(stringBuilder.toString());
+            embedBuilder.setDescription(stringBuilder.toString());
+            commandEvent.reply(embedBuilder.build());
         }
     }
 }

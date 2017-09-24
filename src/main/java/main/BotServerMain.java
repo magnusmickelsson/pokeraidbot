@@ -94,14 +94,18 @@ public class BotServerMain {
     @Bean
     public ConfigRepository getConfigRepository() {
         final HashMap<String, Config> configurationMap = new HashMap<>();
+        // My test servers
         configurationMap.put("zhorhn tests stuff", new Config("uppsala"));
+        configurationMap.put("pokeraidbot_lab", new Config("uppsala"));
+        configurationMap.put("pokeraidbot_lab2", new Config("uppsala"));
         configurationMap.put("pokeraidbot_stage", new Config("stockholm"));
-        configurationMap.put("pokeraidbot_test", new Config("luleå", true));
+        configurationMap.put("pokeraidbot_test", new Config("luleå")); //, true));
+
+        // External user's servers
         configurationMap.put("pokémon luleå", new Config("luleå"));
         configurationMap.put("test pokemongo ängelholm", new Config("ängelholm"));
         configurationMap.put("raid-test-nkpg", new Config("norrköping", true));
         configurationMap.put("raid - pokemon go norrköping", new Config("norrköping", true));
-        configurationMap.put("pokeraidbot_lab2", new Config("uppsala"));
 
         return new ConfigRepository(configurationMap);
     }

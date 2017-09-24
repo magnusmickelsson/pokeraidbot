@@ -1,4 +1,4 @@
-package pokeraidbot;
+package pokeraidbot.web;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
