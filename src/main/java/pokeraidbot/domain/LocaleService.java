@@ -189,11 +189,18 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(ENDS_AT, Locale.ENGLISH), "ends at %1");
         i18nMessages.put(new I18nLookup(ENDS_AT, SWEDISH), "slutar klockan %1");
 
-        i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, Locale.ENGLISH), "There are currently no active raids.");
-        i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, SWEDISH), "Det finns just nu inga aktiva raids.");
+        i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, Locale.ENGLISH), "There are currently no active raids. " +
+                "To register a raid, use the following command:\n!raid new {pokemon} {ends at (HH:mm)} {gym}\n" +
+                "Example: !raid new Entei 09:45 Solna Platform");
+        i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, SWEDISH),
+                "Det finns just nu inga registrerade raids. " +
+                        "För att registrera en raid, använd följande kommando:\n!raid new {pokemon} {sluttid (HH:mm)} {gym}\n" +
+        "Exempel: !raid new Entei 09:45 Solna Platform");
 
-        i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH), "Check current raids - !raid list [optional: Pokemon]");
+        i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH),
+                "Check current raids - !raid list [optional: Pokemon]");
         i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - !raid list [Pokemon (filtrering, frivillig)]");
+
 
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, Locale.ENGLISH), "(if correct moveset)");
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, SWEDISH), "(om bra \"moves\")");
@@ -334,7 +341,7 @@ public class LocaleService {
             "*Example:* !raid remove Solna Platform\n\n" +
             "**Info about the raid boss:**\n!raid vs *[Pokemon]*\n" +
             "*Example:* !raid vs Entei\n\n" +
-            "**Track new raids for raid boss:**\n!raid track *[Pokemon]*\n" +
+            "**Track new raids for raid boss (Note: any tracking is reset on bot restart):**\n!raid track *[Pokemon]*\n" +
             "*Example:* !raid track Entei\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
@@ -351,7 +358,7 @@ public class LocaleService {
             "*Exempel:* !raid remove Solna Platform\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
             "*Exempel:* !raid vs Entei\n\n" +
-            "**Övervakning av nya raids för pokemon:**\n!raid track *[Pokemon]*\n" +
+            "**Övervakning av nya raids för pokemon (OBS: övervakning nollställs om botten startas om):**\n!raid track *[Pokemon]*\n" +
             "*Exempel:* !raid track Entei\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";

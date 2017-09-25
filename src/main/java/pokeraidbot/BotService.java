@@ -1,6 +1,8 @@
 package pokeraidbot;
 
+import com.jagrosh.jdautilities.commandclient.CommandClient;
 import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
@@ -10,14 +12,21 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
+import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.jda.AggregateCommandListener;
+import pokeraidbot.jda.EmoticonMessageListener;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.util.Arrays;
 
 public class BotService {
     private String ownerId;
     private String token;
     private JDA botInstance;
+    private CommandClient commandClient;
+    private AggregateCommandListener aggregateCommandListener;
+    private TrackingCommandListener trackingCommandListener;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
@@ -30,6 +39,10 @@ public class BotService {
         }
 
         EventWaiter waiter = new EventWaiter();
+        trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
+        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener,
+                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
+                        pokemonRepository, gymRepository)));
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
@@ -57,10 +70,13 @@ public class BotService {
                         configRepository),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository),
                 new ServerInfoCommand(configRepository, localeService),
-                new DonateCommand(localeService, configRepository)
+                new DonateCommand(localeService, configRepository),
+                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository)
         );
 
         try {
+            commandClient = client.build();
+            commandClient.setListener(aggregateCommandListener);
             botInstance = new JDABuilder(AccountType.BOT)
                     // set the token
                     .setToken(this.token)
@@ -71,7 +87,7 @@ public class BotService {
 
                     // add the listeners
                     .addEventListener(waiter)
-                    .addEventListener(client.build())
+                    .addEventListener(commandClient)
 
                     // start it up!
                     .buildBlocking();
@@ -82,5 +98,16 @@ public class BotService {
 
     public JDA getBot() {
         return botInstance;
+    }
+
+    public CommandClient getCommandClient() {
+        return commandClient;
+    }
+
+    public TrackingCommandListener getTrackingCommandListener() {
+        return trackingCommandListener;
+    }
+    public CommandListener getAggregateCommandListener() {
+        return aggregateCommandListener;
     }
 }
