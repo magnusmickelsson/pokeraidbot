@@ -2,6 +2,8 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.Config;
@@ -10,9 +12,11 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 
 public abstract class ConfigAwareCommand extends Command {
     private final ConfigRepository configRepository;
+    private final CommandListener commandListener;
 
-    public ConfigAwareCommand(ConfigRepository configRepository) {
+    public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener) {
         Validate.notNull(configRepository);
+        this.commandListener = commandListener;
         this.configRepository = configRepository;
     }
 
@@ -45,17 +49,24 @@ public abstract class ConfigAwareCommand extends Command {
 
     @Override
     protected void execute(CommandEvent commandEvent) {
-        final String server = commandEvent.getGuild().getName().trim().toLowerCase();
         Config configForServer = null;
         try {
+            final Guild guild = commandEvent.getGuild();
+            final String server = guild.getName().trim().toLowerCase();
             configForServer = configRepository.getConfigForServer(server);
             executeWithConfig(commandEvent, configForServer);
+            if (commandListener != null) {
+                commandListener.onCompletedCommand(commandEvent, this);
+            }
         } catch (Throwable t) {
             if (t instanceof IllegalArgumentException) {
                 replyErrorBasedOnConfig(configForServer, commandEvent,
                         new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()));
             } else {
                 replyErrorBasedOnConfig(configForServer, commandEvent, t);
+            }
+            if (commandListener != null) {
+                commandListener.onTerminatedCommand(commandEvent, this);
             }
         }
     };

@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.*;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
@@ -12,8 +13,8 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
     private final TrackingCommandListener commandListener;
 
     public UnTrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
-                                 PokemonRepository pokemonRepository) {
-        super(configRepository);
+                                 PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.commandListener = botService.getTrackingCommandListener();
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
@@ -24,13 +25,21 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String args = commandEvent.getArgs();
-        Pokemon pokemon = pokemonRepository.getByName(args);
         final String userId = commandEvent.getAuthor().getId();
         final String userName = commandEvent.getAuthor().getName();
-        commandListener.remove(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
-        String message =
-                localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
-                        pokemon.getName(), userName);
-        replyBasedOnConfig(config, commandEvent, message);
+        if (args == null || args.length() < 1) {
+            commandListener.removeAll(userId);
+            String message =
+                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
+                            "ALL", userName);
+            replyBasedOnConfig(config, commandEvent, message);
+        } else {
+            Pokemon pokemon = pokemonRepository.getByName(args);
+            commandListener.remove(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
+            String message =
+                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
+                            pokemon.getName(), userName);
+            replyBasedOnConfig(config, commandEvent, message);
+        }
     }
 }

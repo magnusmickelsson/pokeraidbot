@@ -80,9 +80,9 @@ public class LocaleService {
                 "Lade till övervakning av pokemon %1 för %2.");
 
         i18nMessages.put(new I18nLookup(TRACKING_REMOVED, Locale.ENGLISH),
-                "Removed tracking for pokemon %1 for user %2.");
+                "Removed tracking for %1 for user %2.");
         i18nMessages.put(new I18nLookup(TRACKING_REMOVED, SWEDISH),
-                "Tog bort övervakning av pokemon %1 för %2.");
+                "Tog bort övervakning av %1 för %2.");
 
         i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
                 "Raid was created for %1 by %2 - %3");
@@ -366,7 +366,7 @@ public class LocaleService {
             "**Track new raids for raid boss (Note: any tracking is reset on bot restart):**\n!raid track *[Pokemon]*\n" +
             "*Example:* !raid track Entei\n\n" +
             "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
-            "*Example:* !raid untrack Entei\n\n" +
+            "*Example:* !raid untrack Entei - remove your tracking of Entei. !raid untrack - remove all your tracking.\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
             "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
@@ -385,7 +385,7 @@ public class LocaleService {
             "**Övervakning av nya raids för pokemon (OBS: nollställs om botten startas om):**\n!raid track *[Pokemon]*\n" +
             "*Exempel:* !raid track Entei\n\n" +
             "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
-            "*Exempel:* !raid untrack Entei\n\n" +
+            "*Exempel:* !raid untrack Entei - ta bort din övervakning för Entei. !raid untrack - ta bort alla dina övervakningar.\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

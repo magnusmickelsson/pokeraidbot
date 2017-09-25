@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
@@ -10,8 +11,8 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService,
-                             ConfigRepository configRepository) {
-        super(configRepository);
+                             ConfigRepository configRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);

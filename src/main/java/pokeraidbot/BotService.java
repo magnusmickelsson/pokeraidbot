@@ -14,7 +14,6 @@ import pokeraidbot.commands.*;
 import pokeraidbot.domain.*;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.jda.AggregateCommandListener;
-import pokeraidbot.jda.EmoticonMessageListener;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -25,7 +24,7 @@ public class BotService {
     private String token;
     private JDA botInstance;
     private CommandClient commandClient;
-    private AggregateCommandListener aggregateCommandListener;
+    private CommandListener aggregateCommandListener;
     private TrackingCommandListener trackingCommandListener;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
@@ -40,9 +39,9 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
-        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener,
-                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
-                        pokemonRepository, gymRepository)));
+        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
+//                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
+//                        pokemonRepository, gymRepository)));
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
@@ -55,29 +54,29 @@ public class BotService {
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new UsageCommand(localeService, configRepository),
+                new UsageCommand(localeService, configRepository, aggregateCommandListener),
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository),
+                        configRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
-                        configRepository),
-                new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository),
+                        configRepository, aggregateCommandListener),
+                new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository, aggregateCommandListener),
                 new SignUpCommand(gymRepository, raidRepository, localeService,
-                        configRepository),
+                        configRepository, aggregateCommandListener),
                 new WhereIsGymCommand(gymRepository, localeService,
-                        configRepository),
+                        configRepository, aggregateCommandListener),
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
-                        configRepository),
-                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository),
-                new ServerInfoCommand(configRepository, localeService),
-                new DonateCommand(localeService, configRepository),
-                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository),
-                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository)
+                        configRepository, aggregateCommandListener),
+                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository, aggregateCommandListener),
+                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
+                new DonateCommand(localeService, configRepository, aggregateCommandListener),
+                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
+                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener)
         );
 
         try {
             commandClient = client.build();
-            commandClient.setListener(aggregateCommandListener);
+//            commandClient.setListener(aggregateCommandListener);
             botInstance = new JDABuilder(AccountType.BOT)
                     // set the token
                     .setToken(this.token)
@@ -108,7 +107,7 @@ public class BotService {
     public TrackingCommandListener getTrackingCommandListener() {
         return trackingCommandListener;
     }
-    public CommandListener getAggregateCommandListener() {
-        return aggregateCommandListener;
-    }
+//    public CommandListener getAggregateCommandListener() {
+//        return aggregateCommandListener;
+//    }
 }

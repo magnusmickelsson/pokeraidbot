@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.domain.*;
 
 import java.util.Locale;
@@ -17,8 +18,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ConfigRepository configRepository) {
-        super(configRepository);
+                             ConfigRepository configRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.name = "status";
         this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);
@@ -40,7 +41,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         commandEvent.reply("**" +
                 localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
                 "Pokemon: " + raid.getPokemon() + "\n" +
-                localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
+                localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser, printTime(raid.getEndOfRaid().minusHours(1)),
+                        printTime(raid.getEndOfRaid())) + "\n" +
                 numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
                 (signUps.size() > 0 ? "\n" + signUps : ""));
     }

@@ -4,16 +4,18 @@ Done:
 * Command to list server config
 * Donate-command
 * !raid list {pokemon} filters raids based on pokemon
+* Fixed: raid track sends message whether the command was ok or not. The message should say why they
+are getting the message (tracking), and also instructions on how to remove tracking.
+* Fixed (always shows start/end): If endtime is more than 1 hour from current time, 
+also include start/hatch time in message for !raid list and !raid status
+* !raid untrack {pokemon} - !raid untrack without params clears all tracking
 
 Fix:
-* raid track sends message whether the command was ok or not. The message should say why they
-are getting the message (tracking), and also instructions on how to remove tracking.
-* If endtime is more than 1 hour from current time, also include start/hatch time in message for 
-!raid list and !raid status
+
+* Clear all raids at the end of raiding for the day via scheduled job (22:00) - bot send message about it.
 
 Maybe:
 
-* !raid untrack {pokemon} - !raid untrack without params clears all tracking
 * Defaultconfig för kanal kan sättas och ändras i runtime av admin.
 * Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller

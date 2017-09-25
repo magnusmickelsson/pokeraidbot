@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
@@ -19,8 +20,8 @@ public class RaidListCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ConfigRepository configRepository, PokemonRepository pokemonRepository) {
-        super(configRepository);
+                           ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";

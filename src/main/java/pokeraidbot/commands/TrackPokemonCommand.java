@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.*;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
@@ -12,8 +13,8 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
     private final TrackingCommandListener commandListener;
 
     public TrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
-                               PokemonRepository pokemonRepository) {
-        super(configRepository);
+                               PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.commandListener = botService.getTrackingCommandListener();
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
