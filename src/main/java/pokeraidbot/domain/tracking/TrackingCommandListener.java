@@ -58,4 +58,12 @@ public class TrackingCommandListener implements CommandListener {
         }
         trackingTargets.add(trackingTarget);
     }
+
+    public void remove(PokemonTrackingTarget trackingTarget, String userName) {
+        if (!trackingTargets.contains(trackingTarget)) {
+            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
+                    localeService.getLocaleForUser(userName), trackingTarget.toString()));
+        }
+        trackingTargets.remove(trackingTarget);
+    }
 }

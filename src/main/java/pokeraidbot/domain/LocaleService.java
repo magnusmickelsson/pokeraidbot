@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static pokeraidbot.Utils.printTime;
-
 public class LocaleService {
     public static final String RAIDSTATUS = "RAIDSTATUS";
     public static final String NO_RAID_AT_GYM = "NO_RAID_AT_GYM";
@@ -32,6 +30,10 @@ public class LocaleService {
     public static final String TRACKING_EXISTS = "TRACKING_EXISTS";
     public static final String TRACKED_RAID = "TRACKED_RAID";
     public static final String TRACKING_ADDED = "TRACKING_ADDED";
+    public static final String TRACKING_NOT_EXISTS = "TRACKING_NOT_EXISTS";
+    public static final String TRACK_HELP = "TRACK_HELP";
+    public static final String UNTRACK_HELP = "UNTRACK_HELP";
+    public static final String TRACKING_REMOVED = "TRACKING_REMOVED";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -50,7 +52,7 @@ public class LocaleService {
     public static final String IF_CORRECT_MOVESET = "IF_CORRECT_MOVESET";
     public static final String LIST_HELP = "LIST_HELP";
     public static final String LIST_NO_RAIDS = "LIST_NO_RAIDS";
-    public static final String ENDS_AT = "ENDS_AT";
+    public static final String RAID_BETWEEN = "RAID_BETWEEN";
     public static final String CURRENT_RAIDS = "CURRENT_RAIDS";
     public static final String SIGNED_UP = "SIGNED_UP";
     public static final String RAIDSTATUS_HELP = "RAIDSTATUS_HELP";
@@ -62,15 +64,35 @@ public class LocaleService {
     public static final Locale DEFAULT = SWEDISH;
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(UNTRACK_HELP, Locale.ENGLISH),
+                "Remove an active Pokemon tracking - !raid untrack [Pokemon]");
+        i18nMessages.put(new I18nLookup(UNTRACK_HELP, SWEDISH),
+                "Ta bort övervakning för viss Pokemon - !raid untrack [Pokemon]");
+
+        i18nMessages.put(new I18nLookup(TRACK_HELP, Locale.ENGLISH),
+                "Track new raids for a certain Pokemon (message in DM) - !raid track [Pokemon]");
+        i18nMessages.put(new I18nLookup(TRACK_HELP, SWEDISH),
+                "Håll koll efter nya raider för en viss Pokemon (via direktmeddelande) - !raid track [Pokemon]");
+
         i18nMessages.put(new I18nLookup(TRACKING_ADDED, Locale.ENGLISH),
                 "Added tracking for pokemon %1 for user %2.");
         i18nMessages.put(new I18nLookup(TRACKING_ADDED, SWEDISH),
                 "Lade till övervakning av pokemon %1 för %2.");
 
+        i18nMessages.put(new I18nLookup(TRACKING_REMOVED, Locale.ENGLISH),
+                "Removed tracking for pokemon %1 for user %2.");
+        i18nMessages.put(new I18nLookup(TRACKING_REMOVED, SWEDISH),
+                "Tog bort övervakning av pokemon %1 för %2.");
+
         i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
                 "Raid was created for %1 by %2 - %3");
         i18nMessages.put(new I18nLookup(TRACKED_RAID, SWEDISH),
                 "Raid skapades för raidboss %1 av %2 - %3");
+
+        i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
+                "There was no tracking like this for you: %1");
+        i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, SWEDISH),
+                "Det fanns ingen sådan övervakning för dig: %1");
 
         i18nMessages.put(new I18nLookup(TRACKING_EXISTS, Locale.ENGLISH),
                 "You're already tracking this: %1");
@@ -186,8 +208,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, Locale.ENGLISH), "Current raids");
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, SWEDISH), "Pågående raids");
 
-        i18nMessages.put(new I18nLookup(ENDS_AT, Locale.ENGLISH), "ends at %1");
-        i18nMessages.put(new I18nLookup(ENDS_AT, SWEDISH), "slutar klockan %1");
+        i18nMessages.put(new I18nLookup(RAID_BETWEEN, Locale.ENGLISH), "between %1 and %2");
+        i18nMessages.put(new I18nLookup(RAID_BETWEEN, SWEDISH), "mellan %1 och %2");
 
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, Locale.ENGLISH), "There are currently no active raids. " +
                 "To register a raid, use the following command:\n!raid new {pokemon} {ends at (HH:mm)} {gym}\n" +
@@ -333,33 +355,37 @@ public class LocaleService {
             "*Example:* !raid status Solna Platform\n\n" +
             "**Get a list of all active raids:**\n!raid list\n" +
             "*Examples:* !raid list Entei - list all raids for Entei. !raid list - list all active raids.\n\n" +
-            "**Get map link for a certain gym:**\n!raid map *[Gym name]*\n" +
+            "**Get map for a certain gym:**\n!raid map *[Gym name]*\n" +
             "*Example:* !raid map Solna Platform\n\n" +
-            "**Sign up for a certain raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
+            "**Sign up for a raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
             "*Example:* !raid add 3 09:15 Solna Platform\n\n" +
-            "**Unsign for a certain raid:**\n!raid remove *[Gym name]*\n" +
+            "**Unsign raid:**\n!raid remove *[Gym name]*\n" +
             "*Example:* !raid remove Solna Platform\n\n" +
-            "**Info about the raid boss:**\n!raid vs *[Pokemon]*\n" +
+            "**Info about a raid boss:**\n!raid vs *[Pokemon]*\n" +
             "*Example:* !raid vs Entei\n\n" +
             "**Track new raids for raid boss (Note: any tracking is reset on bot restart):**\n!raid track *[Pokemon]*\n" +
             "*Example:* !raid track Entei\n\n" +
+            "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
+            "*Example:* !raid untrack Entei\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
             "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
             "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
             "*Exempel:* !raid status Solna Platform\n\n" +
-            "**Visa alla registrerade aktiva raider:**\n!raid list\n" +
+            "**Visa alla registrerade raider:**\n!raid list\n" +
             "*Exempel:* !raid list Entei - visa alla aktiva raider med Entei som boss. !raid list - lista alla aktiva raider oavsett boss.\n\n" +
             "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n" +
             "*Exempel:* !raid map Solna Platform\n\n" +
-            "**Säg att du kommer på en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
+            "**Säg att du kommer till en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
             "*Exempel:* !raid add 3 09:15 Solna Platform\n\n" +
             "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n" +
             "*Exempel:* !raid remove Solna Platform\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
             "*Exempel:* !raid vs Entei\n\n" +
-            "**Övervakning av nya raids för pokemon (OBS: övervakning nollställs om botten startas om):**\n!raid track *[Pokemon]*\n" +
+            "**Övervakning av nya raids för pokemon (OBS: nollställs om botten startas om):**\n!raid track *[Pokemon]*\n" +
             "*Exempel:* !raid track Entei\n\n" +
+            "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
+            "*Exempel:* !raid untrack Entei\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

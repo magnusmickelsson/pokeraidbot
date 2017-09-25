@@ -7,10 +7,10 @@ import pokeraidbot.domain.LocaleService;
 
 import java.util.Locale;
 
-public class HelpCommand extends ConfigAwareCommand {
+public class UsageCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
-    public HelpCommand(LocaleService localeService, ConfigRepository configRepository) {
+    public UsageCommand(LocaleService localeService, ConfigRepository configRepository) {
         super(configRepository);
         this.localeService = localeService;
         this.name = "usage";

@@ -55,7 +55,7 @@ public class BotService {
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new HelpCommand(localeService, configRepository),
+                new UsageCommand(localeService, configRepository),
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository),
@@ -71,7 +71,8 @@ public class BotService {
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository),
                 new ServerInfoCommand(configRepository, localeService),
                 new DonateCommand(localeService, configRepository),
-                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository)
+                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository),
+                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository)
         );
 
         try {

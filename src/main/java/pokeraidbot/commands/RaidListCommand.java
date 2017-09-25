@@ -59,7 +59,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                 stringBuilder.append("[").append(raid.getGym().getName()).append("](")
                         .append(Utils.getStaticMapUrl(raid.getGym())).append(") (")
                         .append(raid.getPokemon().getName()).append(") - ")
-                        .append(localeService.getMessageFor(LocaleService.ENDS_AT, locale, printTime(raid.getEndOfRaid())))
+                        .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale, printTime(raid.getEndOfRaid().minusHours(1)), printTime(raid.getEndOfRaid())))
                         .append(". ").append(numberOfPeople)
                         .append(" ")
                         .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))

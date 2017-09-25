@@ -6,19 +6,19 @@ import pokeraidbot.domain.*;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 
-public class TrackPokemonCommand extends ConfigAwareCommand {
+public class UnTrackPokemonCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final PokemonRepository pokemonRepository;
     private final TrackingCommandListener commandListener;
 
-    public TrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
-                               PokemonRepository pokemonRepository) {
+    public UnTrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
+                                 PokemonRepository pokemonRepository) {
         super(configRepository);
         this.commandListener = botService.getTrackingCommandListener();
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
-        this.name = "track";
-        this.help = localeService.getMessageFor(LocaleService.TRACK_HELP, LocaleService.DEFAULT);
+        this.name = "untrack";
+        this.help = localeService.getMessageFor(LocaleService.UNTRACK_HELP, LocaleService.DEFAULT);
     }
 
     @Override
@@ -27,9 +27,9 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         Pokemon pokemon = pokemonRepository.getByName(args);
         final String userId = commandEvent.getAuthor().getId();
         final String userName = commandEvent.getAuthor().getName();
-        commandListener.add(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
+        commandListener.remove(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
         String message =
-                localeService.getMessageFor(LocaleService.TRACKING_ADDED, localeService.getLocaleForUser(userName),
+                localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
                         pokemon.getName(), userName);
         replyBasedOnConfig(config, commandEvent, message);
     }

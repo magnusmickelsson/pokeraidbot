@@ -40,7 +40,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         commandEvent.reply("**" +
                 localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
                 "Pokemon: " + raid.getPokemon() + "\n" +
-                localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
+                localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser, printTime(raid.getEndOfRaid())) + "\n" +
                 numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
                 (signUps.size() > 0 ? "\n" + signUps : ""));
     }
