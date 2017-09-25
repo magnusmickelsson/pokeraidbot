@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -21,8 +22,8 @@ public class SignUpCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                         ConfigRepository configRepository) {
-        super(configRepository);
+                         ConfigRepository configRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.name = "add";
         this.help = localeService.getMessageFor(LocaleService.SIGNUP_HELP, LocaleService.DEFAULT);

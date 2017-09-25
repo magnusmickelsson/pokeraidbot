@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
@@ -18,8 +19,8 @@ public class PokemonVsCommand extends ConfigAwareCommand {
     private final PokemonRepository repo;
 
     public PokemonVsCommand(PokemonRepository repo, PokemonRaidStrategyService raidInfoService,
-                            LocaleService localeService, ConfigRepository configRepository) {
-        super(configRepository);
+                            LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.raidInfoService = raidInfoService;
         this.localeService = localeService;
         this.name = "vs";

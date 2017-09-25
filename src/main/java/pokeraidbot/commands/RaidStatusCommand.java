@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 import net.dv8tion.jda.core.entities.impl.MessageImpl;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.domain.*;
 import pokeraidbot.jda.Control;
 import pokeraidbot.jda.EmoticonMessageListener;
@@ -28,8 +29,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final BotService botService;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ConfigRepository configRepository, BotService botService) {
-        super(configRepository);
+                             ConfigRepository configRepository, BotService botService, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.botService = botService;
         this.name = "status";
@@ -70,5 +71,12 @@ public class RaidStatusCommand extends ConfigAwareCommand {
             message.getChannel().addReactionById(message.getId(), "➖").queue();
             message.getChannel().addReactionById(message.getId(), "\uD83D\uDEB7").queue();
         });
+        commandEvent.reply("**" +
+                localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
+                "Pokemon: " + raid.getPokemon() + "\n" +
+                localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser, printTime(raid.getEndOfRaid().minusHours(1)),
+                        printTime(raid.getEndOfRaid())) + "\n" +
+                numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
+                (signUps.size() > 0 ? "\n" + signUps : ""));
     }
 }

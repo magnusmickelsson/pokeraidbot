@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.domain.*;
 
 import java.util.Locale;
@@ -11,8 +12,8 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public RemoveSignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                               ConfigRepository configRepository) {
-        super(configRepository);
+                               ConfigRepository configRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;

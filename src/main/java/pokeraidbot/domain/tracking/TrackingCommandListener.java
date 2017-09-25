@@ -9,14 +9,15 @@ import pokeraidbot.domain.ConfigRepository;
 import pokeraidbot.domain.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
+// todo: maybe this doesn't have to be a command listener
 public class TrackingCommandListener implements CommandListener {
     private final ConfigRepository configRepository;
     private final LocaleService localeService;
-    private final Set<PokemonTrackingTarget> trackingTargets = new LinkedHashSet<>();
+    private final Set<PokemonTrackingTarget> trackingTargets = new ConcurrentSkipListSet<>();
 
     public TrackingCommandListener(ConfigRepository configRepository,
                                    LocaleService localeService) {
@@ -57,5 +58,17 @@ public class TrackingCommandListener implements CommandListener {
                     localeService.getLocaleForUser(userName), trackingTarget.toString()));
         }
         trackingTargets.add(trackingTarget);
+    }
+
+    public void remove(PokemonTrackingTarget trackingTarget, String userName) {
+        if (!trackingTargets.contains(trackingTarget)) {
+            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
+                    localeService.getLocaleForUser(userName), trackingTarget.toString()));
+        }
+        trackingTargets.remove(trackingTarget);
+    }
+
+    public void removeAll(String userId) {
+        trackingTargets.forEach(t -> {if (t.getUserId().equals(userId)){trackingTargets.remove(t);}});
     }
 }

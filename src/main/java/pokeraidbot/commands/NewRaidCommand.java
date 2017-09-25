@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
 
@@ -19,13 +20,13 @@ public class NewRaidCommand extends ConfigAwareCommand {
 
     public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
                           PokemonRepository pokemonRepository, LocaleService localeService,
-                          ConfigRepository configRepository) {
-        super(configRepository);
+                          ConfigRepository configRepository,
+                          CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "new";
         this.help = localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
-
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }

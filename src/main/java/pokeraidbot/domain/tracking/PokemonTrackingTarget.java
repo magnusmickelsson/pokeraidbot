@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.commands.NewRaidCommand;
 import pokeraidbot.domain.Config;
@@ -12,7 +11,7 @@ import pokeraidbot.domain.LocaleService;
 
 import java.util.Locale;
 
-public class PokemonTrackingTarget extends ListenerAdapter implements TrackingTarget {
+public class PokemonTrackingTarget implements TrackingTarget, Comparable<PokemonTrackingTarget> {
     private String region;
     private String userId;
     private String pokemonName;
@@ -21,6 +20,18 @@ public class PokemonTrackingTarget extends ListenerAdapter implements TrackingTa
         this.region = region;
         this.userId = userId;
         this.pokemonName = pokemonName;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPokemonName() {
+        return pokemonName;
     }
 
     @Override
@@ -90,5 +101,10 @@ public class PokemonTrackingTarget extends ListenerAdapter implements TrackingTa
                 "region='" + region + '\'' +
                 ", pokemonName='" + pokemonName + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(PokemonTrackingTarget o) {
+        return toString().compareTo(o.toString());
     }
 }

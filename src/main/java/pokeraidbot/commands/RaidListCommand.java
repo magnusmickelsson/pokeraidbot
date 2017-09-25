@@ -1,6 +1,7 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
@@ -19,8 +20,8 @@ public class RaidListCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ConfigRepository configRepository, PokemonRepository pokemonRepository) {
-        super(configRepository);
+                           ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(configRepository, commandListener);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";
@@ -59,7 +60,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                 stringBuilder.append("[").append(raid.getGym().getName()).append("](")
                         .append(Utils.getStaticMapUrl(raid.getGym())).append(") (")
                         .append(raid.getPokemon().getName()).append(") - ")
-                        .append(localeService.getMessageFor(LocaleService.ENDS_AT, locale, printTime(raid.getEndOfRaid())))
+                        .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale, printTime(raid.getEndOfRaid().minusHours(1)), printTime(raid.getEndOfRaid())))
                         .append(". ").append(numberOfPeople)
                         .append(" ")
                         .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
