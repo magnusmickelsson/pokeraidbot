@@ -71,7 +71,8 @@ public class BotService {
                 new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
-                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener)
+                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
+                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
         try {

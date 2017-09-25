@@ -54,10 +54,11 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
         StringBuilder sb = new StringBuilder();
         sb.append("Pokemon: ").append(raid.getPokemon()).append("\n")
-                .append(localeService.getMessageFor(LocaleService.ENDS_AT, localeForUser, printTime(raid.getEndOfRaid())))
+                .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser,
+                        printTime(raid.getEndOfRaid().minusHours(1)), printTime(raid.getEndOfRaid())))
                 .append("\n").append(numberOfPeople).append(" ")
-                .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser))
-                .append(".").append(signUps.size() > 0 ? "\n" + signUps : "")
+                .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append(".")
+                .append(signUps.size() > 0 ? "\n" + signUps : "")
                 .append("\n[Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
@@ -65,18 +66,11 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         commandEvent.reply(messageEmbed);
         // todo: Link emoticons to actions against the bot
         // todo: locale service
-        commandEvent.reply("Anmäl dig via knapparna nedan. För hjälp, skriv \"!raid help signup\".", message -> {
+        commandEvent.reply("Anmäl dig via knapparna nedan. För hjälp, skriv \"!raid help-signup\".", message -> {
             message.getChannel().addReactionById(message.getId(), "\uD83D\uDE00").queue();
             message.getChannel().addReactionById(message.getId(), "➕").queue();
             message.getChannel().addReactionById(message.getId(), "➖").queue();
             message.getChannel().addReactionById(message.getId(), "\uD83D\uDEB7").queue();
         });
-        commandEvent.reply("**" +
-                localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()) + "**\n" +
-                "Pokemon: " + raid.getPokemon() + "\n" +
-                localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser, printTime(raid.getEndOfRaid().minusHours(1)),
-                        printTime(raid.getEndOfRaid())) + "\n" +
-                numberOfPeople + " " + localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser) + "." +
-                (signUps.size() > 0 ? "\n" + signUps : ""));
     }
 }
