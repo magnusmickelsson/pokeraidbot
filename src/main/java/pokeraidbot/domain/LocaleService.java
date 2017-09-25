@@ -29,6 +29,9 @@ public class LocaleService {
     public static final String GYM_CONFIG_ERROR = "GYM_CONFIG_ERROR";
     public static final String SERVER_HELP = "SERVER_HELP";
     public static final String DONATE = "DONATE";
+    public static final String TRACKING_EXISTS = "TRACKING_EXISTS";
+    public static final String TRACKED_RAID = "TRACKED_RAID";
+    public static final String TRACKING_ADDED = "TRACKING_ADDED";
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
@@ -59,6 +62,21 @@ public class LocaleService {
     public static final Locale DEFAULT = SWEDISH;
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(TRACKING_ADDED, Locale.ENGLISH),
+                "Added tracking for pokemon %1 for user %2.");
+        i18nMessages.put(new I18nLookup(TRACKING_ADDED, SWEDISH),
+                "Lade till övervakning av pokemon %1 för %2.");
+
+        i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
+                "Raid was created for %1 by %2 - %3");
+        i18nMessages.put(new I18nLookup(TRACKED_RAID, SWEDISH),
+                "Raid skapades för raidboss %1 av %2 - %3");
+
+        i18nMessages.put(new I18nLookup(TRACKING_EXISTS, Locale.ENGLISH),
+                "You're already tracking this: %1");
+        i18nMessages.put(new I18nLookup(TRACKING_EXISTS, SWEDISH),
+                "Du har redan övervakning satt för detta: %1");
+
         i18nMessages.put(new I18nLookup(DONATE, Locale.ENGLISH),
                 "How to support development of this bot via donating.");
         i18nMessages.put(new I18nLookup(DONATE, SWEDISH),
@@ -316,6 +334,8 @@ public class LocaleService {
             "*Example:* !raid remove Solna Platform\n\n" +
             "**Info about the raid boss:**\n!raid vs *[Pokemon]*\n" +
             "*Example:* !raid vs Entei\n\n" +
+            "**Track new raids for raid boss:**\n!raid track *[Pokemon]*\n" +
+            "*Example:* !raid track Entei\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
             "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
@@ -331,6 +351,8 @@ public class LocaleService {
             "*Exempel:* !raid remove Solna Platform\n\n" +
             "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
             "*Exempel:* !raid vs Entei\n\n" +
+            "**Övervakning av nya raids för pokemon:**\n!raid track *[Pokemon]*\n" +
+            "*Exempel:* !raid track Entei\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }
