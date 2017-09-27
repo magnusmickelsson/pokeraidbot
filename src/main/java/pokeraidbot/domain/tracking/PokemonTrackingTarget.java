@@ -97,8 +97,9 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
     @Override
     public String toString() {
-        return "PokemonTracking{" +
+        return "PokemonTrackingTarget{" +
                 "region='" + region + '\'' +
+                ", userId='" + userId + '\'' +
                 ", pokemonName='" + pokemonName + '\'' +
                 '}';
     }
