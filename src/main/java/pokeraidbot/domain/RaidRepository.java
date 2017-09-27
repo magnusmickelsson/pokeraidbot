@@ -41,46 +41,24 @@ public class RaidRepository {
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
         clockService.setMockTime(LocalTime.of(10, 30));
         Utils.setClockService(clockService);
+        removeExpiredRaids();
     }
 
     public void newRaid(String raidCreatorName, Raid raid) {
-        List<RaidEntity> raidEntities = raidEntityRepository.findByGymAndRegion(raid.getGym().getName(),
-                raid.getRegion());
-
-        // There can only be one EX raid and one active raid at the most, and if we already have two, this new raid is one too many
-        if (raidEntities != null && raidEntities.size() > 1) {
-            throw new RaidExistsException(raidCreatorName, raid, localeService, LocaleService.DEFAULT);
-        }
+        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         final String pokemonName = raid.getPokemon().getName();
 
-        RaidEntity raidEntity = null;
-        assert raidEntities != null;
-        for (RaidEntity entity : raidEntities) {
-            if (Utils.isRaidExPokemon(pokemonName) && (!Utils.isSamePokemon(pokemonName, entity.getPokemon()))) {
-                saveRaid(raidCreatorName, raid);
-                removeRaidIfExpired(entity);
-                break;
-            } else if (!Utils.isRaidExPokemon(pokemonName) && (Utils.isRaidExPokemon(entity.getPokemon()))) {
-                saveRaid(raidCreatorName, raid);
-                break;
-            } else {
-                throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity),
-                        localeService, LocaleService.DEFAULT);
-            }
-        }
-
         if (raidEntity != null) {
             final String existingEntityPokemon = raidEntity.getPokemon();
-            if (Utils.isSamePokemon(pokemonName, existingEntityPokemon) || (!Utils.oneIsMewTwo(pokemonName, existingEntityPokemon))) {
-            }
-
-            if (Utils.raidsCollide(raid.getEndOfRaid(), raidEntity.getEndOfRaid())) {
+            final boolean oneRaidIsEx = Utils.isRaidExPokemon(pokemonName) || Utils.isRaidExPokemon(existingEntityPokemon);
+            if ((!oneRaidIsEx) || Utils.raidsCollide(raid.getEndOfRaid(), raidEntity.getEndOfRaid())) {
                 throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity),
                         localeService, LocaleService.DEFAULT);
             }
-        } else {
         }
+
+        saveRaid(raidCreatorName, raid);
     }
 
     private void saveRaid(String raidCreatorName, Raid raid) {
@@ -114,6 +92,9 @@ public class RaidRepository {
 
     public Raid getActiveRaidOrFallbackToExRaid(Gym gym, String region) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(gym, region);
+        if (raidEntity == null) {
+            throw new RaidNotFoundException(gym, localeService);
+        }
         final Raid raid = getRaidInstance(raidEntity);
         return raid;
     }
@@ -123,21 +104,22 @@ public class RaidRepository {
         List<RaidEntity> raidEntities = raidEntityRepository.findByGymAndRegion(gym.getName(), region);
         RaidEntity exEntity = null;
         for (RaidEntity entity : raidEntities) {
-            if (entity.isActive(clockService)) {
-                raidEntity = entity;
-            } else if (entity.isExpired(clockService)) {
+            if (entity.isExpired(clockService)) {
                 raidEntityRepository.delete(entity);
-                throw new RaidNotFoundException(gym, localeService);
             } else if (Utils.isRaidExPokemon(entity.getPokemon())) {
                 exEntity = entity;
+            } else if (!entity.isExpired(clockService)) {
+                if (raidEntity != null) {
+                    throw new IllegalStateException("Raid state in database seems off. " +
+                            "Please notify the bot developer so it can be checked: " + raidEntity);
+                }
+                raidEntity = entity;
             }
         }
 
         if (raidEntity == null) {
             if (exEntity != null) {
                 raidEntity = exEntity;
-            } else {
-                throw new RaidNotFoundException(gym, localeService);
             }
         }
         return raidEntity;

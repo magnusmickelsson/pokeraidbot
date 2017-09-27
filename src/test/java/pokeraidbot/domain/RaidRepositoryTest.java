@@ -14,6 +14,7 @@ import java.time.LocalTime;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 
 @RunWith(SpringRunner.class)
@@ -43,7 +44,7 @@ public class RaidRepositoryTest {
         clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
         final LocalDateTime now = clockService.getCurrentDateTime();
         final LocalTime nowTime = now.toLocalTime();
-        LocalDateTime endOfRaid = now.plusHours(1);
+        LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
         Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
         String raidCreatorName = "testUser1";
@@ -51,6 +52,7 @@ public class RaidRepositoryTest {
             repo.newRaid(raidCreatorName, enteiRaid);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
+            fail("Could not save raid: " + e.getMessage());
         }
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
         assertThat(raid, is(enteiRaid));
@@ -65,4 +67,6 @@ public class RaidRepositoryTest {
         assertThat(raidFromDb, is(raid));
         assertThat(raidFromDb.getSignUps().size(), is(1));
     }
+
+    // todo: testcases for the intricate rules around EX raids
 }
