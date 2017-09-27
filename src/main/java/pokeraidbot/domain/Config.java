@@ -1,16 +1,24 @@
 package pokeraidbot.domain;
 
+import java.util.Locale;
+
 public class Config {
     public final String region;
     public Boolean replyInDmWhenPossible = false;
+    public Locale locale;
 
-    public Config(String region, Boolean replyInDmWhenPossible) {
+    public Config(String region, Boolean replyInDmWhenPossible, Locale locale) {
         this.region = region;
         this.replyInDmWhenPossible = replyInDmWhenPossible;
+        this.locale = locale;
+    }
+
+    public Config(String region, Boolean replyInDmWhenPossible) {
+        this(region, replyInDmWhenPossible, LocaleService.DEFAULT);
     }
 
     public Config(String region) {
-        this.region = region;
+        this(region, false);
     }
 
     @Override
@@ -18,6 +26,7 @@ public class Config {
         return "Config{" +
                 "region='" + region + '\'' +
                 ", replyInDmWhenPossible=" + replyInDmWhenPossible +
+                ", locale=" + locale +
                 '}';
     }
 }

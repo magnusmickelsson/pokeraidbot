@@ -1,5 +1,7 @@
 package pokeraidbot.domain;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class ClockService {
@@ -14,5 +16,9 @@ public class ClockService {
 
     public LocalTime getCurrentTime() {
         return mockTime == null ? LocalTime.now() : mockTime;
+    }
+
+    public LocalDateTime getCurrentDateTime() {
+        return mockTime == null ? LocalDateTime.now() : LocalDateTime.of(LocalDate.now(), mockTime);
     }
 }

@@ -27,7 +27,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(user);
         String gymName = commandEvent.getArgs();
         final Gym gym = gymRepository.search(user, gymName, config.region);
-        final Raid raid = raidRepository.getRaid(gym, config.region);
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.region);
         final SignUp removed = raid.remove(user, raidRepository);
         if (removed != null) {
             replyBasedOnConfig(config, commandEvent,

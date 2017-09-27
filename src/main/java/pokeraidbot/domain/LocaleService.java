@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LocaleService {
+    public static final String NEW_EX_RAID_HELP = "NEW_EX_RAID_HELP";
     public static final String RAIDSTATUS = "RAIDSTATUS";
     public static final String NO_RAID_AT_GYM = "NO_RAID_AT_GYM";
     public static final String REMOVE_SIGNUP_HELP = "REMOVE_SIGNUP_HELP";
@@ -34,8 +35,7 @@ public class LocaleService {
     public static final String TRACK_HELP = "TRACK_HELP";
     public static final String UNTRACK_HELP = "UNTRACK_HELP";
     public static final String TRACKING_REMOVED = "TRACKING_REMOVED";
-    private Map<I18nLookup, String> i18nMessages = new HashMap<>();
-
+    public static final String SIGN_BEFORE_RAID = "SIGN_BEFORE_RAID";
     public static final String GYM_NOT_FOUND = "GYM_NOT_FOUND";
     public static final String RAID_EXISTS = "RAID_EXISTS";
     public static final String USAGE = "USAGE";
@@ -62,6 +62,8 @@ public class LocaleService {
 
     // Change this if you want another default locale, affects the usage texts etc
     public static final Locale DEFAULT = SWEDISH;
+
+    private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public LocaleService() {
         i18nMessages.put(new I18nLookup(UNTRACK_HELP, Locale.ENGLISH),
@@ -126,25 +128,30 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH),
                 "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
 
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, Locale.ENGLISH),
+                "Can't sign up for this raid before current time. Your given time is %1, time is currently %2");
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, SWEDISH),
+                "Du kan inte anmäla dig att anlända innan nuvarande tid. Din ETA är %1, men klockan är %2.");
+
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, Locale.ENGLISH),
                 "Can't arrive after raid has ended. Your given time is %1, raid ends at %2");
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, SWEDISH),
                 "Det är väl inte så lämpligt att anlända efter att raiden slutat? Din ETA är %1, raiden slutar %2.");
 
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, Locale.ENGLISH),
-                "You can't create raids which are later than 2 hours from the current time %2 - your time was %1.");
+                "You can't create raids which are later than 2 hours from the current time %2 - your input was %1.");
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, SWEDISH),
-                "Du kan inte skapa en raid senare än 2 timmar från vad klockan är nu (%2). Tiden du gav var %1.");
+                "Du kan inte skapa en raid senare än 2 timmar från vad klockan är nu (%2). Du angav %1.");
 
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, Locale.ENGLISH),
                 "You can't create raids between 22:00 and 07:00 - your time was %1.");
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, SWEDISH),
-                "Du kan inte skapa en raid som slutar mellan 22.00 och 07:00. Tiden du gav var %1.");
+                "Du kan inte skapa en raid som slutar mellan 22.00 och 07:00. Du angav %1.");
 
         i18nMessages.put(new I18nLookup(TIMEZONE, Locale.ENGLISH),
-                "You seem to be living in a different timezone. Your given time is %1, while the current time is %2.");
+                "You seem to be living in a different timezone. Your input was %1, while it's currently %2.");
         i18nMessages.put(new I18nLookup(TIMEZONE, SWEDISH),
-                "Du kan inte skapa en raid som slutar innan nuvarande tid. Tiden du gav var %1, men klockan är %2.");
+                "Du kan inte skapa en raid som slutar innan nuvarande tid. Du angav %1, vilket är innan %2.");
 
         i18nMessages.put(new I18nLookup(NO_POKEMON, Locale.ENGLISH), "Could not find a pokemon with name \"%1\".");
         i18nMessages.put(new I18nLookup(NO_POKEMON, SWEDISH), "Kunde inte hitta pokemon med namn \"%1\".");
@@ -245,7 +252,7 @@ public class LocaleService {
                 "Se information om en pokemon, dess typ, svagheter etc. - !raid vs [Pokemon]");
 
         i18nMessages.put(new I18nLookup(RAID_TOSTRING, Locale.ENGLISH), "Raid for %1 at gym %2, ends at %3");
-        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 raid vid %2, slut kl. %3");
+        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 raid vid %2, slut %3");
 
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, Locale.ENGLISH), "Raid created: %1");
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, SWEDISH), "Raid skapad: %1");
@@ -254,6 +261,11 @@ public class LocaleService {
                 "Create new raid - !raid new [Name of Pokemon] [Ends at (HH:MM)] [Gym name]");
         i18nMessages.put(new I18nLookup(NEW_RAID_HELP, SWEDISH),
                 "Skapa ny raid - !raid new [Pokemon] [Slutar klockan (HH:MM)] [Gym]");
+
+        i18nMessages.put(new I18nLookup(NEW_EX_RAID_HELP, Locale.ENGLISH),
+                "Create new EX raid - !raid ex [Name of Pokemon] [Ends at (yyyy-mm-dd HH:MM)] [Gym name]");
+        i18nMessages.put(new I18nLookup(NEW_EX_RAID_HELP, SWEDISH),
+                "Skapa ny EX raid - !raid ex [Pokemon] [Slutar (yyyy-mm-dd HH:MM)] [Gym]");
 
         i18nMessages.put(new I18nLookup(AT_YOUR_SERVICE, Locale.ENGLISH), "PokeRaidBot reporting for duty!");
         i18nMessages.put(new I18nLookup(AT_YOUR_SERVICE, SWEDISH), "PokeRaidBot till er tjänst!");

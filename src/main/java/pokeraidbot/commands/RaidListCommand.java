@@ -6,10 +6,11 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.*;
 
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Set;
 
-import static pokeraidbot.Utils.printTime;
+import static pokeraidbot.Utils.printTimeIfSameDay;
 
 /**
  * !raid status [Pokestop name]
@@ -55,16 +56,39 @@ public class RaidListCommand extends ConfigAwareCommand {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(stringBuilder.toString());
             stringBuilder = new StringBuilder();
+            StringBuilder exRaids = new StringBuilder();
+            final LocalDate today = LocalDate.now();
             for (Raid raid : raids) {
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
-                stringBuilder.append("[").append(raid.getGym().getName()).append("](")
-                        .append(Utils.getStaticMapUrl(raid.getGym())).append(") (")
-                        .append(raid.getPokemon().getName()).append(") - ")
-                        .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale, printTime(raid.getEndOfRaid().minusHours(1)), printTime(raid.getEndOfRaid())))
-                        .append(". ").append(numberOfPeople)
-                        .append(" ")
-                        .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                        .append(".\n");
+                final Gym raidGym = raid.getGym();
+                final Pokemon raidBoss = raid.getPokemon();
+                if (raid.getEndOfRaid().toLocalDate().isEqual(today)) {
+                    stringBuilder.append("[").append(raidGym.getName()).append("](")
+                            .append(Utils.getStaticMapUrl(raidGym)).append(") (")
+                            .append(raidBoss.getName()).append(") - ")
+                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
+                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(raid.getEndOfRaid())))
+                            .append(". ").append(numberOfPeople)
+                            .append(" ")
+                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(".\n");
+                } else {
+                    exRaids.append("[").append(raidGym.getName()).append("](")
+                            .append(Utils.getStaticMapUrl(raidGym)).append(") (")
+                            .append(raidBoss.getName()).append(") - ")
+                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
+                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(raid.getEndOfRaid())))
+                            .append(". ").append(numberOfPeople)
+                            .append(" ")
+                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(".\n");
+                }
+            }
+            final String exRaidList = exRaids.toString();
+            if (exRaidList.length() > 1) {
+                stringBuilder.append("\nRaid-EX:\n").append(exRaidList);
             }
             embedBuilder.setDescription(stringBuilder.toString());
             commandEvent.reply(embedBuilder.build());

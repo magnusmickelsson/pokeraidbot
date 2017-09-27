@@ -99,7 +99,7 @@ public class BotServerMain {
         configurationMap.put("pokeraidbot_lab", new Config("uppsala"));
         configurationMap.put("pokeraidbot_lab2", new Config("uppsala"));
         configurationMap.put("pokeraidbot_stage", new Config("stockholm"));
-        configurationMap.put("pokeraidbot_test", new Config("luleå")); //, true));
+        configurationMap.put("pokeraidbot_test", new Config("uppsala")); //, true));
 
         // External user's servers
         configurationMap.put("pokémon luleå", new Config("luleå"));

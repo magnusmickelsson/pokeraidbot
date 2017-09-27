@@ -58,6 +58,8 @@ public class BotService {
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository, aggregateCommandListener),
+                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         configRepository, this, aggregateCommandListener),
                 new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository, aggregateCommandListener),
@@ -71,8 +73,8 @@ public class BotService {
                 new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
-                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
-                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
+                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener)
+//                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
         try {
