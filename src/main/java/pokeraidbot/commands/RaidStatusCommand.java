@@ -70,7 +70,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         // todo: locale service
         commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid help-signup\".", message -> {
             message.getChannel().addReactionById(message.getId(), Emotes.SIGN_UP_NOW_EMOTE).queue();
-            message.getChannel().addReactionById(message.getId(), Emotes.SIGNUP_HELP_EMOTE).queue();
+            message.getChannel().addReactionById(message.getId(), Emotes.SIGNUP_GROUP_EMOTE).queue();
             message.getChannel().addReactionById(message.getId(), Emotes.UNSIGN_EMOTE).queue();
         });
     }

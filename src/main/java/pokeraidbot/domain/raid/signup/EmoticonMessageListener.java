@@ -50,6 +50,12 @@ public class EmoticonMessageListener implements EventListener {
                                 .sendMessage(reactionEvent.getUser().getAsMention() + " anmälde sig!").queue();
                         wasPokeraidbotEmote = true;
                         break;
+                    case Emotes.SIGNUP_GROUP_EMOTE:
+                        // todo: skicka pm med kommandoinstruktioner
+                        ((GuildMessageReactionAddEvent) event).getChannel()
+                                .sendMessage(reactionEvent.getUser().getAsMention() + " vill göra en gruppanmälan!").queue();
+                        wasPokeraidbotEmote = true;
+                        break;
                     case Emotes.UNSIGN_EMOTE:
                         ((GuildMessageReactionAddEvent) event).getChannel()
                                 .sendMessage(reactionEvent.getUser().getAsMention() + " tog bort sin anmälan. :(").queue();

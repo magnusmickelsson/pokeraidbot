@@ -34,5 +34,6 @@ so we can't get test config on a prod server running by mistake
 * Persistent tracking
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
+* GuildController.public AuditableRestAction<Emote> createEmote(String name, Icon icon, Role... roles) - create emotes on server?
 * Checking error codes?
 ...
