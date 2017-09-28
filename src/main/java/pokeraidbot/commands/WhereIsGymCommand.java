@@ -4,7 +4,11 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
 
 public class WhereIsGymCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;

@@ -1,7 +1,7 @@
 package pokeraidbot.domain.errors;
 
-import pokeraidbot.domain.Gym;
-import pokeraidbot.domain.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.config.LocaleService;
 
 public class RaidNotFoundException extends RuntimeException {
     public RaidNotFoundException(Gym gym, LocaleService localeService) {

@@ -6,7 +6,15 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.RaidEntityRepository;
 

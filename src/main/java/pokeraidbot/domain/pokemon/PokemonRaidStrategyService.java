@@ -1,5 +1,6 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.pokemon;
 
+import pokeraidbot.domain.raid.RaidBossCounters;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
 import java.util.HashMap;

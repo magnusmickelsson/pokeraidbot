@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.config;
 
 import java.util.HashMap;
 import java.util.Locale;

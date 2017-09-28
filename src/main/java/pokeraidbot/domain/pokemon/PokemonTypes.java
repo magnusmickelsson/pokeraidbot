@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.pokemon;
 
 import org.apache.commons.lang3.StringUtils;
 

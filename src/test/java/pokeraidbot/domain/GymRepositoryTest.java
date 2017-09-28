@@ -3,6 +3,11 @@ package pokeraidbot.domain;
 import org.junit.Before;
 import org.junit.Test;
 import pokeraidbot.TestServerMain;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
 
 import java.util.HashMap;
 

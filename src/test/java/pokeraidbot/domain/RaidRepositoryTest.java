@@ -8,6 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.RaidRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

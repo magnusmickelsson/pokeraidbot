@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
 public enum RaidBossPokemons {
     // Tier 1

@@ -1,13 +1,11 @@
 package pokeraidbot.infrastructure.jpa;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import pokeraidbot.domain.ClockService;
+import pokeraidbot.domain.config.ClockService;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -2,6 +2,7 @@ package pokeraidbot.domain;
 
 import org.junit.Before;
 import org.junit.Test;
+import pokeraidbot.domain.config.LocaleService;
 
 import java.util.Locale;
 

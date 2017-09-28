@@ -1,5 +1,6 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
+import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.infrastructure.CounterPokemon;
 
 import java.util.Collections;

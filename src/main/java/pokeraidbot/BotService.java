@@ -11,9 +11,16 @@ import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import pokeraidbot.commands.*;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.jda.AggregateCommandListener;
+import pokeraidbot.jda.EventLoggingListener;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -38,6 +45,9 @@ public class BotService {
         }
 
         EventWaiter waiter = new EventWaiter();
+        EventLoggingListener eventLoggingListener = new EventLoggingListener();
+        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
+                configRepository, raidRepository, pokemonRepository, gymRepository);
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 //                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
@@ -73,8 +83,8 @@ public class BotService {
                 new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
-                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener)
-//                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
+                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
+                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
         try {
@@ -91,6 +101,8 @@ public class BotService {
                     // add the listeners
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
+                    .addEventListener(eventLoggingListener)
+                    .addEventListener(emoticonMessageListener)
 
                     // start it up!
                     .buildBlocking();

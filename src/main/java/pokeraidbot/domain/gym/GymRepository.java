@@ -1,7 +1,8 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.gym;
 
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.apache.commons.lang3.StringUtils;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 

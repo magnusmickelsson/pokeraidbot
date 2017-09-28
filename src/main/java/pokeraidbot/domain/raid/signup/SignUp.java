@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid.signup;
 
 import java.time.LocalTime;
 

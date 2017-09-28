@@ -6,8 +6,8 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.apache.commons.lang3.Validate;
-import pokeraidbot.domain.Config;
-import pokeraidbot.domain.ConfigRepository;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 public abstract class ConfigAwareCommand extends Command {

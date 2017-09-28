@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -6,8 +6,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.RaidEntity;
 import pokeraidbot.infrastructure.jpa.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.RaidEntitySignUp;

@@ -2,10 +2,10 @@ package pokeraidbot;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
-import pokeraidbot.domain.ClockService;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonRepository;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

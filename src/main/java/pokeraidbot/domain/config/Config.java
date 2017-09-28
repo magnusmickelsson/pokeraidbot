@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.config;
 
 import java.util.Locale;
 

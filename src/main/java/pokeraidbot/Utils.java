@@ -2,8 +2,12 @@ package pokeraidbot;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.raid.Raid;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

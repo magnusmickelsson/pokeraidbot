@@ -6,7 +6,15 @@ import net.dv8tion.jda.core.entities.*;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.Emotes;
+import pokeraidbot.domain.raid.signup.SignUp;
 
 import java.util.Locale;
 import java.util.Set;
@@ -60,11 +68,10 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         commandEvent.reply(messageEmbed);
         // todo: Link emoticons to actions against the bot
         // todo: locale service
-//        commandEvent.reply("Anmäl dig via knapparna nedan. För hjälp, skriv \"!raid help-signup\".", message -> {
-//            message.getChannel().addReactionById(message.getId(), "\uD83D\uDE00").queue();
-//            message.getChannel().addReactionById(message.getId(), "➕").queue();
-//            message.getChannel().addReactionById(message.getId(), "➖").queue();
-//            message.getChannel().addReactionById(message.getId(), "\uD83D\uDEB7").queue();
-//        });
+        commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid help-signup\".", message -> {
+            message.getChannel().addReactionById(message.getId(), Emotes.SIGN_UP_NOW_EMOTE).queue();
+            message.getChannel().addReactionById(message.getId(), Emotes.SIGNUP_HELP_EMOTE).queue();
+            message.getChannel().addReactionById(message.getId(), Emotes.UNSIGN_EMOTE).queue();
+        });
     }
 }

@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.pokemon;
 
 import java.util.Set;
 

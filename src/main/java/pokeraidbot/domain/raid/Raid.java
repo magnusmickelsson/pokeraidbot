@@ -1,6 +1,10 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.raid.signup.SignUp;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

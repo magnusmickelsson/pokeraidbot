@@ -3,7 +3,11 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.BotService;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.Config;
+import pokeraidbot.domain.config.ConfigRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 

@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure;
 
-import pokeraidbot.domain.Gym;
+import pokeraidbot.domain.gym.Gym;
 
 import java.io.BufferedReader;
 import java.io.IOException;
