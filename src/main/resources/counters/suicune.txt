@@ -39,6 +39,14 @@ Dragon Breath
 Outrage
 Dragon Claw
 Hurricane
+Jolteon
+
+Jolteon
+Quick Move	Charge Move
+Thunder Shock
+Thunderbolt
+Thunder
+Discharge
 Venusaur
 
 Venusaur
