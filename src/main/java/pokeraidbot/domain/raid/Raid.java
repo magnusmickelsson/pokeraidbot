@@ -19,6 +19,7 @@ public class Raid {
     private final LocaleService localeService;
     private Map<String, SignUp> signUps = new HashMap<>();
     private String region;
+    private String creator;
 
     public Raid(Pokemon pokemon, LocalDateTime endOfRaid, Gym gym, LocaleService localeService, String region) {
         this.pokemon = pokemon;
@@ -38,6 +39,14 @@ public class Raid {
 
     public Gym getGym() {
         return gym;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    void setCreator(String creator) {
+        this.creator = creator;
     }
 
     @Override

@@ -19,6 +19,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -88,6 +89,7 @@ public class RaidRepository {
         final Raid raid = new Raid(pokemonRepository.getPokemon(raidEntity.getPokemon()),
                 raidEntity.getEndOfRaid(),
                 gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
+        raid.setCreator(raidEntity.getCreator());
         Map<String, SignUp> signUps = new HashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
             signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
@@ -178,5 +180,35 @@ public class RaidRepository {
             activeRaids.add(getRaidInstance(entity));
         }
         return activeRaids;
+    }
+
+    public Raid changePokemon(Raid raid, Pokemon pokemon) {
+        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (!raidEntity.getPokemon().equalsIgnoreCase(raid.getPokemon().getName())) {
+            throw new IllegalStateException("Database issues. Please notify the developer: magnus.mickelsson@gmail.com and describe what happened.");
+        }
+        raidEntity.setPokemon(pokemon.getName());
+        raidEntity = raidEntityRepository.save(raidEntity);
+        return getRaidInstance(raidEntity);
+    }
+
+    public Raid changeEndOfRaid(Raid raid, LocalDateTime newEndOfRaid) {
+        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (!raidEntity.getPokemon().equalsIgnoreCase(raid.getPokemon().getName())) {
+            throw new IllegalStateException("Database issues. Please notify the developer: magnus.mickelsson@gmail.com and describe what happened.");
+        }
+        raidEntity.setEndOfRaid(newEndOfRaid);
+        raidEntity = raidEntityRepository.save(raidEntity);
+        return getRaidInstance(raidEntity);
+    }
+
+    public boolean delete(Raid raid) {
+        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (raidEntity != null) {
+            raidEntityRepository.delete(raidEntity);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

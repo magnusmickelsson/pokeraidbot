@@ -10,10 +10,15 @@ are getting the message (tracking), and also instructions on how to remove track
 also include start/hatch time in message for !raid list and !raid status
 * !raid untrack {pokemon} - !raid untrack without params clears all tracking
 
-In progress:
+Needs testing:
 
 * Defaultconfig för kanal kan sättas och ändras i runtime av admin.
 * Config should be put in the database, but synch with config during startup
+* "Change raid"-kommando om man gör fel när man skapar raiden
+
+Being developed:
+
+* Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
 
 Fix issue:
 
@@ -21,8 +26,8 @@ Fix issue:
 
 Do, features:
 
-* "Change raid"-kommando om man gör fel när man skapar raiden
-* Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
+* Timezone handling via config, used in all commands related to time
+
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
 * Check permissions during config - need to have MANAGE_MESSAGE and access to send messages, among other things
 * Enable channel admins to configure a server, to choose region/dataset and default locale

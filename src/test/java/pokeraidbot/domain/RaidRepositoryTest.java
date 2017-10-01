@@ -16,11 +16,13 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -41,12 +43,15 @@ public class RaidRepositoryTest {
     LocaleService localeService;
     @Autowired
     ConfigRepository configRepository;
+    @Autowired
+    RaidEntityRepository raidEntityRepository;
 
     @Before
     public void setUp() throws Exception {
         Utils.setClockService(clockService);
         gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, configRepository);
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
+        raidEntityRepository.deleteAllInBatch();
     }
 
     @Test
@@ -76,6 +81,56 @@ public class RaidRepositoryTest {
         final Raid raidFromDb = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
         assertThat(raidFromDb, is(raid));
         assertThat(raidFromDb.getSignUps().size(), is(1));
+    }
+
+    @Test
+    public void changePokemonWorks() throws Exception {
+        clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
+        final LocalDateTime now = clockService.getCurrentDateTime();
+        final LocalTime nowTime = now.toLocalTime();
+        LocalDateTime endOfRaid = now.plusMinutes(45);
+        final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
+        String raidCreatorName = "testUser1";
+        try {
+            repo.newRaid(raidCreatorName, enteiRaid);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+            fail("Could not save raid: " + e.getMessage());
+        }
+        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.getByName("Mewtwo"));
+        assertThat(raid.getEndOfRaid(), is(changedRaid.getEndOfRaid()));
+        assertThat(raid.getGym(), is(changedRaid.getGym()));
+        assertThat(raid.getSignUps(), is(changedRaid.getSignUps()));
+        assertThat(raid.getRegion(), is(changedRaid.getRegion()));
+        assertThat(raid.getPokemon().getName(), is("Entei"));
+        assertThat(changedRaid.getPokemon().getName(), is("Mewtwo"));
+    }
+
+    @Test
+    public void changeEndOfRaidWorks() throws Exception {
+        clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
+        final LocalDateTime now = clockService.getCurrentDateTime();
+        final LocalTime nowTime = now.toLocalTime();
+        LocalDateTime endOfRaid = now.plusMinutes(45);
+        final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
+        String raidCreatorName = "testUser1";
+        try {
+            repo.newRaid(raidCreatorName, enteiRaid);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+            fail("Could not save raid: " + e.getMessage());
+        }
+        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        Raid changedRaid = repo.changeEndOfRaid(raid, endOfRaid.plusMinutes(5));
+        assertThat(raid.getEndOfRaid(), not(changedRaid.getEndOfRaid()));
+        assertThat(changedRaid.getEndOfRaid(), is(raid.getEndOfRaid().plusMinutes(5)));
+        assertThat(raid.getGym(), is(changedRaid.getGym()));
+        assertThat(raid.getSignUps(), is(changedRaid.getSignUps()));
+        assertThat(raid.getRegion(), is(changedRaid.getRegion()));
+        assertThat(raid.getPokemon().getName(), is(changedRaid.getPokemon().getName()));
     }
 
     // todo: testcases for the intricate rules around EX raids

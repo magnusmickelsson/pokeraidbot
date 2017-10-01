@@ -1,5 +1,6 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.format.annotation.DateTimeFormat;
 import pokeraidbot.domain.config.ClockService;
 
@@ -138,5 +139,14 @@ public class RaidEntity implements Serializable {
                 ", creator='" + creator + '\'' +
                 ", region='" + region + '\'' +
                 '}';
+    }
+
+    public void setPokemon(String pokemon) {
+        Validate.notEmpty(pokemon);
+        this.pokemon = pokemon;
+    }
+
+    public void setEndOfRaid(LocalDateTime endOfRaid) {
+        this.endOfRaid = endOfRaid;
     }
 }
