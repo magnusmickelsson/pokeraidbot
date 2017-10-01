@@ -15,6 +15,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,11 +39,13 @@ public class RaidRepositoryTest {
     ClockService clockService;
     @Autowired
     LocaleService localeService;
+    @Autowired
+    ConfigRepository configRepository;
 
     @Before
     public void setUp() throws Exception {
         Utils.setClockService(clockService);
-        gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, TestServerMain.configRepositoryForTests());
+        gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, configRepository);
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
     }
 

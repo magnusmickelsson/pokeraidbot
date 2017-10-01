@@ -1,13 +1,11 @@
 package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
@@ -15,6 +13,8 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.Emotes;
 import pokeraidbot.domain.raid.signup.SignUp;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.Locale;
 import java.util.Set;
@@ -46,8 +46,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String gymName = commandEvent.getArgs();
         final String userName = commandEvent.getAuthor().getName();
-        final Gym gym = gymRepository.search(userName, gymName, config.region);
-        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.region);
+        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
         final Set<SignUp> signUps = raid.getSignUps();
         final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 

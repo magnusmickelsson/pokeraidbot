@@ -3,8 +3,6 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
@@ -13,12 +11,15 @@ import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static pokeraidbot.Utils.*;
+import static pokeraidbot.Utils.assertCreateRaidTimeNotBeforeNow;
+import static pokeraidbot.Utils.assertTimeNotInNoRaidTimespan;
 
 /**
  * !raid new [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
@@ -66,8 +67,8 @@ public class NewRaidExCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.region);
-        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.region);
+        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
         raidRepository.newRaid(userName, raid);
         replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                 localeService.getLocaleForUser(userName), raid.toString()));

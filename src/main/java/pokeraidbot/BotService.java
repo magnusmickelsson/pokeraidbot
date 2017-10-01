@@ -10,8 +10,10 @@ import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.commands.*;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
@@ -19,24 +21,33 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 import pokeraidbot.jda.AggregateCommandListener;
 import pokeraidbot.jda.EventLoggingListener;
 
+import javax.annotation.PostConstruct;
 import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Arrays;
 
 public class BotService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
+
     private String ownerId;
     private String token;
     private JDA botInstance;
     private CommandClient commandClient;
     private CommandListener aggregateCommandListener;
     private TrackingCommandListener trackingCommandListener;
+    private GymRepository gymRepository;
+    private ConfigRepository configRepository;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                       ConfigRepository configRepository, String ownerId, String token) {
+        this.gymRepository = gymRepository;
+        this.configRepository = configRepository;
         this.ownerId = ownerId;
         this.token = token;
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
@@ -84,6 +95,7 @@ public class BotService {
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
                 new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository, aggregateCommandListener),
+                new InstallCommand(configRepository, gymRepository),
                 new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
@@ -109,6 +121,28 @@ public class BotService {
         } catch (LoginException | RateLimitedException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostConstruct
+    @Transactional
+    public void initializeConfig() {
+        if (configRepository.findAll().size() == 0) {
+            LOGGER.warn("Could not find any configuration in database, assuming fresh install. Creating basic server configurations..");
+            // My test servers
+            configRepository.save(new Config("uppsala", "zhorhn tests stuff"));
+            configRepository.save(new Config("uppsala", "pokeraidbot_lab"));
+            configRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
+            configRepository.save(new Config("uppsala", "pokeraidbot_stage"));
+            configRepository.save(new Config("uppsala", "pokeraidbot_test"));
+
+            // External user's servers
+            configRepository.save(new Config("luleå", "pokémon luleå"));
+            configRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
+            configRepository.save(new Config("norrköping", true, "raid-test-nkpg"));
+            configRepository.save(new Config("norrköping", true, "raid - pokemon go norrköping"));
+            LOGGER.info("Server configurations created. Add more via the command for an administrator in a server where pokeraidbot has been added: !raid install");
+        }
+        gymRepository.reloadGymData();
     }
 
     public JDA getBot() {

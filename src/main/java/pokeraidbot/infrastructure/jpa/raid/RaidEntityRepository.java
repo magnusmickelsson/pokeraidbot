@@ -1,4 +1,4 @@
-package pokeraidbot.infrastructure.jpa;
+package pokeraidbot.infrastructure.jpa.raid;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

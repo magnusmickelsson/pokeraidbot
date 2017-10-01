@@ -5,11 +5,11 @@ import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import pokeraidbot.BotService;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.concurrent.TimeUnit;
 

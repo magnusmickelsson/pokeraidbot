@@ -1,4 +1,4 @@
-package pokeraidbot.infrastructure.jpa;
+package pokeraidbot.infrastructure.jpa.raid;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import pokeraidbot.domain.config.ClockService;

@@ -6,8 +6,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.commands.NewRaidCommand;
-import pokeraidbot.domain.config.Config;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.Locale;
 

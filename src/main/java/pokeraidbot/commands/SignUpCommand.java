@@ -3,14 +3,14 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -64,8 +64,8 @@ public class SignUpCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.region);
-        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.region);
+        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
 
         LocalTime eta = LocalTime.parse(timeString, Utils.timeParseFormatter);
         LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);

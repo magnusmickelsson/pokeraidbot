@@ -15,9 +15,9 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
-import pokeraidbot.infrastructure.jpa.RaidEntity;
-import pokeraidbot.infrastructure.jpa.RaidEntityRepository;
-import pokeraidbot.infrastructure.jpa.RaidEntitySignUp;
+import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
+import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
+import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
 
 import java.time.LocalTime;
 import java.util.*;

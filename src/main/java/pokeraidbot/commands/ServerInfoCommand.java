@@ -2,9 +2,9 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 public class ServerInfoCommand extends ConfigAwareCommand {
     private final LocaleService localeService;

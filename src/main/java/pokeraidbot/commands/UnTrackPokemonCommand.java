@@ -3,13 +3,13 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.BotService;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 public class UnTrackPokemonCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
@@ -39,7 +39,7 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
             replyBasedOnConfig(config, commandEvent, message);
         } else {
             Pokemon pokemon = pokemonRepository.getByName(args);
-            commandListener.remove(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
+            commandListener.remove(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
             String message =
                     localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
                             pokemon.getName(), userName);

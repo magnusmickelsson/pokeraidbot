@@ -4,14 +4,14 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.config.Config;
-import pokeraidbot.domain.config.ConfigRepository;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -45,9 +45,9 @@ public class RaidListCommand extends ConfigAwareCommand {
         final Locale locale = localeService.getLocaleForUser(userName);
         Set<Raid> raids;
         if (args != null && args.length() > 0) {
-            raids = raidRepository.getRaidsInRegionForPokemon(config.region, pokemonRepository.getByName(args));
+            raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.getByName(args));
         } else {
-            raids = raidRepository.getAllRaidsForRegion(config.region);
+            raids = raidRepository.getAllRaidsForRegion(config.getRegion());
         }
 
         if (raids.size() == 0) {

@@ -2,9 +2,7 @@ package pokeraidbot.infrastructure;
 
 import pokeraidbot.domain.gym.Gym;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +17,11 @@ public class CSVGymDataReader {
         String line;
         Set<Gym> gyms = new HashSet<>();
         try {
-            final InputStreamReader inputStreamReader = new InputStreamReader(CSVGymDataReader.class.getResourceAsStream(resourceName), "UTF-8");
+            final InputStream resourceAsStream = CSVGymDataReader.class.getResourceAsStream(resourceName);
+            if (resourceAsStream == null) {
+                throw new FileNotFoundException(resourceName);
+            }
+            final InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream, "UTF-8");
             BufferedReader br = new BufferedReader(inputStreamReader);
 
             while ((line = br.readLine()) != null) {
@@ -38,8 +40,7 @@ public class CSVGymDataReader {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
+            System.err.println("Error while trying to open gym file " + resourceName + ": " + e.getMessage());
         }
 
         System.out.println("Parsed " + gyms.size() + " gyms from \"" + resourceName + "\".");
