@@ -27,7 +27,7 @@ Fix issue:
 Do, features:
 
 * Timezone handling via config, used in all commands related to time
-
+* Credit Iconninja for icons
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
 * Check permissions during config - need to have MANAGE_MESSAGE and access to send messages, among other things
 * Enable channel admins to configure a server, to choose region/dataset and default locale

@@ -20,6 +20,7 @@ public class InstallCommand extends Command {
         this.configRepository = configRepository;
         this.gymRepository = gymRepository;
         this.name = "install";
+        this.help = "Installationskommando, bara till för administratörer.";
         this.guildOnly = false;
         this.userPermissions = new Permission[]{Permission.ADMINISTRATOR};
     }
@@ -30,13 +31,13 @@ public class InstallCommand extends Command {
         if (StringUtils.isEmpty(args)) {
             // Answer with how-to
             event.replyInDM("Re-run the command !raid install, but with the following syntax:");
-            event.replyInDM("!raid install server=[server name];region=[region dataset reference];replyInDmWhenPossible=[true or false];locale=[2 char language code]");
-            event.replyInDM("Example: !raid install server=My test server;region=stockholm;replyInDmWhenPossible=false;locale=sv");
+            event.replyInDM("!raid install server=[server name];region=[region dataset reference];replyInDm=[true or false];locale=[2 char language code]");
+            event.replyInDM("Example: !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv");
             return;
         } else {
             Map<String, String> settingsToSet = new HashMap<>();
             final String[] arguments = args.split(";");
-            if (arguments.length > 5 || arguments.length < 4) {
+            if (arguments.length != 4) {
                 event.replyInDM("Wrong syntax of install command. Do this again, and this time follow instructions, please: !raid install");
                 return;
             }
@@ -54,7 +55,7 @@ public class InstallCommand extends Command {
                 Config config = configRepository.getConfigForServer(server);
                 final Locale locale = new Locale(settingsToSet.get("locale"));
                 final String region = settingsToSet.get("region");
-                final Boolean replyInDmWhenPossible = Boolean.valueOf(settingsToSet.get("replyindmwhenpossible"));
+                final Boolean replyInDmWhenPossible = Boolean.valueOf(settingsToSet.get("replyindm"));
                 if (config == null) {
                     config = new Config(region,
                             replyInDmWhenPossible,
@@ -64,7 +65,9 @@ public class InstallCommand extends Command {
                     config.setRegion(region);
                     config.setReplyInDmWhenPossible(replyInDmWhenPossible);
                 }
-                event.replyInDM("Installation complete. Saved configuration: " + configRepository.save(config));
+                event.replyInDM("Configuration complete. Saved configuration: " + configRepository.save(config));
+                event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
+                        "emotes the bot needs.");
                 gymRepository.reloadGymData();
             } catch (Throwable t) {
                 event.replyInDM("There was an error: " + t.getMessage());

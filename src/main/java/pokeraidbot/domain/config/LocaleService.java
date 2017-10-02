@@ -139,9 +139,9 @@ public class LocaleService {
                 "Det är väl inte så lämpligt att anlända efter att raiden slutat? Din ETA är %1, raiden slutar %2.");
 
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, Locale.ENGLISH),
-                "You can't create raids which are later than 2 hours from the current time %2 - your input was %1.");
+                "You can't create raids which are later than %3 hours from the current time %2 - your input was %1.");
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, SWEDISH),
-                "Du kan inte skapa en raid senare än 2 timmar från vad klockan är nu (%2). Du angav %1.");
+                "Du kan inte skapa en raid senare än %3 timmar från vad klockan är nu (%2). Du angav %1.");
 
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, Locale.ENGLISH),
                 "You can't create raids between 22:00 and 07:00 - your time was %1.");

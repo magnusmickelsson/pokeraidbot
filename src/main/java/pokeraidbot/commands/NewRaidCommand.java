@@ -52,7 +52,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
         assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
-        assertTimeNotMoreThanTwoHoursFromNow(userName, endsAtTime, localeService);
+        assertTimeNotMoreThanXHoursFromNow(userName, endsAtTime, localeService, 2);
         assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();

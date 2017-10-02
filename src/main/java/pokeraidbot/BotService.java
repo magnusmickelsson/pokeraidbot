@@ -100,8 +100,11 @@ public class BotService {
                 new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
                 new InstallCommand(configRepository, gymRepository),
+                new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
+                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository, aggregateCommandListener, this),
                 new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 

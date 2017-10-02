@@ -9,9 +9,9 @@ import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.Emotes;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -53,25 +53,34 @@ public class RaidStatusCommand extends ConfigAwareCommand {
 
         final Locale localeForUser = localeService.getLocaleForUser(userName);
         EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(null, null, null);
+        final Pokemon pokemon = raid.getPokemon();
+        embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" + pokemon.getNumber() + ".png");
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
         StringBuilder sb = new StringBuilder();
-        sb.append("Pokemon: ").append(raid.getPokemon()).append("\n")
-                .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, localeForUser,
-                        printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)), printTimeIfSameDay(raid.getEndOfRaid())))
-                .append("\n").append(numberOfPeople).append(" ")
-                .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append(".")
-                .append(signUps.size() > 0 ? "\n" + signUps : "")
-                .append("\n[Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
+        sb.append("**Aktiv:** ")
+                .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
+                .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
+                .append("\t**").append(numberOfPeople).append(" ")
+                .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
+                .append(signUps.size() > 0 ? ":\n" + signUps : "")
+        // todo: i18n
+        .append("\nSchedule a group - type in chat (with):\n!raid group ")
+                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
+                .append("\nHow to get here: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
-        // todo: Link emoticons to actions against the bot
-        // todo: locale service
-        commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid help-signup\".", message -> {
-            message.getChannel().addReactionById(message.getId(), Emotes.SIGN_UP_NOW_EMOTE).queue();
-            message.getChannel().addReactionById(message.getId(), Emotes.SIGNUP_GROUP_EMOTE).queue();
-            message.getChannel().addReactionById(message.getId(), Emotes.UNSIGN_EMOTE).queue();
-        });
+    }
+
+    private String getNumberAndFillToThree(Pokemon pokemon) {
+        String numberAsString = "" + pokemon.getNumber();
+        if (pokemon.getNumber() < 10) {
+            numberAsString = "00" + numberAsString;
+        } else if (pokemon.getNumber() < 100) {
+            numberAsString = "0" + numberAsString;
+        }
+        return numberAsString;
     }
 }

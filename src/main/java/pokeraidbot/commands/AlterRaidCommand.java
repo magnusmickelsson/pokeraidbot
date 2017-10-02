@@ -42,7 +42,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "change";
         // todo: i18n
-        this.help = " !raid change when/pokemon [Change to what] [Pokestop name] - !raid change remove [Pokestop name]";
+        this.help = " Ändra något som blev fel vid skapandet av en raid. Skriv \"!raid man change\" för detaljer.";
         //localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -68,7 +68,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
                 assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
-                assertTimeNotMoreThanTwoHoursFromNow(userName, endsAtTime, localeService);
+                assertTimeNotMoreThanXHoursFromNow(userName, endsAtTime, localeService, 2);
                 assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
                 raid = raidRepository.changeEndOfRaid(raid, endsAt);
                 break;

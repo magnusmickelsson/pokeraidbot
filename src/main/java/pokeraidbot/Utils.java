@@ -130,11 +130,12 @@ public class Utils {
         }
     }
 
-    public static void assertTimeNotMoreThanTwoHoursFromNow(String userName, LocalTime time, LocaleService localeService) {
+    public static void assertTimeNotMoreThanXHoursFromNow(String userName, LocalTime time, LocaleService localeService, Integer hours) {
         final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, LocaleService.DEFAULT, printTime(time), printTime(now)));
+                    localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, LocaleService.DEFAULT,
+                            printTime(time), printTime(now), String.valueOf(hours)));
         }
     }
 
