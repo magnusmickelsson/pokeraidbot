@@ -26,6 +26,8 @@ Fix issue:
 
 Do, features:
 
+* "What's new"-command so people can see what new features.
+* "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
 * Timezone handling via config, used in all commands related to time
 * Credit Iconninja for icons
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
