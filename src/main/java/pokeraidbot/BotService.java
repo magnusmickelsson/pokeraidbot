@@ -19,7 +19,6 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -57,8 +56,8 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
-        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
-                configRepository, raidRepository, pokemonRepository, gymRepository);
+//        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
+//                configRepository, raidRepository, pokemonRepository, gymRepository);
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 //                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
@@ -102,10 +101,10 @@ public class BotService {
                 new InstallCommand(configRepository, gymRepository),
                 new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
-                        aggregateCommandListener),
-                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener, this),
-                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
+                        aggregateCommandListener)
+//                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+//                        configRepository, aggregateCommandListener, this),
+//                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
         try {
@@ -123,7 +122,7 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
-                    .addEventListener(emoticonMessageListener)
+//                    .addEventListener(emoticonMessageListener)
 
                     // start it up!
                     .buildBlocking();

@@ -58,6 +58,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" + pokemon.getNumber() + ".png");
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
         StringBuilder sb = new StringBuilder();
+        // todo: i18n
         sb.append("**Aktiv:** ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
                 .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
@@ -65,8 +66,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
                 .append(signUps.size() > 0 ? ":\n" + signUps : "")
         // todo: i18n
-        .append("\nSchedule a group - type in chat (with):\n!raid group ")
-                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
+//        .append("\nSchedule a group - type in chat (with):\n!raid group ")
+//                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
                 .append("\nHow to get here: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();

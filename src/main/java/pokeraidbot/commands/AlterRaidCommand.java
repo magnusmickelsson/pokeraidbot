@@ -42,7 +42,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "change";
         // todo: i18n
-        this.help = " Ändra något som blev fel vid skapandet av en raid. Skriv \"!raid man change\" för detaljer.";
+        this.help = " Ändra något som blev fel vid skapandet av en raid. "; //Skriv \"!raid man change\" för detaljer.";
         //localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -81,7 +81,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         commandEvent.getMember(), Permission.ADMINISTRATOR);
                 if (userIsNotAdministrator) {
                     // todo: i18n
-                    throw new UserMessedUpException(userName, "Only administrators can delete raids, sorry.");
+                    throw new UserMessedUpException(userName, "Bara administratörer kan ta bort raids, tyvärr."); //"Only administrators can delete raids, sorry.");
                 }
                 // todo: got "Zhorhn: Kunde inte hitta ett unikt gym/pokestop, din sökning returnerade mer än 5 resultat. Försök vara mer precis."
                 // while trying to delete. Check what that was.
@@ -89,18 +89,20 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     raid = null;
                 } else {
                     throw new UserMessedUpException(userName,
-                            "Could not delete raid since you tried to delete one that doesn't exist.");
+                            // todo: i18n
+                            "Kunde inte ta bort raid, eftersom den fanns inte.");
+//                            "Could not delete raid since you tried to delete one that doesn't exist.");
                 }
                 break;
             default:
                 // todo: i18n
-                throw new UserMessedUpException(userName, "Bad syntax of command. Refer to command help: !raid help");
+                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid usage");//"Bad syntax of command. Refer to command help: !raid help");
         }
         // todo: i18n
         if (raid != null) {
-            replyBasedOnConfig(config, commandEvent, "Corrected raid: " + raid.toString());
+            replyBasedOnConfig(config, commandEvent, "Korrigerade raid: " + raid.toString());
         } else {
-            replyBasedOnConfig(config, commandEvent, "Deleted raid.");
+            replyBasedOnConfig(config, commandEvent, "Tog bort raid.");
         }
         //localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
 //                localeService.getLocaleForUser(userName), raid.toString()));
@@ -112,7 +114,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         final boolean userIsNotRaidCreator = !userName.equalsIgnoreCase(raid.getCreator());
         if (userIsNotAdministrator && userIsNotRaidCreator) {
             // todo: i18n
-            throw new UserMessedUpException(userName, "You are not the creator of this raid, nor an administrator!");
+            throw new UserMessedUpException(userName, "Du är inte skapare av denna raid, eller en administratör. " +
+                    "Du får inte göra det du försökte göra. :p"); //"You are not the creator of this raid, nor an administrator!");
         }
     }
 }

@@ -12,7 +12,7 @@ public class HelpTopicCommand extends ConfigAwareCommand {
     public HelpTopicCommand(LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
         super(configRepository, commandListener);
         this.localeService = localeService;
-        this.name = "help-signup";
+        this.name = "man";
         this.help = localeService.getMessageFor(LocaleService.USAGE_HELP, LocaleService.DEFAULT);
     }
 

@@ -379,6 +379,13 @@ public class LocaleService {
             "*Example:* !raid track Entei\n\n" +
             "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
             "*Example:* !raid untrack Entei - remove your tracking of Entei. !raid untrack - remove all your tracking.\n\n" +
+            // todo: i18n - change to english
+            "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* (Endast raidskapare eller admin får göra detta)\n" +
+            "*Exempel:* !raid change when 09:45 Solna Platform\n\n" +
+            "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* (Endast raidskapare eller admin får göra detta)\n" +
+            "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +
+            "**Ta bort en raid:** !raid change remove *[Pokestop name]* (Endast admins får göra detta)\n" +
+            "*Exempel:* !raid change remove Solna Platform\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV = "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
             "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
@@ -398,6 +405,12 @@ public class LocaleService {
             "*Exempel:* !raid track Entei\n\n" +
             "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
             "*Exempel:* !raid untrack Entei - ta bort din övervakning för Entei. !raid untrack - ta bort alla dina övervakningar.\n\n" +
+             "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* (Endast raidskapare eller admin får göra detta)\n" +
+            "*Exempel:* !raid change when 09:45 Solna Platform\n\n" +
+            "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* (Endast raidskapare eller admin får göra detta)\n" +
+            "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +
+            "**Ta bort en raid:** !raid change remove *[Pokestop name]* (Endast admins får göra detta)\n" +
+            "*Exempel:* !raid change remove Solna Platform\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }
