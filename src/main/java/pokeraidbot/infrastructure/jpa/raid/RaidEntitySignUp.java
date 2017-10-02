@@ -1,4 +1,4 @@
-package pokeraidbot.infrastructure.jpa;
+package pokeraidbot.infrastructure.jpa.raid;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

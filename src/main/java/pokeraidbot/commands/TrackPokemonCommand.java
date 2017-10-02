@@ -3,9 +3,13 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.BotService;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 public class TrackPokemonCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
@@ -28,7 +32,7 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         Pokemon pokemon = pokemonRepository.getByName(args);
         final String userId = commandEvent.getAuthor().getId();
         final String userName = commandEvent.getAuthor().getName();
-        commandListener.add(new PokemonTrackingTarget(config.region, userId, pokemon.getName()), userName);
+        commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
         String message =
                 localeService.getMessageFor(LocaleService.TRACKING_ADDED, localeService.getLocaleForUser(userName),
                         pokemon.getName(), userName);

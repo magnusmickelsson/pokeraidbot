@@ -3,14 +3,21 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 
 import static pokeraidbot.Utils.assertEtaNotAfterRaidEnd;
-import static pokeraidbot.Utils.assertGivenTimeNotBeforeNow;
+import static pokeraidbot.Utils.assertSignupTimeNotBeforeNow;
 
 /**
  * !raid add [number of people] [due time (HH:MM)] [Pokestop name]
@@ -37,6 +44,7 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(userName);
         final String[] args = commandEvent.getArgs().split(" ");
         String people = args[0];
+        // todo: check number of arguments
         Integer numberOfPeople;
         try {
             numberOfPeople = new Integer(people);
@@ -56,13 +64,14 @@ public class SignUpCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.region);
-        final Raid raid = raidRepository.getRaid(gym, config.region);
+        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
 
-        LocalTime eta = LocalTime.parse(timeString, Utils.dateTimeParseFormatter);
+        LocalTime eta = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
 
-        assertEtaNotAfterRaidEnd(userName, raid, eta, localeService);
-        assertGivenTimeNotBeforeNow(userName, eta, localeService);
+        assertEtaNotAfterRaidEnd(userName, raid, realEta, localeService);
+        assertSignupTimeNotBeforeNow(userName, realEta, localeService);
 
         raid.signUp(userName, numberOfPeople, eta, raidRepository);
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);

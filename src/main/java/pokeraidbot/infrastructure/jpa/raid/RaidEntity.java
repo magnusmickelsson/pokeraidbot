@@ -1,11 +1,12 @@
-package pokeraidbot.infrastructure.jpa;
+package pokeraidbot.infrastructure.jpa.raid;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.format.annotation.DateTimeFormat;
-import pokeraidbot.domain.ClockService;
+import pokeraidbot.domain.config.ClockService;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,15 +18,15 @@ public class RaidEntity implements Serializable {
     @Column(nullable = false)
     private String pokemon;
     @Column(nullable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    private LocalTime endOfRaid;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime endOfRaid;
     @Basic(optional = false)
     @Column(nullable = false)
     private String gym;
     @Basic(optional = false)
     @Column(nullable = false)
     private String creator;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)
@@ -35,7 +36,7 @@ public class RaidEntity implements Serializable {
     protected RaidEntity() {
     }
 
-    public RaidEntity(String id, String pokemon, LocalTime endOfRaid, String gym, String creator, String region) {
+    public RaidEntity(String id, String pokemon, LocalDateTime endOfRaid, String gym, String creator, String region) {
         this.id = id;
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
@@ -56,7 +57,7 @@ public class RaidEntity implements Serializable {
         return pokemon;
     }
 
-    public LocalTime getEndOfRaid() {
+    public LocalDateTime getEndOfRaid() {
         return endOfRaid;
     }
 
@@ -90,8 +91,14 @@ public class RaidEntity implements Serializable {
         }
     }
 
+    public boolean isExpired(ClockService clockService) {
+        final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
+        return currentDateTime.isAfter(endOfRaid);
+    }
+
     public boolean isActive(ClockService clockService) {
-        return clockService.getCurrentTime().isBefore(endOfRaid);
+        final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
+        return currentDateTime.isBefore(endOfRaid) && endOfRaid.minusHours(1).isBefore(currentDateTime);
     }
 
     @Override
@@ -132,5 +139,14 @@ public class RaidEntity implements Serializable {
                 ", creator='" + creator + '\'' +
                 ", region='" + region + '\'' +
                 '}';
+    }
+
+    public void setPokemon(String pokemon) {
+        Validate.notEmpty(pokemon);
+        this.pokemon = pokemon;
+    }
+
+    public void setEndOfRaid(LocalDateTime endOfRaid) {
+        this.endOfRaid = endOfRaid;
     }
 }

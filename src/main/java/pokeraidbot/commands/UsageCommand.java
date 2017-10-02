@@ -2,9 +2,9 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import pokeraidbot.domain.Config;
-import pokeraidbot.domain.ConfigRepository;
-import pokeraidbot.domain.LocaleService;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.Locale;
 

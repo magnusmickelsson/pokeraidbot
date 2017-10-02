@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.gym;
 
 public class Gym {
     private String name;

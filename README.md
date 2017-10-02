@@ -121,7 +121,8 @@ here: https://pokeraidbot2.herokuapp.com
 
 ## Who?
 
-Bot created by Magnus Mickelsson (right now, < 40h work has been put into it so cut me some slack).
+Bot created by Magnus Mickelsson - done mostly during evenings after the kids went to bed, so cut me some slack :( 
+
 Valuable contributions also by Johan Millert.
 
 Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.

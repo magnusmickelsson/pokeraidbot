@@ -4,10 +4,10 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import pokeraidbot.domain.Config;
-import pokeraidbot.domain.ConfigRepository;
-import pokeraidbot.domain.LocaleService;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.Locale;
 import java.util.Set;

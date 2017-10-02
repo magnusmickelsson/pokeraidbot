@@ -2,10 +2,13 @@ package pokeraidbot;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Pokemon;
-import pokeraidbot.domain.PokemonRepository;
+import pokeraidbot.domain.config.ClockService;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -143,6 +146,35 @@ public class UtilsTest {
         Pokemon pokemon = pokemonRepository.getByName("Tyranitar");
 
         assertThat(Utils.printWeaknesses(pokemon), is("Water, **Fighting**, Bug, Ground, Steel, Fairy"));
+    }
+
+    @Test
+    public void raidsCollide() throws Exception {
+        final ClockService currentTimeService = new ClockService();
+        currentTimeService.setMockTime(LocalTime.of(10, 0));
+        LocalDateTime startOne = currentTimeService.getCurrentDateTime();
+        LocalDateTime endOne = startOne.plusHours(1);
+        LocalDateTime startTwo = currentTimeService.getCurrentDateTime().minusMinutes(1);
+        LocalDateTime endTwo = startTwo.plusHours(1);
+        assertThat(Utils.raidsCollide(endOne, endTwo), is(true));
+        assertThat(Utils.raidsCollide(endTwo, endOne), is(true));
+
+        startOne = currentTimeService.getCurrentDateTime();
+        endOne = startOne.plusMinutes(10);
+        startTwo = currentTimeService.getCurrentDateTime().plusMinutes(11);
+        endTwo = startTwo.plusHours(1);
+        assertThat(Utils.raidsCollide(endOne, endTwo), is(false));
+        assertThat(Utils.raidsCollide(endTwo, endOne), is(false));
+    }
+
+    @Test
+    public void isSamePokemon() throws Exception {
+        assertThat(Utils.isSamePokemon("mew", "mewtwo"), is(false));
+        assertThat(Utils.isSamePokemon("mewtwo", "mew"), is(false));
+        assertThat(Utils.isSamePokemon("mewtwo", "mewtwo"), is(true));
+        assertThat(Utils.isSamePokemon("mewTwO", "mewtwo"), is(true));
+        assertThat(Utils.isSamePokemon("mewtwo", "mewTwO"), is(true));
+        assertThat(Utils.isSamePokemon(" mewtwo", "mewtwo"), is(false));
     }
 
     private void assertPokemonIsDoubleWeakAgainst(Pokemon pokemon, String typeToCheck) {

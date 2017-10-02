@@ -1,25 +1,61 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.gym;
 
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.apache.commons.lang3.StringUtils;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.infrastructure.CSVGymDataReader;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static me.xdrop.fuzzywuzzy.FuzzySearch.extractTop;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class GymRepository {
-    private Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
+    private Map<String, Set<Gym>> gymsPerRegion = new ConcurrentHashMap<>();
+    private final ConfigRepository configRepository;
     private final LocaleService localeService;
 
+    public GymRepository(ConfigRepository configRepository, LocaleService localeService) {
+        this.configRepository = configRepository;
+        this.localeService = localeService;
+    }
+
+    // Only used for testing!
     public GymRepository(Map<String, Set<Gym>> gyms, LocaleService localeService) {
         this.localeService = localeService;
+        this.configRepository = null;
         for (String region : gyms.keySet()) {
             Set<Gym> gymsForRegion = gyms.get(region);
             this.gymsPerRegion.put(region, gymsForRegion);
+        }
+    }
+
+    public void reloadGymData() {
+        if (configRepository != null) {
+            Map<String, Config> configMap = configRepository.getAllConfig();
+            Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
+            System.out.println("Config has following servers: " + configMap.keySet());
+            for (String server : configMap.keySet()) {
+                final Config config = configRepository.getConfigForServer(server);
+                final String region = config.getRegion();
+                final Set<Gym> existingGyms = gymsPerRegion.get(region);
+                if (existingGyms == null) {
+                    final Set<Gym> gymsInRegion = new CSVGymDataReader("/gyms_" + region + ".csv").readAll();
+                    gymsPerRegion.put(region, gymsInRegion);
+                    System.out.println("Loaded " + gymsInRegion.size() + " gyms for region " + region + ".");
+                }
+            }
+
+            for (String region : gymsPerRegion.keySet()) {
+                Set<Gym> gymsForRegion = gymsPerRegion.get(region);
+                this.gymsPerRegion.put(region, gymsForRegion);
+            }
         }
     }
 

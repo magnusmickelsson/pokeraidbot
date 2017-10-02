@@ -1,8 +1,8 @@
 package pokeraidbot.infrastructure;
 
 import org.junit.Test;
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.PokemonRepository;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

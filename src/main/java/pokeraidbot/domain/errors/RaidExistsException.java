@@ -1,7 +1,7 @@
 package pokeraidbot.domain.errors;
 
-import pokeraidbot.domain.LocaleService;
-import pokeraidbot.domain.Raid;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.raid.Raid;
 
 import java.util.Locale;
 

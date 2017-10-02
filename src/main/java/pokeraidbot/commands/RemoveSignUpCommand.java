@@ -2,7 +2,14 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import pokeraidbot.domain.*;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.SignUp;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.Locale;
 
@@ -26,8 +33,8 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         final String user = commandEvent.getAuthor().getName();
         final Locale localeForUser = localeService.getLocaleForUser(user);
         String gymName = commandEvent.getArgs();
-        final Gym gym = gymRepository.search(user, gymName, config.region);
-        final Raid raid = raidRepository.getRaid(gym, config.region);
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
         final SignUp removed = raid.remove(user, raidRepository);
         if (removed != null) {
             replyBasedOnConfig(config, commandEvent,

@@ -1,8 +1,8 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid.signup;
 
 import java.time.LocalTime;
 
-import static pokeraidbot.Utils.printTime;
+import static pokeraidbot.Utils.*;
 
 public class SignUp {
     private final String userName;
@@ -10,7 +10,6 @@ public class SignUp {
     private final LocalTime arrivalTime;
 
     public SignUp(String userName, int howManyPeople, LocalTime arrivalTime) {
-
         this.userName = userName;
         this.howManyPeople = howManyPeople;
         this.arrivalTime = arrivalTime;
@@ -50,6 +49,6 @@ public class SignUp {
 
     @Override
     public String toString() {
-        return userName + ", " + howManyPeople + " ETA " + printTime(arrivalTime);
+        return userName + ": " + howManyPeople + " ETA " + printTime(arrivalTime);
     }
 }

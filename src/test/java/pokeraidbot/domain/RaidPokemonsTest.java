@@ -1,6 +1,11 @@
 package pokeraidbot.domain;
 
 import org.junit.Test;
+import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
 import java.util.HashSet;

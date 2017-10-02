@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -17,26 +18,27 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static pokeraidbot.Utils.*;
+import static pokeraidbot.Utils.assertCreateRaidTimeNotBeforeNow;
+import static pokeraidbot.Utils.assertTimeNotInNoRaidTimespan;
 
 /**
- * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]
+ * !raid new [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
  */
-public class NewRaidCommand extends ConfigAwareCommand {
+public class NewRaidExCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
 
-    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
-                          PokemonRepository pokemonRepository, LocaleService localeService,
-                          ConfigRepository configRepository,
-                          CommandListener commandListener) {
+    public NewRaidExCommand(GymRepository gymRepository, RaidRepository raidRepository,
+                            PokemonRepository pokemonRepository, LocaleService localeService,
+                            ConfigRepository configRepository,
+                            CommandListener commandListener) {
         super(configRepository, commandListener);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
-        this.name = "new";
-        this.help = localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
+        this.name = "ex";
+        this.help = localeService.getMessageFor(LocaleService.NEW_EX_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }
@@ -47,16 +49,21 @@ public class NewRaidCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
-        String timeString = args[1];
+        String dateString = args[1];
+        String timeString = args[2];
         LocalTime endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
-        LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
+        LocalDate endsAtDate = LocalDate.parse(dateString);
+        LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
-        assertTimeNotMoreThanXHoursFromNow(userName, endsAtTime, localeService, 2);
+        if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
+            // todo: i18n
+            throw new UserMessedUpException(userName, "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!");
+        }
         assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
+        for (int i = 3; i < args.length; i++) {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();

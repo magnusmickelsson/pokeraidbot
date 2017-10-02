@@ -6,9 +6,9 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.apache.commons.lang3.Validate;
-import pokeraidbot.domain.Config;
-import pokeraidbot.domain.ConfigRepository;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.infrastructure.jpa.config.Config;
+import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 public abstract class ConfigAwareCommand extends Command {
     private final ConfigRepository configRepository;
@@ -21,7 +21,7 @@ public abstract class ConfigAwareCommand extends Command {
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, String message) {
-        if (config != null && config.replyInDmWhenPossible) {
+        if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
@@ -30,7 +30,7 @@ public abstract class ConfigAwareCommand extends Command {
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
-        if (config != null && config.replyInDmWhenPossible) {
+        if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
@@ -39,7 +39,7 @@ public abstract class ConfigAwareCommand extends Command {
     }
 
     public static void replyErrorBasedOnConfig(Config config, CommandEvent commandEvent, Throwable t) {
-        if (config != null && config.replyInDmWhenPossible) {
+        if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(t.getMessage());
             commandEvent.reactError();
         } else {

@@ -1,21 +1,27 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.raid.signup.SignUp;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static pokeraidbot.Utils.printTime;
+import static pokeraidbot.Utils.printDateTime;
 
 public class Raid {
     private final Pokemon pokemon;
-    private final LocalTime endOfRaid;
+    private final LocalDateTime endOfRaid;
     private final Gym gym;
     private final LocaleService localeService;
     private Map<String, SignUp> signUps = new HashMap<>();
     private String region;
+    private String creator;
 
-    public Raid(Pokemon pokemon, LocalTime endOfRaid, Gym gym, LocaleService localeService, String region) {
+    public Raid(Pokemon pokemon, LocalDateTime endOfRaid, Gym gym, LocaleService localeService, String region) {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
@@ -27,12 +33,20 @@ public class Raid {
         return pokemon;
     }
 
-    public LocalTime getEndOfRaid() {
+    public LocalDateTime getEndOfRaid() {
         return endOfRaid;
     }
 
     public Gym getGym() {
         return gym;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    void setCreator(String creator) {
+        this.creator = creator;
     }
 
     @Override
@@ -62,7 +76,7 @@ public class Raid {
     @Override
     public String toString() {
         return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(),
-                gym.toString(), printTime(endOfRaid));
+                gym.toString(), printDateTime(endOfRaid));
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {

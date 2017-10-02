@@ -3,4 +3,5 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="ROOT" level="warn"/>
     <logger name="org.springframework.web" level="warn"/>
+    <logger name="pokeraidbot" level="warn"/>
 </configuration>
