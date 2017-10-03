@@ -15,6 +15,7 @@ Needs testing:
 * Defaultconfig för kanal kan sättas och ändras i runtime av admin.
 * Config should be put in the database, but synch with config during startup
 * "Change raid"-kommando om man gör fel när man skapar raiden
+* Delete raid command, for channel admin/owner only
 
 Being developed:
 
@@ -26,6 +27,7 @@ Fix issue:
 
 Do, features:
 
+* !raid install needs to be "protected" so admins can only affect the configuration of their own server
 * "What's new"-command so people can see what new features.
 * "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
 * Timezone handling via config, used in all commands related to time
@@ -35,7 +37,6 @@ Do, features:
 * Enable channel admins to configure a server, to choose region/dataset and default locale
 * Config command should enable servers to be configured in runtime on the fly (but only by server owner)
 * Embeddedlänkar vid sökning som möjliggör att köra kommandot igen för bara det resultatet
-* Delete raid command, for channel admin/owner only
 
 Maybe, features:
 

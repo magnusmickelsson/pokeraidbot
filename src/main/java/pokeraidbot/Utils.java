@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -199,5 +200,17 @@ public class Utils {
 
     public static boolean isRaidExPokemon(String pokemonName) {
         return pokemonName.equalsIgnoreCase("mewtwo");
+    }
+
+    public static LocalTime parseTime(String userName, String timeString) {
+        LocalTime endsAtTime;
+        try {
+            endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        } catch (DateTimeParseException | NullPointerException e) {
+            throw new UserMessedUpException(userName,
+                    // todo: i18n
+                    "Kunde inte parsa tiden du ville ändra till, ska vara format HH:MM men var: " + timeString);
+        }
+        return endsAtTime;
     }
 }

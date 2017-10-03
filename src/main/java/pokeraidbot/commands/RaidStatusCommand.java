@@ -68,7 +68,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         // todo: i18n
 //        .append("\nSchedule a group - type in chat (with):\n!raid group ")
 //                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
-                .append("\nHow to get here: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
+                .append("\nHitta dit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 

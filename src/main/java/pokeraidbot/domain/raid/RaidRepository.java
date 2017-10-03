@@ -110,14 +110,15 @@ public class RaidRepository {
 
     private RaidEntity getActiveOrFallbackToExRaidEntity(Gym gym, String region) {
         RaidEntity raidEntity = null;
-        List<RaidEntity> raidEntities = raidEntityRepository.findByGymAndRegion(gym.getName(), region);
+        List<RaidEntity> raidEntities = raidEntityRepository.findByGymAndRegionOrderByEndOfRaidAsc(gym.getName(), region);
         RaidEntity exEntity = null;
         for (RaidEntity entity : raidEntities) {
             if (entity.isExpired(clockService)) {
                 raidEntityRepository.delete(entity);
             } else if (Utils.isRaidExPokemon(entity.getPokemon())) {
                 exEntity = entity;
-            } else if (!entity.isExpired(clockService)) {
+                break;
+            } else {
                 if (raidEntity != null) {
                     throw new IllegalStateException("Raid state in database seems off. " +
                             "Please notify the bot developer so it can be checked: " + raidEntity);

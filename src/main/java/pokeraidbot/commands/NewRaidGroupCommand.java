@@ -62,7 +62,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String userName = commandEvent.getAuthor().getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String timeString = args[0];
-        LocalTime startAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        LocalTime startAtTime = Utils.parseTime(userName, timeString);
         LocalDateTime startAt = LocalDateTime.of(LocalDate.now(), startAtTime);
 
         assertTimeNotInNoRaidTimespan(userName, startAtTime, localeService);

@@ -48,7 +48,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String timeString = args[1];
-        LocalTime endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        LocalTime endsAtTime = Utils.parseTime(userName, timeString);
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
         assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);

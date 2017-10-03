@@ -51,7 +51,8 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String dateString = args[1];
         String timeString = args[2];
-        LocalTime endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        LocalTime endsAtTime = Utils.parseTime(userName, timeString);
+        // todo: Utils.parseDate
         LocalDate endsAtDate = LocalDate.parse(dateString);
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 

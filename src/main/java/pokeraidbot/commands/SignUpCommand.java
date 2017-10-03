@@ -67,7 +67,7 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
 
-        LocalTime eta = LocalTime.parse(timeString, Utils.timeParseFormatter);
+        LocalTime eta = Utils.parseTime(userName, timeString);
         LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
 
         assertEtaNotAfterRaidEnd(userName, raid, realEta, localeService);

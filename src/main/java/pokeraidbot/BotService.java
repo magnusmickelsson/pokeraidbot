@@ -101,10 +101,10 @@ public class BotService {
                 new InstallCommand(configRepository, gymRepository),
                 new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
-                        aggregateCommandListener)
+                        aggregateCommandListener),
+                new HelpManualCommand(localeService, configRepository, aggregateCommandListener)
 //                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
 //                        configRepository, aggregateCommandListener, this),
-//                new HelpTopicCommand(localeService, configRepository, aggregateCommandListener)
         );
 
         try {

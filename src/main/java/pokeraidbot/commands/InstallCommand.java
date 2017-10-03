@@ -33,18 +33,21 @@ public class InstallCommand extends Command {
             event.replyInDM("Re-run the command !raid install, but with the following syntax:");
             event.replyInDM("!raid install server=[server name];region=[region dataset reference];replyInDm=[true or false];locale=[2 char language code]");
             event.replyInDM("Example: !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv");
+            event.reactSuccess();
             return;
         } else {
             Map<String, String> settingsToSet = new HashMap<>();
             final String[] arguments = args.split(";");
             if (arguments.length != 4) {
                 event.replyInDM("Wrong syntax of install command. Do this again, and this time follow instructions, please: !raid install");
+                event.reactError();
                 return;
             }
             for (String argument : arguments) {
                 final String[] keyValue = argument.split("=");
                 if (keyValue.length != 2 || StringUtils.isEmpty(keyValue[0]) || StringUtils.isEmpty(keyValue[1])) {
                     event.replyInDM("Wrong syntax of install command. Do this again, and this time follow instructions, please: !raid install");
+                    event.reactError();
                     return;
                 }
                 settingsToSet.put(keyValue[0].trim().toLowerCase(), keyValue[1].trim().toLowerCase());
@@ -68,12 +71,14 @@ public class InstallCommand extends Command {
                 event.replyInDM("Configuration complete. Saved configuration: " + configRepository.save(config));
                 event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
                         "emotes the bot needs.");
+                event.reactSuccess();
                 gymRepository.reloadGymData();
             } catch (Throwable t) {
                 event.replyInDM("There was an error: " + t.getMessage());
                 event.replyInDM("Make sure you have followed the instructions correctly. " +
                         "If you have, contact magnus.mickelsson@gmail.com for support " +
                         "and ensure you include the error message you got above ...");
+                event.reactError();
             }
         }
     }

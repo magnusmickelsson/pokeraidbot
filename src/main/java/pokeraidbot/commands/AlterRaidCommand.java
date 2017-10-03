@@ -42,7 +42,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "change";
         // todo: i18n
-        this.help = " Ändra något som blev fel vid skapandet av en raid. "; //Skriv \"!raid man change\" för detaljer.";
+        this.help = " Ändra något som blev fel vid skapandet av en raid. Skriv \"!raid man change\" för detaljer.";
         //localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -53,18 +53,21 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         final String userName = commandEvent.getAuthor().getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();
-        String whatToChangeTo = args[1].trim().toLowerCase();
-        StringBuilder gymNameBuilder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
-            gymNameBuilder.append(args[i]).append(" ");
-        }
-        String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
-        Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
-        verifyPermission(commandEvent, userName, raid);
+        String whatToChangeTo;
+        Gym gym;
+        Raid raid;
         switch (whatToChange) {
             case "when":
-                LocalTime endsAtTime = LocalTime.parse(whatToChangeTo, Utils.timeParseFormatter);
+                whatToChangeTo = args[1].trim().toLowerCase();
+                StringBuilder gymNameBuilder = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    gymNameBuilder.append(args[i]).append(" ");
+                }
+                String gymName = gymNameBuilder.toString().trim();
+                gym = gymRepository.search(userName, gymName, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                verifyPermission(commandEvent, userName, raid);
+                LocalTime endsAtTime = parseTime(userName, whatToChangeTo);
                 LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
                 assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
@@ -73,10 +76,38 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 raid = raidRepository.changeEndOfRaid(raid, endsAt);
                 break;
             case "pokemon":
+                whatToChangeTo = args[1].trim().toLowerCase();
+                gymNameBuilder = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    gymNameBuilder.append(args[i]).append(" ");
+                }
+                gymName = gymNameBuilder.toString().trim();
+                gym = gymRepository.search(userName, gymName, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
+                    throw new UserMessedUpException(userName, "Kan inte ändra pokemon för en EX raid. " +
+                            "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid usage");
+                }
+                verifyPermission(commandEvent, userName, raid);
                 final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
+                if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
+                    // i18n
+                    throw new UserMessedUpException(userName, "Kan inte ändra en vanlig raid till att bli en EX raid. " +
+                            "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid usage");
+//                    throw new UserMessedUpException(userName, "Can't change a standard raid to be an EX raid. " +
+//                            "Remove the standard raid and then create an EX raid instead. Refer to !raid usage");
+                }
                 raid = raidRepository.changePokemon(raid, pokemon);
                 break;
             case "remove":
+                gymNameBuilder = new StringBuilder();
+                for (int i = 1; i < args.length; i++) {
+                    gymNameBuilder.append(args[i]).append(" ");
+                }
+                gymName = gymNameBuilder.toString().trim();
+                gym = gymRepository.search(userName, gymName, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                verifyPermission(commandEvent, userName, raid);
                 final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
                         commandEvent.getMember(), Permission.ADMINISTRATOR);
                 if (userIsNotAdministrator) {
