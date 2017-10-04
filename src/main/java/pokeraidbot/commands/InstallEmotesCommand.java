@@ -66,6 +66,7 @@ public class InstallEmotesCommand extends Command {
         if (roles.length > 0) // making sure none of the provided roles are null before mapping them to the snowflake id
             body.put("roles", Stream.of(roles).filter(Objects::nonNull).map(ISnowflake::getId).collect(Collectors.toSet()));
 
+        // todo: check bot permissions, must be able to handle emojis
         GuildImpl guild = (GuildImpl) commandEvent.getGuild();
         JDA jda = commandEvent.getJDA();
         Route.CompiledRoute route = Route.Emotes.CREATE_EMOTE.compile(guild.getId());
@@ -93,8 +94,10 @@ public class InstallEmotesCommand extends Command {
 
                     request.onSuccess(emote);
                 }
-                else
+                else {
                     request.onFailure(response);
+                    throw new RuntimeException("Couldn't install emojis. Make sure that pokeraidbot has access to manage emojis.");
+                }
             }
         };
         action.queue();
