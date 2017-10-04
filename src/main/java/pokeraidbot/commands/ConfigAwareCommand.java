@@ -11,8 +11,8 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 public abstract class ConfigAwareCommand extends Command {
-    private final ConfigRepository configRepository;
-    private final CommandListener commandListener;
+    protected final ConfigRepository configRepository;
+    protected final CommandListener commandListener;
 
     public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener) {
         Validate.notNull(configRepository);

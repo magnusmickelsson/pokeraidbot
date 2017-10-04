@@ -20,6 +20,7 @@ Needs testing:
 Being developed:
 
 * Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
+* "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
 
 Fix issue:
 
@@ -27,9 +28,10 @@ Fix issue:
 
 Do, features:
 
+* !raid add x should be able to take existing signup and add to it, not get an error,
+unless you exceed limit
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
 * "What's new"-command so people can see what new features.
-* "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
 * Timezone handling via config, used in all commands related to time
 * Credit Iconninja for icons
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
