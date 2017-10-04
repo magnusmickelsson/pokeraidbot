@@ -73,8 +73,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
                 .append(signUps.size() > 0 ? ":\n" + signUps : "")
                 // todo: i18n
-//        .append("\nStarta grupp - skriv (med egen tid):\n!raid group ")
-//                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
+        .append("\nStarta grupp - skriv (med egen tid):\n!raid group ")
+                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
                 .append("\nHitta dit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")")
                 .append("\nRaidboss: **").append(pokemon).append("**\n")
                 .append("För tips - skriv: *!raid vs ").append(pokemon.getName()).append("*\n");

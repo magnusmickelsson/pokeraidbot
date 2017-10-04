@@ -12,6 +12,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;

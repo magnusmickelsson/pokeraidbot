@@ -1,4 +1,4 @@
-package pokeraidbot.domain.raid.signup;
+package pokeraidbot.domain.emote;
 
 public class Emotes {
     public static final String SIGN_UP_NOW_EMOTE = "\uD83D\uDC4B";

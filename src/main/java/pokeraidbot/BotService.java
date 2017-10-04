@@ -103,9 +103,9 @@ public class BotService {
                 new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
-                new HelpManualCommand(localeService, configRepository, aggregateCommandListener)
-//                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-//                        configRepository, aggregateCommandListener, this),
+                new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
+                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository, aggregateCommandListener, this)
         );
 
         try {
@@ -123,7 +123,7 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
-//                    .addEventListener(emoticonMessageListener)
+                    .addEventListener(emoticonMessageListener)
 
                     // start it up!
                     .buildBlocking();

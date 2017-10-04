@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.entities.Emote;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
@@ -14,7 +15,6 @@ import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.Emotes;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
@@ -44,7 +44,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.botService = botService;
         this.name = "group";
-        this.help = " Skapa ett tillfälle för en grupp att köra vid en skapad raid: !raid group [start time (HH:MM)] [gym name]";
+        this.help = " Skapa ett tillfälle för en grupp att köra vid en skapad raid: " +
+                "!raid group [start time (HH:MM)] [gym name]";
                 //localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
@@ -89,22 +90,22 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         // todo: locale service
         // todo: i18n
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(userName + "'s group @ " + gym.getName() + ", starting at " +
+        embedBuilder.setTitle(userName + "s grupp @ " + gym.getName() + ", samling " +
                 Utils.printTimeIfSameDay(startAt));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("**Raid boss:** ").append(pokemon).append(".");
-        descriptionBuilder.append("\nTotal signups (incl. this group): ")
+        descriptionBuilder.append("**Pokemon:** ").append(pokemon).append(".");
+        descriptionBuilder.append("\nAnmälda totalt till raiden: ")
                 .append(raid.getNumberOfPeopleSignedUp());
-        descriptionBuilder.append("\nSignups for this group: ")
+        descriptionBuilder.append("\nAnmälda i denna grupp: ")
                 .append("todo: sum(emotes)"); // todo: sum(emotes), uppdatera text
-        descriptionBuilder.append("\nFor boss counter info, type:" +
-                "\n!raid vs ").append(pokemon.getName()).append("\n");
-        descriptionBuilder.append("\nHow to get here: [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
+        descriptionBuilder.append("\nFör tips, skriv:" +
+                "\n*!raid vs ").append(pokemon.getName()).append("*\n");
+        descriptionBuilder.append("Hitta hit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
                 .append(")");
         embedBuilder.setDescription(descriptionBuilder.toString());
         commandEvent.reply(embedBuilder.build());
-        commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid how group\".", message -> {
+        commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid man group\".", message -> {
             // todo: start listener for the signups
             message.getChannel().addReactionById(message.getId(), mystic.iterator().next()).queue();
             message.getChannel().addReactionById(message.getId(), valor.iterator().next()).queue();
@@ -122,7 +123,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         if (mystic == null || mystic.size() < 1) {
             // todo: i18n
             throw new RuntimeException("Administrator has not installed pokeraidbot's emotes. " +
-                    "Ensure he/her runs the following command: !raid install-emotes");
+                    "Ensure he/she runs the following command: !raid install-emotes");
         }
     }
 }
