@@ -24,6 +24,7 @@ public class Utils {
     public static final DateTimeFormatter dateAndTimeParseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH[:][.]mm");
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
     private static ClockService clockService = new ClockService();
 
     public static ClockService getClockService() {
@@ -212,5 +213,20 @@ public class Utils {
                     "Kunde inte parsa tiden du ville ändra till, ska vara format HH:MM men var: " + timeString);
         }
         return endsAtTime;
+    }
+
+    public static Integer assertNotTooManyOrNoNumber(String userName, LocaleService localeService, String people) {
+        Integer numberOfPeople;
+        try {
+            numberOfPeople = new Integer(people);
+            if (numberOfPeople < 1 || numberOfPeople > HIGH_LIMIT_FOR_SIGNUPS) {
+                throw new RuntimeException();
+            }
+        } catch (RuntimeException e) {
+            throw new UserMessedUpException(userName,
+                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeService.getLocaleForUser(userName),
+                            people, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
+        }
+        return numberOfPeople;
     }
 }

@@ -87,14 +87,14 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
                     // todo: i18n
                     throw new UserMessedUpException(userName, "Kan inte ändra pokemon för en EX raid. " +
-                            "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid usage");
+                            "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid man change");
                 }
                 verifyPermission(commandEvent, userName, raid);
                 final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
                     // todo: i18n
                     throw new UserMessedUpException(userName, "Kan inte ändra en vanlig raid till att bli en EX raid. " +
-                            "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid usage");
+                            "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid man change");
 //                    throw new UserMessedUpException(userName, "Can't change a standard raid to be an EX raid. " +
 //                            "Remove the standard raid and then create an EX raid instead. Refer to !raid usage");
                 }
@@ -126,7 +126,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 break;
             default:
                 // todo: i18n
-                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid usage");//"Bad syntax of command. Refer to command help: !raid help");
+                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid man change");//"Bad syntax of command. Refer to command help: !raid help");
         }
         // todo: i18n
         if (raid != null) {

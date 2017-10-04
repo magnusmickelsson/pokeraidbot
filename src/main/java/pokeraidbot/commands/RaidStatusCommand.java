@@ -12,9 +12,9 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -33,12 +33,15 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
     private final BotService botService;
+    private final PokemonRepository pokemonRepository;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ConfigRepository configRepository, BotService botService, CommandListener commandListener) {
+                             ConfigRepository configRepository, BotService botService, CommandListener commandListener,
+                             PokemonRepository pokemonRepository) {
         super(configRepository, commandListener);
         this.localeService = localeService;
         this.botService = botService;
+        this.pokemonRepository = pokemonRepository;
         this.name = "status";
         this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);
 
@@ -69,19 +72,21 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append("\t**").append(numberOfPeople).append(" ")
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
                 .append(signUps.size() > 0 ? ":\n" + signUps : "")
-        // todo: i18n
-//        .append("\nSchedule a group - type in chat (with):\n!raid group ")
+                // todo: i18n
+//        .append("\nStarta grupp - skriv (med egen tid):\n!raid group ")
 //                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
-                .append("\nHitta dit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")");
+                .append("\nHitta dit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")")
+                .append("\nRaidboss: **").append(pokemon).append("**\n")
+                .append("För tips - skriv: *!raid vs ").append(pokemon.getName()).append("*\n");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
 
 //        botService.getBot().addEventListener(new EmoticonMessageListener(botService, localeService,
-        //              configRepository, raidRepository, pokemonRepository, gymRepository, messageId));
+//                      configRepository, raidRepository, pokemonRepository, gymRepository, ""));
 //
-        //      LOGGER.debug("Eventlistener created and added to message with id " + messageId);
+//        LOGGER.debug("Eventlistener created and added to message");
     }
 
     private String getNumberAndFillToThree(Pokemon pokemon) {

@@ -1,7 +1,7 @@
 package pokeraidbot.domain.raid;
 
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
-import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.raid.signup.SignUp;
@@ -80,14 +80,16 @@ public class Raid {
     }
 
     public void signUp(String userName, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
-        final SignUp signUp = signUps.get(userName);
+        SignUp signUp = signUps.get(userName);
         if (signUp != null) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.ALREADY_SIGNED_UP,
-                    LocaleService.DEFAULT, this.toString(), signUp.toString()));
+            Utils.assertNotTooManyOrNoNumber(userName, localeService, String.valueOf(signUp.getHowManyPeople() + howManyPeople));
+            signUp.addPeople(howManyPeople);
+            signUp.setEta(arrivalTime);
+        } else {
+            signUp = new SignUp(userName, howManyPeople, arrivalTime);
+            signUps.put(userName, signUp);
         }
-        final SignUp theSignUp = new SignUp(userName, howManyPeople, arrivalTime);
-        signUps.put(userName, theSignUp);
-        repository.addSignUp(userName, this, theSignUp);
+        repository.addSignUp(userName, this, signUp);
     }
 
     public Set<SignUp> getSignUps() {

@@ -1,12 +1,18 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
+import pokeraidbot.Utils;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
 public class RaidEntitySignUp implements Serializable {
+    @Column(nullable = false)
     private String responsible;
+    @Column(nullable = false)
     private Integer numberOfPeople;
+    @Column(nullable = false)
     private String eta;
 
     // JPA
@@ -59,5 +65,16 @@ public class RaidEntitySignUp implements Serializable {
                 ", numberOfPeople=" + numberOfPeople +
                 ", eta='" + eta + '\'' +
                 '}';
+    }
+
+    public void setNumberOfPeople(int numberOfPeople) {
+        if (numberOfPeople < 0 || numberOfPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
+            throw new RuntimeException("Number of people must be between 0 and 21");
+        }
+        this.numberOfPeople = numberOfPeople;
+    }
+
+    public void setEta(String arrivalTime) {
+        this.eta = arrivalTime;
     }
 }

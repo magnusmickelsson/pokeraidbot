@@ -19,6 +19,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -56,8 +57,8 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
-//        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
-//                configRepository, raidRepository, pokemonRepository, gymRepository);
+        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
+                configRepository, raidRepository, pokemonRepository, gymRepository, "");
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 //                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
@@ -81,7 +82,7 @@ public class BotService {
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
-                        configRepository, this, aggregateCommandListener),
+                        configRepository, this, aggregateCommandListener, pokemonRepository),
                 new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository,
                         aggregateCommandListener),
                 new SignUpCommand(gymRepository, raidRepository, localeService,

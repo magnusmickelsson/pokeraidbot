@@ -1,13 +1,16 @@
 package pokeraidbot.domain.raid.signup;
 
+import pokeraidbot.Utils;
+
 import java.time.LocalTime;
 
-import static pokeraidbot.Utils.*;
+import static pokeraidbot.Utils.HIGH_LIMIT_FOR_SIGNUPS;
+import static pokeraidbot.Utils.printTime;
 
 public class SignUp {
     private final String userName;
-    private final int howManyPeople;
-    private final LocalTime arrivalTime;
+    private int howManyPeople;
+    private LocalTime arrivalTime;
 
     public SignUp(String userName, int howManyPeople, LocalTime arrivalTime) {
         this.userName = userName;
@@ -50,5 +53,16 @@ public class SignUp {
     @Override
     public String toString() {
         return userName + ": " + howManyPeople + " ETA " + printTime(arrivalTime);
+    }
+
+    public void addPeople(int howManyPeople) {
+        if (this.howManyPeople + howManyPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
+            throw new RuntimeException("Adding " + howManyPeople + " will exceed your limit of " + HIGH_LIMIT_FOR_SIGNUPS);
+        }
+        this.howManyPeople += howManyPeople;
+    }
+
+    public void setEta(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 }

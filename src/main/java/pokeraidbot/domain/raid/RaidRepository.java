@@ -161,8 +161,14 @@ public class RaidRepository {
 
     public void addSignUp(String userName, Raid raid, SignUp theSignUp) {
         RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
-        entity.addSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
-                Utils.printTime(theSignUp.getArrivalTime())));
+        RaidEntitySignUp entitySignUp = entity.getSignUp(userName);
+        if (entitySignUp == null) {
+            entity.addSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
+                    Utils.printTime(theSignUp.getArrivalTime())));
+        } else {
+            entitySignUp.setNumberOfPeople(theSignUp.getHowManyPeople());
+            entitySignUp.setEta(Utils.printTime(theSignUp.getArrivalTime()));
+        }
         raidEntityRepository.save(entity);
     }
 

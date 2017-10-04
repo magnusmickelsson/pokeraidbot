@@ -27,6 +27,7 @@ public class RaidEntity implements Serializable {
     @Column(nullable = false)
     private String creator;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(uniqueConstraints = @UniqueConstraint(columnNames = {"responsible"}))
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)
@@ -148,5 +149,14 @@ public class RaidEntity implements Serializable {
 
     public void setEndOfRaid(LocalDateTime endOfRaid) {
         this.endOfRaid = endOfRaid;
+    }
+
+    public RaidEntitySignUp getSignUp(String userName) {
+        for (RaidEntitySignUp signUp : getSignUps()) {
+            if (signUp.getResponsible().equalsIgnoreCase(userName)) {
+                return signUp;
+            }
+        }
+        return null;
     }
 }
