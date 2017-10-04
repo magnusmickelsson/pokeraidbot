@@ -85,13 +85,14 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gym = gymRepository.search(userName, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
                 if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
+                    // todo: i18n
                     throw new UserMessedUpException(userName, "Kan inte ändra pokemon för en EX raid. " +
                             "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid usage");
                 }
                 verifyPermission(commandEvent, userName, raid);
                 final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
-                    // i18n
+                    // todo: i18n
                     throw new UserMessedUpException(userName, "Kan inte ändra en vanlig raid till att bli en EX raid. " +
                             "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid usage");
 //                    throw new UserMessedUpException(userName, "Can't change a standard raid to be an EX raid. " +
@@ -114,8 +115,6 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     // todo: i18n
                     throw new UserMessedUpException(userName, "Bara administratörer kan ta bort raids, tyvärr."); //"Only administrators can delete raids, sorry.");
                 }
-                // todo: got "Zhorhn: Kunde inte hitta ett unikt gym/pokestop, din sökning returnerade mer än 5 resultat. Försök vara mer precis."
-                // while trying to delete. Check what that was.
                 if (raidRepository.delete(raid)) {
                     raid = null;
                 } else {
@@ -135,8 +134,6 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         } else {
             replyBasedOnConfig(config, commandEvent, "Tog bort raid.");
         }
-        //localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-//                localeService.getLocaleForUser(userName), raid.toString()));
     }
 
     private void verifyPermission(CommandEvent commandEvent, String userName, Raid raid) {

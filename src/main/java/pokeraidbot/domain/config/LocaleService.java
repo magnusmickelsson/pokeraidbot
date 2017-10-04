@@ -68,10 +68,19 @@ public class LocaleService {
     public static final String MANUAL_MAP = "MANUAL_MAP";
     public static final String MANUAL_INSTALL = "MANUAL_INSTALL";
     public static final String MANUAL_CHANGE = "MANUAL_CHANGE";
+    public static final String WRONG_NUMBER_OF_ARGUMENTS = "WRONG_NUMBER_OF_ARGUMENTS";
+    public static final String MANUAL_TRACKING = "MANUAL_TRACKING";
 
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public LocaleService() {
+        // todo: change to use Spring resource bundles instead
+        i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, Locale.ENGLISH),
+                "Wrong number of arguments for command, expected %1 but was %2. Write \"!raid man\" for help.");
+        i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, SWEDISH),
+                "Fel antal argument för kommandot, förväntade %1, men det var %2. " +
+                        "Skriv \"!raid man\" för att få hjälp");
+
         i18nMessages.put(new I18nLookup(UNTRACK_HELP, Locale.ENGLISH),
                 "Remove an active Pokemon tracking - !raid untrack [Pokemon]");
         i18nMessages.put(new I18nLookup(UNTRACK_HELP, SWEDISH),
@@ -229,12 +238,14 @@ public class LocaleService {
                 "Example: !raid new Entei 09:45 Solna Platform");
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, SWEDISH),
                 "Det finns just nu inga registrerade raids. " +
-                        "För att registrera en raid, använd följande kommando:\n!raid new {pokemon} {sluttid (HH:mm)} {gym}\n" +
+                        "För att registrera en raid, använd följande kommando:\n" +
+                        "!raid new {pokemon} {sluttid (HH:mm)} {gym}\n" +
         "Exempel: !raid new Entei 09:45 Solna Platform");
 
         i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH),
                 "Check current raids - !raid list [optional: Pokemon]");
-        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - !raid list [Pokemon (filtrering, frivillig)]");
+        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - " +
+                "!raid list [Pokemon (filtrering, frivillig)]");
 
 
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, Locale.ENGLISH), "(if correct moveset)");
@@ -300,19 +311,20 @@ public class LocaleService {
                         "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n" +
                         "*Example:* !raid status Solna Platform\n\n" +
                         "**Get a list of all active raids:**\n!raid list\n" +
-                        "*Examples:* !raid list Entei - list all raids for Entei. " +
+                        "*Examples:* !raid list Entei - list all raids for Entei.\n" +
                         "!raid list - list all active raids.\n\n" +
                 "**Info about a raid boss:**\n!raid vs *[Pokemon]*\n" +
                         "*Example:* !raid vs Entei"
         );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
-                        "**För att registrera en raid:**\n!raid new *[Pokemon]* *[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
+                        "**För att registrera en raid:**\n!raid new *[Pokemon]* " +
+                        "*[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
                         "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
                         "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
                         "*Exempel:* !raid status Solna Platform\n\n" +
                         "**Visa alla registrerade raider:**\n!raid list\n" +
-                        "*Exempel:* !raid list Entei - visa alla aktiva raider med Entei som boss. " +
+                        "*Exempel:* !raid list Entei - visa alla aktiva raider med Entei som boss.\n" +
                         "!raid list - lista alla aktiva raider oavsett boss.\n\n" +
                         "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
                         "*Exempel:* !raid vs Entei"
@@ -343,24 +355,30 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, Locale.ENGLISH),
                 "**Install configuration for this server:** !raid install - starts install process\n" +
-        "!raid install server=[server name];region=[region dataset reference];replyInDm=[true or false];locale=[2 char language code]\n" +
+        "!raid install server=[server name];region=[region dataset reference];" +
+                        "replyInDm=[true or false];locale=[2 char language code]\n" +
         "**Example:** !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv"
         );
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, SWEDISH),
                 "**Installera konfiguration för denna server:** !raid install - startar processen\n" +
-                        "!raid install server=[servernamn];region=[region, datasetsreferens];replyInDm=[true eller false];locale=[2 teckens språkkod, t.ex. sv]\n" +
+                        "!raid install server=[servernamn];region=[region, datasetsreferens];" +
+                        "replyInDm=[true eller false];locale=[2 teckens språkkod, t.ex. sv]\n" +
                         "**Exempel:** !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv"
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_MAP, Locale.ENGLISH),
-                "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
-                "**Get map for a certain gym:**\n!raid map *[Gym name]*" +
-                "*Example:* !raid map Solna Platform"
+                "**Note: This command must be executed in a server text channel, not in DM!**\n\n" +
+                "**Get map for a certain gym:**\n!raid map *[Gym name]*\n" +
+                "*Example:* !raid map Solna Platform\n\n" +
+                        "Note: You can click the name of the gym to go to it in Google Maps. There, you " +
+                        "can get directions, estimated time of arrival etc."
         );
         i18nMessages.put(new I18nLookup(MANUAL_MAP, SWEDISH),
-                "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
-                "**Hämta karta för gym:**\n!raid map *[Gym-namn]*" +
-                "*Exempel:* !raid map Solna Platform"
+                "**OBS: Detta kommando måste köras i en servers textkanal, inte i DM!**\n\n" +
+                "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n" +
+                "*Exempel:* !raid map Solna Platform\n\n" +
+                "OBS: Du kan klicka på gymnamnet för att gå till det i Google Maps. Där kan du sedan få t.ex. " +
+                        "vägbeskrivning, beräknad ankomsttid och så vidare."
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, Locale.ENGLISH),
@@ -377,9 +395,28 @@ public class LocaleService {
                         "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n" +
                         "*Exempel:* !raid remove Solna Platform"
         );
+
+        i18nMessages.put(new I18nLookup(MANUAL_TRACKING, Locale.ENGLISH),
+                "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
+                        "**Track new raids for raid boss (Note: *any tracking is reset on bot restart*):**\n" +
+                        "!raid track *[Pokemon]*\n" +
+                        "*Example:* !raid track Entei\n\n" +
+                        "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
+                        "*Example:* !raid untrack Entei - remove your tracking of Entei. " +
+                        "!raid untrack - remove all your tracking."
+        );
+        i18nMessages.put(new I18nLookup(MANUAL_TRACKING, SWEDISH),
+                "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
+                        "**Övervakning av nya raids för pokemon (OBS: *nollställs om botten startas om*):" +
+                        "**\n!raid track *[Pokemon]*\n" +
+                        "*Exempel:* !raid track Entei\n\n" +
+                        "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
+                        "*Exempel:* !raid untrack Entei - ta bort din övervakning för Entei. " +
+                        "!raid untrack - ta bort alla dina övervakningar."
+        );
     }
 
-    // todo: implement saving locale setting for user
+    // todo: implement saving locale setting for user (will require pay version of Heroku database)
     public Locale getLocaleForUser(String username) {
         return SWEDISH;
     }
@@ -452,19 +489,13 @@ public class LocaleService {
     }
 
     public static String featuresString_EN =
-            "**Get detailed help about how the bot works:**\n!raid man {optional: help topic}\n" +
-            "**Track new raids for raid boss (Note: any tracking is reset on bot restart):**\n!raid track *[Pokemon]*\n" +
-            "*Example:* !raid track Entei\n\n" +
-            "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
-            "*Example:* !raid untrack Entei - remove your tracking of Entei. !raid untrack - remove all your tracking.\n\n" +
+            "Pokeraidbot - https://github.com/magnusmickelsson/pokeraidbot to report errors, request features etc.\n\n" +
+            "**Get detailed help about how the bot works:**\n!raid man {optional: help topic}\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV =
-            "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
+            "Pokeraidbot - https://github.com/magnusmickelsson/pokeraidbot för att rapportera fel, önska funktioner etc.\n\n" +
+                    "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
                     "*Exempel:* !raid man - berättar om hur man använder raid man och vilka hjälpämnen som finns\n\n" +
-            "**Övervakning av nya raids för pokemon (OBS: nollställs om botten startas om):**\n!raid track *[Pokemon]*\n" +
-            "*Exempel:* !raid track Entei\n\n" +
-            "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
-            "*Exempel:* !raid untrack Entei - ta bort din övervakning för Entei. !raid untrack - ta bort alla dina övervakningar.\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

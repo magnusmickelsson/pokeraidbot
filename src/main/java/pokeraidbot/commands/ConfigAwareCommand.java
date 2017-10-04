@@ -52,8 +52,10 @@ public abstract class ConfigAwareCommand extends Command {
         Config configForServer = null;
         try {
             final Guild guild = commandEvent.getGuild();
-            final String server = guild.getName().trim().toLowerCase();
-            configForServer = configRepository.getConfigForServer(server);
+            if (guild != null) {
+                final String server = guild.getName().trim().toLowerCase();
+                configForServer = configRepository.getConfigForServer(server);
+            }
             executeWithConfig(commandEvent, configForServer);
             if (commandListener != null) {
                 commandListener.onCompletedCommand(commandEvent, this);

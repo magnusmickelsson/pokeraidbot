@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -23,9 +24,10 @@ public class HelpManualCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "man";
         // todo: i18n
-        helpText = "Hjälpmanual för olika ämnen: !raid man {ämne}\nÄmne kan vara t.ex. raid, signup eller install.\n" +
-                "**Kommandot måste köras i en servers textkanal, inte i DM.**";
+        helpText = " Hjälpmanual för olika ämnen: !raid man {ämne} {chan/dm}\n" +
+                "Möjliga ämnen: raid, signup, map, install, change, tracking.";
         this.help = helpText;
+        this.guildOnly = false;
         if (helpTopicsMap.size() == 0) {
             initialize();
         }
@@ -37,6 +39,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_MAP, "map");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_INSTALL, "install");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_CHANGE, "change");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_TRACKING, "tracking");
     }
 
     private void addTextsToHelpTopics(Locale[] supportedLocales, String messageKey, String topic) {
@@ -49,19 +52,31 @@ public class HelpManualCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+        final String language;
+
+        if (config == null) {
+            language = LocaleService.DEFAULT.getLanguage();
+        } else {
+            language = config.getLocale().getLanguage();
+        }
         final String[] args = commandEvent.getArgs().split(" ");
-        if (args.length != 1) {
+        if (args.length < 1 || args.length > 2) {
             commandEvent.replyInDM(helpText);
         } else {
             final Map<String, String> helpTopicTexts = helpTopicsMap.get(args[0]);
+            String replyIn = args.length > 1 ? args[1] : null;
             if (helpTopicTexts == null) {
                 commandEvent.replyInDM(helpText);
             } else {
-                final String text = helpTopicTexts.get(config.getLocale().getLanguage());
+                final String text = helpTopicTexts.get(language);
                 if (text == null) {
                     commandEvent.replyInDM(helpText);
                 } else {
-                    commandEvent.replyInDM(text);
+                    if (!StringUtils.isEmpty(replyIn) && replyIn.equalsIgnoreCase("dm")) {
+                        commandEvent.replyInDM(text);
+                    } else {
+                        commandEvent.reply(text);
+                    }
                 }
             }
         }

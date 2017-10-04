@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.errors.WrongNumberOfArgumentsException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.Raid;
@@ -44,18 +45,10 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(userName);
         final String[] args = commandEvent.getArgs().split(" ");
         String people = args[0];
-        // todo: check number of arguments
-        Integer numberOfPeople;
-        try {
-            numberOfPeople = new Integer(people);
-            if (numberOfPeople < 1 || numberOfPeople > highLimitForSignUps) {
-                throw new RuntimeException();
-            }
-        } catch (RuntimeException e) {
-            throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeForUser,
-                            people, String.valueOf(highLimitForSignUps)));
+        if (args.length != 3) {
+            throw new WrongNumberOfArgumentsException(userName, localeService, 3, args.length);
         }
+        Integer numberOfPeople = assertNotTooManyOrNoNumber(userName, localeForUser, people);
 
         String timeString = args[1];
 
@@ -79,6 +72,21 @@ public class SignUpCommand extends ConfigAwareCommand {
         replyBasedOnConfig(config, commandEvent,
                 localeService.getMessageFor(LocaleService.SIGNUPS, localeForUser, userName,
                 gym.getName(), signUpText));
+    }
+
+    private Integer assertNotTooManyOrNoNumber(String userName, Locale localeForUser, String people) {
+        Integer numberOfPeople;
+        try {
+            numberOfPeople = new Integer(people);
+            if (numberOfPeople < 1 || numberOfPeople > highLimitForSignUps) {
+                throw new RuntimeException();
+            }
+        } catch (RuntimeException e) {
+            throw new UserMessedUpException(userName,
+                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeForUser,
+                            people, String.valueOf(highLimitForSignUps)));
+        }
+        return numberOfPeople;
     }
 
 }
