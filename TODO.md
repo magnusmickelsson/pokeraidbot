@@ -26,6 +26,8 @@ Fix issue:
 
 Do, features:
 
+* !raid add x should be able to take existing signup and add to it, not get an error,
+unless you exceed limit
 * Timezone handling via config, used in all commands related to time
 * Credit Iconninja for icons
 * Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller

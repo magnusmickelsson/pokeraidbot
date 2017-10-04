@@ -4,6 +4,8 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -12,6 +14,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -25,6 +28,7 @@ import static pokeraidbot.Utils.printTimeIfSameDay;
  * !raid status [Pokestop name]
  */
 public class RaidStatusCommand extends ConfigAwareCommand {
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(RaidStatusCommand.class);
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
@@ -72,6 +76,11 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
+
+//        botService.getBot().addEventListener(new EmoticonMessageListener(botService, localeService,
+        //              configRepository, raidRepository, pokemonRepository, gymRepository, messageId));
+//
+        //      LOGGER.debug("Eventlistener created and added to message with id " + messageId);
     }
 
     private String getNumberAndFillToThree(Pokemon pokemon) {

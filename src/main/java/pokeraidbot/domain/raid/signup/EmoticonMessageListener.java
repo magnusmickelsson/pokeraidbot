@@ -27,10 +27,11 @@ public class EmoticonMessageListener implements EventListener {
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final GymRepository gymRepository;
+    private final String messageId;
 
     public EmoticonMessageListener(BotService botService, LocaleService localeService, ConfigRepository configRepository,
                                    RaidRepository raidRepository, PokemonRepository pokemonRepository,
-                                   GymRepository gymRepository) {
+                                   GymRepository gymRepository, String messageId) {
         this.botService = botService;
 
         this.localeService = localeService;
@@ -38,6 +39,7 @@ public class EmoticonMessageListener implements EventListener {
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
+        this.messageId = messageId;
     }
 
     @Override

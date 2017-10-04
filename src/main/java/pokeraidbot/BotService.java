@@ -57,8 +57,8 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
-        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
-                configRepository, raidRepository, pokemonRepository, gymRepository);
+//        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
+//                configRepository, raidRepository, pokemonRepository, gymRepository);
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 //                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
@@ -123,7 +123,7 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
-                    .addEventListener(emoticonMessageListener)
+//                    .addEventListener(emoticonMessageListener)
 
                     // start it up!
                     .buildBlocking();
