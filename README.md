@@ -102,6 +102,9 @@ When doing this, you get an owner id (client id) and a token for your bot accoun
 * Clone this Git repository to your local machine: https://github.com/magnusmickelsson/pokeraidbot.git
 * Build your application via [Maven](https://maven.apache.org) or a Java-IDE, for example 
 [IntelliJ](https://www.jetbrains.com/idea/).
+* Check the file src/main/resources/application.properties. Decide what type of database you're going to run (file is currently
+prepared for Heroku deploy but has stuff commented out for running local in-memory DB via H2
+or a local Postgres)
 * Start the bot via the executable class **main.BotServerMain** (or java -jar pokeraidbot.jar)
 
 NOTE: You need to provide two application properties so it can start, ownerId and token. Example:
