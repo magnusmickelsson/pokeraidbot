@@ -18,7 +18,10 @@ Command to get raid boss info:
 
 Raid commands:
 
-![Raid commands](raidcmd.png)
+![Raid list](raidlist.png)
+![Raid gym status](raidstatus.png)
+![Raid group signup](groupmuk.png)
+![Other raid commands](raidcmd.png)
 
 ## Support development
 
