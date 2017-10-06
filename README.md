@@ -121,7 +121,7 @@ If you don't Spring will complain that the properties are not available, and the
 
 * Try browse http://127.0.0.1:5000/ - if it works you'll get a response from the bot
 * Use the Discord link from the response above to invite the bot into a Discord server of your choice
-* Check the instructions below on what to do to set up your Discord server for using the bot. Follow the instructions.
+* Check the instructions way above on how to configure the bot for your server. Follow the instructions. Don't be *that* guy/girl.
 * In the chat, try running the command "!raid usage". Take it from there.
 
 ### Gym data import
