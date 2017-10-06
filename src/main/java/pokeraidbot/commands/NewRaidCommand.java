@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -43,17 +44,18 @@ public class NewRaidCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String timeString = args[1];
-        LocalTime endsAtTime = Utils.parseTime(userName, timeString);
+        LocalTime endsAtTime = Utils.parseTime(user, timeString);
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
-        assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
-        assertTimeNotMoreThanXHoursFromNow(userName, endsAtTime, localeService, 2);
-        assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
+        assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
+        assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
+        assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();
         for (int i = 2; i < args.length; i++) {

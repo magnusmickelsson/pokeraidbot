@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.WrongNumberOfArgumentsException;
@@ -39,14 +40,15 @@ public class SignUpCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
         final Locale localeForUser = localeService.getLocaleForUser(userName);
         final String[] args = commandEvent.getArgs().split(" ");
         String people = args[0];
         if (args.length < 3 || args.length > 10) {
             throw new WrongNumberOfArgumentsException(userName, localeService, 3, args.length, this.help);
         }
-        Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(userName, localeService, people);
+        Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(user, localeService, people);
 
         String timeString = args[1];
 
@@ -58,13 +60,13 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
 
-        LocalTime eta = Utils.parseTime(userName, timeString);
+        LocalTime eta = Utils.parseTime(user, timeString);
         LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
 
-        assertEtaNotAfterRaidEnd(userName, raid, realEta, localeService);
-        assertSignupTimeNotBeforeNow(userName, realEta, localeService);
+        assertEtaNotAfterRaidEnd(user, raid, realEta, localeService);
+        assertSignupTimeNotBeforeNow(user, realEta, localeService);
 
-        raid.signUp(userName, numberOfPeople, eta, raidRepository);
+        raid.signUp(user, numberOfPeople, eta, raidRepository);
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
         final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + raid.getSignUps() : "";
         replyBasedOnConfig(config, commandEvent,

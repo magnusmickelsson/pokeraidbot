@@ -37,9 +37,10 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
         final SignUp removed = raid.remove(user, raidRepository);
         if (removed != null) {
-            replyBasedOnConfig(config, commandEvent,
-                    localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
-                    gym.getName(), removed.toString()));
+            commandEvent.reactSuccess();
+//            replyBasedOnConfig(config, commandEvent,
+//                    localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
+//                    gym.getName(), removed.toString()));
         } else {
             final String message =
                     localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, user, gym.getName());

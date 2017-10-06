@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -50,7 +51,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();
         String whatToChangeTo;
@@ -66,13 +68,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 String gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(userName, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
-                verifyPermission(commandEvent, userName, raid);
-                LocalTime endsAtTime = parseTime(userName, whatToChangeTo);
+                verifyPermission(commandEvent, user, raid);
+                LocalTime endsAtTime = parseTime(user, whatToChangeTo);
                 LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
-                assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
-                assertTimeNotMoreThanXHoursFromNow(userName, endsAtTime, localeService, 2);
-                assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
+                assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
+                assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
+                assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
                 raid = raidRepository.changeEndOfRaid(raid, endsAt);
                 break;
             case "pokemon":
@@ -89,7 +91,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     throw new UserMessedUpException(userName, "Kan inte ändra pokemon för en EX raid. " +
                             "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid man change");
                 }
-                verifyPermission(commandEvent, userName, raid);
+                verifyPermission(commandEvent, user, raid);
                 final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
                     // todo: i18n
@@ -108,12 +110,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(userName, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
-                verifyPermission(commandEvent, userName, raid);
+                verifyPermission(commandEvent, user, raid);
                 final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
                         commandEvent.getMember(), Permission.ADMINISTRATOR);
                 if (userIsNotAdministrator) {
                     // todo: i18n
-                    throw new UserMessedUpException(userName, "Bara administratörer kan ta bort raids, tyvärr."); //"Only administrators can delete raids, sorry.");
+                    throw new UserMessedUpException(userName, "Bara administratörer kan ta bort raids, tyvärr.");
+                    //"Only administrators can delete raids, sorry.");
                 }
                 if (raidRepository.delete(raid)) {
                     raid = null;
@@ -126,23 +129,25 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 break;
             default:
                 // todo: i18n
-                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid man change");//"Bad syntax of command. Refer to command help: !raid help");
+                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid man change");
+                //"Bad syntax of command. Refer to command help: !raid help");
         }
+        commandEvent.reactSuccess();
         // todo: i18n
-        if (raid != null) {
-            replyBasedOnConfig(config, commandEvent, "Korrigerade raid: " + raid.toString());
-        } else {
-            replyBasedOnConfig(config, commandEvent, "Tog bort raid.");
-        }
+//        if (raid != null) {
+//            replyBasedOnConfig(config, commandEvent, "Korrigerade raid: " + raid.toString());
+//        } else {
+//            replyBasedOnConfig(config, commandEvent, "Tog bort raid.");
+//        }
     }
 
-    private void verifyPermission(CommandEvent commandEvent, String userName, Raid raid) {
+    private void verifyPermission(CommandEvent commandEvent, User user, Raid raid) {
         final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
                 commandEvent.getMember(), Permission.ADMINISTRATOR);
-        final boolean userIsNotRaidCreator = !userName.equalsIgnoreCase(raid.getCreator());
+        final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
         if (userIsNotAdministrator && userIsNotRaidCreator) {
             // todo: i18n
-            throw new UserMessedUpException(userName, "Du är inte skapare av denna raid, eller en administratör. " +
+            throw new UserMessedUpException(user, "Du är inte skapare av denna raid, eller en administratör. " +
                     "Du får inte göra det du försökte göra. :p"); //"You are not the creator of this raid, nor an administrator!");
         }
     }

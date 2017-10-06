@@ -48,7 +48,11 @@ public abstract class ConfigAwareCommand extends Command {
             commandEvent.replyInDM(t.getMessage());
             commandEvent.reactError();
         } else {
-            commandEvent.reply(t.getMessage());
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor(null, null, null);
+            embedBuilder.setTitle(null);
+            embedBuilder.setDescription(t.getMessage());
+            commandEvent.reply(embedBuilder.build());
         }
     }
 

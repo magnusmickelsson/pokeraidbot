@@ -33,17 +33,19 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
         final String userName = commandEvent.getAuthor().getName();
         if (args == null || args.length() < 1) {
             commandListener.removeAll(userId);
-            String message =
-                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
-                            "ALL", userName);
-            replyBasedOnConfig(config, commandEvent, message);
+            commandEvent.reactSuccess();
+//            String message =
+//                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
+//                            "ALL", userName);
+//            replyBasedOnConfig(config, commandEvent, message);
         } else {
             Pokemon pokemon = pokemonRepository.getByName(args);
             commandListener.remove(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
-            String message =
-                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
-                            pokemon.getName(), userName);
-            replyBasedOnConfig(config, commandEvent, message);
+//            String message =
+//                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
+//                            pokemon.getName(), userName);
+            commandEvent.reactSuccess();
+            // replyBasedOnConfig(config, commandEvent, message);
         }
     }
 }

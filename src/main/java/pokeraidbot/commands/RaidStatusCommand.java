@@ -65,19 +65,25 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" + pokemon.getNumber() + ".png");
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
         StringBuilder sb = new StringBuilder();
+        final String activeText = localeService.getMessageFor(LocaleService.ACTIVE, localeForUser);
+        final String startGroupText = localeService.getMessageFor(LocaleService.START_GROUP, localeForUser);
+        final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY, localeForUser);
+        final String raidBossText = localeService.getMessageFor(LocaleService.RAID_BOSS, localeForUser);
+        final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
         // todo: i18n
-        sb.append("**Aktiv:** ")
+        // todo: i18n
+        sb.append("**").append(activeText).append(":** ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
                 .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
                 .append("\t**").append(numberOfPeople).append(" ")
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
-                .append(signUps.size() > 0 ? ":\n" + signUps : "")
-                // todo: i18n
-        .append("\nStarta grupp - skriv (med egen tid):\n!raid group ")
-                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ").append(gymName)
-                .append("\nHitta dit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym)).append(")")
-                .append("\nRaidboss: **").append(pokemon).append("**\n")
-                .append("För tips - skriv: *!raid vs ").append(pokemon.getName()).append("*\n");
+                .append(signUps.size() > 0 ? ":\n" + signUps : "").append("\n").append(startGroupText)
+                .append(":\n!raid group ")
+                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ")
+                .append(gymName).append("\n").append(findYourWayText).append(" [Google Maps](")
+                .append(Utils.getNonStaticMapUrl(gym)).append(")").append("\n")
+                .append(raidBossText).append(" **").append(pokemon).append("**\n").append(hintsText)
+                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 

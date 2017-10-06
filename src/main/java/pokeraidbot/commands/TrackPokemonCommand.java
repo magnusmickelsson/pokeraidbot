@@ -33,9 +33,10 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         final String userId = commandEvent.getAuthor().getId();
         final String userName = commandEvent.getAuthor().getName();
         commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
-        String message =
-                localeService.getMessageFor(LocaleService.TRACKING_ADDED, localeService.getLocaleForUser(userName),
-                        pokemon.getName(), userName);
-        replyBasedOnConfig(config, commandEvent, message);
+//        String message =
+//                localeService.getMessageFor(LocaleService.TRACKING_ADDED, localeService.getLocaleForUser(userName),
+//                        pokemon.getName(), userName);
+        commandEvent.reactSuccess();
+//        replyBasedOnConfig(config, commandEvent, message);
     }
 }

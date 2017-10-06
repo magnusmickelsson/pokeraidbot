@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.ClockService;
@@ -107,43 +108,43 @@ public class Utils {
         return false;
     }
 
-    public static void assertSignupTimeNotBeforeNow(String userName, LocalDateTime dateAndTime, LocaleService localeService) {
+    public static void assertSignupTimeNotBeforeNow(User user, LocalDateTime dateAndTime, LocaleService localeService) {
         final LocalDateTime now = clockService.getCurrentDateTime();
         if (dateAndTime.isBefore(now)) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.SIGN_BEFORE_RAID, LocaleService.DEFAULT,
                             printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
         }
     }
 
-    public static void assertCreateRaidTimeNotBeforeNow(String userName, LocalDateTime dateAndTime, LocaleService localeService) {
+    public static void assertCreateRaidTimeNotBeforeNow(User user, LocalDateTime dateAndTime, LocaleService localeService) {
         final LocalDateTime now = clockService.getCurrentDateTime();
         if (dateAndTime.isBefore(now)) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.TIMEZONE, LocaleService.DEFAULT,
                             printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
         }
     }
 
-    public static void assertTimeNotInNoRaidTimespan(String userName, LocalTime time, LocaleService localeService) {
+    public static void assertTimeNotInNoRaidTimespan(User user, LocalTime time, LocaleService localeService) {
         if (time.isAfter(LocalTime.of(22, 00)) || time.isBefore(LocalTime.of(7, 0))) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_RAIDS_NOW, LocaleService.DEFAULT, printTime(time)));
         }
     }
 
-    public static void assertTimeNotMoreThanXHoursFromNow(String userName, LocalTime time, LocaleService localeService, Integer hours) {
+    public static void assertTimeNotMoreThanXHoursFromNow(User user, LocalTime time, LocaleService localeService, Integer hours) {
         final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, LocaleService.DEFAULT,
                             printTime(time), printTime(now), String.valueOf(hours)));
         }
     }
 
-    public static void assertEtaNotAfterRaidEnd(String userName, Raid raid, LocalDateTime eta, LocaleService localeService) {
+    public static void assertEtaNotAfterRaidEnd(User user, Raid raid, LocalDateTime eta, LocaleService localeService) {
         if (eta.isAfter(raid.getEndOfRaid())) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_ETA_AFTER_RAID,
                             LocaleService.DEFAULT, printTimeIfSameDay(eta),
                             printTimeIfSameDay(raid.getEndOfRaid())));
@@ -203,19 +204,19 @@ public class Utils {
         return pokemonName.equalsIgnoreCase("mewtwo");
     }
 
-    public static LocalTime parseTime(String userName, String timeString) {
+    public static LocalTime parseTime(User user, String timeString) {
         LocalTime endsAtTime;
         try {
             endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
         } catch (DateTimeParseException | NullPointerException e) {
-            throw new UserMessedUpException(userName,
+            throw new UserMessedUpException(user,
                     // todo: i18n
-                    "Kunde inte parsa tiden du ville ändra till, ska vara format HH:MM men var: " + timeString);
+                    "Kunde inte parsa tiden du angav, ska vara format HH:MM men var: " + timeString);
         }
         return endsAtTime;
     }
 
-    public static Integer assertNotTooManyOrNoNumber(String userName, LocaleService localeService, String people) {
+    public static Integer assertNotTooManyOrNoNumber(User user, LocaleService localeService, String people) {
         Integer numberOfPeople;
         try {
             numberOfPeople = new Integer(people);
@@ -223,8 +224,8 @@ public class Utils {
                 throw new RuntimeException();
             }
         } catch (RuntimeException e) {
-            throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeService.getLocaleForUser(userName),
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeService.getLocaleForUser(user.getName()),
                             people, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
         return numberOfPeople;

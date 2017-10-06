@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid;
 
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -88,17 +89,17 @@ public class Raid {
                 gym.toString(), printDateTime(endOfRaid));
     }
 
-    public void signUp(String userName, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
-        SignUp signUp = signUps.get(userName);
+    public void signUp(User user, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
+        SignUp signUp = signUps.get(user.getName());
         if (signUp != null) {
-            Utils.assertNotTooManyOrNoNumber(userName, localeService, String.valueOf(signUp.getHowManyPeople() + howManyPeople));
+            Utils.assertNotTooManyOrNoNumber(user, localeService, String.valueOf(signUp.getHowManyPeople() + howManyPeople));
             signUp.addPeople(howManyPeople);
             signUp.setEta(arrivalTime);
         } else {
-            signUp = new SignUp(userName, howManyPeople, arrivalTime);
-            signUps.put(userName, signUp);
+            signUp = new SignUp(user.getName(), howManyPeople, arrivalTime);
+            signUps.put(user.getName(), signUp);
         }
-        repository.addSignUp(userName, this, signUp);
+        repository.addSignUp(user.getName(), this, signUp);
     }
 
     public Set<SignUp> getSignUps() {

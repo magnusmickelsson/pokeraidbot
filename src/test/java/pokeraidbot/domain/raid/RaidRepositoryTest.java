@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid;
 
+import net.dv8tion.jda.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -72,9 +75,11 @@ public class RaidRepositoryTest {
         enteiRaid.setCreator(raid.getCreator()); // Set creator to same for equals comparison
         assertThat(raid, is(enteiRaid));
         String userName = "testUser2";
+        User user = mock(User.class);
+        when(user.getName()).thenReturn(userName);
         int howManyPeople = 3;
         LocalTime arrivalTime = nowTime.plusMinutes(30);
-        raid.signUp(userName, howManyPeople, arrivalTime, repo);
+        raid.signUp(user, howManyPeople, arrivalTime, repo);
         assertThat(raid.getSignUps().size(), is(1));
         assertThat(raid.getNumberOfPeopleSignedUp(), is(howManyPeople));
 

@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -45,23 +46,24 @@ public class NewRaidExCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String dateString = args[1];
         String timeString = args[2];
-        LocalTime endsAtTime = Utils.parseTime(userName, timeString);
+        LocalTime endsAtTime = Utils.parseTime(user, timeString);
         // todo: Utils.parseDate
         LocalDate endsAtDate = LocalDate.parse(dateString);
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
-        assertTimeNotInNoRaidTimespan(userName, endsAtTime, localeService);
+        assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
         if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
             // todo: i18n
-            throw new UserMessedUpException(userName, "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!");
+            throw new UserMessedUpException(user, "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!");
         }
-        assertCreateRaidTimeNotBeforeNow(userName, endsAt, localeService);
+        assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();
         for (int i = 3; i < args.length; i++) {

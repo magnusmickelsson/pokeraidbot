@@ -41,6 +41,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_INSTALL, "install");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_CHANGE, "change");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_TRACKING, "tracking");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_GROUPS, "groups");
     }
 
     private void addTextsToHelpTopics(Locale[] supportedLocales, String messageKey, String topic) {
@@ -81,6 +82,5 @@ public class HelpManualCommand extends ConfigAwareCommand {
                 }
             }
         }
-        commandEvent.reactSuccess();
     }
 }

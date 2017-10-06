@@ -1,5 +1,7 @@
 package pokeraidbot.domain.config;
 
+import net.dv8tion.jda.core.entities.User;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -70,15 +72,113 @@ public class LocaleService {
     public static final String MANUAL_CHANGE = "MANUAL_CHANGE";
     public static final String WRONG_NUMBER_OF_ARGUMENTS = "WRONG_NUMBER_OF_ARGUMENTS";
     public static final String MANUAL_TRACKING = "MANUAL_TRACKING";
+    public static final String ACTIVE = "ACTIVE";
+    public static final String START_GROUP = "START_GROUP";
+    public static final String FIND_YOUR_WAY = "FIND_YOUR_WAY";
+    public static final String RAID_BOSS = "RAID_BOSS";
+    public static final String FOR_HINTS = "FOR_HINTS";
+    public static final String RAID_GROUP_HELP = "RAID_GROUP_HELP";
+    public static final String CANT_CREATE_GROUP_LATE = "CANT_CREATE_GROUP_LATE";
+    public static final String HANDLE_SIGNUP = "HANDLE_SIGNUP";
+    public static final String REMOVED_GROUP = "REMOVED_GROUP";
+    public static final String GROUP_HEADLINE = "GROUP_HEADLINE";
+    public static final String POKEMON = "POKEMON";
+    public static final String SIGNED_UP_TOTAL = "SIGNED_UP_TOTAL";
+    public static final String SIGNED_UP_AT = "SIGNED_UP_AT";
+    public static final String NO_EMOTES = "NO_EMOTES";
+    public static final String MANUAL_GROUPS = "MANUAL_GROUPS";
 
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
+                "Administrator has not installed pokeraidbot's emotes. " +
+                        "Ensure he/she runs the following command: !raid install-emotes"
+        );
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, SWEDISH),
+                "Administratören för denna server har inte installerat pokeraidbot's emotes. " +
+                        "Se till att hen kör följande kommando: !raid install-emotes"
+        );
+
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
+                "Signed up to start at"
+        );
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, SWEDISH),
+                "Anmälda att komma"
+        );
+
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
+                "Signed up for raid"
+        );
+        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, SWEDISH),
+                "Anmälda totalt till raiden"
+        );
+
+        i18nMessages.put(new I18nLookup(POKEMON, Locale.ENGLISH),
+                "Pokemon:"
+        );
+        i18nMessages.put(new I18nLookup(POKEMON, SWEDISH),
+                "Pokemon:"
+        );
+
+        i18nMessages.put(new I18nLookup(GROUP_HEADLINE, Locale.ENGLISH),
+                "%1's group @ %2, starts at %3"
+        );
+        i18nMessages.put(new I18nLookup(GROUP_HEADLINE, SWEDISH),
+                "%1s grupp @ %2, startar %3"
+        );
+
+        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
+                " Removed your group which was supposed to start at %1, since it's expired. " +
+                        "Your signups remain on raid total until " +
+                        "you either type \"!raid remove %2\" or the raid expires.\n" +
+                        "If you want to run a group later than %1, " +
+                        "type \"!raid group {tid}\" and give a later time.");
+        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
+                " Tog bort din grupp som skulle börja raiden vid %1, tiden har nu passerat. " +
+                        "Era signups står kvar på raidens total, tills " +
+                        "ni kör kommandot \"!raid remove %2\" eller raiden tar slut.\n" +
+                        "Om ni vill köra en ny grupp lite senare, " +
+                        "skriv \"!raid group {tid}\" och ange en senare tid.");
+
+        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
+                "Handle sign up via the buttons below. For help, type \"!raid man group\".");
+        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
+                "Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid man group\".");
+
+        i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
+                "Can't create a group to raid after raid has ended. :("
+        );
+        i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, SWEDISH),
+                "Kan inte skapa en grupp som ska samlas efter att raiden slutat."
+        );
+
+        i18nMessages.put(new I18nLookup(RAID_GROUP_HELP, Locale.ENGLISH),
+                "Create a group which will start the raid together at a given time: " +
+                        "!raid group [start time (HH:MM)] [gym name]");
+        i18nMessages.put(new I18nLookup(RAID_GROUP_HELP, SWEDISH),
+                "Skapa ett tillfälle för en grupp att köra vid en skapad raid: " +
+                "!raid group [start time (HH:MM)] [gym name]");
+
+        i18nMessages.put(new I18nLookup(FOR_HINTS, Locale.ENGLISH), "For hints - type:");
+        i18nMessages.put(new I18nLookup(FOR_HINTS, SWEDISH), "För tips - skriv:");
+
+        i18nMessages.put(new I18nLookup(RAID_BOSS, Locale.ENGLISH), "Raidboss:");
+        i18nMessages.put(new I18nLookup(RAID_BOSS, SWEDISH), "Raidboss:");
+
+        i18nMessages.put(new I18nLookup(FIND_YOUR_WAY, Locale.ENGLISH), "Find your way here:");
+        i18nMessages.put(new I18nLookup(FIND_YOUR_WAY, SWEDISH), "Hitta dit:");
+
+        i18nMessages.put(new I18nLookup(START_GROUP, Locale.ENGLISH), "Start group - write (change the time)");
+        i18nMessages.put(new I18nLookup(START_GROUP, SWEDISH), "Starta grupp - skriv (med egen tid)");
+
+        i18nMessages.put(new I18nLookup(ACTIVE, Locale.ENGLISH), "Active");
+        i18nMessages.put(new I18nLookup(ACTIVE, SWEDISH), "Aktiv");
         // todo: change to use Spring resource bundles instead
         i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, Locale.ENGLISH),
                 "Wrong number of arguments for command, expected %1 but was %2. Write \"!raid man\" for help.");
         i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, SWEDISH),
-                "Fel antal argument för kommandot, förväntade %1, men det var %2. " +
+                "Fel antal argument, förväntade %1, men det var %2. " +
                         "Skriv \"!raid man\" för att få hjälp");
 
         i18nMessages.put(new I18nLookup(UNTRACK_HELP, Locale.ENGLISH),
@@ -89,7 +189,7 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(TRACK_HELP, Locale.ENGLISH),
                 "Track new raids for a certain Pokemon (message in DM) - !raid track [Pokemon]");
         i18nMessages.put(new I18nLookup(TRACK_HELP, SWEDISH),
-                "Håll koll efter nya raider för en viss Pokemon (via direktmeddelande) - !raid track [Pokemon]");
+                "Håll koll efter nya raider för en viss Pokemon (via DM) - !raid track [Pokemon]");
 
         i18nMessages.put(new I18nLookup(TRACKING_ADDED, Locale.ENGLISH),
                 "Added tracking for pokemon %1 for user %2.");
@@ -125,8 +225,8 @@ public class LocaleService {
                 "There are no gyms for this region. " +
                         "Please check configuration and/or notify administrator!");
         i18nMessages.put(new I18nLookup(GYM_CONFIG_ERROR, SWEDISH),
-                "Det finns inga gym för din valda region. Kontrollera konfigurationen av servern och/eller meddela" +
-                        " en administratör så de kan hjälpa dig.");
+                "Det finns inga gym för din valda region. Meddela en administratör så de kan kontrollera " +
+                        "konfigurationen av servern. Ni har väl sett till att importera gymdata?");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, Locale.ENGLISH),
                 "Could not find one unique gym/pokestop, your query returned 5+ results. Try refine your search.");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_MANY_RESULTS, SWEDISH),
@@ -136,10 +236,10 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, Locale.ENGLISH),
                 "Could not find one unique gym/pokestop. Did you want any of these? %1");
         i18nMessages.put(new I18nLookup(GYM_SEARCH_OPTIONS, SWEDISH),
-                "Kunde inte hitta ett unikt gym/pokestop. Var det någon av dessa du sökte efter? %1");
+                "Kunde inte hitta ett unikt gym/pokestop. Var det något av dessa du sökte efter? %1");
 
         i18nMessages.put(new I18nLookup(GYM_SEARCH, Locale.ENGLISH),
-                "Empty input for gym name, try giving me a proper name to search for. :(");
+                "Empty input for gym name, try giving me a proper name to search for.");
         i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH),
                 "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
 
@@ -241,14 +341,14 @@ public class LocaleService {
                 "Example: !raid new Entei 09:45 Solna Platform");
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, SWEDISH),
                 "Det finns just nu inga registrerade raids. " +
-                        "För att registrera en raid, använd följande kommando:\n" +
+                        "För att registrera en raid, skriv:\n" +
                         "!raid new {pokemon} {sluttid (HH:mm)} {gym}\n" +
         "Exempel: !raid new Entei 09:45 Solna Platform");
 
         i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH),
                 "Check current raids - !raid list [optional: Pokemon]");
         i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - " +
-                "!raid list [Pokemon (filtrering, frivillig)]");
+                "!raid list [Pokemon (frivilligt att ange)]");
 
 
         i18nMessages.put(new I18nLookup(IF_CORRECT_MOVESET, Locale.ENGLISH), "(if correct moveset)");
@@ -305,7 +405,7 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(RAID_EXISTS, Locale.ENGLISH),
                 "Sorry, %1, a raid at gym %2 already exists (for %3). Sign up for it!");
         i18nMessages.put(new I18nLookup(RAID_EXISTS, SWEDISH),
-                "Tyvärr, %1, en raid vid gym %2 finns redan (för %3). Anmäl dig till den!");
+                "Tyvärr, %1, en raid vid gym %2 finns redan (för %3). Anmäl dig till den?");
 
         i18nMessages.put(new I18nLookup(MANUAL_RAID, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
@@ -354,6 +454,17 @@ public class LocaleService {
                         "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +
                         "**Ta bort en raid:** !raid change remove *[Pokestop name]* (Endast admins får göra detta)\n" +
                         "*Exempel:* !raid change remove Solna Platform"
+        );
+
+        i18nMessages.put(new I18nLookup(MANUAL_GROUPS, Locale.ENGLISH),
+                "**Note:This command must be executed in a server text channel, not in DM!**\n\n" +
+                "**Create a group to run a raid at a certain time:** !raid group {time (HH:MM)} {gym name}\n" +
+                        "*Example:* !raid group 09:45 Solna Platform"
+        );
+        i18nMessages.put(new I18nLookup(MANUAL_GROUPS, SWEDISH),
+                "**OBS: Kommandot måste köras i en servers textkanal, inte i DM!**\n\n" +
+                        "**Skapa en grupp för att köra raid en viss tid:** !raid group {time (HH:MM)} {gym namn}\n" +
+                        "*Exempel:* !raid group 09:45 Solna Platform"
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, Locale.ENGLISH),
@@ -420,8 +531,12 @@ public class LocaleService {
     }
 
     // todo: implement saving locale setting for user (will require pay version of Heroku database)
+    public Locale getLocaleForUser(User user) {
+        return DEFAULT;
+    }
+
     public Locale getLocaleForUser(String username) {
-        return SWEDISH;
+        return DEFAULT;
     }
 
     public LocaleService(Map<I18nLookup, String> i18nMessages) {
