@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -131,24 +132,34 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     throw new RuntimeException(e);
                 }
             };
-            while (clockService.getCurrentDateTime().isBefore(startAt)) {
+            do {
                 try {
                     executorService.submit(editTask).get();
                     clockService.setMockTime(clockService.getCurrentTime().plusSeconds(15));
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            } while (clockService.getCurrentDateTime().isBefore(startAt));
             // Clean up after raid expires
-            botService.getBot().removeEventListener(emoticonSignUpMessageListener);
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
-            commandEvent.getChannel().deleteMessageById(emoteMessageId).queue();
+            if (!StringUtils.isEmpty(emoteMessageId)) {
+                commandEvent.getChannel().deleteMessageById(emoteMessageId).queue();
+            }
             final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
-            commandEvent.getChannel().deleteMessageById(infoMessageId).queue();
+            if (!StringUtils.isEmpty(emoteMessageId)) {
+                commandEvent.getChannel().deleteMessageById(infoMessageId).queue();
+            }
+            botService.getBot().removeEventListener(emoticonSignUpMessageListener);
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Cleaned up listener and messages related to this group - raid: " + raid +
                         " , start time: " + startAt);
             }
+            commandEvent.reply("Tog bort " + userName + "s grupp som skulle börja raiden vid " +
+                    printTime(startAtTime) + ", tiden har nu passerat. Era signups står kvar på raidens total, tills " +
+                    "ni kör kommandot \"!raid remove " + gymName + "\" eller raiden tar slut.\n" +
+                    "Om ni vill köra en ny grupp lite senare, " +
+                    "så kör kommandot \"!raid group {tid}\" igen med en senare tid."
+            );
         });
 
     }
@@ -162,13 +173,13 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                 Utils.printTimeIfSameDay(startAt));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append("**Pokemon:** ").append(pokemon).append(".");
+        descriptionBuilder.append("Pokemon: **").append(pokemon).append("**.");
         descriptionBuilder.append("\nAnmälda totalt till raiden: ")
-                .append(raid.getNumberOfPeopleSignedUp());
+                .append("**").append(raid.getNumberOfPeopleSignedUp()).append("**");
         // todo: lista över alla signups som ska komma vid den här tiden? Summera per lag?
         final LocalTime startAtTime = startAt.toLocalTime();
         descriptionBuilder.append("\nAnmälda att komma ").append(printTime(startAtTime)).append(": ")
-                .append(raid.getNumberOfPeopleArrivingAt(startAtTime));
+                .append("**").append(raid.getNumberOfPeopleArrivingAt(startAtTime)).append("**");
         descriptionBuilder.append("\nFör tips, skriv:" +
                 "\n*!raid vs ").append(pokemon.getName()).append("*\n");
         descriptionBuilder.append("Hitta hit: [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
@@ -181,8 +192,10 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private void assertAtLeastOneEmote(List<Emote> mystic) {
         if (mystic == null || mystic.size() < 1) {
             // todo: i18n
-            throw new RuntimeException("Administrator has not installed pokeraidbot's emotes. " +
-                    "Ensure he/she runs the following command: !raid install-emotes");
+            throw new RuntimeException("Administratören för denna server har inte installerat pokeraidbot's emotes. " +
+                    "Se till att hen kör följande kommando: !raid install-emotes");
+//            throw new RuntimeException("Administrator has not installed pokeraidbot's emotes. " +
+//                    "Ensure he/she runs the following command: !raid install-emotes");
         }
     }
 }

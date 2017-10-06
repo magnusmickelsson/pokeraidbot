@@ -24,7 +24,6 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.time.LocalTime;
 
 @SpringBootApplication
 @Configuration
@@ -52,7 +51,7 @@ public class BotServerMain {
     public ClockService getClockService() {
         final ClockService clockService = new ClockService();
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-        clockService.setMockTime(LocalTime.of(10, 30));
+//        clockService.setMockTime(LocalTime.of(10, 30));
         Utils.setClockService(clockService);
         return clockService;
     }

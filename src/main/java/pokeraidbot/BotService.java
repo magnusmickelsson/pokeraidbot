@@ -91,7 +91,7 @@ public class BotService {
                         configRepository, aggregateCommandListener),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository,
                         aggregateCommandListener),
-                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
+                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener, clockService),
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
