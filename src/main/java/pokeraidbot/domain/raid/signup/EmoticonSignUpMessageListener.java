@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid.signup;
 
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.Role;
@@ -38,6 +39,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     private final String raidId;
     private String infoMessageId;
     private final LocalDateTime startAt;
+    private String userHadError = null;
 
     public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService, ConfigRepository configRepository,
                                          RaidRepository raidRepository, PokemonRepository pokemonRepository,
@@ -63,15 +65,22 @@ public class EmoticonSignUpMessageListener implements EventListener {
 
     @Override
     public void onEvent(Event event) {
+        String reactionMessageId = null;
+        User user = null;
         try {
             if (event instanceof GuildMessageReactionAddEvent) {
                 final GuildMessageReactionAddEvent reactionEvent = (GuildMessageReactionAddEvent) event;
-                final String reactionMessageId = reactionEvent.getReaction().getMessageId();
+                reactionMessageId = reactionEvent.getReaction().getMessageId();
                 if (!emoteMessageId.equals(reactionMessageId)) {
                     return;
                 }
+                user = reactionEvent.getUser();
+                // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
+                if (user.getName().equals(userHadError)) {
+                    userHadError = null;
+                    return;
+                }
                 // If the bot added any reactions, don't respond to them
-                final User user = reactionEvent.getUser();
                 if (user.equals(botService.getBot().getSelfUser())) return;
 
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
@@ -116,8 +125,13 @@ public class EmoticonSignUpMessageListener implements EventListener {
             } else if (event instanceof GuildMessageReactionRemoveEvent) {
                 final GuildMessageReactionRemoveEvent reactionEvent = (GuildMessageReactionRemoveEvent) event;
                 // If the bot added any reactions, don't respond to them
-                final User user = reactionEvent.getUser();
-                final String reactionMessageId = reactionEvent.getReaction().getMessageId();
+                user = reactionEvent.getUser();
+                // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
+                if (user.getName().equals(userHadError)) {
+                    userHadError = null;
+                    return;
+                }
+                reactionMessageId = reactionEvent.getReaction().getMessageId();
                 if (!emoteMessageId.equals(reactionMessageId)) {
                     return;
                 }
@@ -155,20 +169,28 @@ public class EmoticonSignUpMessageListener implements EventListener {
                             break;
                         default:
                     }
-
-                    // Remove the reaction which was added in this event.
-                    // Do this with a slight delay to prevent graphical glitches client side.
-//                if (wasPokeraidbotEmote) {
-//                    reactionEvent.getReaction().removeReaction(user).queueAfter(30, TimeUnit.MILLISECONDS);
-//                }
                 }
             }
         } catch (Throwable t) {
             if (event instanceof GenericGuildMessageReactionEvent) {
                 final GenericGuildMessageReactionEvent guildMessageReactionEvent =
                         (GenericGuildMessageReactionEvent) event;
-                guildMessageReactionEvent.getChannel().sendMessage(
-                        guildMessageReactionEvent.getUser().getAsMention() + ": " + t.getMessage()).queue();
+                // Since we got an error, remove last reaction
+                if (reactionMessageId != null && reactionMessageId.equals(emoteMessageId)) {
+                    // Do this with a slight delay to prevent graphical glitches client side.
+                    guildMessageReactionEvent.getReaction().removeReaction(user)
+                            .queueAfter(30, TimeUnit.MILLISECONDS);
+                    userHadError = user.getName();
+                }
+                if (user != null) {
+                    MessageBuilder messageBuilder = new MessageBuilder();
+                    // todo: turn into message that only the target user can see
+                    messageBuilder.append(user.getAsMention())
+                            .append(": ").append(t.getMessage());
+                    guildMessageReactionEvent.getChannel().sendMessage(messageBuilder.build()).queue();
+                } else {
+                    LOGGER.warn("We have a situation where user is null! Event: " + event);
+                }
             }
         }
     }
@@ -206,9 +228,14 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 if (StringUtils.containsIgnoreCase(teamYouShouldntBeIn, role.getName())) {
                     // todo: i18n
                     event.getChannel().sendMessage(user.getAsMention() +
-                            ": You're in team " + teamYouShouldntBeIn + " trying to signup as " + teamName +
-                            ". Removing signup.").queue();
+                            ": Du har roll som lag " + teamYouShouldntBeIn +
+                            " men försöker signa upp som " + teamName +
+                            ". Jag struntar i just det klicket ;p").queue();
+//                    event.getChannel().sendMessage(user.getAsMention() +
+//                            ": You're in team " + teamYouShouldntBeIn + " trying to signup as " + teamName +
+//                            ". Removing signup.").queue();
                     event.getReaction().removeReaction(user).queueAfter(30, TimeUnit.MILLISECONDS);
+                    userHadError = user.getName();
                     return false;
                 }
             }

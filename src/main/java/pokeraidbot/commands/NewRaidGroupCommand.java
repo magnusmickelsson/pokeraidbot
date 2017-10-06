@@ -4,7 +4,9 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final BotService botService;
     private final ClockService clockService;
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,
@@ -71,7 +74,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         assertAtLeastOneEmote(instinct);
         assertAtLeastOneEmote(valor);
 
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String timeString = args[0];
         LocalTime startAtTime = Utils.parseTime(userName, timeString);
@@ -99,15 +103,16 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener = new EmoticonSignUpMessageListener(botService, localeService,
                 configRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(userName, startAt, raid);
-        final ExecutorService executorService = Executors.newFixedThreadPool(1);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
-            commandEvent.reply("Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid man group\".",
+            embed.getChannel().sendMessage(
+                    "Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid man group\".").queue(
                     msg -> {
                         final String messageId = msg.getId();
+                        LOGGER.debug("Thread: " + Thread.currentThread().getId() +
+                                " - Adding event listener and emotes for emote message with ID: " + messageId);
                         emoticonSignUpMessageListener.setEmoteMessageId(messageId);
                         botService.getBot().addEventListener(emoticonSignUpMessageListener);
-                        LOGGER.debug("Eventlistener created for message with ID: " + messageId);
                         // Get first icon of each team (if there is more than one)
                         msg.getChannel().addReactionById(msg.getId(), mystic.iterator().next()).queue();
                         msg.getChannel().addReactionById(msg.getId(), valor.iterator().next()).queue();
@@ -119,11 +124,30 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                         msg.getChannel().addReactionById(msg.getId(), Emotes.FOUR).queue();
                         msg.getChannel().addReactionById(msg.getId(), Emotes.FIVE).queue();
                         msg.getChannel().addReactionById(msg.getId(), Emotes.SIX).queue();
-                        LOGGER.debug("Emotes added to message with ID: " + messageId);
+                        LOGGER.debug("Eventlistener and emotes added for emote message with ID: " + messageId);
+                        msg.getChannel().pinMessageById(embed.getId()).queueAfter(50, TimeUnit.MILLISECONDS);
+                        LOGGER.debug("Pinning info message for raid group. ID is: " + embed.getId());
                     });
+            final Callable<Boolean> refreshEditThreadTask =
+                    getMessageRefreshingTaskToSchedule(commandEvent, user, startAt, gymName,
+                            raid, emoticonSignUpMessageListener, embed);
+            executorService.submit(refreshEditThreadTask);
+        });
+
+    }
+
+    private Callable<Boolean> getMessageRefreshingTaskToSchedule(CommandEvent commandEvent, User user,
+                                                                 LocalDateTime startAt,
+                                                                 String gymName, Raid raid,
+                                                                 EmoticonSignUpMessageListener emoticonSignUpMessageListener,
+                                                                 Message embed) {
+        Callable<Boolean> refreshEditThreadTask;
+        final String userName = user.getName();
+        refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 try {
                     TimeUnit.SECONDS.sleep(15);
+                    LOGGER.debug("Thread: " + Thread.currentThread().getId() + " - Updating message with ID " + embed.getId());
                     embed.getChannel().editMessageById(embed.getId(),
                             getRaidGroupMessageEmbed(userName, startAt, raidRepository.getById(raid.getId())))
                             .queue();
@@ -135,11 +159,11 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             do {
                 try {
                     executorService.submit(editTask).get();
-                    clockService.setMockTime(clockService.getCurrentTime().plusSeconds(15));
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             } while (clockService.getCurrentDateTime().isBefore(startAt));
+            LOGGER.debug("Raid has now expired, will clean up listener and messages..");
             // Clean up after raid expires
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
@@ -154,14 +178,16 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                 LOGGER.debug("Cleaned up listener and messages related to this group - raid: " + raid +
                         " , start time: " + startAt);
             }
-            commandEvent.reply("Tog bort " + userName + "s grupp som skulle börja raiden vid " +
-                    printTime(startAtTime) + ", tiden har nu passerat. Era signups står kvar på raidens total, tills " +
+            // todo: should we automatically remove signups for this group when time expires from total? Makes sense.
+            commandEvent.reply(user.getAsMention() + " Tog bort din grupp som skulle börja raiden vid " +
+                    printTimeIfSameDay(startAt) + ", tiden har nu passerat. Era signups står kvar på raidens total, tills " +
                     "ni kör kommandot \"!raid remove " + gymName + "\" eller raiden tar slut.\n" +
                     "Om ni vill köra en ny grupp lite senare, " +
                     "så kör kommandot \"!raid group {tid}\" igen med en senare tid."
             );
-        });
-
+            return true;
+        };
+        return refreshEditThreadTask;
     }
 
     public static MessageEmbed getRaidGroupMessageEmbed(String userName, LocalDateTime startAt, Raid raid) {

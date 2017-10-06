@@ -142,6 +142,7 @@ public class BotService {
             configRepository.save(new Config("uppsala", "pokeraidbot_test"));
 
             // External user's servers
+            configRepository.save(new Config("umeå", "pokémon go sverige admin"));
             configRepository.save(new Config("luleå", "pokémon luleå"));
             configRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
             configRepository.save(new Config("norrköping", true, "raid-test-nkpg"));

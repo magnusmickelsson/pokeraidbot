@@ -24,7 +24,8 @@ public class HelpManualCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "man";
         // todo: i18n
-        helpText = " Hjälpmanual för olika ämnen: !raid man {ämne} {chan/dm}\n" +
+        helpText = " Hjälpmanual för olika ämnen: !raid man {ämne} {frivilligt:chan/dm - " +
+                "om man t.ex. vill visa hjälpen i en textkanal för en användare}\n" +
                 "Möjliga ämnen: raid, signup, map, install, change, tracking, group (todo).";
         this.help = helpText;
         this.guildOnly = false;

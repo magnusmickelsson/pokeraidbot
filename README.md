@@ -58,6 +58,8 @@ If you don't Spring will complain that the properties are not available, and the
 * Try browse http://127.0.0.1:5000/ - if it works you'll get a response from the bot
 * Use the Discord link from the response above to invite the bot into a Discord server of your choice
 * Go to your Discord server, verify that the bot has logged in and is present.
+* Assign the bot the following permissions:
+    * 
 * In the chat, try running the command "!raid usage". Take it from there.
 
 ## Going into production
@@ -82,8 +84,12 @@ Example:
 .. will create a dataset file called falun.csv under {project_dir}/target/ folder, which contains
 all gyms/raids within 10 km of the centre of the city Falun in Sweden (centre as defined by Google maps).
 
-Copy this file into src/main/resources/ - name it gyms_falun.csv and add an entry to the configuration in the 
-BotServerMain class that maps your server name to use the "falun" region, and your server will now have access to data from Falun.
+Copy this file into src/main/resources/ - name it gyms_falun.csv and it will be available to be used by a Discord server,
+which is then to be configured to have the region falun.
+
+Configuring a region is done when the server admin installs the bot:
+* First, you need to invite the bot into the channel via the invite link as described above
+* Then, assigne access rights to the bot
 
 Example of the configuration you need to edit:
 
