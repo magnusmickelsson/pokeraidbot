@@ -82,11 +82,6 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
-
-//        botService.getBot().addEventListener(new EmoticonMessageListener(botService, localeService,
-//                      configRepository, raidRepository, pokemonRepository, gymRepository, ""));
-//
-//        LOGGER.debug("Eventlistener created and added to message");
     }
 
     private String getNumberAndFillToThree(Pokemon pokemon) {

@@ -20,6 +20,7 @@ public class Raid {
     private Map<String, SignUp> signUps = new HashMap<>();
     private String region;
     private String creator;
+    private String id;
 
     public Raid(Pokemon pokemon, LocalDateTime endOfRaid, Gym gym, LocaleService localeService, String region) {
         this.pokemon = pokemon;
@@ -27,6 +28,10 @@ public class Raid {
         this.gym = gym;
         this.localeService = localeService;
         this.region = region;
+    }
+
+    void setId(String id) {
+        this.id = id;
     }
 
     public Pokemon getPokemon() {
@@ -60,7 +65,9 @@ public class Raid {
         if (endOfRaid != null ? !endOfRaid.equals(raid.endOfRaid) : raid.endOfRaid != null) return false;
         if (gym != null ? !gym.equals(raid.gym) : raid.gym != null) return false;
         if (signUps != null ? !signUps.equals(raid.signUps) : raid.signUps != null) return false;
-        return region != null ? region.equals(raid.region) : raid.region == null;
+        if (region != null ? !region.equals(raid.region) : raid.region != null) return false;
+        if (creator != null ? !creator.equals(raid.creator) : raid.creator != null) return false;
+        return id != null ? id.equals(raid.id) : raid.id == null;
     }
 
     @Override
@@ -70,6 +77,8 @@ public class Raid {
         result = 31 * result + (gym != null ? gym.hashCode() : 0);
         result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
         result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 
@@ -112,5 +121,15 @@ public class Raid {
 
     public String getRegion() {
         return region;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int getNumberOfPeopleArrivingAt(LocalTime eta) {
+        return signUps.values().stream().mapToInt(signup ->
+                signup.getArrivalTime().equals(eta) ? signup.getHowManyPeople() : 0)
+                .sum();
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pokeraidbot.BotService;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
@@ -23,6 +24,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.time.LocalTime;
 
 @SpringBootApplication
 @Configuration
@@ -48,15 +50,19 @@ public class BotServerMain {
 
     @Bean
     public ClockService getClockService() {
-        return new ClockService();
+        final ClockService clockService = new ClockService();
+        // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
+        clockService.setMockTime(LocalTime.of(10, 30));
+        Utils.setClockService(clockService);
+        return clockService;
     }
 
     @Bean
     public BotService getBotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                                     PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
-                                    ConfigRepository configRepository) {
+                                    ConfigRepository configRepository, ClockService clockService) {
         return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
-                configRepository, ownerId, token);
+                configRepository, clockService, ownerId, token);
     }
 
     @Bean

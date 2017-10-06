@@ -69,7 +69,9 @@ public class RaidEntitySignUp implements Serializable {
 
     public void setNumberOfPeople(int numberOfPeople) {
         if (numberOfPeople < 0 || numberOfPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
-            throw new RuntimeException("Number of people must be between 0 and 21");
+            // todo: i18n
+            throw new RuntimeException("Antal personer för en signup måste vara 1-20, du hade " +
+                    this.numberOfPeople + " men försökte sätta " + numberOfPeople + ".");
         }
         this.numberOfPeople = numberOfPeople;
     }

@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +13,6 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.domain.raid.Raid;
-import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
@@ -70,6 +68,8 @@ public class RaidRepositoryTest {
             fail("Could not save raid: " + e.getMessage());
         }
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        enteiRaid.setId(raid.getId()); // Set to same id for equals comparison
+        enteiRaid.setCreator(raid.getCreator()); // Set creator to same for equals comparison
         assertThat(raid, is(enteiRaid));
         String userName = "testUser2";
         int howManyPeople = 3;
