@@ -51,7 +51,11 @@ public class RaidListCommand extends ConfigAwareCommand {
         }
 
         if (raids.size() == 0) {
-            commandEvent.reply(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle(null);
+            embedBuilder.setAuthor(null, null, null);
+            embedBuilder.setDescription(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
+            commandEvent.reply(embedBuilder.build());
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));

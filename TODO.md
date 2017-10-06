@@ -16,33 +16,43 @@ Needs testing:
 * Config should be put in the database, but synch with config during startup
 * "Change raid"-kommando om man gör fel när man skapar raiden
 * Delete raid command, for channel admin/owner only
+* "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
+* !raid add x should be able to take existing signup and add to it, not get an error,
+unless you exceed limit
+* Fixed: Clear all raids at the end of raiding for the day via scheduled job (22:00) - 
+bot send message about it. - Handled it instead via checking expire both on date and time.
+* Config command should enable servers to be configured in runtime on the fly (but only by server owner)
+* Better raid status overview (emote buttons to register people in a group arriving at a certain time)
 
 Being developed:
 
-* Bättre raid status overview (inklusive lag och knappar för att registrera fler signups)
-* "man" command to replace !raid usage, which is sooo big. Make !raid usage small, and !raid man {topic} have details
+-
 
 Fix issue:
 
-* Clear all raids at the end of raiding for the day via scheduled job (22:00) - bot send message about it.
+* If you create one group with listeners and all, and then create another group for the same raid, the first group
+should most likely be cleaned up.
+
+Fix, misc:
+* Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
 
-* !raid add x should be able to take existing signup and add to it, not get an error,
-unless you exceed limit
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
+(this may mean the install command has to be run in the context of a server chat so we can fetch server name)
 * "What's new"-command so people can see what new features.
 * Timezone handling via config, used in all commands related to time
 * Credit Iconninja for icons
-* Registrera lag vid signup, Registrera lag automatiskt vid signup baserat på roller
 * Check permissions during config - need to have MANAGE_MESSAGE and access to send messages, among other things
-* Enable channel admins to configure a server, to choose region/dataset and default locale
-* Config command should enable servers to be configured in runtime on the fly (but only by server owner)
-* Embeddedlänkar vid sökning som möjliggör att köra kommandot igen för bara det resultatet
+* Enable channel admins to choose their default locale 
+(and that the system doesn't have a default locale even for exceptions etc - also remove use of !raid help if possible)
+* Embeddedlänkar vid sökning som möjliggör att köra kommandot igen för bara det resultatet via klick
 
 Maybe, features:
 
-* Nytt förslag; ifall man skriver "!raid info pm" så ska infon skickas i PM istället för att visas i kanalen
+* !raid mysignups - Answer in PM with my current signups over all raids in the region. 
+!raid man raid or !raid man group command info in same message.
+* Nytt förslag; ifall man skriver "!raid info --dm" så ska infon skickas i PM istället för att visas i kanalen
 * Se om det är möjligt att automatiskt adda raider inom ett område man satt upp från gymhuntr.com (deras bot)
 * Config should have a note if a server is TEST or PROD and a env property which type of server,
 so we can't get test config on a prod server running by mistake
@@ -51,6 +61,5 @@ so we can't get test config on a prod server running by mistake
 * Persistent tracking (needs non-free Heroku version)
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
-* GuildController.public AuditableRestAction<Emote> createEmote(String name, Icon icon, Role... roles) - create emotes on server?
 * Checking error codes?
 ...

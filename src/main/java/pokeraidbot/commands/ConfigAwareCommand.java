@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.apache.commons.lang3.Validate;
@@ -25,7 +26,11 @@ public abstract class ConfigAwareCommand extends Command {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
-            commandEvent.reply(message);
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor(null, null, null);
+            embedBuilder.setTitle(null);
+            embedBuilder.setDescription(message);
+            commandEvent.reply(embedBuilder.build());
         }
     }
 
