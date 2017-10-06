@@ -195,7 +195,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final Pokemon pokemon = raid.getPokemon();
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(userName + "s grupp @ " + gym.getName() + ", samling " +
+        embedBuilder.setTitle(userName + "s grupp @ " + gym.getName() + ", startar " +
                 Utils.printTimeIfSameDay(startAt));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
