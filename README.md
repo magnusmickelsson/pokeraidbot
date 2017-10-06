@@ -47,14 +47,14 @@ is on the todo-list, but will require a non-free Heroku version, most likely. :(
 
 Optional steps:
 * If you know something about computers and want to make Magnus' life easier, try creating the data file
-for your region yourself, see above for instructions
+for your region yourself, see instructions further down
 * A Discord invite link to your server so Magnus can login and help out with setting it up, if needed
 
 Right now, the bot has datasets for a few major cities in Sweden, such as Stockholm, Uppsala, Luleå, Umeå, 
 Norrköping etc.
 
 ### Inviting the bot to your server
-Go to https://pokeraidbot2.herokuapp.com - use the link there and you'll use Discord's built in handling
+Go to [https://pokeraidbot2.herokuapp.com]() - use the link there and you'll use Discord's built in handling
 of inviting a bot to your server.
 
 ### Setting up permissions
@@ -76,10 +76,10 @@ Assign the bot the following permissions:
    
 ### Configuring your server against the bot
 This step requires your admin to have invited the bot into your server, and set up the role and 
-permissions of the bot (as described way above).
+permissions of the bot (as described above).
  
 * Verify bot has logged in and is present in your server, with correct role/permissions
-* Run the command !raid install
+* Run the command: *!raid install*
 * Follow the instructions you'll get in DM. Read them and you should be able to sort it out. If you don't,
 the bot should be able to tell you what's wrong.
 
