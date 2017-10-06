@@ -22,9 +22,71 @@ Raid commands:
 
 ## Support development
 
+Please do. :) It will help out a lot if it happens that I need to move from
+the free Heroku version to a "pay per month" version with more room for data,
+better availability etc.
+
+Click below:
+
 <a href='https://pledgie.com/campaigns/34823'><img alt='Click here to lend your support to: pokeraidbot and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34823.png?skin_name=chrome' border='0'></a>
 
-## Prerequisities
+## Setting up the bot in your Discord server
+
+### How do I get the gym data for MY region in there?
+Since you probably want the gyms for YOUR region in YOUR bot, here are instructions on how to import them. 
+If you know what you're doing (i.e. you're a developer), scroll down to instructions on how to use the 
+data import tool. 
+
+Non-developers need to contact Magnus (the developer of the bot) at magnus.mickelsson@gmail.com - send an email explaining
+* Who you are and where you want to add the bot
+* What region you want data for (Country, City, area in city)
+
+Magnus will then use the data import tool go create a data file for your region and deploy it with the bot.
+Allowing admins to run the data import on the fly and putting it in the database
+is on the todo-list, but will require a non-free Heroku version, most likely. :(
+
+Optional steps:
+* If you know something about computers and want to make Magnus' life easier, try creating the data file
+for your region yourself, see above for instructions
+* A Discord invite link to your server so Magnus can login and help out with setting it up, if needed
+
+Right now, the bot has datasets for a few major cities in Sweden, such as Stockholm, Uppsala, Luleå, Umeå, 
+Norrköping etc.
+
+### Inviting the bot to your server
+Go to https://pokeraidbot2.herokuapp.com - use the link there and you'll use Discord's built in handling
+of inviting a bot to your server.
+
+### Setting up permissions
+Assign the bot the following permissions:
+
+* Manage channels (to create channel on the fly for new raids, if so desired)
+* Create invitation (not used yet)
+* Manage emojis
+* Manage webhooks
+* Read text channels
+* Send messages
+* Manage messages (needs to edit raid group message)
+* Embed links (map function)
+* Attach files (not used yet)
+* Read message history
+* Mention all (not used yet)
+* Use external emoji
+* Add reactions
+   
+### Configuring your server against the bot
+This step requires your admin to have invited the bot into your server, and set up the role and 
+permissions of the bot (as described way above).
+ 
+* Verify bot has logged in and is present in your server, with correct role/permissions
+* Run the command !raid install
+* Follow the instructions you'll get in DM. Read them and you should be able to sort it out. If you don't,
+the bot should be able to tell you what's wrong.
+
+## Setting up your own server/For Developers
+How do I setup my own server and/or help with development?
+
+### Prerequisities
 
 * You need to have Java 8 installed
 * You need to have Maven 3+ installed
@@ -33,8 +95,7 @@ Raid commands:
 * You need to be administrator of a Discord server with permission to add a bot
 * USE **UTF-8** ENCODING. In your server configuration, in your IDE, errwhere.
 
-## How?
-
+### Step by step
 * To get started, you need to create a Discord application via their 
 [developer site](https://discordapp.com/developers/docs/intro), and register a Bot account for it. 
 When doing this, you get an owner id (client id) and a token for your bot account.
@@ -57,29 +118,10 @@ If you don't Spring will complain that the properties are not available, and the
 
 * Try browse http://127.0.0.1:5000/ - if it works you'll get a response from the bot
 * Use the Discord link from the response above to invite the bot into a Discord server of your choice
-* Go to your Discord server, verify that the bot has logged in and is present.
-* Assign the bot the following permissions:
-    * Manage channels (to create channel on the fly for new raids, if so desired)
-    * Create invitation (not used yet)
-    * Manage emojis
-    * Manage webhooks
-    * Read text channels
-    * Send messages
-    * Manage messages (needs to edit raid group message)
-    * Embed links (map function)
-    * Attach files (not used yet)
-    * Read message history
-    * Mention all (not used yet)
-    * Use external emoji
-    * Add reactions
+* Check the instructions below on what to do to set up your Discord server for using the bot. Follow the instructions.
 * In the chat, try running the command "!raid usage". Take it from there.
 
-## Going into production
-
-### How do I get the gym data for MY region in there?
-Since you probably don't want the gyms in your bot to be those in Uppsala, Sweden, like it is
-in the repo (due to this bot being made for the Uppsala discord), here are instructions on how to fix that. 
-
+### Gym data import
 First check the file gyms_uppsala.csv to see an example of the data such a file should have. 
 It's a good idea to keep the uppsala file around though so you don't have to change the JUnit test suite.
 
@@ -100,13 +142,6 @@ Copy this file into src/main/resources/ - name it gyms_falun.csv and it will be 
 which is then to be configured to have the region falun.
 
 **NOTE: Bot needs to be restarted when new region files are added** (right now, will change in the future).
-
-Configuring your server is done by the server admin when they install the bot:
-* First, you need to invite the bot into the channel via the invite link as described above
-* Then, assign access rights to the bot (also described above)
-* Verify bot has logged in and is present
-* Run the command !raid install
-* Follow the instructions
 
 ### Hosting
 I'd recommend you deploy your adapted bot to a cloud service, or use a local server you know works and will be up.
