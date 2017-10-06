@@ -59,7 +59,19 @@ If you don't Spring will complain that the properties are not available, and the
 * Use the Discord link from the response above to invite the bot into a Discord server of your choice
 * Go to your Discord server, verify that the bot has logged in and is present.
 * Assign the bot the following permissions:
-    * 
+    * Manage channels (to create channel on the fly for new raids, if so desired)
+    * Create invitation (not used yet)
+    * Manage emojis
+    * Manage webhooks
+    * Read text channels
+    * Send messages
+    * Manage messages (needs to edit raid group message)
+    * Embed links (map function)
+    * Attach files (not used yet)
+    * Read message history
+    * Mention all (not used yet)
+    * Use external emoji
+    * Add reactions
 * In the chat, try running the command "!raid usage". Take it from there.
 
 ## Going into production
@@ -87,20 +99,14 @@ all gyms/raids within 10 km of the centre of the city Falun in Sweden (centre as
 Copy this file into src/main/resources/ - name it gyms_falun.csv and it will be available to be used by a Discord server,
 which is then to be configured to have the region falun.
 
-Configuring a region is done when the server admin installs the bot:
+**NOTE: Bot needs to be restarted when new region files are added** (right now, will change in the future).
+
+Configuring your server is done by the server admin when they install the bot:
 * First, you need to invite the bot into the channel via the invite link as described above
-* Then, assigne access rights to the bot
-
-Example of the configuration you need to edit:
-
-    @Bean
-    public ConfigRepository getConfigRepository() {
-        final HashMap<String, Config> configurationMap = new HashMap<>();
-        configurationMap.put("zhorhn tests stuff", new Config("uppsala"));
-        configurationMap.put("pokeraidbot_beta", new Config("stockholm"));
-        configurationMap.put("pokeraidbot_testing", new Config("luleå"));
-        return new ConfigRepository(configurationMap);
-    }
+* Then, assign access rights to the bot (also described above)
+* Verify bot has logged in and is present
+* Run the command !raid install
+* Follow the instructions
 
 ### Hosting
 I'd recommend you deploy your adapted bot to a cloud service, or use a local server you know works and will be up.
