@@ -14,12 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.commands.*;
+import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.EmoticonMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -45,7 +45,7 @@ public class BotService {
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
-                      ConfigRepository configRepository, String ownerId, String token) {
+                      ConfigRepository configRepository, ClockService clockService, String ownerId, String token) {
         this.gymRepository = gymRepository;
         this.configRepository = configRepository;
         this.ownerId = ownerId;
@@ -57,8 +57,6 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
-        EmoticonMessageListener emoticonMessageListener = new EmoticonMessageListener(this, localeService,
-                configRepository, raidRepository, pokemonRepository, gymRepository, "");
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 //                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
@@ -93,7 +91,7 @@ public class BotService {
                         configRepository, aggregateCommandListener),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository,
                         aggregateCommandListener),
-                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener),
+                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener, clockService),
                 new DonateCommand(localeService, configRepository, aggregateCommandListener),
                 new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
@@ -103,9 +101,9 @@ public class BotService {
                 new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
-                new HelpManualCommand(localeService, configRepository, aggregateCommandListener)
-//                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-//                        configRepository, aggregateCommandListener, this),
+                new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
+                new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository, aggregateCommandListener, this, clockService)
         );
 
         try {
@@ -123,7 +121,6 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
-//                    .addEventListener(emoticonMessageListener)
 
                     // start it up!
                     .buildBlocking();
@@ -145,6 +142,7 @@ public class BotService {
             configRepository.save(new Config("uppsala", "pokeraidbot_test"));
 
             // External user's servers
+            configRepository.save(new Config("umeå", "pokémon go sverige admin"));
             configRepository.save(new Config("luleå", "pokémon luleå"));
             configRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
             configRepository.save(new Config("norrköping", true, "raid-test-nkpg"));

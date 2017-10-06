@@ -10,6 +10,7 @@ import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -46,9 +47,6 @@ public class RaidRepository {
         this.raidEntityRepository = raidEntityRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
-        // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-        clockService.setMockTime(LocalTime.of(10, 30));
-        Utils.setClockService(clockService);
         removeExpiredRaids();
     }
 
@@ -90,6 +88,7 @@ public class RaidRepository {
                 raidEntity.getEndOfRaid(),
                 gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
         raid.setCreator(raidEntity.getCreator());
+        raid.setId(raidEntity.getId());
         Map<String, SignUp> signUps = new HashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
             signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
@@ -217,5 +216,35 @@ public class RaidRepository {
         } else {
             return false;
         }
+    }
+
+    public Raid getById(String id) {
+        return getRaidInstance(raidEntityRepository.getOne(id));
+    }
+
+    public Raid addToOrCreateSignup(String raidId, String userName, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+        final RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+        RaidEntitySignUp signUp = raidEntity.getSignUp(userName);
+        final String startAtTime = Utils.printTime(startAt.toLocalTime());
+        if (signUp == null) {
+            raidEntity.addSignUp(new RaidEntitySignUp(userName, mystic + instinct + valor + plebs, startAtTime));
+        } else {
+            signUp.setNumberOfPeople(signUp.getNumberOfPeople() + mystic + instinct + valor + plebs);
+            signUp.setEta(startAtTime);
+        }
+        return getRaidInstance(raidEntity);
+    }
+
+    public Raid removeFromSignUp(String raidId, String userName, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+        final RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+        RaidEntitySignUp signUp = raidEntity.getSignUp(userName);
+        final String startAtTime = Utils.printTime(startAt.toLocalTime());
+        if (signUp == null) {
+            throw new UserMessedUpException(userName, "There was no signup to remove people from!");
+        } else {
+            signUp.setNumberOfPeople(signUp.getNumberOfPeople() - mystic - instinct - valor - plebs);
+            signUp.setEta(startAtTime);
+        }
+        return getRaidInstance(raidEntity);
     }
 }

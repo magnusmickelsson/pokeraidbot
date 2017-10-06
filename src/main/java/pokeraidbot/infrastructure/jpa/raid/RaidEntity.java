@@ -11,6 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(indexes = {@Index(name = "id", columnList = "id"), @Index(name = "region", columnList = "region"),
+        @Index(name = "pokemon", columnList = "pokemon,region")}
+        ) // todo: uniqueconstraint that creator can only have one signup per id
 public class RaidEntity implements Serializable {
     @Id
     private String id;
@@ -27,7 +30,7 @@ public class RaidEntity implements Serializable {
     @Column(nullable = false)
     private String creator;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(uniqueConstraints = @UniqueConstraint(columnNames = {"responsible"}))
+//    @CollectionTable(uniqueConstraints = @UniqueConstraint(columnNames = {"responsible"}))
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)

@@ -219,8 +219,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH),
                 "Kunde inte hitta någon aktiv raid för \"%1\".");
 
-        i18nMessages.put(new I18nLookup(RAIDSTATUS, Locale.ENGLISH), "Status for raid at %1:");
-        i18nMessages.put(new I18nLookup(RAIDSTATUS, SWEDISH), "Status för raid vid %1:");
+        i18nMessages.put(new I18nLookup(RAIDSTATUS, Locale.ENGLISH), "%1:");
+        i18nMessages.put(new I18nLookup(RAIDSTATUS, SWEDISH), "%1:");
 
         i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, Locale.ENGLISH),
                 "Check status for raid - !raid status [Gym name].");

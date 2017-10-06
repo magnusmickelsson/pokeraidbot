@@ -10,11 +10,6 @@ public interface ConfigRepository extends JpaRepository<Config, String> {
 
     default Config getConfigForServer(String server) {
         final Config config = findByServer(server);
-        if (config == null) {
-            // todo: i18n
-            throw new RuntimeException("Configuration not found for server: \"" + server +
-                    "\" - have the channel owner run the command !raid install");
-        }
         return config;
     }
 

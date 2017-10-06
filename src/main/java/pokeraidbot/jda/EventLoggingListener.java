@@ -16,19 +16,19 @@ public class EventLoggingListener implements EventListener{
 
     @Override
     public void onEvent(Event event) {
-        if (LOGGER.isDebugEnabled()) {
+        if (LOGGER.isTraceEnabled()) {
             if (event instanceof GuildMessageReactionAddEvent) {
                 final GuildMessageReactionAddEvent reactionAddEvent = (GuildMessageReactionAddEvent) event;
-                LOGGER.debug("Reaction: " + reactionAddEvent.getUser() + " - " + reactionAddEvent.getReaction() +
+                LOGGER.trace("Reaction: " + reactionAddEvent.getUser() + " - " + reactionAddEvent.getReaction() +
                         " - " + reactionAddEvent.getReactionEmote());
             } else if (event instanceof GuildMessageReceivedEvent) {
                 final GuildMessageReceivedEvent guildMessageReceivedEvent = (GuildMessageReceivedEvent) event;
-                LOGGER.debug("Message from " + guildMessageReceivedEvent.getAuthor() + ": " + guildMessageReceivedEvent.getMessage());
+                LOGGER.trace("Message from " + guildMessageReceivedEvent.getAuthor() + ": " + guildMessageReceivedEvent.getMessage());
             } else if (event instanceof GuildMessageEmbedEvent) {
                 final GuildMessageEmbedEvent guildMessageReceivedEvent = (GuildMessageEmbedEvent) event;
                 final List<MessageEmbed> messageEmbeds = guildMessageReceivedEvent.getMessageEmbeds();
                 for (MessageEmbed embed : messageEmbeds)
-                    LOGGER.debug("Embed message from " + embed.getAuthor() + ": " + String.valueOf(embed.getTitle()) +
+                    LOGGER.trace("Embed message from " + embed.getAuthor() + ": " + String.valueOf(embed.getTitle()) +
                             " - " + String.valueOf(embed.getDescription()));
             }
         }

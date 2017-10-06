@@ -60,6 +60,14 @@ public abstract class ConfigAwareCommand extends Command {
             if (guild != null) {
                 final String server = guild.getName().trim().toLowerCase();
                 configForServer = configRepository.getConfigForServer(server);
+                if (configForServer == null) {
+                    commandEvent.reply("Det finns ingen konfiguration installerad för denna server. " +
+                            "Se till att en administratör kör kommandot \"!raid install\".");
+                    if (commandListener != null) {
+                        commandListener.onCompletedCommand(commandEvent, this);
+                    }
+                    return;
+                }
             }
             executeWithConfig(commandEvent, configForServer);
             if (commandListener != null) {
