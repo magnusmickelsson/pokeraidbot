@@ -228,14 +228,14 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append(pokemonText).append(" **").append(pokemon).append("**.");
-        descriptionBuilder.append("\n").append(signedUpTotalText).append(" ")
+        descriptionBuilder.append("\n").append(signedUpTotalText).append(": ")
                 .append("**").append(raid.getNumberOfPeopleSignedUp()).append("**");
         // todo: lista över alla signups som ska komma vid den här tiden? Summera per lag?
         final LocalTime startAtTime = startAt.toLocalTime();
-        descriptionBuilder.append("\n").append(signedUpAtText).append(" ").append(printTime(startAtTime)).append(": ")
+        descriptionBuilder.append("\n").append(signedUpAtText).append(" **").append(printTime(startAtTime)).append("**: ")
                 .append("**").append(raid.getNumberOfPeopleArrivingAt(startAtTime)).append("**");
         descriptionBuilder.append("\n").append(forHintsText)
-                .append("\n*!raid vs ").append(pokemon.getName()).append("*\n");
+                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
         descriptionBuilder.append(findYourWayText).append(" [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
                 .append(")");
         embedBuilder.setDescription(descriptionBuilder.toString());

@@ -91,19 +91,19 @@ public class LocaleService {
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
     public LocaleService() {
-        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
+        i18nMessages.put(new I18nLookup(NO_EMOTES, Locale.ENGLISH),
                 "Administrator has not installed pokeraidbot's emotes. " +
                         "Ensure he/she runs the following command: !raid install-emotes"
         );
-        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, SWEDISH),
+        i18nMessages.put(new I18nLookup(NO_EMOTES, SWEDISH),
                 "Administratören för denna server har inte installerat pokeraidbot's emotes. " +
                         "Se till att hen kör följande kommando: !raid install-emotes"
         );
 
-        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
+        i18nMessages.put(new I18nLookup(SIGNED_UP_AT, Locale.ENGLISH),
                 "Signed up to start at"
         );
-        i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, SWEDISH),
+        i18nMessages.put(new I18nLookup(SIGNED_UP_AT, SWEDISH),
                 "Anmälda att komma"
         );
 
