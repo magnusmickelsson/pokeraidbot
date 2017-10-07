@@ -26,7 +26,7 @@ bot send message about it. - Handled it instead via checking expire both on date
 
 Being developed:
 
--
+* !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
 
 Fix issue:
 
@@ -50,8 +50,6 @@ Do, features:
 
 Maybe, features:
 
-* !raid mysignups - Answer in PM with my current signups over all raids in the region. 
-!raid man raid or !raid man group command info in same message.
 * Nytt förslag; ifall man skriver "!raid info --dm" så ska infon skickas i PM istället för att visas i kanalen
 * Se om det är möjligt att automatiskt adda raider inom ett område man satt upp från gymhuntr.com (deras bot)
 * Config should have a note if a server is TEST or PROD and a env property which type of server,

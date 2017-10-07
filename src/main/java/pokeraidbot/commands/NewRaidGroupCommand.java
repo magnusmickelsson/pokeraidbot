@@ -97,7 +97,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(userName, errorText);
         }
 
-        // todo: i18n
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener = new EmoticonSignUpMessageListener(botService, localeService,
                 configRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(userName, startAt, raid, localeService);
@@ -178,8 +177,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             // todo: should we automatically remove signups for this group when time expires from total? Makes sense.
             final String removedGroupText = localeService.getMessageFor(LocaleService.REMOVED_GROUP,
                     localeService.getLocaleForUser(user), printTimeIfSameDay(startAt), gymName);
-            commandEvent.reply(user.getAsMention() + ": " + removedGroupText
-            );
+            commandEvent.reply(user.getAsMention() + ": " + removedGroupText);
             return true;
         };
         return refreshEditThreadTask;
@@ -243,8 +241,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         return messageEmbed;
     }
 
-    private void assertAtLeastOneEmote(List<Emote> mystic, User user) {
-        if (mystic == null || mystic.size() < 1) {
+    private void assertAtLeastOneEmote(List<Emote> emoteList, User user) {
+        if (emoteList == null || emoteList.size() < 1) {
             final String adminShouldInstallEmotesText = localeService.getMessageFor(LocaleService.NO_EMOTES,
                     localeService.getLocaleForUser(user));
             throw new RuntimeException(adminShouldInstallEmotesText);
