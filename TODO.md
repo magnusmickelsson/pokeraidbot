@@ -30,6 +30,10 @@ Being developed:
 
 Fix issue:
 
+* Clear away 0.5.0 tag - release wasn't ok. 0.6.0 will be correct instead.
+* If someone creates a new, later group - move signups to the new group
+* Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
+to set
 * If you create one group with listeners and all, and then create another group for the same raid, the first group
 should most likely be cleaned up.
 
@@ -38,6 +42,7 @@ Fix, misc:
 
 Do, features:
 
+* Admin commands where bot owner can purge configuration, get statistics, help a user (send man help via DM?)
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
 (this may mean the install command has to be run in the context of a server chat so we can fetch server name)
 * "What's new"-command so people can see what new features.
