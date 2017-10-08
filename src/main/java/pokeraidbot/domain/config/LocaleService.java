@@ -464,7 +464,14 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(MANUAL_GROUPS, SWEDISH),
                 "**OBS: Kommandot måste köras i en servers textkanal, inte i DM!**\n\n" +
                         "**Skapa en grupp för att köra raid en viss tid:** !raid group {time (HH:MM)} {gym namn}\n" +
-                        "*Exempel:* !raid group 09:45 Solna Platform"
+                        "*Exempel:* !raid group 09:45 Solna Platform\n\n" +
+                        "Man anmäler sig till en raid via emotes som dyker upp under svaret på kommandot ovan.\n\n" +
+                        "Lagikonerna samt 1:an anmäler en person, övriga anmäler det antal som står på knappen.\n\n" +
+                        "Meddelandet kommer uppdateras var 15:e sekund med alla som anmäler sig. När tiden gått " +
+                        "ut för gruppen, kommer meddelandet tas bort. Dock kommer alla anmälningar att ligga kvar " +
+                        "på raidens total, tills man antingen tar bort dem (via !raid remove {gym namn}) eller " +
+                        "att raidens tid tar slut.\n\n" +
+                        "Eftersom denna funktion är tämligen ny, uppskattas feedback på hur man kan göra den bättre."
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, Locale.ENGLISH),
@@ -609,14 +616,21 @@ public class LocaleService {
     public static String featuresString_EN =
             "Pokeraidbot - a Discord bot to help Pokémon Go raiders. Raid, map, pokemon info functions.\n\n" +
                     "**Get detailed help about how the bot works:**\n!raid man\n\n" +
-                    "https://github.com/magnusmickelsson/pokeraidbot to report errors, request features etc.\n\n" +
+                    "**To see one of its features, type the following:** " +
+                    "!raid map {name of a raid gym in your vicinity}\n" +
+                    "*Example:* !raid map Solna Platform\n\n" +
+                    "https://github.com/magnusmickelsson/pokeraidbot to report errors, request features, " +
+                    "see screenshots of usage etc.\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV =
             "Pokeraidbot - en Discord-bot för att hjälpa Pokémon Go raiders, med t.ex. kartor till gym, raidplanering" +
                     " och information om pokemons.\n\n" +
                     "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
                     "*Exempel:* !raid man - berättar om hur man använder raid man och vilka hjälpämnen som finns\n\n" +
-                    "https://github.com/magnusmickelsson/pokeraidbot för att rapportera fel, önska funktioner etc.\n\n" +
+                    "**För ett exempel på vad botten kan göra, skriv:** !raid map {namn på ett gym i området}\n" +
+                    "*Exempel:* !raid map Solna Platform\n\n" +
+                    "https://github.com/magnusmickelsson/pokeraidbot för att rapportera fel, önska funktioner, " +
+                    "se screenshots av användning etc.\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }
