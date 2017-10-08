@@ -177,6 +177,10 @@ Things to note about Heroku:
 The bot is currently deployed on a Heroku node in EU backed by a Postgresql database, at Stockholm timezone,
 here: https://pokeraidbot2.herokuapp.com
 
+## Changelog
+
+See [Changelog](CHANGELOG.md).
+
 ## Who?
 
 Bot created by Magnus Mickelsson - done mostly during evenings after the kids went to bed, so cut me some slack :( 
