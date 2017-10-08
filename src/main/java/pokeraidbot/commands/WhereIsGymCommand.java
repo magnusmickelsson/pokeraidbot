@@ -21,6 +21,7 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
+        this.aliases = new String[]{"whereis", "find"};
     }
 
     @Override

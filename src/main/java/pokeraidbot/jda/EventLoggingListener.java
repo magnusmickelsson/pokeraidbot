@@ -2,6 +2,7 @@ package pokeraidbot.jda;
 
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageEmbedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
@@ -16,6 +17,16 @@ public class EventLoggingListener implements EventListener{
 
     @Override
     public void onEvent(Event event) {
+        if (event instanceof ReadyEvent) {
+//            final List<Guild> guilds = event.getJDA().getGuilds();
+//            for (Guild guild : guilds) {
+//                // todo: i18n
+//                // "Hello, humans. **I'm alive!** Here to help with your pokemon raiding needs. Type: !raid usage"
+//                guild.getDefaultChannel().sendMessage("Hej på er, människor. Pokeraidbot är här. " +
+//                        "Skriv följande för att få info om vad jag kan göra: !raid usage").queue();
+//            }
+        }
+
         if (LOGGER.isTraceEnabled()) {
             if (event instanceof GuildMessageReactionAddEvent) {
                 final GuildMessageReactionAddEvent reactionAddEvent = (GuildMessageReactionAddEvent) event;

@@ -2,6 +2,8 @@ package pokeraidbot.domain.gym;
 
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -17,6 +19,8 @@ import static me.xdrop.fuzzywuzzy.FuzzySearch.extractTop;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 
 public class GymRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GymRepository.class);
+
     private Map<String, Set<Gym>> gymsPerRegion = new ConcurrentHashMap<>();
     private final ConfigRepository configRepository;
     private final LocaleService localeService;

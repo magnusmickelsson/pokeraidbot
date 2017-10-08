@@ -38,7 +38,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     private String emoteMessageId;
     private final String raidId;
     private String infoMessageId;
-    private final LocalDateTime startAt;
+    private LocalDateTime startAt;
     private String userHadError = null;
 
     public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService, ConfigRepository configRepository,
@@ -116,9 +116,9 @@ public class EmoticonSignUpMessageListener implements EventListener {
                         case Emotes.FIVE:
                             addToSignUp(user, 0, 0, 0, 5);
                             break;
-                        case Emotes.SIX:
-                            addToSignUp(user, 0, 0, 0, 6);
-                            break;
+//                        case Emotes.SIX:
+//                            addToSignUp(user, 0, 0, 0, 6);
+//                            break;
                         default:
                     }
                 }
@@ -164,9 +164,9 @@ public class EmoticonSignUpMessageListener implements EventListener {
                         case Emotes.FIVE:
                             removeFromSignUp(user, 0, 0, 0, 5);
                             break;
-                        case Emotes.SIX:
-                            removeFromSignUp(user, 0, 0, 0, 6);
-                            break;
+//                        case Emotes.SIX:
+//                            removeFromSignUp(user, 0, 0, 0, 6);
+//                            break;
                         default:
                     }
                 }
@@ -207,7 +207,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     }
 
     private Raid removeFromSignUp(User user, int mystic, int instinct, int valor, int plebs) {
-        Raid changedRaid = raidRepository.removeFromSignUp(raidId, user.getName(),
+        Raid changedRaid = raidRepository.removeFromSignUp(raidId, user,
                 mystic, instinct, valor, plebs, startAt);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Removed from signup for user " + user.getName() +
@@ -249,5 +249,13 @@ public class EmoticonSignUpMessageListener implements EventListener {
 
     public String getInfoMessageId() {
         return infoMessageId;
+    }
+
+    public void setStartAt(LocalDateTime startAt) {
+        this.startAt = startAt;
+    }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
     }
 }

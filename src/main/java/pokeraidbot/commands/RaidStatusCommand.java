@@ -62,7 +62,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();
-        embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" + pokemon.getNumber() + ".png");
+        embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
+                pokemon.getNumber() + ".png");
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
         StringBuilder sb = new StringBuilder();
         final String activeText = localeService.getMessageFor(LocaleService.ACTIVE, localeForUser);
@@ -70,8 +71,6 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY, localeForUser);
         final String raidBossText = localeService.getMessageFor(LocaleService.RAID_BOSS, localeForUser);
         final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
-        // todo: i18n
-        // todo: i18n
         sb.append("**").append(activeText).append(":** ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
                 .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
@@ -88,15 +87,5 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
-    }
-
-    private String getNumberAndFillToThree(Pokemon pokemon) {
-        String numberAsString = "" + pokemon.getNumber();
-        if (pokemon.getNumber() < 10) {
-            numberAsString = "00" + numberAsString;
-        } else if (pokemon.getNumber() < 100) {
-            numberAsString = "0" + numberAsString;
-        }
-        return numberAsString;
     }
 }

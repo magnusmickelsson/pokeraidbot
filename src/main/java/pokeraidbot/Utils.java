@@ -10,6 +10,7 @@ import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.raid.Raid;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -229,5 +230,17 @@ public class Utils {
                             people, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
         return numberOfPeople;
+    }
+
+    public static LocalDate parseDate(User user, String dateString) {
+        LocalDate theDate;
+        try {
+            theDate = LocalDate.parse(dateString);
+        } catch (DateTimeException | NullPointerException e) {
+            throw new UserMessedUpException(user,
+                    // todo: i18n
+                    "Kunde inte parsa datumet du angav, ska vara format yyyy-MM-dd men var: " + dateString);
+        }
+        return theDate;
     }
 }

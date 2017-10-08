@@ -59,8 +59,6 @@ public class BotService {
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
-//                new EmoticonMessageListener(this, localeService, configRepository, raidRepository,
-//                        pokemonRepository, gymRepository)));
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
@@ -68,6 +66,7 @@ public class BotService {
         client.setPrefix("!raid ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
+                new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
@@ -77,8 +76,9 @@ public class BotService {
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository, aggregateCommandListener),
-                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener),
+// todo: raid EX disabled for now
+//                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+//                        configRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         configRepository, this, aggregateCommandListener, pokemonRepository),
                 new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository,
@@ -101,7 +101,6 @@ public class BotService {
                 new InstallEmotesCommand(),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
-                new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository, aggregateCommandListener, this, clockService)
         );

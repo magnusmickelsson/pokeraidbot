@@ -36,6 +36,7 @@ public class SignUpCommand extends ConfigAwareCommand {
         this.help = localeService.getMessageFor(LocaleService.SIGNUP_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
+        this.aliases = new String[]{"signup"};
     }
 
     @Override

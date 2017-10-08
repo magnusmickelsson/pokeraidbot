@@ -33,12 +33,19 @@ public class InstallEmotesCommand extends Command {
     protected void execute(CommandEvent event) {
         final List<Emote> currentEmotes = event.getGuild().getEmotes();
         final Set<String> emoteNamesToInstall = new HashSet<>(Arrays.asList("mystic", "valor", "instinct"));
+        boolean emotesAlreadyInstalled = false;
         for (Emote emote : currentEmotes) {
             final String emoteToInstall = emote.getName().toLowerCase();
             if (emoteNamesToInstall.contains(emoteToInstall)) {
-                event.reply("You already have an icon with the name \"" + emoteToInstall + "\".");
-                return;
+                // todo: i18n
+//                event.reply("You already have an icon with the name \"" + emoteToInstall + "\".");
+                event.reply("Du har redan installerat emote för: \"" + emoteToInstall + "\".");
+                emotesAlreadyInstalled = true;
             }
+        }
+
+        if (emotesAlreadyInstalled) {
+            return;
         }
 
         final InputStream mysticPngResource =

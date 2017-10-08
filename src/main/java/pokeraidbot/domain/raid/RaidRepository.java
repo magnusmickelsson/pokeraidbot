@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid;
 
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -235,12 +236,13 @@ public class RaidRepository {
         return getRaidInstance(raidEntity);
     }
 
-    public Raid removeFromSignUp(String raidId, String userName, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+    public Raid removeFromSignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
         final RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
-        RaidEntitySignUp signUp = raidEntity.getSignUp(userName);
+        RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
-            throw new UserMessedUpException(userName, "There was no signup to remove people from!");
+            // todo: i18n
+            throw new UserMessedUpException(user, "Det fanns ingen anmälan att ta bort folk från!");//"There was no signup to remove people from!");
         } else {
             signUp.setNumberOfPeople(signUp.getNumberOfPeople() - mystic - instinct - valor - plebs);
             signUp.setEta(startAtTime);

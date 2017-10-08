@@ -54,8 +54,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         String dateString = args[1];
         String timeString = args[2];
         LocalTime endsAtTime = Utils.parseTime(user, timeString);
-        // todo: Utils.parseDate
-        LocalDate endsAtDate = LocalDate.parse(dateString);
+        LocalDate endsAtDate = Utils.parseDate(user, dateString);
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);

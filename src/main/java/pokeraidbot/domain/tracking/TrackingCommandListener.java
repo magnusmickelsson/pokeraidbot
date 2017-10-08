@@ -3,6 +3,7 @@ package pokeraidbot.domain.tracking;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -52,18 +53,18 @@ public class TrackingCommandListener implements CommandListener {
 
     }
 
-    public void add(PokemonTrackingTarget trackingTarget, String userName) {
+    public void add(PokemonTrackingTarget trackingTarget, User user) {
         if (trackingTargets.contains(trackingTarget)) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.TRACKING_EXISTS,
-                    localeService.getLocaleForUser(userName), trackingTarget.toString()));
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_EXISTS,
+                    localeService.getLocaleForUser(user)));//, trackingTarget.toString()));
         }
         trackingTargets.add(trackingTarget);
     }
 
-    public void remove(PokemonTrackingTarget trackingTarget, String userName) {
+    public void remove(PokemonTrackingTarget trackingTarget, User user) {
         if (!trackingTargets.contains(trackingTarget)) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
-                    localeService.getLocaleForUser(userName), trackingTarget.toString()));
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
+                    localeService.getLocaleForUser(user)));//, trackingTarget.toString()));
         }
         trackingTargets.remove(trackingTarget);
     }

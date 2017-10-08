@@ -8,6 +8,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class HelpManualCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
-    private final Map<String, Map<String, String>> helpTopicsMap = new HashMap<>();
+    private final Map<String, Map<String, String>> helpTopicsMap = new LinkedHashMap<>();
     private String helpText;
 
     public HelpManualCommand(LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
@@ -26,22 +27,24 @@ public class HelpManualCommand extends ConfigAwareCommand {
         // todo: i18n
         helpText = " Hjälpmanual för olika ämnen: !raid man {ämne} {frivilligt:chan/dm - " +
                 "om man t.ex. vill visa hjälpen i en textkanal för en användare}\n" +
-                "Möjliga ämnen: raid, signup, map, install, change, tracking, group (todo).";
+                "Möjliga ämnen: raid, signup, map, install, change, tracking, group, ALL.\n" +
+        "**Exempel (för att få hjälp angående raidkommandon):** !raid man raid";
         this.help = helpText;
         this.guildOnly = false;
+        this.aliases = new String[]{"hello"};
         if (helpTopicsMap.size() == 0) {
             initialize();
         }
     }
 
     private void initialize() {
-        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_RAID, "raid");
-        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_SIGNUP, "signup");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_MAP, "map");
-        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_INSTALL, "install");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_RAID, "raid");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_CHANGE, "change");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_SIGNUP, "signup");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_GROUPS, "group");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_TRACKING, "tracking");
-        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_GROUPS, "groups");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_INSTALL, "install");
     }
 
     private void addTextsToHelpTopics(Locale[] supportedLocales, String messageKey, String topic) {
@@ -62,23 +65,36 @@ public class HelpManualCommand extends ConfigAwareCommand {
             language = config.getLocale().getLanguage();
         }
         final String[] args = commandEvent.getArgs().split(" ");
+
+        // If bad arguments
         if (args.length < 1 || args.length > 2) {
             commandEvent.replyInDM(helpText);
+        } else { // If user wants full manual (=ALL)
+            final String replyIn = args.length > 1 ? args[1] : null;
+            if ("ALL".equalsIgnoreCase(args[0])) {
+                for (String key : helpTopicsMap.keySet()) {
+                    replyWithHelpManualEntryIfAvailable(commandEvent, language, replyIn, helpTopicsMap.get(key));
+                }
+            } else { // Reply with user's requested help topic
+                final Map<String, String> helpTopicTexts = helpTopicsMap.get(args[0]);
+                replyWithHelpManualEntryIfAvailable(commandEvent, language, replyIn, helpTopicTexts);
+            }
+        }
+    }
+
+    private void replyWithHelpManualEntryIfAvailable(CommandEvent commandEvent, String language, String replyIn,
+                                                     Map<String, String> helpTopicTexts) {
+        if (helpTopicTexts == null) {
+            commandEvent.replyInDM(helpText);
         } else {
-            final Map<String, String> helpTopicTexts = helpTopicsMap.get(args[0]);
-            String replyIn = args.length > 1 ? args[1] : null;
-            if (helpTopicTexts == null) {
+            final String text = helpTopicTexts.get(language);
+            if (text == null) {
                 commandEvent.replyInDM(helpText);
             } else {
-                final String text = helpTopicTexts.get(language);
-                if (text == null) {
-                    commandEvent.replyInDM(helpText);
+                if (!StringUtils.isEmpty(replyIn) && replyIn.equalsIgnoreCase("dm")) {
+                    commandEvent.replyInDM(text);
                 } else {
-                    if (!StringUtils.isEmpty(replyIn) && replyIn.equalsIgnoreCase("dm")) {
-                        commandEvent.replyInDM(text);
-                    } else {
-                        commandEvent.reply(text);
-                    }
+                    commandEvent.reply(text);
                 }
             }
         }

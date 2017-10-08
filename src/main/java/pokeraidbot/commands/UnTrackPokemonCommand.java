@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -30,22 +31,14 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String args = commandEvent.getArgs();
         final String userId = commandEvent.getAuthor().getId();
-        final String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
         if (args == null || args.length() < 1) {
             commandListener.removeAll(userId);
             commandEvent.reactSuccess();
-//            String message =
-//                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
-//                            "ALL", userName);
-//            replyBasedOnConfig(config, commandEvent, message);
         } else {
             Pokemon pokemon = pokemonRepository.getByName(args);
-            commandListener.remove(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
-//            String message =
-//                    localeService.getMessageFor(LocaleService.TRACKING_REMOVED, localeService.getLocaleForUser(userName),
-//                            pokemon.getName(), userName);
+            commandListener.remove(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), user);
             commandEvent.reactSuccess();
-            // replyBasedOnConfig(config, commandEvent, message);
         }
     }
 }

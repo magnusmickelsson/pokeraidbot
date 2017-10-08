@@ -207,14 +207,14 @@ public class LocaleService {
                 "Raid skapades för raidboss %1 av %2 - %3");
 
         i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
-                "There was no tracking like this for you: %1");
+                "There was no such tracking set for you.");
         i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, SWEDISH),
-                "Det fanns ingen sådan övervakning för dig: %1");
+                "Det fanns ingen sådan övervakning för dig.");
 
         i18nMessages.put(new I18nLookup(TRACKING_EXISTS, Locale.ENGLISH),
-                "You're already tracking this: %1");
+                "You're already tracking that pokemon.");
         i18nMessages.put(new I18nLookup(TRACKING_EXISTS, SWEDISH),
-                "Du har redan övervakning satt för detta: %1");
+                "Du har redan övervakning satt för det.");
 
         i18nMessages.put(new I18nLookup(DONATE, Locale.ENGLISH),
                 "How to support development and maintenance of this bot via donating.");
@@ -516,8 +516,8 @@ public class LocaleService {
                         "!raid track *[Pokemon]*\n" +
                         "*Example:* !raid track Entei\n\n" +
                         "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
-                        "*Example:* !raid untrack Entei - remove your tracking of Entei. " +
-                        "!raid untrack - remove all your tracking."
+                        "*Example - remove your tracking of Entei:* !raid untrack Entei\n" +
+                        "*Example - remove all your tracking:* !raid untrack"
         );
         i18nMessages.put(new I18nLookup(MANUAL_TRACKING, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
@@ -525,8 +525,8 @@ public class LocaleService {
                         "**\n!raid track *[Pokemon]*\n" +
                         "*Exempel:* !raid track Entei\n\n" +
                         "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
-                        "*Exempel:* !raid untrack Entei - ta bort din övervakning för Entei. " +
-                        "!raid untrack - ta bort alla dina övervakningar."
+                        "*Exempel - ta bort din övervakning för Entei:* !raid untrack Entei\n" +
+                        "*Exempel - ta bort alla dina övervakningar:* !raid untrack"
         );
     }
 
@@ -607,13 +607,16 @@ public class LocaleService {
     }
 
     public static String featuresString_EN =
-            "Pokeraidbot - https://github.com/magnusmickelsson/pokeraidbot to report errors, request features etc.\n\n" +
-            "**Get detailed help about how the bot works:**\n!raid man {optional: help topic}\n\n" +
+            "Pokeraidbot - a Discord bot to help Pokémon Go raiders. Raid, map, pokemon info functions.\n\n" +
+                    "**Get detailed help about how the bot works:**\n!raid man\n\n" +
+                    "https://github.com/magnusmickelsson/pokeraidbot to report errors, request features etc.\n\n" +
             "**How do I support development of this bot?**\n!raid donate";
     public static String featuresString_SV =
-            "Pokeraidbot - https://github.com/magnusmickelsson/pokeraidbot för att rapportera fel, önska funktioner etc.\n\n" +
+            "Pokeraidbot - en Discord-bot för att hjälpa Pokémon Go raiders, med t.ex. kartor till gym, raidplanering" +
+                    " och information om pokemons.\n\n" +
                     "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
                     "*Exempel:* !raid man - berättar om hur man använder raid man och vilka hjälpämnen som finns\n\n" +
+                    "https://github.com/magnusmickelsson/pokeraidbot för att rapportera fel, önska funktioner etc.\n\n" +
             "**Hur kan jag stödja utveckling av botten?**\n!raid donate\n\n" +
             "**If you want this information in english:**\n!raid usage en";
 }

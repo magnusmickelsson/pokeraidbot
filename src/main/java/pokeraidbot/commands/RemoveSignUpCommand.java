@@ -26,6 +26,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "remove";
         this.help = localeService.getMessageFor(LocaleService.REMOVE_SIGNUP_HELP, LocaleService.DEFAULT);
+        this.aliases = new String[]{"unsign"};
     }
 
     @Override
@@ -38,9 +39,6 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         final SignUp removed = raid.remove(user, raidRepository);
         if (removed != null) {
             commandEvent.reactSuccess();
-//            replyBasedOnConfig(config, commandEvent,
-//                    localeService.getMessageFor(LocaleService.SIGNUP_REMOVED, localeForUser,
-//                    gym.getName(), removed.toString()));
         } else {
             final String message =
                     localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, user, gym.getName());

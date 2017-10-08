@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -31,12 +32,8 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         String args = commandEvent.getArgs();
         Pokemon pokemon = pokemonRepository.getByName(args);
         final String userId = commandEvent.getAuthor().getId();
-        final String userName = commandEvent.getAuthor().getName();
-        commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), userName);
-//        String message =
-//                localeService.getMessageFor(LocaleService.TRACKING_ADDED, localeService.getLocaleForUser(userName),
-//                        pokemon.getName(), userName);
+        final User user = commandEvent.getAuthor();
+        commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), user);
         commandEvent.reactSuccess();
-//        replyBasedOnConfig(config, commandEvent, message);
     }
 }
