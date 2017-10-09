@@ -101,7 +101,12 @@ public class RaidListCommand extends ConfigAwareCommand {
             if (exRaidList.length() > 1) {
                 stringBuilder.append("\n**Raid-EX:**\n").append(exRaidList);
             }
+            // todo: i18n
+            stringBuilder.append("\n\nFör att se detaljer för en raid: !raid status {gym-namn}\n");
+            stringBuilder.append("För att skapa en grupp för en raid: " +
+                    "!raid group {starttid} {gym-namn}");
             embedBuilder.setDescription(stringBuilder.toString());
+            embedBuilder.setFooter("För hjälp med signups: !raid man signup - för hjälp med grupper: !raid man group", null);
             commandEvent.reply(embedBuilder.build());
         }
     }

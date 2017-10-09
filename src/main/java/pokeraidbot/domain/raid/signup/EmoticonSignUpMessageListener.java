@@ -86,21 +86,21 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
-                        case "mystic":
-                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-                                addToSignUp(user, 1, 0, 0, 0);
-                            }
-                            break;
-                        case "instinct":
-                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-                                addToSignUp(user, 0, 1, 0, 0);
-                            }
-                            break;
-                        case "valor":
-                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-                                addToSignUp(user, 0, 0, 1, 0);
-                            }
-                            break;
+//                        case "mystic":
+//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
+//                                addToSignUp(user, 1, 0, 0, 0);
+//                            }
+//                            break;
+//                        case "instinct":
+//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
+//                                addToSignUp(user, 0, 1, 0, 0);
+//                            }
+//                            break;
+//                        case "valor":
+//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
+//                                addToSignUp(user, 0, 0, 1, 0);
+//                            }
+//                            break;
                         case Emotes.ONE:
                             addToSignUp(user, 0, 0, 0, 1);
                             break;
@@ -140,15 +140,15 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
-                        case "mystic":
-                            removeFromSignUp(user, 1, 0, 0, 0);
-                            break;
-                        case "instinct":
-                            removeFromSignUp(user, 0, 1, 0, 0);
-                            break;
-                        case "valor":
-                            removeFromSignUp(user, 0, 0, 1, 0);
-                            break;
+//                        case "mystic":
+//                            removeFromSignUp(user, 1, 0, 0, 0);
+//                            break;
+//                        case "instinct":
+//                            removeFromSignUp(user, 0, 1, 0, 0);
+//                            break;
+//                        case "valor":
+//                            removeFromSignUp(user, 0, 0, 1, 0);
+//                            break;
                         case Emotes.ONE:
                             removeFromSignUp(user, 0, 0, 0, 1);
                             break;
@@ -185,8 +185,11 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 if (user != null) {
                     MessageBuilder messageBuilder = new MessageBuilder();
                     // todo: turn into message that only the target user can see
-                    messageBuilder.append(user.getAsMention())
-                            .append(": ").append(t.getMessage());
+                    if (!t.getMessage().contains(user.getAsMention())) {
+                        messageBuilder.append(user.getAsMention())
+                                .append(": ");
+                    }
+                    messageBuilder.append(t.getMessage());
                     guildMessageReactionEvent.getChannel().sendMessage(messageBuilder.build()).queue();
                 } else {
                     LOGGER.warn("We have a situation where user is null! Event: " + event);
@@ -196,7 +199,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     }
 
     private Raid addToSignUp(User user, int mystic, int instinct, int valor, int plebs) {
-        Raid changedRaid = raidRepository.addToOrCreateSignup(raidId, user.getName(),
+        Raid changedRaid = raidRepository.addToOrCreateSignup(raidId, user,
                 mystic, instinct, valor, plebs, startAt);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added signup for user " + user.getName() +

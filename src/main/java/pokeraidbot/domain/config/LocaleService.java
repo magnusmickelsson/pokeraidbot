@@ -460,13 +460,15 @@ public class LocaleService {
                 "**Note:This command must be executed in a server text channel, not in DM!**\n\n" +
                 "**Create a group to run a raid at a certain time:** !raid group {time (HH:MM)} {gym name}\n" +
                         "*Example:* !raid group 09:45 Solna Platform"
+                // todo: fix this message
         );
         i18nMessages.put(new I18nLookup(MANUAL_GROUPS, SWEDISH),
                 "**OBS: Kommandot måste köras i en servers textkanal, inte i DM!**\n\n" +
                         "**Skapa en grupp för att köra raid en viss tid:** !raid group {time (HH:MM)} {gym namn}\n" +
                         "*Exempel:* !raid group 09:45 Solna Platform\n\n" +
                         "Man anmäler sig till en raid via emotes som dyker upp under svaret på kommandot ovan.\n\n" +
-                        "Lagikonerna samt 1:an anmäler en person, övriga anmäler det antal som står på knappen.\n\n" +
+                        "1-6 anmäler det antal som står på knappen. " +
+                        "Tryck samma knapp igen för att ta bort samma antal.\n\n" +
                         "Meddelandet kommer uppdateras var 15:e sekund med alla som anmäler sig. När tiden gått " +
                         "ut för gruppen, kommer meddelandet tas bort. Dock kommer alla anmälningar att ligga kvar " +
                         "på raidens total, tills man antingen tar bort dem (via !raid remove {gym namn}) eller " +

@@ -66,12 +66,12 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
-        final List<Emote> mystic = commandEvent.getGuild().getEmotesByName("mystic", true);
-        final List<Emote> instinct = commandEvent.getGuild().getEmotesByName("instinct", true);
-        final List<Emote> valor = commandEvent.getGuild().getEmotesByName("valor", true);
-        assertAtLeastOneEmote(mystic, user);
-        assertAtLeastOneEmote(instinct, user);
-        assertAtLeastOneEmote(valor, user);
+//        final List<Emote> mystic = commandEvent.getGuild().getEmotesByName("mystic", true);
+//        final List<Emote> instinct = commandEvent.getGuild().getEmotesByName("instinct", true);
+//        final List<Emote> valor = commandEvent.getGuild().getEmotesByName("valor", true);
+//        assertAtLeastOneEmote(mystic, user);
+//        assertAtLeastOneEmote(instinct, user);
+//        assertAtLeastOneEmote(valor, user);
 
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
@@ -114,9 +114,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                         emoticonSignUpMessageListener.setEmoteMessageId(messageId);
                         botService.getBot().addEventListener(emoticonSignUpMessageListener);
                         // Get first icon of each team (if there is more than one)
-                        msg.getChannel().addReactionById(msg.getId(), mystic.iterator().next()).queue();
-                        msg.getChannel().addReactionById(msg.getId(), valor.iterator().next()).queue();
-                        msg.getChannel().addReactionById(msg.getId(), instinct.iterator().next()).queue();
+//                        msg.getChannel().addReactionById(msg.getId(), mystic.iterator().next()).queue();
+//                        msg.getChannel().addReactionById(msg.getId(), valor.iterator().next()).queue();
+//                        msg.getChannel().addReactionById(msg.getId(), instinct.iterator().next()).queue();
                         // Add number icons for pleb signups
                         msg.getChannel().addReactionById(msg.getId(), Emotes.ONE).queue();
                         msg.getChannel().addReactionById(msg.getId(), Emotes.TWO).queue();

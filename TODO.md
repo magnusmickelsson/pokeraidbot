@@ -4,11 +4,16 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* In the !raid list response, add a sentence about using !raid status (gym) to see details or create a group and that 
+!raid man signup can be used to help with signups
+* Remove team buttons from raid group signup
 
 Being developed:
 
-* !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
+-
+
+Discussion:
+* Handling of groups, moving signups, removing signups etc.
 
 Experiment with:
 
@@ -18,21 +23,15 @@ Experiment with:
 Fix issue:
 
 * Change from embedmessages when links are concerned, doesn't work properly on iPhone whereas normal messages do
-* If someone creates a new, later group - move signups to the new group
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
-* If you create one group with listeners and all, and then create another group for the same raid, the first group
-should most likely be cleaned up.
 
 Fix, misc:
-* In the !raid list response, add a sentence about using !raid status (gym) to see details or create a group and that 
-!raid man signup can be used to help with signups
-* Remove team buttons from raid group signup
-* Add extra note on !raid track feedback message that tracking is reset on server restart, so make a new track every morning to be sure
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
 
+* !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
 * Admin commands where bot owner can purge configuration, get statistics, help a user (send man help via DM?)
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
 (this may mean the install command has to be run in the context of a server chat so we can fetch server name)

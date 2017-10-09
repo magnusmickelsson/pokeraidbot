@@ -25,6 +25,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+import static pokeraidbot.Utils.HIGH_LIMIT_FOR_SIGNUPS;
+
 @Transactional
 public class RaidRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(RaidRepository.class);
@@ -223,21 +225,35 @@ public class RaidRepository {
         return getRaidInstance(raidEntityRepository.getOne(id));
     }
 
-    public Raid addToOrCreateSignup(String raidId, String userName, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
-        final RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
-        RaidEntitySignUp signUp = raidEntity.getSignUp(userName);
+    public Raid addToOrCreateSignup(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+        RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+        RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
-            raidEntity.addSignUp(new RaidEntitySignUp(userName, mystic + instinct + valor + plebs, startAtTime));
+            final int sum = mystic + instinct + valor + plebs;
+            assertSumNotLessThanOne(user, sum);
+            raidEntity.addSignUp(new RaidEntitySignUp(user.getName(), sum, startAtTime));
         } else {
-            signUp.setNumberOfPeople(signUp.getNumberOfPeople() + mystic + instinct + valor + plebs);
+            final int sum = signUp.getNumberOfPeople() + mystic + instinct + valor + plebs;
+            assertSumNotLessThanOne(user, sum);
+            signUp.setNumberOfPeople(sum);
             signUp.setEta(startAtTime);
         }
+        raidEntity = raidEntityRepository.save(raidEntity);
+
         return getRaidInstance(raidEntity);
     }
 
+    private void assertSumNotLessThanOne(User user, int sum) {
+        if (sum <= 0) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS,
+                    localeService.getLocaleForUser(user.getName()),
+                    "" + sum, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
+        }
+    }
+
     public Raid removeFromSignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
-        final RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+        RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
@@ -246,6 +262,7 @@ public class RaidRepository {
         } else {
             signUp.setNumberOfPeople(signUp.getNumberOfPeople() - mystic - instinct - valor - plebs);
             signUp.setEta(startAtTime);
+            raidEntity = raidEntityRepository.save(raidEntity);
         }
         return getRaidInstance(raidEntity);
     }
