@@ -23,6 +23,7 @@ to set
 should most likely be cleaned up.
 
 Fix, misc:
+* Add extra note on !raid track feedback message that tracking is reset on server restart, so make a new track every morning to be sure
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
