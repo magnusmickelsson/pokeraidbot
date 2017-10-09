@@ -8,25 +8,25 @@ Best to show some screenshots I guess. These are in Swedish, but there is also E
 
 Command to get map of a gym:
 
-![Map command](mapcmd.png)
+![Map command](img/mapcmd.png)
 
-![Map response](mapcmdresponse.png)
+![Map response](img/mapcmdresponse.png)
 
 Command to get raid boss info:
 
-![Raidboss info command](pokecmd.png)
+![Raidboss info command](img/pokecmd.png)
 
-![Raidboss response](pokecmdresponse.png)
+![Raidboss response](img/pokecmdresponse.png)
 
 Raid commands:
 
-![Raid list](raidlist.png)
+![Raid list](img/raidlist.png)
 
-![Raid gym status](raidstatus.png)
+![Raid gym status](img/raidstatus.png)
 
-![Raid group signup](groupmuk.png)
+![Raid group signup](img/groupmuk.png)
 
-![Other raid commands](raidcmd.png)
+![Other raid commands](img/raidcmd.png)
 
 ## Support development
 
