@@ -1,3 +1,9 @@
+0.7.0 (2017-10-10)
+=====
+* Team buttons removed from raid group signup (feedback from Uppsala)
+* Improved texts
+* Minor fixes
+
 0.6.0 (2017-10-08)
 =====
 * Defaultconfig for channel can be set/changed in runtime by an admin
