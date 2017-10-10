@@ -15,6 +15,7 @@ Skriv då följande i kanalen för Suicune-raider (#suicune_raid i Uppsala):
 ![Group](img/started2.png)
 
 Klicka sedan på emoten för siffran "1" för att anmäla bara dig. Om du har 2 vänner med dig, klicka på knappen "3" så anmäler du dig själv + dem.
+Om du klickar på ikonen igen, tas anmälan för de personer du lade till bort från gruppen.
 
 ![Signup](img/started3.png)
 
