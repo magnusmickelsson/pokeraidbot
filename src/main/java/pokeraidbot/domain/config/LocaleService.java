@@ -144,7 +144,9 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
                 "Handle sign up via the buttons below. For help, type \"!raid man group\".");
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-                "Hantera anmälning via knapparna nedan. För hjälp, skriv \"!raid man group\".");
+                "Hantera anmälning via knapparna nedan. 1-5 anmäler 1-5 personer. " +
+                        "För att avanmäla, tryck samma knapp igen. " +
+                        "För hjälp, skriv \"!raid man group\".");
 
         i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
                 "Can't create a group to raid after raid has ended. :("

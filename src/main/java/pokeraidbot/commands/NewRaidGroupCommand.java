@@ -239,6 +239,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         descriptionBuilder.append(findYourWayText).append(" [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
                 .append(")");
         embedBuilder.setDescription(descriptionBuilder.toString());
+        // todo: i18n
+        embedBuilder.setFooter("Meddelandet uppdateras var 15:e sekund med nya anmälningar. " +
+                "Ha tålamod! :)", null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }
