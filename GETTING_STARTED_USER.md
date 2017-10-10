@@ -17,6 +17,11 @@ Skriv då följande i kanalen för Suicune-raider (#suicune_raid i Uppsala):
 Klicka sedan på emoten för siffran "1" för att anmäla bara dig. Om du har 2 vänner med dig, klicka på knappen "3" så anmäler du dig själv + dem.
 Om du klickar på ikonen igen, tas anmälan för de personer du lade till bort från gruppen.
 
+Varför står det en 2:a bredvid ikonen för 1:an du tryckte på för att anmäla en person? 
+
+Tja, för att du ska ha knappar att trycka på, så måste botten "reagera" på inlägget först. 
+Den lägger till alla emotes du ser på bilden ovan och lyssnar sedan efter om någon trycker på dem. 
+
 ![Signup](img/started3.png)
 
 Gruppens anmälningar kommer automatiskt uppdateras var 15:e sekund, och när din grupp ska köra, kommer meddelandet i Discord automatiskt tas bort.
