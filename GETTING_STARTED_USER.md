@@ -1,4 +1,4 @@
-Så du har upptäckt en raid i din närhet som du vill dela med dig av? Raiden är för en Suicune, som slutar kl 09:45 vid gymmet Hästen.
+Så du har upptäckt en raid i din närhet som du vill dela med dig av? Raiden är för en Suicune, som **slutar** kl 09:45 vid gymmet Hästen.
 
 Skriv då följande i kanalen #bot:
 !raid new Suicune 09:45 hästen
