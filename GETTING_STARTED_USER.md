@@ -20,6 +20,20 @@ Klicka sedan på emoten för siffran "1" för att anmäla bara dig. Om du har 2 
 
 Gruppens anmälningar kommer automatiskt uppdateras var 15:e sekund, och när din grupp ska köra, kommer meddelandet i Discord automatiskt tas bort.
 
+Vill du se vilka raids som är på gång just nu?
+
+Skriv då följande i kanalen för botspam för att se alla möjliga raider:
+
+*!raid list*
+
+![List](img/raidlist.png)
+
+Vill du sedan se vilka raider som bara är för en viss pokemon, t.ex. Suicune, skriv följande:
+
+*!raid list Suicune*
+
+.. så får du bara se aktuella raider för just den bossen.
+
 Vill du få hjälp med vilka pokemons som är bra mot din raidboss?
 
 Skriv då följande i kanalen för botspam (#bot):
@@ -27,7 +41,6 @@ Skriv då följande i kanalen för botspam (#bot):
 *!raid vs suicune*
 
 ![Vs](img/started4.png)
-
 
 Vill någon ha hjälp att hitta till gymmet Hästen? Det finns dels länkar från olika meddelanden, 
 men sedan kan man också skriva:
