@@ -29,11 +29,9 @@ Skriv då följande i kanalen #bot:
 Vill någon ha hjälp att hitta till gymmet Hästen? Det finns dels länkar från olika meddelanden, men sedan kan man också skriva i kanalen #bot:
 !raid map Hästen
 
-![Map](img/started5.png)
-
 Där får man en minikarta som kan hjälpa till med orientering. 
 
-{plats för kartbild}
+![Map](img/started5.png)
 
 Vill man sedan ha en bra vägbeskrivning från där man är nu, kan man klicka på gymnamnet, och då laddas Google Maps.
 
