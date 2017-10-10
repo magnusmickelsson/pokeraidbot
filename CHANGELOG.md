@@ -1,3 +1,9 @@
+0.7.1 (2017-10-11)
+=====
+* Fixed issue where many raids could cause the embedded message's description to reach its limit.
+* Minor text adjustments.
+* Fixed link handling for Google Maps so they work on iPhones as well.
+
 0.7.0 (2017-10-10)
 =====
 * Team buttons removed from raid group signup (feedback from Uppsala)

@@ -4,6 +4,17 @@ Also contains commands for getting information about pokemons, pokestops and gym
 
 ## What is this?
 
+Tired of having a discord chat for pokemon raids like this? Having to scroll over pages of entries,
+and trying to determine who is coming where, and at what time?
+
+![Without](img/example_without_bot.png)
+
+Well, I got annoyed with it. While trying to get a Gym map working, I started thinking about how to
+create raid management features in Discord, and this is where we're at right now.
+
+The bot still needs polish and some more nifty features, but it's usable and used in atleast 3 Swedish
+discord servers.
+
 Best to show some screenshots I guess. These are in Swedish, but there is also English locale.
 
 Command to get map of a gym:
@@ -20,13 +31,13 @@ Command to get raid boss info:
 
 Raid commands:
 
+![Other raid commands](img/raidcmd.png)
+
 ![Raid list](img/raidlist.png)
 
 ![Raid gym status](img/raidstatus.png)
 
 ![Raid group signup](img/groupmuk.png)
-
-![Other raid commands](img/raidcmd.png)
 
 ## Support development
 
