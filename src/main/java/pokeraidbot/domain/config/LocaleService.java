@@ -128,25 +128,24 @@ public class LocaleService {
                 "%1s grupp @ %2, startar %3"
         );
 
-        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-                " Removed your group which was supposed to start at %1, since it's expired. " +
-                        "Your signups remain on raid total until " +
-                        "you either type \"!raid remove %2\" or the raid expires.\n" +
-                        "If you want to run a group later than %1, " +
-                        "type \"!raid group {tid}\" and give a later time.");
-        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-                " Tog bort din grupp som skulle börja raiden vid %1, tiden har nu passerat. " +
-                        "Era signups står kvar på raidens total, tills " +
-                        "ni kör kommandot \"!raid remove %2\" eller raiden tar slut.\n" +
-                        "Om ni vill köra en ny grupp lite senare, " +
-                        "skriv \"!raid group {tid}\" och ange en senare tid.");
+//        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
+//                " Removed your group which was supposed to start at %1, since it's expired. " +
+//                        "Your signups remain on raid total until " +
+//                        "you either type \"!raid remove %2\" or the raid expires.\n" +
+//                        "If you want to run a group later than %1, " +
+//                        "type \"!raid group {tid}\" and give a later time.");
+//        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
+//                " Tog bort din grupp som skulle börja raiden vid %1, tiden har nu passerat. " +
+//                        "Era signups står kvar på raidens total, tills " +
+//                        "ni kör kommandot \"!raid remove %2\" eller raiden tar slut.\n" +
+//                        "Om ni vill köra en ny grupp lite senare, " +
+//                        "skriv \"!raid group {tid}\" och ange en senare tid.");
 
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-                "Handle sign up via the buttons below. For help, type \"!raid man group\".");
+                "Handle sign up via the buttons below. 1-5 signs up 1-5 people. Click same button to unsign them.");
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
                 "Hantera anmälning via knapparna nedan. 1-5 anmäler 1-5 personer. " +
-                        "För att avanmäla, tryck samma knapp igen. " +
-                        "För hjälp, skriv \"!raid man group\".");
+                        "För att avanmäla, tryck samma knapp igen.");
 
         i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
                 "Can't create a group to raid after raid has ended. :("

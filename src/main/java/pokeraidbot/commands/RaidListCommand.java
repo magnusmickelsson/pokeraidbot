@@ -62,11 +62,17 @@ public class RaidListCommand extends ConfigAwareCommand {
             if (args != null && args.length() > 0) {
                 stringBuilder.append(" (").append(args).append(")");
             }
-            stringBuilder.append(":**\n");
-
+            stringBuilder.append(":**");
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setTitle(stringBuilder.toString());
             stringBuilder = new StringBuilder();
+            // todo: i18n
+            stringBuilder.append("För att se detaljer för en raid: !raid status {gym-namn}\n");
+            stringBuilder.append("För att skapa en grupp för en raid: " +
+                    "!raid group {starttid} {gym-namn}");
+            embedBuilder.setDescription(stringBuilder.toString());
+            embedBuilder.setFooter("För hjälp med signups: !raid man signup - för hjälp med grupper: !raid man group", null);
+            commandEvent.reply(embedBuilder.build());
             StringBuilder exRaids = new StringBuilder();
             final LocalDate today = LocalDate.now();
             for (Raid raid : raids) {
@@ -74,16 +80,18 @@ public class RaidListCommand extends ConfigAwareCommand {
                 final Gym raidGym = raid.getGym();
                 final Pokemon raidBoss = raid.getPokemon();
                 if (raid.getEndOfRaid().toLocalDate().isEqual(today)) {
-                    stringBuilder.append("[").append(raidGym.getName()).append("](")
-                            .append(Utils.getStaticMapUrl(raidGym)).append(") (")
-                            .append(raidBoss.getName()).append(") - ")
-                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
-                                    printTimeIfSameDay(raid.getEndOfRaid())))
-                            .append(". ").append(numberOfPeople)
-                            .append(" ")
-                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(".\n");
+                    embedBuilder = new EmbedBuilder();
+                    stringBuilder = new StringBuilder();
+                    embedBuilder.setTitle(raidGym.getName(), Utils.getStaticMapUrl(raidGym));
+                    stringBuilder.append(raidBoss.getName()).append(" - ")
+                    .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
+                            printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                            printTimeIfSameDay(raid.getEndOfRaid())))
+                    .append(". ").append(numberOfPeople)
+                    .append(" ")
+                    .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale));
+                    embedBuilder.setDescription(stringBuilder.toString());
+                    commandEvent.reply(embedBuilder.build());
                 } else {
                     exRaids.append("[").append(raidGym.getName()).append("](")
                             .append(Utils.getStaticMapUrl(raidGym)).append(") (")
@@ -99,15 +107,11 @@ public class RaidListCommand extends ConfigAwareCommand {
             }
             final String exRaidList = exRaids.toString();
             if (exRaidList.length() > 1) {
-                stringBuilder.append("\n**Raid-EX:**\n").append(exRaidList);
+                embedBuilder = new EmbedBuilder();
+                embedBuilder.setTitle("**Raid-EX:**");
+                embedBuilder.setDescription(exRaidList);
+                commandEvent.reply(embedBuilder.build());
             }
-            // todo: i18n
-            stringBuilder.append("\n\nFör att se detaljer för en raid: !raid status {gym-namn}\n");
-            stringBuilder.append("För att skapa en grupp för en raid: " +
-                    "!raid group {starttid} {gym-namn}");
-            embedBuilder.setDescription(stringBuilder.toString());
-            embedBuilder.setFooter("För hjälp med signups: !raid man signup - för hjälp med grupper: !raid man group", null);
-            commandEvent.reply(embedBuilder.build());
         }
     }
 }

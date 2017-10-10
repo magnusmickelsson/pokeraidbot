@@ -7,6 +7,7 @@ Needs testing:
 * In the !raid list response, add a sentence about using !raid status (gym) to see details or create a group and that 
 !raid man signup can be used to help with signups
 * Remove team buttons from raid group signup
+* Change from embedmessages when links are concerned, doesn't work properly on iPhone whereas normal messages do
 
 Being developed:
 
@@ -22,7 +23,6 @@ Experiment with:
 
 Fix issue:
 
-* Change from embedmessages when links are concerned, doesn't work properly on iPhone whereas normal messages do
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 

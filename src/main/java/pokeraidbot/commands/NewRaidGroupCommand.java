@@ -221,9 +221,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                 localeService.getLocaleForUser(userName));
         final String forHintsText = localeService.getMessageFor(LocaleService.FOR_HINTS,
                 localeService.getLocaleForUser(userName));
-        final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY,
-                localeService.getLocaleForUser(userName));
-        embedBuilder.setTitle(headline);
+        embedBuilder.setTitle(headline, Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append(pokemonText).append(" **").append(pokemon).append("**.");
@@ -236,8 +234,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                 .append("**").append(raid.getNumberOfPeopleArrivingAt(startAtTime)).append("**");
         descriptionBuilder.append("\n").append(forHintsText)
                 .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
-        descriptionBuilder.append(findYourWayText).append(" [Google Maps](").append(Utils.getNonStaticMapUrl(gym))
-                .append(")");
         embedBuilder.setDescription(descriptionBuilder.toString());
         // todo: i18n
         embedBuilder.setFooter("Meddelandet uppdateras var 15:e sekund med nya anmälningar. " +

@@ -64,7 +64,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final Pokemon pokemon = raid.getPokemon();
         embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
                 pokemon.getNumber() + ".png");
-        embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()));
+        embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()),
+                Utils.getNonStaticMapUrl(gym));
         StringBuilder sb = new StringBuilder();
         final String activeText = localeService.getMessageFor(LocaleService.ACTIVE, localeForUser);
         final String startGroupText = localeService.getMessageFor(LocaleService.START_GROUP, localeForUser);
@@ -77,12 +78,13 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append("\t**").append(numberOfPeople).append(" ")
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
                 .append(signUps.size() > 0 ? ":\n" + signUps : "").append("\n").append(startGroupText)
-                .append(":\n!raid group ")
+                .append(":\n*!raid group ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ")
-                .append(gymName).append("\n").append(findYourWayText).append(" [Google Maps](")
-                .append(Utils.getNonStaticMapUrl(gym)).append(")").append("\n")
+                .append(gymName).append("*\n")
                 .append(raidBossText).append(" **").append(pokemon).append("**\n").append(hintsText)
-                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
+                .append(" *!raid vs ").append(pokemon.getName()).append("*");
+                // todo: i18n
+        embedBuilder.setFooter(findYourWayText + " klicka på meddelandets titel för Google Maps-länk.", null);
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 
