@@ -3,7 +3,6 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
@@ -30,7 +29,6 @@ import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -68,13 +66,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
-//        final List<Emote> mystic = commandEvent.getGuild().getEmotesByName("mystic", true);
-//        final List<Emote> instinct = commandEvent.getGuild().getEmotesByName("instinct", true);
-//        final List<Emote> valor = commandEvent.getGuild().getEmotesByName("valor", true);
-//        assertAtLeastOneEmote(mystic, user);
-//        assertAtLeastOneEmote(instinct, user);
-//        assertAtLeastOneEmote(valor, user);
-
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String timeString = args[0];
@@ -115,10 +106,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                         }
                         emoticonSignUpMessageListener.setEmoteMessageId(messageId);
                         botService.getBot().addEventListener(emoticonSignUpMessageListener);
-                        // Get first icon of each team (if there is more than one)
-//                        msg.getChannel().addReactionById(msg.getId(), mystic.iterator().next()).queue();
-//                        msg.getChannel().addReactionById(msg.getId(), valor.iterator().next()).queue();
-//                        msg.getChannel().addReactionById(msg.getId(), instinct.iterator().next()).queue();
                         // Add number icons for pleb signups
                         msg.getChannel().addReactionById(msg.getId(), Emotes.ONE).queue();
                         msg.getChannel().addReactionById(msg.getId(), Emotes.TWO).queue();
@@ -147,9 +134,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                                  Message embed) {
         final LocalDateTime startAt = emoticonSignUpMessageListener.getStartAt();
-        Callable<Boolean> refreshEditThreadTask;
-        final String userName = user.getName();
-        refreshEditThreadTask = () -> {
+        Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(15);
                 if (LOGGER.isDebugEnabled()) {
@@ -217,46 +202,22 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
                 localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
-//        localeService.getLocaleForUser(userName), userName, gym.getName(), Utils.printTimeIfSameDay(startAt));
-        final String pokemonText = localeService.getMessageFor(LocaleService.POKEMON,
-                localeService.getLocaleForUser(userName));
-        final String signedUpTotalText = localeService.getMessageFor(LocaleService.SIGNED_UP_TOTAL,
-                localeService.getLocaleForUser(userName));
-        final String signedUpAtText = localeService.getMessageFor(LocaleService.SIGNED_UP_AT,
-                localeService.getLocaleForUser(userName));
-        final String forHintsText = localeService.getMessageFor(LocaleService.FOR_HINTS,
-                localeService.getLocaleForUser(userName));
         embedBuilder.setTitle(headline, Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
-//        descriptionBuilder.append(pokemonText).append(" **").append(pokemon).append("**.");
-//        descriptionBuilder.append("\n").append(signedUpTotalText).append(": ")
-//        descriptionBuilder.append("**").append(raid.getNumberOfPeopleSignedUp()).append("**");
-        // todo: lista över alla signups som ska komma vid den här tiden? Summera per lag?
         final Set<SignUp> signUpsAt = raid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
         final String allSignUpNames = StringUtils.join(signUpNames, ", ");
         descriptionBuilder.append("**Anmälda:** ").append(allSignUpNames).append("\n");
         final LocalTime startAtTime = startAt.toLocalTime();
         final int numberOfPeopleArrivingAt = raid.getNumberOfPeopleArrivingAt(startAtTime);
-        descriptionBuilder.append("**Summa:**");//signedUpAtText)
-//                .append(" **").append(printTime(startAtTime)).append("**: ")
+        descriptionBuilder.append("**Summa:**");
         descriptionBuilder.append(" **").append(numberOfPeopleArrivingAt).append("**");
-//        descriptionBuilder.append("\n").append(forHintsText)
-//                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
         embedBuilder.setDescription(descriptionBuilder.toString());
         // todo: i18n
         embedBuilder.setFooter("Grupp skapad av " + user.getName() +
-                ". Meddelandet uppdateras var 15:e sekund med nya anmälningar.", null);
+                ". Meddelandet uppdateras var 15:e sekund med nya anmälningar.", Utils.getPokemonIcon(pokemon));
         messageEmbed = embedBuilder.build();
         return messageEmbed;
-    }
-
-    private void assertAtLeastOneEmote(List<Emote> emoteList, User user) {
-        if (emoteList == null || emoteList.size() < 1) {
-            final String adminShouldInstallEmotesText = localeService.getMessageFor(LocaleService.NO_EMOTES,
-                    localeService.getLocaleForUser(user));
-            throw new RuntimeException(adminShouldInstallEmotesText);
-        }
     }
 }

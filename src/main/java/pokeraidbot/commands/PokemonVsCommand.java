@@ -40,8 +40,6 @@ public class PokemonVsCommand extends ConfigAwareCommand {
         final Pokemon pokemon = repo.getByName(pokemonName);
         final RaidBossCounters counters = raidInfoService.getCounters(pokemon);
         final String maxCp = raidInfoService.getMaxCp(pokemon);
-//                    pokemon.getAbout() + "\n" +
-//                    "Buddy distance: " + pokemon.getBuddyDistance() + "\n"
         StringBuilder builder = new StringBuilder();
         final Locale localeForUser = localeService.getLocaleForUser(commandEvent.getAuthor().getName());
         builder.append("**").append(pokemon).append("**\n");

@@ -64,8 +64,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();
-        embedBuilder.setImage("https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
-                pokemon.getNumber() + ".png");
+        embedBuilder.setImage(Utils.getPokemonIcon(pokemon));
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()),
                 Utils.getNonStaticMapUrl(gym));
         StringBuilder sb = new StringBuilder();

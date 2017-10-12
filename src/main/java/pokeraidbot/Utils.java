@@ -257,4 +257,9 @@ public class Utils {
         }
         return signUpNames;
     }
+
+    public static String getPokemonIcon(Pokemon pokemon) {
+        return "https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
+                pokemon.getNumber() + ".png";
+    }
 }

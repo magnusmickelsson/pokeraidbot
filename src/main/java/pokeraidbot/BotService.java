@@ -107,7 +107,6 @@ public class BotService {
 
         try {
             commandClient = client.build();
-//            commandClient.setListener(aggregateCommandListener);
             botInstance = new JDABuilder(AccountType.BOT)
                     // set the token
                     .setToken(this.token)
@@ -135,7 +134,6 @@ public class BotService {
             LOGGER.warn("Could not find any configuration in database, assuming fresh install. Creating basic server configurations..");
             // My test servers
             configRepository.save(new Config("uppsala", "zhorhn tests stuff"));
-//            configRepository.save(new Config("uppsala", "pokeraidbot_lab"));
             configRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
             configRepository.save(new Config("uppsala", "pokeraidbot_stage"));
             configRepository.save(new Config("uppsala", "pokeraidbot_test"));
@@ -163,7 +161,4 @@ public class BotService {
     public TrackingCommandListener getTrackingCommandListener() {
         return trackingCommandListener;
     }
-//    public CommandListener getAggregateCommandListener() {
-//        return aggregateCommandListener;
-//    }
 }

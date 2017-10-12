@@ -133,12 +133,6 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 //"Bad syntax of command. Refer to command help: !raid help");
         }
         commandEvent.reactSuccess();
-        // todo: i18n
-//        if (raid != null) {
-//            replyBasedOnConfig(config, commandEvent, "Korrigerade raid: " + raid.toString());
-//        } else {
-//            replyBasedOnConfig(config, commandEvent, "Tog bort raid.");
-//        }
     }
 
     private void verifyPermission(CommandEvent commandEvent, User user, Raid raid) {
