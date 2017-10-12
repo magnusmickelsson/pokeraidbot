@@ -1,6 +1,7 @@
 package pokeraidbot.domain.raid;
 
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,13 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.errors.WrongNumberOfArgumentsException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
+import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
@@ -25,7 +28,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static pokeraidbot.Utils.HIGH_LIMIT_FOR_SIGNUPS;
+import static pokeraidbot.Utils.*;
 
 @Transactional
 public class RaidRepository {
@@ -51,6 +54,44 @@ public class RaidRepository {
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
         removeExpiredRaids();
+    }
+
+    public String executeSignUpCommand(Config config,
+                                     User user,
+                                     Locale localeForUser,
+                                     String[] args,
+                                     String help) {
+        String people = args[0];
+        String userName = user.getName();
+        if (args.length < 3 || args.length > 10) {
+            throw new WrongNumberOfArgumentsException(userName, localeService, 3, args.length, help);
+        }
+        Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(user, localeService, people);
+
+        String timeString = args[1];
+
+        StringBuilder gymNameBuilder = new StringBuilder();
+        for (int i = 2; i < args.length; i++) {
+            gymNameBuilder.append(args[i]).append(" ");
+        }
+        String gymName = gymNameBuilder.toString().trim();
+        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+
+        LocalTime eta = Utils.parseTime(user, timeString);
+        LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
+
+        assertEtaNotAfterRaidEnd(user, raid, realEta, localeService);
+        assertSignupTimeNotBeforeNow(user, realEta, localeService);
+
+        raid.signUp(user, numberOfPeople, eta, this);
+        final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
+        final Set<SignUp> signUps = raid.getSignUps();
+        Set<String> signUpNames = Utils.getNamesOfThoseWithSignUps(signUps, true);
+        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+        final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + allSignUpNames : "";
+        return localeService.getMessageFor(LocaleService.SIGNUPS, localeForUser, userName,
+                gym.getName(), signUpText);
     }
 
     public void newRaid(String raidCreatorName, Raid raid) {

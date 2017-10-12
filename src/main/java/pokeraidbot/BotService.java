@@ -60,7 +60,7 @@ public class BotService {
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
-                pokemonRepository, configRepository);
+                pokemonRepository, configRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 
         CommandClientBuilder client = new CommandClientBuilder();

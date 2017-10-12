@@ -1,5 +1,6 @@
 package pokeraidbot;
 
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -264,5 +265,9 @@ public class Utils {
     public static String getPokemonIcon(Pokemon pokemon) {
         return "https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
                 pokemon.getNumber() + ".png";
+    }
+
+    public static String[] prepareArguments(CommandEvent commandEvent) {
+        return commandEvent.getArgs().replaceAll("\\s{2,4}", " ").split(" ");
     }
 }
