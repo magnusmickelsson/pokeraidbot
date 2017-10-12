@@ -23,6 +23,10 @@ public class Config {
     private Boolean replyInDmWhenPossible = false;
     @Column(nullable = false)
     private String locale;
+    @Column(nullable = true)
+    private Boolean giveHelp = true;
+    @Column(nullable = true)
+    private Boolean pinGroups = false;
 
     public Config() {
         id = UUID.randomUUID().toString();
@@ -70,6 +74,22 @@ public class Config {
         this.replyInDmWhenPossible = replyInDmWhenPossible;
     }
 
+    public Boolean getGiveHelp() {
+        return giveHelp;
+    }
+
+    public void setGiveHelp(Boolean giveHelp) {
+        this.giveHelp = giveHelp;
+    }
+
+    public Boolean getPinGroups() {
+        return pinGroups;
+    }
+
+    public void setPinGroups(Boolean pinGroups) {
+        this.pinGroups = pinGroups;
+    }
+
     public Locale getLocale() {
         return new Locale(locale);
     }
@@ -95,7 +115,9 @@ public class Config {
         if (region != null ? !region.equals(config.region) : config.region != null) return false;
         if (replyInDmWhenPossible != null ? !replyInDmWhenPossible.equals(config.replyInDmWhenPossible) : config.replyInDmWhenPossible != null)
             return false;
-        return locale != null ? locale.equals(config.locale) : config.locale == null;
+        if (locale != null ? !locale.equals(config.locale) : config.locale != null) return false;
+        if (giveHelp != null ? !giveHelp.equals(config.giveHelp) : config.giveHelp != null) return false;
+        return pinGroups != null ? pinGroups.equals(config.pinGroups) : config.pinGroups == null;
     }
 
     @Override
@@ -105,16 +127,19 @@ public class Config {
         result = 31 * result + (region != null ? region.hashCode() : 0);
         result = 31 * result + (replyInDmWhenPossible != null ? replyInDmWhenPossible.hashCode() : 0);
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (giveHelp != null ? giveHelp.hashCode() : 0);
+        result = 31 * result + (pinGroups != null ? pinGroups.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Config{" +
-                "server='" + server + '\'' +
-                ", region='" + region + '\'' +
+                "region='" + region + '\'' +
                 ", replyInDmWhenPossible=" + replyInDmWhenPossible +
-                ", locale=" + locale +
+                ", locale='" + locale + '\'' +
+                ", giveHelp=" + giveHelp +
+                ", pinGroups=" + pinGroups +
                 '}';
     }
 }

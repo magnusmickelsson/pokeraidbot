@@ -10,6 +10,7 @@ import pokeraidbot.domain.raid.signup.SignUp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.printDateTime;
 
@@ -92,9 +93,15 @@ public class Raid {
     public void signUp(User user, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
         SignUp signUp = signUps.get(user.getName());
         if (signUp != null) {
-            Utils.assertNotTooManyOrNoNumber(user, localeService, String.valueOf(signUp.getHowManyPeople() + howManyPeople));
-            signUp.addPeople(howManyPeople);
-            signUp.setEta(arrivalTime);
+            int numberOfPeopleInSignup = signUp.getHowManyPeople();
+            if (arrivalTime.equals(signUp.getArrivalTime())) {
+                numberOfPeopleInSignup += howManyPeople;
+            } else {
+                numberOfPeopleInSignup = howManyPeople;
+                signUp.setEta(arrivalTime);
+            }
+            Utils.assertNotTooManyOrNoNumber(user, localeService, String.valueOf(numberOfPeopleInSignup));
+            signUp.setHowManyPeople(numberOfPeopleInSignup);
         } else {
             signUp = new SignUp(user.getName(), howManyPeople, arrivalTime);
             signUps.put(user.getName(), signUp);
@@ -132,5 +139,9 @@ public class Raid {
         return signUps.values().stream().mapToInt(signup ->
                 signup.getArrivalTime().equals(eta) ? signup.getHowManyPeople() : 0)
                 .sum();
+    }
+
+    public Set<SignUp> getSignUpsAt(LocalTime localTime) {
+        return signUps.values().stream().filter(s -> s.getArrivalTime().equals(localTime)).collect(Collectors.toSet());
     }
 }

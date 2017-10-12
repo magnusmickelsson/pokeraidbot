@@ -101,10 +101,12 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(SIGNED_UP_AT, Locale.ENGLISH),
-                "Signed up to start at"
+//                "Signed up to start at"
+                "Signed up"
         );
         i18nMessages.put(new I18nLookup(SIGNED_UP_AT, SWEDISH),
-                "Anmälda att komma"
+//                "Anmälda att komma"
+                "Anmälda"
         );
 
         i18nMessages.put(new I18nLookup(SIGNED_UP_TOTAL, Locale.ENGLISH),
@@ -122,10 +124,12 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, Locale.ENGLISH),
-                "%1's group @ %2, starts at %3"
+//                "%1's group @ %2, starts at %3"
+                "%1 @ %2, starts at %3"
         );
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, SWEDISH),
-                "%1s grupp @ %2, startar %3"
+//                "%1s grupp @ %2, startar %3"
+                "%1 @ %2, startar %3"
         );
 
 //        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
@@ -283,8 +287,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(WHERE_GYM_HELP, Locale.ENGLISH), "Get map link for gym - !raid map [Gym name]");
         i18nMessages.put(new I18nLookup(WHERE_GYM_HELP, SWEDISH), "Visa karta för gym - !raid map [Gym]");
 
-        i18nMessages.put(new I18nLookup(SIGNUPS, Locale.ENGLISH), "%1 sign up added to raid at %2. %3");
-        i18nMessages.put(new I18nLookup(SIGNUPS, SWEDISH), "Anmälan från %1 registrerad för raid vid %2. %3");
+        i18nMessages.put(new I18nLookup(SIGNUPS, Locale.ENGLISH), "%1 sign up added to %2. %3");
+        i18nMessages.put(new I18nLookup(SIGNUPS, SWEDISH), "Anmälan från %1 registrerad till %2. %3");
 
         i18nMessages.put(new I18nLookup(CURRENT_SIGNUPS, Locale.ENGLISH), "Current signups: ");
         i18nMessages.put(new I18nLookup(CURRENT_SIGNUPS, SWEDISH), "Vilka kommer: ");

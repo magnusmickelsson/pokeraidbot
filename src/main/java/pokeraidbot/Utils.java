@@ -9,6 +9,7 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.signup.SignUp;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -16,10 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Utils {
     public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("HH[:][.]mm");
@@ -242,5 +240,21 @@ public class Utils {
                     "Kunde inte parsa datumet du angav, ska vara format yyyy-MM-dd men var: " + dateString);
         }
         return theDate;
+    }
+
+    public static Set<String> getNamesOfThoseWithSignUps(Set<SignUp> signUpsAt, boolean includeEta) {
+        Set<String> signUpNames;
+        signUpNames = new HashSet<>();
+        for (SignUp signUp : signUpsAt) {
+            if (signUp.getHowManyPeople() > 0) {
+                String text = signUp.getUserName() + " (**" + signUp.getHowManyPeople();
+                if (includeEta) {
+                   text += ", ETA " + printTime(signUp.getArrivalTime());
+                }
+                text += "**)";
+                signUpNames.add(text);
+            }
+        }
+        return signUpNames;
     }
 }

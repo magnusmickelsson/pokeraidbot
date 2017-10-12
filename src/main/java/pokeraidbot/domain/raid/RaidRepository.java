@@ -225,7 +225,7 @@ public class RaidRepository {
         return getRaidInstance(raidEntityRepository.getOne(id));
     }
 
-    public Raid addToOrCreateSignup(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+    public Raid modifySignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
         RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
@@ -234,10 +234,16 @@ public class RaidRepository {
             assertSumNotLessThanOne(user, sum);
             raidEntity.addSignUp(new RaidEntitySignUp(user.getName(), sum, startAtTime));
         } else {
-            final int sum = signUp.getNumberOfPeople() + mystic + instinct + valor + plebs;
+            int sum = signUp.getNumberOfPeople();
+            if (startAt.toLocalTime().equals(Utils.parseTime(user, signUp.getEta()))) {
+                sum = sum + mystic + instinct + valor + plebs;
+            } else {
+                signUp.setEta(startAtTime);
+                // Reset number of signups to what the input gives since we changed time
+                sum = mystic + instinct + valor + plebs;
+            }
             assertSumNotLessThanOne(user, sum);
             signUp.setNumberOfPeople(sum);
-            signUp.setEta(startAtTime);
         }
         raidEntity = raidEntityRepository.save(raidEntity);
 

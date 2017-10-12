@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.WrongNumberOfArgumentsException;
@@ -10,12 +11,14 @@ import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
+import java.util.Set;
 
 import static pokeraidbot.Utils.assertEtaNotAfterRaidEnd;
 import static pokeraidbot.Utils.assertSignupTimeNotBeforeNow;
@@ -69,7 +72,10 @@ public class SignUpCommand extends ConfigAwareCommand {
 
         raid.signUp(user, numberOfPeople, eta, raidRepository);
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
-        final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + raid.getSignUps() : "";
+        final Set<SignUp> signUps = raid.getSignUps();
+        Set<String> signUpNames = Utils.getNamesOfThoseWithSignUps(signUps, true);
+        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+        final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + allSignUpNames : "";
         replyBasedOnConfig(config, commandEvent,
                 localeService.getMessageFor(LocaleService.SIGNUPS, localeForUser, userName,
                 gym.getName(), signUpText));

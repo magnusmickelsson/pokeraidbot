@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -22,6 +23,7 @@ import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 import java.util.Locale;
 import java.util.Set;
 
+import static pokeraidbot.Utils.getNamesOfThoseWithSignUps;
 import static pokeraidbot.Utils.printTimeIfSameDay;
 
 /**
@@ -72,12 +74,15 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY, localeForUser);
         final String raidBossText = localeService.getMessageFor(LocaleService.RAID_BOSS, localeForUser);
         final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
+        final Set<String> signUpNames = getNamesOfThoseWithSignUps(raid.getSignUps(), true);
+        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+
         sb.append("**").append(activeText).append(":** ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
                 .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
                 .append("\t**").append(numberOfPeople).append(" ")
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
-                .append(signUps.size() > 0 ? ":\n" + signUps : "").append("\n").append(startGroupText)
+                .append(signUps.size() > 0 ? ":\n" + allSignUpNames : "").append("\n").append(startGroupText)
                 .append(":\n*!raid group ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ")
                 .append(gymName).append("*\n")

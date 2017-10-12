@@ -23,6 +23,7 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
+import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
@@ -30,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 import static pokeraidbot.Utils.*;
@@ -99,7 +101,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
                         configRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
-        final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(userName, startAt, raid, localeService);
+        final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
             final String handleSignUpText =
@@ -155,7 +157,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                             " - Updating message with ID " + embed.getId());
                 }
                 embed.getChannel().editMessageById(embed.getId(),
-                        getRaidGroupMessageEmbed(userName, startAt, raidRepository.getById(raid.getId()),
+                        getRaidGroupMessageEmbed(user, startAt, raidRepository.getById(raid.getId()),
                                 localeService))
                         .queue(m -> {}, m -> {
                             emoticonSignUpMessageListener.setStartAt(null);
@@ -205,14 +207,17 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         }
     }
 
-    public static MessageEmbed getRaidGroupMessageEmbed(String userName, LocalDateTime startAt, Raid raid,
+    public static MessageEmbed getRaidGroupMessageEmbed(User user, LocalDateTime startAt, Raid raid,
                                                         LocaleService localeService) {
+        final String userName = user.getName();
         final Gym gym = raid.getGym();
         final Pokemon pokemon = raid.getPokemon();
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                localeService.getLocaleForUser(userName), userName, gym.getName(), Utils.printTimeIfSameDay(startAt));
+                localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
+                Utils.printTimeIfSameDay(startAt));
+//        localeService.getLocaleForUser(userName), userName, gym.getName(), Utils.printTimeIfSameDay(startAt));
         final String pokemonText = localeService.getMessageFor(LocaleService.POKEMON,
                 localeService.getLocaleForUser(userName));
         final String signedUpTotalText = localeService.getMessageFor(LocaleService.SIGNED_UP_TOTAL,
@@ -224,20 +229,25 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         embedBuilder.setTitle(headline, Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(null, null, null);
         StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append(pokemonText).append(" **").append(pokemon).append("**.");
-        descriptionBuilder.append("\n").append(signedUpTotalText).append(": ")
-                .append("**").append(raid.getNumberOfPeopleSignedUp()).append("**");
+//        descriptionBuilder.append(pokemonText).append(" **").append(pokemon).append("**.");
+//        descriptionBuilder.append("\n").append(signedUpTotalText).append(": ")
+//        descriptionBuilder.append("**").append(raid.getNumberOfPeopleSignedUp()).append("**");
         // todo: lista över alla signups som ska komma vid den här tiden? Summera per lag?
+        final Set<SignUp> signUpsAt = raid.getSignUpsAt(startAt.toLocalTime());
+        final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
+        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+        descriptionBuilder.append("**Anmälda:** ").append(allSignUpNames).append("\n");
         final LocalTime startAtTime = startAt.toLocalTime();
-        descriptionBuilder.append("\n").append(signedUpAtText)
-                .append(" **").append(printTime(startAtTime)).append("**: ")
-                .append("**").append(raid.getNumberOfPeopleArrivingAt(startAtTime)).append("**");
-        descriptionBuilder.append("\n").append(forHintsText)
-                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
+        final int numberOfPeopleArrivingAt = raid.getNumberOfPeopleArrivingAt(startAtTime);
+        descriptionBuilder.append("**Summa:**");//signedUpAtText)
+//                .append(" **").append(printTime(startAtTime)).append("**: ")
+        descriptionBuilder.append(" **").append(numberOfPeopleArrivingAt).append("**");
+//        descriptionBuilder.append("\n").append(forHintsText)
+//                .append(" *!raid vs ").append(pokemon.getName()).append("*\n");
         embedBuilder.setDescription(descriptionBuilder.toString());
         // todo: i18n
-        embedBuilder.setFooter("Meddelandet uppdateras var 15:e sekund med nya anmälningar. " +
-                "Ha tålamod! :)", null);
+        embedBuilder.setFooter("Grupp skapad av " + user.getName() +
+                ". Meddelandet uppdateras var 15:e sekund med nya anmälningar.", null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }

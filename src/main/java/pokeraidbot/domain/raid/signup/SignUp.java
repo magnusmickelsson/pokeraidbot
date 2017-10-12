@@ -56,10 +56,14 @@ public class SignUp {
     }
 
     public void addPeople(int howManyPeople) {
-        if (this.howManyPeople + howManyPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
+        setHowManyPeople(this.howManyPeople + howManyPeople);
+    }
+
+    public void setHowManyPeople(int howManyPeople) {
+        if (howManyPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
             throw new RuntimeException("Adding " + howManyPeople + " will exceed your limit of " + HIGH_LIMIT_FOR_SIGNUPS);
         }
-        this.howManyPeople += howManyPeople;
+        this.howManyPeople = howManyPeople;
     }
 
     public void setEta(LocalTime arrivalTime) {

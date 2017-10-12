@@ -199,7 +199,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     }
 
     private Raid addToSignUp(User user, int mystic, int instinct, int valor, int plebs) {
-        Raid changedRaid = raidRepository.addToOrCreateSignup(raidId, user,
+        Raid changedRaid = raidRepository.modifySignUp(raidId, user,
                 mystic, instinct, valor, plebs, startAt);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added signup for user " + user.getName() +

@@ -1,3 +1,9 @@
+0.8.0
+=====
+* Group signup, existing sign ups blanked out if a user changes the time within the same raid.
+* Cut down on text for a lot of messages.
+* Configuration to turn off and on help "hints" within messages
+
 0.7.1 (2017-10-11)
 =====
 * Fixed issue where many raids could cause the embedded message's description to reach its limit.
