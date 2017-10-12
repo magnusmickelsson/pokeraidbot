@@ -11,6 +11,8 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
+import java.util.concurrent.TimeUnit;
+
 public abstract class ConfigAwareCommand extends Command {
     protected final ConfigRepository configRepository;
     protected final CommandListener commandListener;
@@ -43,16 +45,22 @@ public abstract class ConfigAwareCommand extends Command {
         }
     }
 
-    public static void replyErrorBasedOnConfig(Config config, CommandEvent commandEvent, Throwable t) {
+    public static void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(t.getMessage());
             commandEvent.reactError();
         } else {
+            commandEvent.reactError();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(t.getMessage());
-            commandEvent.reply(embedBuilder.build());
+            embedBuilder.setFooter("Detta meddelande och kommandot som gick fel kommer tas bort om " +
+                    "15 sekunder för att hålla chatten ren.", null);
+            commandEvent.reply(embedBuilder.build(), msg -> {
+                commandEvent.getMessage().delete().queueAfter(15, TimeUnit.SECONDS); // Clean up bad message
+                msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
+            });
         }
     }
 

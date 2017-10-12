@@ -3,6 +3,7 @@
 * Group signup, existing sign ups blanked out if a user changes the time within the same raid.
 * Cut down on text for a lot of messages.
 * Configuration to turn off and on help "hints" within messages
+* Commands that go wrong will be deleted after 15 seconds, along with the bot's feedback message, to keep chat clean.
 
 0.7.1 (2017-10-11)
 =====
