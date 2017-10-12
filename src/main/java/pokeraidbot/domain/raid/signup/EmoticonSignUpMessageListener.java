@@ -182,7 +182,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                             .queueAfter(30, TimeUnit.MILLISECONDS);
                     userHadError = user.getName();
                 }
-                if (user != null) {
+                if (user != null && t.getMessage() != null) {
                     MessageBuilder messageBuilder = new MessageBuilder();
                     // todo: turn into message that only the target user can see
                     if (!t.getMessage().contains(user.getAsMention())) {
@@ -192,7 +192,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                     messageBuilder.append(t.getMessage());
                     guildMessageReactionEvent.getChannel().sendMessage(messageBuilder.build()).queue();
                 } else {
-                    LOGGER.warn("We have a situation where user is null! Event: " + event);
+                    LOGGER.warn("We have a situation where user or exception message is null! Event: " + event);
                 }
             }
         }
@@ -204,7 +204,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added signup for user " + user.getName() +
                     " to raid: " + changedRaid + " - mystic: " + mystic + ", instinct: " + instinct + ", valor: " +
-            valor + ", plebs: " + plebs);
+                    valor + ", plebs: " + plebs);
         }
         return changedRaid;
     }

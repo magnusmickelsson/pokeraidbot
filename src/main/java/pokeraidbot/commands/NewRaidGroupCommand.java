@@ -141,9 +141,10 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     LOGGER.debug("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + embed.getId());
                 }
+                final MessageEmbed newContent =
+                        getRaidGroupMessageEmbed(user, startAt, raidRepository.getById(raid.getId()), localeService);
                 embed.getChannel().editMessageById(embed.getId(),
-                        getRaidGroupMessageEmbed(user, startAt, raidRepository.getById(raid.getId()),
-                                localeService))
+                        newContent)
                         .queue(m -> {}, m -> {
                             emoticonSignUpMessageListener.setStartAt(null);
                         });
@@ -202,21 +203,23 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
                 localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
-        embedBuilder.setTitle(headline, Utils.getNonStaticMapUrl(gym));
-        embedBuilder.setAuthor(null, null, null);
-        StringBuilder descriptionBuilder = new StringBuilder();
+        embedBuilder.setTitle("Hitta hit: Google Maps", Utils.getNonStaticMapUrl(gym));
+        embedBuilder.setAuthor(headline, null, Utils.getPokemonIcon(pokemon));
         final Set<SignUp> signUpsAt = raid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
-        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
-        descriptionBuilder.append("**Anmälda:** ").append(allSignUpNames).append("\n");
-        final LocalTime startAtTime = startAt.toLocalTime();
-        final int numberOfPeopleArrivingAt = raid.getNumberOfPeopleArrivingAt(startAtTime);
-        descriptionBuilder.append("**Summa:**");
-        descriptionBuilder.append(" **").append(numberOfPeopleArrivingAt).append("**");
-        embedBuilder.setDescription(descriptionBuilder.toString());
+        final String allSignUpNames = signUpNames.size() > 0 ? StringUtils.join(signUpNames, ", ") : "-";
+        final int numberOfPeopleArrivingAt = signUpsAt.stream().mapToInt(s -> s.getHowManyPeople()).sum();
         // todo: i18n
-        embedBuilder.setFooter("Grupp skapad av " + user.getName() +
-                ". Meddelandet uppdateras var 15:e sekund med nya anmälningar.", Utils.getPokemonIcon(pokemon));
+        final String totalSignUpsText = "**Antal anmälda:** **" + numberOfPeopleArrivingAt + "**";
+        StringBuilder descriptionBuilder = new StringBuilder();
+        descriptionBuilder.append(totalSignUpsText);
+        // todo: i18n
+        descriptionBuilder.append("\n**De som kommer:** ");
+        descriptionBuilder.append(allSignUpNames);
+        final String description = descriptionBuilder.toString();
+        embedBuilder.setDescription(description);
+        // todo: i18n
+        embedBuilder.setFooter("Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut tas meddelandet bort.", null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }

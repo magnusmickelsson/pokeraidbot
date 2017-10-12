@@ -64,7 +64,6 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();
-        embedBuilder.setImage(Utils.getPokemonIcon(pokemon));
         embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()),
                 Utils.getNonStaticMapUrl(gym));
         StringBuilder sb = new StringBuilder();
@@ -72,7 +71,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final String startGroupText = localeService.getMessageFor(LocaleService.START_GROUP, localeForUser);
         final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY, localeForUser);
         final String raidBossText = localeService.getMessageFor(LocaleService.RAID_BOSS, localeForUser);
-        final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
+//        final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(raid.getSignUps(), true);
         final String allSignUpNames = StringUtils.join(signUpNames, ", ");
 
@@ -85,10 +84,11 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(":\n*!raid group ")
                 .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ")
                 .append(gymName).append("*\n")
-                .append(raidBossText).append(" **").append(pokemon).append("**\n").append(hintsText)
-                .append(" *!raid vs ").append(pokemon.getName()).append("*");
+                .append(raidBossText).append(" **").append(pokemon).append("** - ") //.append(hintsText)
+                .append("*!raid vs ").append(pokemon.getName()).append("*");
                 // todo: i18n
-        embedBuilder.setFooter(findYourWayText + " klicka på meddelandets titel för Google Maps-länk.", null);
+        embedBuilder.setFooter(findYourWayText + " klicka på meddelandetitel för Google Maps.",
+                Utils.getPokemonIcon(pokemon));
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
 

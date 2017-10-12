@@ -146,10 +146,9 @@ public class LocaleService {
 //                        "skriv \"!raid group {tid}\" och ange en senare tid.");
 
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-                "Handle sign up via the buttons below. 1-5 signs up 1-5 people. Click same button to unsign them.");
+                "Handle sign up via the buttons below.");
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-                "Hantera anmälning via knapparna nedan. 1-5 anmäler 1-5 personer. " +
-                        "För att avanmäla, tryck samma knapp igen.");
+                "Hantera anmälning via knapparna nedan.");
 
         i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
                 "Can't create a group to raid after raid has ended. :("

@@ -1,6 +1,8 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.errors.UserMessedUpException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -70,7 +72,7 @@ public class RaidEntitySignUp implements Serializable {
     public void setNumberOfPeople(int numberOfPeople) {
         if (numberOfPeople < 0 || numberOfPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
             // todo: i18n
-            throw new RuntimeException("Antal personer för en signup måste vara 1-20, du hade " +
+            throw new UserMessedUpException((User)null, "Antal personer för en signup måste vara 1-20, du hade " +
                     this.numberOfPeople + " men försökte sätta " + numberOfPeople + ".");
         }
         this.numberOfPeople = numberOfPeople;
