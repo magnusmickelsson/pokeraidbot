@@ -4,17 +4,15 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* In the !raid list response, add a sentence about using !raid status (gym) to see details or create a group and that 
-!raid man signup can be used to help with signups
-* Remove team buttons from raid group signup
-* Change from embedmessages when links are concerned, doesn't work properly on iPhone whereas normal messages do
+* Handling of groups, moving signups, removing signups etc.
 
 Being developed:
 
--
+* Read Pokemon go screenshot to create raid automatically
 
 Discussion:
-* Handling of groups, moving signups, removing signups etc.
+
+- 
 
 Experiment with:
 
@@ -31,6 +29,9 @@ Fix, misc:
 
 Do, features:
 
+* Complete English locale handling and do a English language deploy of the bot
+* Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
+(needs non-free Heroku version)
 * !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
 * Admin commands where bot owner can purge configuration, get statistics, help a user (send man help via DM?)
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
@@ -52,7 +53,5 @@ so we can't get test config on a prod server running by mistake
 * Add counters/counter moves to all pokemon, based on "good dps pokemons" for each type?
 * Make locale configurable both on server level, but also for each user to be able to choose locale
 * Persistent tracking (needs non-free Heroku version)
-* Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
-(needs non-free Heroku version)
 * Checking error codes?
 ...
