@@ -23,10 +23,10 @@ public class Config {
     private Boolean replyInDmWhenPossible = false;
     @Column(nullable = false)
     private String locale;
-    @Column(nullable = true)
-    private Boolean giveHelp = true;
-    @Column(nullable = true)
-    private Boolean pinGroups = false;
+    @Column
+    private Boolean giveHelp = false;
+    @Column
+    private Boolean pinGroups = true;
 
     public Config() {
         id = UUID.randomUUID().toString();
@@ -138,8 +138,8 @@ public class Config {
                 "region='" + region + '\'' +
                 ", replyInDmWhenPossible=" + replyInDmWhenPossible +
                 ", locale='" + locale + '\'' +
-                ", giveHelp=" + giveHelp +
-                ", pinGroups=" + pinGroups +
+                ", giveHelp=" + (giveHelp == null ? String.valueOf(false) : giveHelp) +
+                ", pinGroups=" + (pinGroups == null ? String.valueOf(true) : pinGroups) +
                 '}';
     }
 }
