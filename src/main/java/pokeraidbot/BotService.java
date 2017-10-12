@@ -25,6 +25,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 import pokeraidbot.jda.AggregateCommandListener;
 import pokeraidbot.jda.EventLoggingListener;
+import pokeraidbot.jda.SignupWithPlusCommandListener;
 
 import javax.annotation.PostConstruct;
 import javax.security.auth.login.LoginException;
@@ -58,6 +59,8 @@ public class BotService {
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
         trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
+        SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
+                pokemonRepository, configRepository);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
 
         CommandClientBuilder client = new CommandClientBuilder();
@@ -119,6 +122,7 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
+                    .addEventListener(plusCommandEventListener)
 
                     // start it up!
                     .buildBlocking();

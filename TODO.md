@@ -8,6 +8,7 @@ Needs testing:
 
 Being developed:
 
+* Catch +1 (time) (gym) commands on the fly in chat and turn it into signups
 * Read Pokemon go screenshot to create raid automatically
 
 Discussion:
@@ -23,8 +24,12 @@ Fix issue:
 
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
+* Under some circumstances regarding unsign of a raid group it seems that there is an exception that ends up in the logs like this:
+2017-10-12 22:41:15.237  WARN 6116 --- [inWS-ReadThread] p.d.r.s.EmoticonSignUpMessageListener    : We have a situation where user or exception message is null! Event: net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent@3d36a3c1
+- doesn't seem to break anything but needs checking.
 
 Fix, misc:
+* Regexp to remove all duplicate or more spaces in between arguments
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:

@@ -265,10 +265,14 @@ public class RaidRepository {
         if (signUp == null) {
             // todo: i18n
             throw new UserMessedUpException(user, "Det fanns ingen anmälan att ta bort folk från!");//"There was no signup to remove people from!");
-        } else {
-            signUp.setNumberOfPeople(signUp.getNumberOfPeople() - mystic - instinct - valor - plebs);
+        } else if (startAtTime.equals(signUp.getEta())){
+            final int sum = signUp.getNumberOfPeople() - mystic - instinct - valor - plebs;
+            assertSumNotLessThanOne(user, sum);
+            signUp.setNumberOfPeople(sum);
             signUp.setEta(startAtTime);
             raidEntity = raidEntityRepository.save(raidEntity);
+        } else {
+            // Ignore if they're trying to remove signups for a group they're no longer signed up for - we let them untick their emote
         }
         return getRaidInstance(raidEntity);
     }
