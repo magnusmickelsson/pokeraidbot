@@ -63,7 +63,7 @@ public class LocaleService {
     public static final Locale SWEDISH = new Locale("sv");
 
     // Change this if you want another default locale, affects the usage texts etc
-    public static final Locale DEFAULT = SWEDISH;
+    public static final Locale DEFAULT = Locale.ENGLISH;
     public static final Locale[] SUPPORTED_LOCALES = {DEFAULT, Locale.ENGLISH};
     public static final String MANUAL_RAID = "MANUAL_RAID";
     public static final String MANUAL_SIGNUP = "MANUAL_SIGNUP";
