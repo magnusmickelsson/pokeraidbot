@@ -64,8 +64,6 @@ public class RaidListCommand extends ConfigAwareCommand {
             stringBuilder.append(":**");
             // todo: i18n
             stringBuilder.append("\nFör att se detaljer för en raid: !raid status {gym-namn}\n");
-            stringBuilder.append("För att skapa en grupp för en raid: " +
-                    "!raid group {starttid} {gym-namn}\n");
             final LocalDate today = LocalDate.now();
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
