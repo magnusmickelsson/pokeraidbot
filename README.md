@@ -33,9 +33,7 @@ Raid commands:
 
 ![Other raid commands](img/raidcmd.png)
 
-![Raid list](img/raidlist.png)
-
-![Raid gym status](img/raidstatus.png)
+![Signup with plus](img/signup_via_pluscmd.png)
 
 ![Raid group signup](img/groupmuk.png)
 
