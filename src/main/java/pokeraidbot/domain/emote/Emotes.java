@@ -11,4 +11,5 @@ public class Emotes {
     public static final String FOUR = "4⃣";
     public static final String FIVE = "5⃣";
     public static final String SIX = "6⃣";
+    public static final String SAD = "\uD83D\uDC94";
 }

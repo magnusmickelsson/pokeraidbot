@@ -37,6 +37,6 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(user);
         final String[] args = Utils.prepareArguments(commandEvent);
         final String returnMessage = raidRepository.executeSignUpCommand(config, user, localeForUser, args, help);
-        ConfigAwareCommand.replyBasedOnConfig(config, commandEvent, returnMessage);
+        ConfigAwareCommand.replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage, 15);
     }
 }

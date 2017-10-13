@@ -1,5 +1,6 @@
 package pokeraidbot.jda;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -10,10 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+
+import java.util.concurrent.TimeUnit;
 
 public class SignupWithPlusCommandListener implements EventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignupWithPlusCommandListener.class);
@@ -33,7 +37,7 @@ public class SignupWithPlusCommandListener implements EventListener {
         this.localeService = localeService;
     }
 
-    public static final String plusXRegExp = "^[+]\\d{1,2}\\s.*";
+    public static final String plusXRegExp = "^[+]\\d{1,2}\\s{1,2}\\d{2}[:.]?\\d{2}\\s{1,2}.*";
     @Override
     public void onEvent(Event event) {
         if (event instanceof GuildMessageReceivedEvent) {
@@ -66,10 +70,23 @@ public class SignupWithPlusCommandListener implements EventListener {
                             localeService.getLocaleForUser(user),
                             splitArguments, "signup");
                 } catch (Throwable t) {
-                    message = t.getMessage();
+                    message = null; // Skip response if we can't do a signup
+                    guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
                 }
-                guildMessageReceivedEvent.getMessage().getChannel().sendMessage(message).queue();
-                LOGGER.debug("Added signup.");
+                if (!StringUtils.isEmpty(message)) {
+                    EmbedBuilder embedBuilder = new EmbedBuilder();
+                    embedBuilder.setAuthor(null, null, null);
+                    embedBuilder.setTitle(null);
+                    embedBuilder.setDescription(message);
+                    embedBuilder.setFooter("Detta meddelande kommer tas bort om 15 sekunder " +
+                            "för att hålla chatten ren.", null);
+                    guildMessageReceivedEvent.getMessage().getChannel().sendMessage(embedBuilder.build())
+                            .queue(msg -> {
+                                msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
+                            }
+                    );
+                    LOGGER.debug("Added signup.");
+                }
             }
         }
     }

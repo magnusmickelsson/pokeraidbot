@@ -1,3 +1,8 @@
+0.9.0
+======
+* \+ command for signups, as users are used to it (+{number} {time} {gym} is now a signup)
+* More automatic cleanup of messages/feedback
+
 0.8.0
 =====
 * Group signup, existing sign ups blanked out if a user changes the time within the same raid.

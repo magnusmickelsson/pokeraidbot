@@ -514,11 +514,14 @@ public class LocaleService {
                         "*Example:* !raid add 3 09:15 Solna Platform\n\n" +
                         "**Unsign raid:**\n!raid remove *[Gym name]*\n" +
                         "*Example:* !raid remove Solna Platform"
+                // todo: add +1 time gym syntax message
         );
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
                 "**Säg att du kommer till en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
-                        "*Exempel:* !raid add 3 09:15 Solna Platform\n\n" +
+                        "*Exempel:* !raid add 3 09:15 Solna Platform\n" +
+                        "**Man kan också använda:** \\+{antal} {ETA (HH:MM)} {Gym-namn}\n" +
+                        "*Exempel:* +3 09:15 Solna Platform\n\n" +
                         "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n" +
                         "*Exempel:* !raid remove Solna Platform"
         );

@@ -99,4 +99,24 @@ public abstract class ConfigAwareCommand extends Command {
     };
 
     protected abstract void executeWithConfig(CommandEvent commandEvent, Config config);
+
+    public static void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
+                                                        String message, int numberOfSeconds) {
+        // Give the caller some slack but not much
+        Validate.isTrue(numberOfSeconds > 5 && numberOfSeconds < 60);
+        if (config != null && config.getReplyInDmWhenPossible()) {
+            commandEvent.replyInDM(message);
+            commandEvent.reactSuccess();
+        } else {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor(null, null, null);
+            embedBuilder.setTitle(null);
+            embedBuilder.setDescription(message);
+            embedBuilder.setFooter("Detta meddelande kommer tas bort om " +
+                    numberOfSeconds + " sekunder för att hålla chatten ren.", null);
+            commandEvent.reply(embedBuilder.build(), msg -> {
+                msg.delete().queueAfter(numberOfSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
+            });
+        }
+    }
 }

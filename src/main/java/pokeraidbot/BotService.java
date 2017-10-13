@@ -69,6 +69,7 @@ public class BotService {
         client.setPrefix("!raid ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
+                new WhatsNewCommand(configRepository, aggregateCommandListener),
                 new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),

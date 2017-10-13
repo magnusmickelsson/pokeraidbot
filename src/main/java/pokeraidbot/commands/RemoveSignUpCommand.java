@@ -42,7 +42,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         } else {
             final String message =
                     localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, user, gym.getName());
-            replyBasedOnConfig(config, commandEvent, message);
+            replyBasedOnConfigAndRemoveAfter(config, commandEvent, message, 15);
         }
     }
 }
