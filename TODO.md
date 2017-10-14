@@ -4,12 +4,13 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* Handling of groups, moving signups, removing signups etc.
+-
 
 Being developed:
 
-* Catch +1 (time) (gym) commands on the fly in chat and turn it into signups
-* Read Pokemon go screenshot to create raid automatically
+* Complete English locale handling and do a English language deploy of the bot
+* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
+will enable admins to have overviews in separate channels which are read-only
 
 Discussion:
 
@@ -17,8 +18,9 @@ Discussion:
 
 Experiment with:
 
-* Can we listen for +(number) (time) (gym) to signup using that?
+* Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting time (equalling no time to "now", if raid is active) to signup using that?
 * Ability to create channels on the fly to put certain raids in
+* Read Pokemon go screenshot to create raid automatically (Swepocks)
 
 Fix issue:
 
@@ -34,7 +36,11 @@ Fix, misc:
 
 Do, features:
 
-* Complete English locale handling and do a English language deploy of the bot
+* Config for permission setting of various groups of commands:
+    * Raid functions like create, list can be set to be admin only
+    * Raid group creation can be set to admin only
+* Config for time of automatic message deletion
+    * Number of seconds, or -1 = never delete
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
 * !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
