@@ -71,18 +71,18 @@ public class SignupWithPlusCommandListener implements EventListener {
                             splitArguments, "signup");
                 } catch (Throwable t) {
                     message = null; // Skip response if we can't do a signup
-                    guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
+//                    guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
                 }
                 if (!StringUtils.isEmpty(message)) {
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor(null, null, null);
                     embedBuilder.setTitle(null);
                     embedBuilder.setDescription(message);
-                    embedBuilder.setFooter("Detta meddelande kommer tas bort om 15 sekunder " +
+                    embedBuilder.setFooter("Detta meddelande kommer tas bort om 10 sekunder " +
                             "för att hålla chatten ren.", null);
                     guildMessageReceivedEvent.getMessage().getChannel().sendMessage(embedBuilder.build())
                             .queue(msg -> {
-                                msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
+                                msg.delete().queueAfter(10, TimeUnit.SECONDS); // Clean up feedback after x seconds
                             }
                     );
                     LOGGER.debug("Added signup.");

@@ -16,7 +16,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final String message = "**Nytt i 0.9.0 (2017-10-13):**\n\n" +
+        final String message = "**Nytt i 0.9.1 (2017-10-14):**\n\n" +
                 "- Man kan nu göra signup via *+1 09:45 Hästen* (+{antal} {tid man kommer (HH:mm)} {gym})\n" +
                 "- Vissa feedbackmeddelanden rensas nu automatiskt, på samma sätt som felmeddelanden.";
         replyBasedOnConfig(config, commandEvent, message);

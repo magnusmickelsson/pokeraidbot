@@ -24,6 +24,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.time.LocalTime;
 
 @SpringBootApplication
 @Configuration

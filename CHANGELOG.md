@@ -1,3 +1,7 @@
+0.9.1
+=====
+* No emoticon if a \+ command signup goes wrong. No feedback whatsoever, to save chat space and not scare users.
+
 0.9.0
 ======
 * \+ command for signups, as users are used to it (+{number} {time} {gym} is now a signup)
