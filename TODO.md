@@ -31,16 +31,24 @@ to set
 - doesn't seem to break anything but needs checking.
 
 Fix, misc:
+* Message in !raid add that you can do +1 instead
+* raid group removed 5 mins after finished group, not at exact time
 * Regexp to remove all duplicate or more spaces in between arguments
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
 
+* Gymhuntr integration via GymhuntrMessageListener (isBot())
+* Emote to mark group as having finished (removes all signups) - only group creator?
+* Emote to move signup
+* Emote to remove signup from group
 * Config for permission setting of various groups of commands:
     * Raid functions like create, list can be set to be admin only
     * Raid group creation can be set to admin only
 * Config for time of automatic message deletion
     * Number of seconds, or -1 = never delete
+* Config for turning on and off some feature groups (map, info, raid)
+* The big feedback windows could have emotes for removing the message, and for updating it with latest info (raid status)
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
 * !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 

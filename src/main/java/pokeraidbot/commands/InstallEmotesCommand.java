@@ -16,6 +16,7 @@ import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import pokeraidbot.domain.config.LocaleService;
 
 import java.io.InputStream;
 import java.util.*;
@@ -23,9 +24,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InstallEmotesCommand extends Command {
-    public InstallEmotesCommand() {
+    private final LocaleService localeService;
+
+    public InstallEmotesCommand(LocaleService localeService) {
+        this.localeService = localeService;
         this.name = "install-emotes";
-        this.help = "Installation av emotes, bara till för administratörer.";
+        this.help = "Installation of emotes (admin only).";
         this.userPermissions = new Permission[]{Permission.ADMINISTRATOR};
     }
 
@@ -37,9 +41,8 @@ public class InstallEmotesCommand extends Command {
         for (Emote emote : currentEmotes) {
             final String emoteToInstall = emote.getName().toLowerCase();
             if (emoteNamesToInstall.contains(emoteToInstall)) {
-                // todo: i18n
-//                event.reply("You already have an icon with the name \"" + emoteToInstall + "\".");
-                event.reply("Du har redan installerat emote för: \"" + emoteToInstall + "\".");
+                event.reply(localeService.getMessageFor(LocaleService.EMOTE_INSTALLED_ALREADY,
+                        localeService.getLocaleForUser(event.getAuthor()), emoteToInstall));
                 emotesAlreadyInstalled = true;
             }
         }
@@ -71,7 +74,10 @@ public class InstallEmotesCommand extends Command {
         body.put("name", iconName);
         body.put("image", icon.getEncoding());
         if (roles.length > 0) // making sure none of the provided roles are null before mapping them to the snowflake id
-            body.put("roles", Stream.of(roles).filter(Objects::nonNull).map(ISnowflake::getId).collect(Collectors.toSet()));
+        {
+            body.put("roles",
+                    Stream.of(roles).filter(Objects::nonNull).map(ISnowflake::getId).collect(Collectors.toSet()));
+        }
 
         // todo: check bot permissions, must be able to handle emojis
         GuildImpl guild = (GuildImpl) commandEvent.getGuild();
@@ -103,7 +109,8 @@ public class InstallEmotesCommand extends Command {
                 }
                 else {
                     request.onFailure(response);
-                    throw new RuntimeException("Couldn't install emojis. Make sure that pokeraidbot has access to manage emojis.");
+                    throw new RuntimeException("Couldn't install emojis. " +
+                            "Make sure that pokeraidbot has access to manage emojis.");
                 }
             }
         };

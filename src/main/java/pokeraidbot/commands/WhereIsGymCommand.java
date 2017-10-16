@@ -16,7 +16,7 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
 
     public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService,
                              ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);

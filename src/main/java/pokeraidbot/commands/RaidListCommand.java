@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -28,7 +29,7 @@ public class RaidListCommand extends ConfigAwareCommand {
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
                            ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";
@@ -39,7 +40,8 @@ public class RaidListCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
+        String userName = user.getName();
         final String args = commandEvent.getArgs();
         final Locale locale = localeService.getLocaleForUser(userName);
         Set<Raid> raids;
@@ -62,8 +64,8 @@ public class RaidListCommand extends ConfigAwareCommand {
                 stringBuilder.append(" (").append(args).append(")");
             }
             stringBuilder.append(":**");
-            // todo: i18n
-            stringBuilder.append("\nFör att se detaljer för en raid: !raid status {gym-namn}\n");
+            stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
+                    localeService.getLocaleForUser(user))).append("\n");
             final LocalDate today = LocalDate.now();
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {

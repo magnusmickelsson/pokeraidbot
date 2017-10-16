@@ -106,7 +106,7 @@ public class Raid {
             signUp = new SignUp(user.getName(), howManyPeople, arrivalTime);
             signUps.put(user.getName(), signUp);
         }
-        repository.addSignUp(user.getName(), this, signUp);
+        repository.addSignUp(user, this, signUp);
     }
 
     public Set<SignUp> getSignUps() {

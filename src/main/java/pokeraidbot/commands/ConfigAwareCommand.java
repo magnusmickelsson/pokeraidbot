@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.apache.commons.lang3.Validate;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
@@ -16,9 +17,12 @@ import java.util.concurrent.TimeUnit;
 public abstract class ConfigAwareCommand extends Command {
     protected final ConfigRepository configRepository;
     protected final CommandListener commandListener;
+    private final LocaleService localeService;
 
-    public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener) {
+    public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener,
+                              LocaleService localeService) {
         Validate.notNull(configRepository);
+        this.localeService = localeService;
         this.commandListener = commandListener;
         this.configRepository = configRepository;
     }
@@ -45,7 +49,7 @@ public abstract class ConfigAwareCommand extends Command {
         }
     }
 
-    public static void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {
+    public void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(t.getMessage());
             commandEvent.reactError();
@@ -55,8 +59,9 @@ public abstract class ConfigAwareCommand extends Command {
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(t.getMessage());
-            embedBuilder.setFooter("Detta meddelande och kommandot som gick fel kommer tas bort om " +
-                    "15 sekunder för att hålla chatten ren.", null);
+            final String msgRemoveText = localeService.getMessageFor(LocaleService.ERROR_KEEP_CHAT_CLEAN,
+                    localeService.getLocaleForUser(commandEvent.getAuthor()), "15");
+            embedBuilder.setFooter(msgRemoveText, null);
             commandEvent.reply(embedBuilder.build(), msg -> {
                 commandEvent.getMessage().delete().queueAfter(15, TimeUnit.SECONDS); // Clean up bad message
                 msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
@@ -73,8 +78,9 @@ public abstract class ConfigAwareCommand extends Command {
                 final String server = guild.getName().trim().toLowerCase();
                 configForServer = configRepository.getConfigForServer(server);
                 if (configForServer == null) {
-                    commandEvent.reply("Det finns ingen konfiguration installerad för denna server. " +
-                            "Se till att en administratör kör kommandot \"!raid install\".");
+                    final String noConfigText = localeService.getMessageFor(LocaleService.NO_CONFIG,
+                            localeService.getLocaleForUser(commandEvent.getAuthor()));
+                    commandEvent.reply(noConfigText);
                     if (commandListener != null) {
                         commandListener.onCompletedCommand(commandEvent, this);
                     }
@@ -100,7 +106,7 @@ public abstract class ConfigAwareCommand extends Command {
 
     protected abstract void executeWithConfig(CommandEvent commandEvent, Config config);
 
-    public static void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
+    public void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
                                                         String message, int numberOfSeconds) {
         // Give the caller some slack but not much
         Validate.isTrue(numberOfSeconds > 5 && numberOfSeconds < 60);
@@ -112,8 +118,10 @@ public abstract class ConfigAwareCommand extends Command {
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(message);
-            embedBuilder.setFooter("Detta meddelande kommer tas bort om " +
-                    numberOfSeconds + " sekunder för att hålla chatten ren.", null);
+            final String msgRemoveText = localeService.getMessageFor(LocaleService.KEEP_CHAT_CLEAN,
+                    localeService.getLocaleForUser(commandEvent.getAuthor()), "" + numberOfSeconds);
+
+            embedBuilder.setFooter(msgRemoveText, null);
             commandEvent.reply(embedBuilder.build(), msg -> {
                 msg.delete().queueAfter(numberOfSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
             });

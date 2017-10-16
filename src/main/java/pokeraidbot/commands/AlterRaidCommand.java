@@ -38,13 +38,11 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ConfigRepository configRepository,
                             CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "change";
-        // todo: i18n
-        this.help = " Ändra något som blev fel vid skapandet av en raid. Skriv \"!raid man change\" för detaljer.";
-        //localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
+        this.help = localeService.getMessageFor(LocaleService.CHANGE_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }
@@ -67,9 +65,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 }
                 String gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(userName, gymName, config.getRegion());
-                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
-                LocalTime endsAtTime = parseTime(user, whatToChangeTo);
+                LocalTime endsAtTime = parseTime(user, whatToChangeTo, localeService);
                 LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
                 assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
@@ -85,20 +83,16 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 }
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(userName, gymName, config.getRegion());
-                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
+                final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
-                    // todo: i18n
-                    throw new UserMessedUpException(userName, "Kan inte ändra pokemon för en EX raid. " +
-                            "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid man change");
+                    throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.EX_NO_CHANGE_POKEMON,
+                            localeService.getLocaleForUser(user)));
                 }
                 verifyPermission(commandEvent, user, raid);
-                final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
-                    // todo: i18n
-                    throw new UserMessedUpException(userName, "Kan inte ändra en vanlig raid till att bli en EX raid. " +
-                            "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid man change");
-//                    throw new UserMessedUpException(userName, "Can't change a standard raid to be an EX raid. " +
-//                            "Remove the standard raid and then create an EX raid instead. Refer to !raid usage");
+                    throw new UserMessedUpException(userName, localeService.getMessageFor(
+                            LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
                 }
                 raid = raidRepository.changePokemon(raid, pokemon);
                 break;
@@ -109,28 +103,27 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 }
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(userName, gymName, config.getRegion());
-                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
                 final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
                         commandEvent.getMember(), Permission.ADMINISTRATOR);
-                if (userIsNotAdministrator) {
-                    // todo: i18n
-                    throw new UserMessedUpException(userName, "Bara administratörer kan ta bort raids, tyvärr.");
-                    //"Only administrators can delete raids, sorry.");
+                if (userIsNotAdministrator && raid.getSignUps().size() > 0) {
+                    throw new UserMessedUpException(userName,
+                    localeService.getMessageFor(LocaleService.ONLY_ADMINS_REMOVE_RAID,
+                            localeService.getLocaleForUser(user))
+                            );
                 }
                 if (raidRepository.delete(raid)) {
                     raid = null;
                 } else {
                     throw new UserMessedUpException(userName,
-                            // todo: i18n
-                            "Kunde inte ta bort raid, eftersom den fanns inte.");
-//                            "Could not delete raid since you tried to delete one that doesn't exist.");
+                            localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,
+                                    localeService.getLocaleForUser(user)));
                 }
                 break;
             default:
-                // todo: i18n
-                throw new UserMessedUpException(userName, "Dålig syntax för kommandot. Se !raid man change");
-                //"Bad syntax of command. Refer to command help: !raid help");
+                throw new UserMessedUpException(userName,
+                        localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
         }
         commandEvent.reactSuccess();
     }
@@ -140,9 +133,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 commandEvent.getMember(), Permission.ADMINISTRATOR);
         final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
         if (userIsNotAdministrator && userIsNotRaidCreator) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "Du är inte skapare av denna raid, eller en administratör. " +
-                    "Du får inte göra det du försökte göra. :p"); //"You are not the creator of this raid, nor an administrator!");
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                    localeService.getLocaleForUser(user)));
         }
     }
 }

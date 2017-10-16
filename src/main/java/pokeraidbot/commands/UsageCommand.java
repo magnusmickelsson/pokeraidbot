@@ -11,8 +11,9 @@ import java.util.Locale;
 public class UsageCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
-    public UsageCommand(LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+    public UsageCommand(LocaleService localeService, ConfigRepository configRepository,
+                        CommandListener commandListener) {
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "usage";
         this.help = localeService.getMessageFor(LocaleService.USAGE_HELP, LocaleService.DEFAULT);

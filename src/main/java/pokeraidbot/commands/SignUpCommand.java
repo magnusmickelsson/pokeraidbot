@@ -22,7 +22,7 @@ public class SignUpCommand extends ConfigAwareCommand {
 
     public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
                          ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "add";
         this.help = localeService.getMessageFor(LocaleService.SIGNUP_HELP, LocaleService.DEFAULT);
@@ -37,6 +37,6 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(user);
         final String[] args = Utils.prepareArguments(commandEvent);
         final String returnMessage = raidRepository.executeSignUpCommand(config, user, localeForUser, args, help);
-        ConfigAwareCommand.replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage, 15);
+        replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage, 15);
     }
 }

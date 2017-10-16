@@ -69,7 +69,7 @@ public class BotService {
         client.setPrefix("!raid ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
-                new WhatsNewCommand(configRepository, aggregateCommandListener),
+                new WhatsNewCommand(configRepository, aggregateCommandListener, localeService),
                 new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
@@ -102,7 +102,7 @@ public class BotService {
                 new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
                 new InstallCommand(configRepository, gymRepository),
-                new InstallEmotesCommand(),
+                new InstallEmotesCommand(localeService),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,

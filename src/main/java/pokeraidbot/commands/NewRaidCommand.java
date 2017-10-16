@@ -33,7 +33,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
                           PokemonRepository pokemonRepository, LocaleService localeService,
                           ConfigRepository configRepository,
                           CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "new";
@@ -50,7 +50,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String timeString = args[1];
-        LocalTime endsAtTime = Utils.parseTime(user, timeString);
+        LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService);
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);

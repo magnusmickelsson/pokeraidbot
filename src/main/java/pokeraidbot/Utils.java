@@ -55,7 +55,8 @@ public class Utils {
         }
     }
 
-    public static boolean isTypeDoubleStrongVsPokemonWithTwoTypes(String pokemonTypeOne, String pokemonTypeTwo, String typeToCheck) {
+    public static boolean isTypeDoubleStrongVsPokemonWithTwoTypes(String pokemonTypeOne,
+                                                                  String pokemonTypeTwo, String typeToCheck) {
         Validate.notEmpty(pokemonTypeOne);
         Validate.notEmpty(pokemonTypeTwo);
         Validate.notEmpty(typeToCheck);
@@ -120,7 +121,8 @@ public class Utils {
         }
     }
 
-    public static void assertCreateRaidTimeNotBeforeNow(User user, LocalDateTime dateAndTime, LocaleService localeService) {
+    public static void assertCreateRaidTimeNotBeforeNow(User user, LocalDateTime dateAndTime,
+                                                        LocaleService localeService) {
         final LocalDateTime now = clockService.getCurrentDateTime();
         if (dateAndTime.isBefore(now)) {
             throw new UserMessedUpException(user,
@@ -136,7 +138,8 @@ public class Utils {
         }
     }
 
-    public static void assertTimeNotMoreThanXHoursFromNow(User user, LocalTime time, LocaleService localeService, Integer hours) {
+    public static void assertTimeNotMoreThanXHoursFromNow(User user, LocalTime time,
+                                                          LocaleService localeService, Integer hours) {
         final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(user,
@@ -190,31 +193,35 @@ public class Utils {
     }
 
     public static boolean oneIsMewTwo(String pokemonName, String existingEntityPokemon) {
-        return pokemonName.equalsIgnoreCase("mewtwo") || existingEntityPokemon.equalsIgnoreCase("mewtwo");
+        return pokemonName.equalsIgnoreCase("mewtwo") ||
+                existingEntityPokemon.equalsIgnoreCase("mewtwo");
     }
 
     public static boolean raidsCollide(LocalDateTime endOfRaid, LocalDateTime endOfRaidTwo) {
         LocalDateTime startTime = endOfRaid.minusHours(1);
         LocalDateTime startTimeTwo = endOfRaidTwo.minusHours(1);
-        return isInInterval(startTime, endOfRaid, startTimeTwo, endOfRaidTwo) || isInInterval(startTimeTwo, endOfRaidTwo, startTime, endOfRaid);
+        return isInInterval(startTime, endOfRaid, startTimeTwo, endOfRaidTwo) ||
+                isInInterval(startTimeTwo, endOfRaidTwo, startTime, endOfRaid);
     }
 
-    private static boolean isInInterval(LocalDateTime startTime, LocalDateTime endOfRaid, LocalDateTime startTimeTwo, LocalDateTime endOfRaidTwo) {
-        return (startTime.isAfter(startTimeTwo) && startTime.isBefore(endOfRaidTwo)) || (endOfRaid.isBefore(endOfRaidTwo) && endOfRaid.isAfter(startTimeTwo));
+    private static boolean isInInterval(LocalDateTime startTime, LocalDateTime endOfRaid,
+                                        LocalDateTime startTimeTwo, LocalDateTime endOfRaidTwo) {
+        return (startTime.isAfter(startTimeTwo) && startTime.isBefore(endOfRaidTwo)) ||
+                (endOfRaid.isBefore(endOfRaidTwo) && endOfRaid.isAfter(startTimeTwo));
     }
 
     public static boolean isRaidExPokemon(String pokemonName) {
         return pokemonName.equalsIgnoreCase("mewtwo");
     }
 
-    public static LocalTime parseTime(User user, String timeString) {
+    public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {
         LocalTime endsAtTime;
         try {
             endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
         } catch (DateTimeParseException | NullPointerException e) {
             throw new UserMessedUpException(user,
-                    // todo: i18n
-                    "Kunde inte parsa tiden du angav, ska vara format HH:MM men var: " + timeString);
+                    localeService.getMessageFor(LocaleService.BAD_DATETIME_FORMAT, localeService.getLocaleForUser(user),
+                            "HH:MM", timeString));
         }
         return endsAtTime;
     }
@@ -228,20 +235,21 @@ public class Utils {
             }
         } catch (RuntimeException e) {
             throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS, localeService.getLocaleForUser(user.getName()),
+                    localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS,
+                            localeService.getLocaleForUser(user.getName()),
                             people, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
         return numberOfPeople;
     }
 
-    public static LocalDate parseDate(User user, String dateString) {
+    public static LocalDate parseDate(User user, String dateString, LocaleService localeService) {
         LocalDate theDate;
         try {
             theDate = LocalDate.parse(dateString);
         } catch (DateTimeException | NullPointerException e) {
             throw new UserMessedUpException(user,
-                    // todo: i18n
-                    "Kunde inte parsa datumet du angav, ska vara format yyyy-MM-dd men var: " + dateString);
+                    localeService.getMessageFor(LocaleService.BAD_DATETIME_FORMAT,
+                            localeService.getLocaleForUser(user), "yyyy-MM-dd", dateString));
         }
         return theDate;
     }

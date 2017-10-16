@@ -87,10 +87,168 @@ public class LocaleService {
     public static final String SIGNED_UP_AT = "SIGNED_UP_AT";
     public static final String NO_EMOTES = "NO_EMOTES";
     public static final String MANUAL_GROUPS = "MANUAL_GROUPS";
+    public static final String HELP_MANUAL_HELP_TEXT = "HELP_MANUAL_HELP_TEXT";
+    public static final String EX_DATE_LIMITS = "EX_DATE_LIMITS";
+    public static final String CHANGE_RAID_HELP = "CHANGE_RAID_HELP";
+    public static final String EX_NO_CHANGE_POKEMON = "EX_NO_CHANGE_POKEMON";
+    public static final String EX_CANT_CHANGE_RAID_TYPE = "EX_CANT_CHANGE_RAID_TYPE";
+    public static final String SIGNUP_BAD_NUMBER = "SIGNUP_BAD_NUMBER";
+    public static final String EMOTE_INSTALLED_ALREADY = "EMOTE_INSTALLED_ALREADY";
+    public static final String GETTING_HERE = "GETTING_HERE";
+    public static final String WHO_ARE_COMING = "WHO_ARE_COMING";
+    public static final String ONLY_ADMINS_REMOVE_RAID = "ONLY_ADMINS_REMOVE_RAID";
+    public static final String RAID_NOT_EXISTS = "RAID_NOT_EXISTS";
+    public static final String BAD_SYNTAX = "BAD_SYNTAX";
+    public static final String BAD_DATETIME_FORMAT = "BAD_DATETIME_FORMAT";
+    public static final String RAID_DETAILS = "RAID_DETAILS";
+    public static final String GROUP_MESSAGE_TO_BE_REMOVED = "GROUP_MESSAGE_TO_BE_REMOVED";
+    public static final String NO_PERMISSION = "NO_PERMISSION";
+    public static final String GOOGLE_MAPS = "GOOGLE_MAPS";
+    public static final String KEEP_CHAT_CLEAN = "KEEP_CHAT_CLEAN";
+    public static final String ERROR_KEEP_CHAT_CLEAN = "ERROR_KEEP_CHAT_CLEAN";
+    public static final String WHATS_NEW_HELP = "WHATS_NEW_HELP";
+    public static final String NO_CONFIG = "NO_CONFIG";
 
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
+    // todo: change to use Spring resource bundles instead
     public LocaleService() {
+        i18nMessages.put(new I18nLookup(NO_CONFIG, Locale.ENGLISH),
+                "There is no configuration setup for this server. Make sure an administrator runs the command" +
+                        " \"!raid install\"."
+        );
+        i18nMessages.put(new I18nLookup(NO_CONFIG, SWEDISH),
+                "Det finns ingen konfiguration installerad för denna server. " +
+                        "Se till att en administratör kör kommandot \"!raid install\"."
+        );
+
+        i18nMessages.put(new I18nLookup(WHATS_NEW_HELP, Locale.ENGLISH),
+                "Gives the version of the bot and what's new in this version."
+        );
+        i18nMessages.put(new I18nLookup(WHATS_NEW_HELP, SWEDISH),
+                "Ange vilken version av botten som körs, och vad som är nytt i denna version."
+        );
+        i18nMessages.put(new I18nLookup(ERROR_KEEP_CHAT_CLEAN, Locale.ENGLISH),
+                "This message, and the associated error, will be removed in %1 seconds to keep chat clean."
+        );
+        i18nMessages.put(new I18nLookup(ERROR_KEEP_CHAT_CLEAN, SWEDISH),
+                "Detta meddelande och tillhörande fel kommer tas bort om %1 sekunder " +
+                        "för att hålla chatten ren."
+        );
+        i18nMessages.put(new I18nLookup(KEEP_CHAT_CLEAN, Locale.ENGLISH),
+                "This message will be removed in %1 seconds to keep chat clean."
+        );
+        i18nMessages.put(new I18nLookup(KEEP_CHAT_CLEAN, SWEDISH),
+                "Detta meddelande kommer tas bort om %1 sekunder " +
+                        "för att hålla chatten ren."
+        );
+        i18nMessages.put(new I18nLookup(GOOGLE_MAPS, Locale.ENGLISH),
+                " click the message title for a Google Maps link."
+        );
+        i18nMessages.put(new I18nLookup(GOOGLE_MAPS, SWEDISH),
+                " klicka på meddelandetitel för Google Maps."
+        );
+        i18nMessages.put(new I18nLookup(NO_PERMISSION, Locale.ENGLISH),
+                "You lack the permissions to do what you're trying to do. Ask an admin for help."
+        );
+        i18nMessages.put(new I18nLookup(NO_PERMISSION, SWEDISH),
+                "Du saknar behörighet för att göra det du försökte göra. Be hjälp av en admin."
+        );
+        i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, Locale.ENGLISH),
+                "New signups updated every 15 seconds. When the raid time expires, this message is removed."
+        );
+        i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, SWEDISH),
+                "Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut tas meddelandet bort."
+        );
+
+        i18nMessages.put(new I18nLookup(RAID_DETAILS, Locale.ENGLISH),
+                "To see details for a raid: !raid status {gym name}"
+        );
+        i18nMessages.put(new I18nLookup(RAID_DETAILS, SWEDISH),
+                "För att se detaljer för en raid: !raid status {gym-namn}"
+        );
+
+        i18nMessages.put(new I18nLookup(BAD_DATETIME_FORMAT, Locale.ENGLISH),
+                "Could not parse your given time, should be format %1 but was: %2"
+        );
+        i18nMessages.put(new I18nLookup(BAD_DATETIME_FORMAT, SWEDISH),
+                "Kunde inte tolka tiden du angav, ska vara format %1 men var: %2"
+        );
+
+        i18nMessages.put(new I18nLookup(BAD_SYNTAX, Locale.ENGLISH),
+                "Bad syntax for command. Se !raid man"
+        );
+        i18nMessages.put(new I18nLookup(BAD_SYNTAX, SWEDISH),
+                "Dålig syntax för kommandot. Se !raid man"
+        );
+
+        i18nMessages.put(new I18nLookup(RAID_NOT_EXISTS, Locale.ENGLISH),
+                "Could not delete raid since you tried to delete one that doesn't exist."
+        );
+        i18nMessages.put(new I18nLookup(RAID_NOT_EXISTS, SWEDISH),
+                "Kunde inte ta bort raid, eftersom den fanns inte."        );
+
+        i18nMessages.put(new I18nLookup(ONLY_ADMINS_REMOVE_RAID, Locale.ENGLISH),
+                "Only admins can remove raids with signups, sorry."
+        );
+        i18nMessages.put(new I18nLookup(ONLY_ADMINS_REMOVE_RAID, SWEDISH),
+                "Bara administratörer kan ta bort raids med gjorda anmälningar, tyvärr."
+        );
+        i18nMessages.put(new I18nLookup(WHO_ARE_COMING, Locale.ENGLISH),
+                "Who are coming"
+        );
+        i18nMessages.put(new I18nLookup(WHO_ARE_COMING, SWEDISH),
+                "Vilka kommer"
+        );
+
+        i18nMessages.put(new I18nLookup(GETTING_HERE, Locale.ENGLISH),
+                "Getting here: Google Maps"
+        );
+        i18nMessages.put(new I18nLookup(GETTING_HERE, SWEDISH),
+                "Hitta hit: Google Maps"
+        );
+        i18nMessages.put(new I18nLookup(EMOTE_INSTALLED_ALREADY, Locale.ENGLISH),
+                "You already have an icon with the name \"%1\"."
+        );
+        i18nMessages.put(new I18nLookup(EMOTE_INSTALLED_ALREADY, SWEDISH),
+                "Du har redan installerat emote för: \"%1\"."
+        );
+        i18nMessages.put(new I18nLookup(SIGNUP_BAD_NUMBER, Locale.ENGLISH),
+                "Number of people for a signup must be 1-20, you had %1 but tried to set %2."
+        );
+        i18nMessages.put(new I18nLookup(SIGNUP_BAD_NUMBER, SWEDISH),
+                "Antal personer för en signup måste vara 1-20, du hade %1 men försökte sätta %2."
+        );
+        i18nMessages.put(new I18nLookup(EX_CANT_CHANGE_RAID_TYPE, Locale.ENGLISH),
+                "Can't change a standard raid to be an EX raid. " +
+                        "Remove the standard raid and then create an EX raid instead. Refer to !raid man change"
+        );
+        i18nMessages.put(new I18nLookup(EX_CANT_CHANGE_RAID_TYPE, SWEDISH),
+                "Kan inte ändra en vanlig raid till att bli en EX raid. " +
+                        "Ta bort den vanliga raiden och skapa en ny EX raid. Använd !raid man change"
+        );
+        i18nMessages.put(new I18nLookup(EX_NO_CHANGE_POKEMON, Locale.ENGLISH),
+                "Can't change pokemon for an EX raid. If you want to change an EX raid, remove it and create a new " +
+                       "raid via: !raid change remove {gym}"
+        );
+        i18nMessages.put(new I18nLookup(EX_NO_CHANGE_POKEMON, SWEDISH),
+                "Kan inte ändra pokemon för en EX raid. " +
+                        "Om du vill ändra EX raiden, ta bort den och skapa en ny. Använd !raid man change"
+        );
+        i18nMessages.put(new I18nLookup(CHANGE_RAID_HELP, Locale.ENGLISH),
+                " Change something that went wrong during raid creation. Type \"!raid man change\" for details."
+        );
+        i18nMessages.put(new I18nLookup(CHANGE_RAID_HELP, SWEDISH),
+                " Ändra något som blev fel vid skapandet av en raid. Skriv \"!raid man change\" för detaljer."
+        );
+
+        i18nMessages.put(new I18nLookup(EX_DATE_LIMITS, Locale.ENGLISH),
+                "You can't create an EX raid more than 7 days ahead."
+        );
+        i18nMessages.put(new I18nLookup(EX_DATE_LIMITS, SWEDISH),
+                "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!"
+        );
+
         i18nMessages.put(new I18nLookup(NO_EMOTES, Locale.ENGLISH),
                 "Administrator has not installed pokeraidbot's emotes. " +
                         "Ensure he/she runs the following command: !raid install-emotes"
@@ -101,11 +259,9 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(SIGNED_UP_AT, Locale.ENGLISH),
-//                "Signed up to start at"
                 "Signed up"
         );
         i18nMessages.put(new I18nLookup(SIGNED_UP_AT, SWEDISH),
-//                "Anmälda att komma"
                 "Anmälda"
         );
 
@@ -124,11 +280,9 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, Locale.ENGLISH),
-//                "%1's group @ %2, starts at %3"
                 "%1 @ %2, starts at %3"
         );
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, SWEDISH),
-//                "%1s grupp @ %2, startar %3"
                 "%1 @ %2, startar %3"
         );
 
@@ -178,7 +332,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(ACTIVE, Locale.ENGLISH), "Active");
         i18nMessages.put(new I18nLookup(ACTIVE, SWEDISH), "Aktiv");
-        // todo: change to use Spring resource bundles instead
+
         i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, Locale.ENGLISH),
                 "Wrong number of arguments for command, expected %1 but was %2. Write \"!raid man\" for help.");
         i18nMessages.put(new I18nLookup(WRONG_NUMBER_OF_ARGUMENTS, SWEDISH),
@@ -331,8 +485,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(RAIDSTATUS_HELP, SWEDISH),
                 "Se status för raid - !raid status [Gym].");
 
-        i18nMessages.put(new I18nLookup(SIGNED_UP, Locale.ENGLISH), "signed up");
-        i18nMessages.put(new I18nLookup(SIGNED_UP, SWEDISH), "anmäld(a)");
+        i18nMessages.put(new I18nLookup(SIGNED_UP, Locale.ENGLISH), "Signed up");
+        i18nMessages.put(new I18nLookup(SIGNED_UP, SWEDISH), "Anmäld(a)");
 
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, Locale.ENGLISH), "Current raids");
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, SWEDISH), "Pågående raids");
@@ -411,6 +565,18 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(RAID_EXISTS, SWEDISH),
                 "Tyvärr, %1, en raid vid gym %2 finns redan (för %3). Anmäl dig till den?");
 
+        i18nMessages.put(new I18nLookup(HELP_MANUAL_HELP_TEXT, Locale.ENGLISH),
+                " Help manual for different topics: !raid man {topic} {optional:chan/dm - " +
+                        "used when an admin wants to show a user the syntax of commands}\n" +
+                        "Available topics: raid, signup, map, install, change, tracking, group, ALL.\n" +
+                        "**Example (to get help about raid commands):** !raid man raid"
+        );
+        i18nMessages.put(new I18nLookup(HELP_MANUAL_HELP_TEXT, SWEDISH),
+                " Hjälpmanual för olika ämnen: !raid man {ämne} {frivilligt:chan/dm - " +
+                        "om man t.ex. vill visa hjälpen i en textkanal för en användare}\n" +
+                        "Möjliga ämnen: raid, signup, map, install, change, tracking, group, ALL.\n" +
+                        "**Exempel (för att få hjälp angående raidkommandon):** !raid man raid"
+        );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
                 "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +

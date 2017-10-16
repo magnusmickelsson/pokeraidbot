@@ -52,7 +52,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                                PokemonRepository pokemonRepository, LocaleService localeService,
                                ConfigRepository configRepository,
                                CommandListener commandListener, BotService botService, ClockService clockService) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -69,7 +69,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String timeString = args[0];
-        LocalTime startAtTime = Utils.parseTime(user, timeString);
+        LocalTime startAtTime = Utils.parseTime(user, timeString, localeService);
         LocalDateTime startAt = LocalDateTime.of(LocalDate.now(), startAtTime);
 
         assertTimeNotInNoRaidTimespan(user, startAtTime, localeService);
@@ -82,7 +82,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         }
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
-        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
                     localeService.getLocaleForUser(user));
@@ -203,23 +203,27 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
                 localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
-        embedBuilder.setTitle("Hitta hit: Google Maps", Utils.getNonStaticMapUrl(gym));
+        final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
+                localeService.getLocaleForUser(user));
+        embedBuilder.setTitle(getHereText, Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(headline, null, Utils.getPokemonIcon(pokemon));
         final Set<SignUp> signUpsAt = raid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
         final String allSignUpNames = signUpNames.size() > 0 ? StringUtils.join(signUpNames, ", ") : "-";
         final int numberOfPeopleArrivingAt = signUpsAt.stream().mapToInt(s -> s.getHowManyPeople()).sum();
-        // todo: i18n
-        final String totalSignUpsText = "**Antal anmälda:** **" + numberOfPeopleArrivingAt + "**";
+        final String numberOfSignupsText = localeService.getMessageFor(LocaleService.SIGNED_UP,
+                localeService.getLocaleForUser(user));
+        final String totalSignUpsText = "**" + numberOfSignupsText + ":** **" + numberOfPeopleArrivingAt + "**";
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append(totalSignUpsText);
-        // todo: i18n
-        descriptionBuilder.append("\n**De som kommer:** ");
+        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
+                localeService.getLocaleForUser(user));
+        descriptionBuilder.append("\n**").append(thoseWhoAreComingText).append(":** ");
         descriptionBuilder.append(allSignUpNames);
         final String description = descriptionBuilder.toString();
         embedBuilder.setDescription(description);
-        // todo: i18n
-        embedBuilder.setFooter("Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut tas meddelandet bort.", null);
+        embedBuilder.setFooter(localeService.getMessageFor(LocaleService.GROUP_MESSAGE_TO_BE_REMOVED,
+                localeService.getLocaleForUser(user)), null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }

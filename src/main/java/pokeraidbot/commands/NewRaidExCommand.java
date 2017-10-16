@@ -35,7 +35,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ConfigRepository configRepository,
                             CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "ex";
@@ -53,14 +53,14 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
         String dateString = args[1];
         String timeString = args[2];
-        LocalTime endsAtTime = Utils.parseTime(user, timeString);
-        LocalDate endsAtDate = Utils.parseDate(user, dateString);
+        LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService);
+        LocalDate endsAtDate = Utils.parseDate(user, dateString, localeService);
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
         if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!");
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EX_DATE_LIMITS,
+                    localeService.getLocaleForUser(user)));
         }
         assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
 

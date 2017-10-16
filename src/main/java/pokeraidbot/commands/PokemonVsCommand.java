@@ -26,7 +26,7 @@ public class PokemonVsCommand extends ConfigAwareCommand {
 
     public PokemonVsCommand(PokemonRepository repo, PokemonRaidStrategyService raidInfoService,
                             LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.raidInfoService = raidInfoService;
         this.localeService = localeService;
         this.name = "vs";

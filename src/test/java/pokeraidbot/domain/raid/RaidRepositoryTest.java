@@ -70,20 +70,20 @@ public class RaidRepositoryTest {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
-        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        User user = mock(User.class);
+        String userName = "testUser2";
+        when(user.getName()).thenReturn(userName);
+        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
         enteiRaid.setId(raid.getId()); // Set to same id for equals comparison
         enteiRaid.setCreator(raid.getCreator()); // Set creator to same for equals comparison
         assertThat(raid, is(enteiRaid));
-        String userName = "testUser2";
-        User user = mock(User.class);
-        when(user.getName()).thenReturn(userName);
         int howManyPeople = 3;
         LocalTime arrivalTime = nowTime.plusMinutes(30);
         raid.signUp(user, howManyPeople, arrivalTime, repo);
         assertThat(raid.getSignUps().size(), is(1));
         assertThat(raid.getNumberOfPeopleSignedUp(), is(howManyPeople));
 
-        final Raid raidFromDb = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        final Raid raidFromDb = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
         assertThat(raidFromDb, is(raid));
         assertThat(raidFromDb.getSignUps().size(), is(1));
     }
@@ -103,7 +103,10 @@ public class RaidRepositoryTest {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
-        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        User user = mock(User.class);
+        when(user.getName()).thenReturn(raidCreatorName);
+
+        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
         Raid changedRaid = repo.changePokemon(raid, pokemonRepository.getByName("Mewtwo"));
         assertThat(raid.getEndOfRaid(), is(changedRaid.getEndOfRaid()));
         assertThat(raid.getGym(), is(changedRaid.getGym()));
@@ -128,7 +131,10 @@ public class RaidRepositoryTest {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
-        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion);
+        User user = mock(User.class);
+        when(user.getName()).thenReturn(raidCreatorName);
+
+        Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
         Raid changedRaid = repo.changeEndOfRaid(raid, endOfRaid.plusMinutes(5));
         assertThat(raid.getEndOfRaid(), not(changedRaid.getEndOfRaid()));
         assertThat(changedRaid.getEndOfRaid(), is(raid.getEndOfRaid().plusMinutes(5)));

@@ -220,32 +220,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
         return changedRaid;
     }
 
-    private boolean assertUserDoesntHaveIncorrectRole(GuildMessageReactionAddEvent event, String teamName) {
-        final Guild guild = event.getGuild();
-        final User user = event.getUser();
-        final Set<String> teams = new HashSet<>(Arrays.asList("instinct", "valor", "mystic"));
-        final Collection<String> teamsYouShouldntBeIn = CollectionUtils.subtract(teams, new HashSet<>(Arrays.asList(teamName)));
-        final List<Role> roles = guild.getMember(user).getRoles();
-        for (Role role : roles) {
-            for (String teamYouShouldntBeIn : teamsYouShouldntBeIn) {
-                if (StringUtils.containsIgnoreCase(teamYouShouldntBeIn, role.getName())) {
-                    // todo: i18n
-                    event.getChannel().sendMessage(user.getAsMention() +
-                            ": Du har roll som lag " + teamYouShouldntBeIn +
-                            " men försöker signa upp som " + teamName +
-                            ". Jag struntar i just det klicket ;p").queue();
-//                    event.getChannel().sendMessage(user.getAsMention() +
-//                            ": You're in team " + teamYouShouldntBeIn + " trying to signup as " + teamName +
-//                            ". Removing signup.").queue();
-                    event.getReaction().removeReaction(user).queueAfter(30, TimeUnit.MILLISECONDS);
-                    userHadError = user.getName();
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     public String getEmoteMessageId() {
         return emoteMessageId;
     }

@@ -19,7 +19,7 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
 
     public UnTrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
                                  PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.commandListener = botService.getTrackingCommandListener();
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;

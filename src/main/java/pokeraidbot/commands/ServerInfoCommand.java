@@ -12,8 +12,9 @@ public class ServerInfoCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final ClockService clockService;
 
-    public ServerInfoCommand(ConfigRepository configRepository, LocaleService localeService, CommandListener commandListener, ClockService clockService) {
-        super(configRepository, commandListener);
+    public ServerInfoCommand(ConfigRepository configRepository, LocaleService localeService,
+                             CommandListener commandListener, ClockService clockService) {
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.clockService = clockService;
         this.name = "server";

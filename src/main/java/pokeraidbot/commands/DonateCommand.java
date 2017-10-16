@@ -10,7 +10,7 @@ public class DonateCommand extends ConfigAwareCommand {
     private static final String link = "https://pledgie.com/campaigns/34823";
 
     public DonateCommand(LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.name = "donate";
         this.help = localeService.getMessageFor(LocaleService.DONATE, LocaleService.DEFAULT);
     }

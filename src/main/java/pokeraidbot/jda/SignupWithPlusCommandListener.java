@@ -78,8 +78,10 @@ public class SignupWithPlusCommandListener implements EventListener {
                     embedBuilder.setAuthor(null, null, null);
                     embedBuilder.setTitle(null);
                     embedBuilder.setDescription(message);
-                    embedBuilder.setFooter("Detta meddelande kommer tas bort om 15 sekunder " +
-                            "för att hålla chatten ren.", null);
+                    final String msgRemoveText =
+                            localeService.getMessageFor(LocaleService.KEEP_CHAT_CLEAN,
+                                    localeService.getLocaleForUser(user), "15");
+                    embedBuilder.setFooter(msgRemoveText, null);
                     guildMessageReceivedEvent.getMessage().getChannel().sendMessage(embedBuilder.build())
                             .queue(msg -> {
                                 msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds

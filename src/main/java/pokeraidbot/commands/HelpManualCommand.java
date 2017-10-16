@@ -21,14 +21,10 @@ public class HelpManualCommand extends ConfigAwareCommand {
     private String helpText;
 
     public HelpManualCommand(LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(configRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "man";
-        // todo: i18n
-        helpText = " Hjälpmanual för olika ämnen: !raid man {ämne} {frivilligt:chan/dm - " +
-                "om man t.ex. vill visa hjälpen i en textkanal för en användare}\n" +
-                "Möjliga ämnen: raid, signup, map, install, change, tracking, group, ALL.\n" +
-        "**Exempel (för att få hjälp angående raidkommandon):** !raid man raid";
+        helpText = localeService.getMessageFor(LocaleService.HELP_MANUAL_HELP_TEXT, LocaleService.DEFAULT);
         this.help = helpText;
         this.guildOnly = false;
         this.aliases = new String[]{"hello"};

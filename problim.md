@@ -83,17 +83,17 @@ timme på väg till, på lunchrast eller på väg hem från jobbet, och inte vil
 
 Har lagt in lite kommentarer i screenshots nedan för att illustrera vad jag har issues med rörande modell 1.
 
-![example 1](img/4_parallel_raids_who_goes_where_1.png)
+![example 1](img/dumb/4_parallel_raids_who_goes_where_1.png)
 
-![example 2](img/4_parallel_raids_who_goes_where_2.png)
+![example 2](img/dumb/4_parallel_raids_who_goes_where_2.png)
 
-![example 3](img/4_parallel_raids_who_goes_where_3.png)
+![example 3](img/dumb/4_parallel_raids_who_goes_where_3.png)
 
-![example 4](img/4_parallel_raids_who_goes_where_4.png)
+![example 4](img/dumb/4_parallel_raids_who_goes_where_4.png)
 
 .. och lite senare på kvällen:
 
-![example 5](img/had-to-leave-planning.png)
+![example 5](img/dumb/had-to-leave-planning.png)
 
 Oavsett vilken modell vi väljer, tror jag vi behöver få mer struktur och ordning och "utbilda" användarna
 att anpassa sig. 

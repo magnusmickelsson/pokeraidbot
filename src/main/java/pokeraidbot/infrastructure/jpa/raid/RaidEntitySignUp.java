@@ -2,6 +2,7 @@ package pokeraidbot.infrastructure.jpa.raid;
 
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
 import javax.persistence.Column;
@@ -69,11 +70,11 @@ public class RaidEntitySignUp implements Serializable {
                 '}';
     }
 
-    public void setNumberOfPeople(int numberOfPeople) {
+    public void setNumberOfPeople(int numberOfPeople, LocaleService localeService, User user) {
         if (numberOfPeople < 0 || numberOfPeople > Utils.HIGH_LIMIT_FOR_SIGNUPS) {
-            // todo: i18n
-            throw new UserMessedUpException((User)null, "Antal personer för en signup måste vara 1-20, du hade " +
-                    this.numberOfPeople + " men försökte sätta " + numberOfPeople + ".");
+            throw new UserMessedUpException((User)null, localeService.getMessageFor(LocaleService.SIGNUP_BAD_NUMBER,
+                    localeService.getLocaleForUser(user), String.valueOf(this.numberOfPeople),
+                    String.valueOf(numberOfPeople)));
         }
         this.numberOfPeople = numberOfPeople;
     }
