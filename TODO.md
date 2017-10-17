@@ -24,6 +24,7 @@ Experiment with:
 
 Fix issue:
 
+* Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 * Under some circumstances regarding unsign of a raid group it seems that there is an exception that ends up in the logs like this:
