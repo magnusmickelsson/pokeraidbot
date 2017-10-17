@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -59,6 +60,7 @@ public class RaidListCommand extends ConfigAwareCommand {
             commandEvent.reply(embedBuilder.build());
         } else {
             StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder exRaids = new StringBuilder();
             stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
             if (args != null && args.length() > 0) {
                 stringBuilder.append(" (").append(args).append(")");
@@ -70,13 +72,13 @@ public class RaidListCommand extends ConfigAwareCommand {
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
-                if (currentPokemon == null || (!currentPokemon.equals(raidBoss))) {
+                if (!Utils.isRaidEx(raid) && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
                     stringBuilder.append("\n**").append(currentPokemon.getName()).append("**\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
-                if (raid.getEndOfRaid().toLocalDate().isEqual(today)) {
+                if (!Utils.isRaidEx(raid)) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
                     .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")
@@ -85,24 +87,24 @@ public class RaidListCommand extends ConfigAwareCommand {
                     .append(" ")
                     .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale)).append("\n");
                 }
-//                else {
-//                    exRaids.append("[").append(raidGym.getName()).append("](")
-//                            .append(Utils.getStaticMapUrl(raidGym)).append(") (")
-//                            .append(raidBoss.getName()).append(") - ")
-//                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-//                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
-//                                    printTimeIfSameDay(raid.getEndOfRaid())))
-//                            .append(". ").append(numberOfPeople)
-//                            .append(" ")
-//                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-//                            .append(".\n");
-//                }
+                else {
+                    exRaids.append("\n").append(raidGym.getName())
+                            .append(" (")
+                            .append(raidBoss.getName()).append(") - ")
+                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
+                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(raid.getEndOfRaid())))
+                            .append(". ").append(numberOfPeople)
+                            .append(" ")
+                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(".\n");
+                }
             }
-//            final String exRaidList = exRaids.toString();
-//            if (exRaidList.length() > 1) {
-////                embedBuilder = new EmbedBuilder();
-//                embedBuilder.addField("**Raid-EX:**", exRaidList, true);
-//            }
+            final String exRaidList = exRaids.toString();
+            if (exRaidList.length() > 1) {
+//                embedBuilder = new EmbedBuilder();
+                stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
+            }
             commandEvent.reply(stringBuilder.toString());
         }
     }

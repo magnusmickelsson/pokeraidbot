@@ -278,4 +278,8 @@ public class Utils {
     public static String[] prepareArguments(CommandEvent commandEvent) {
         return commandEvent.getArgs().replaceAll("\\s{2,4}", " ").split(" ");
     }
+
+    public static boolean isRaidEx(Raid raid) {
+        return isRaidExPokemon(raid.getPokemon().getName());
+    }
 }

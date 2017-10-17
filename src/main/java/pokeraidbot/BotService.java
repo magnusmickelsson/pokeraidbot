@@ -80,9 +80,8 @@ public class BotService {
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         configRepository, aggregateCommandListener),
-// todo: raid EX disabled for now
-//                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-//                        configRepository, aggregateCommandListener),
+                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        configRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         configRepository, this, aggregateCommandListener, pokemonRepository),
                 new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository,
