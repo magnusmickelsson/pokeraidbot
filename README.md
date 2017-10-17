@@ -37,6 +37,11 @@ Raid commands:
 
 ![Raid group signup](img/groupmuk.png)
 
+## Getting started as a user
+
+[English version](GETTING_STARTED_USER_en.md)
+[Swedish version](GETTING_STARTED_USER_sv.md)
+
 ## Support development
 
 Please do. :) It will help out a lot if it happens that I need to move from

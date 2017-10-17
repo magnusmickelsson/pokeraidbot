@@ -1,91 +1,93 @@
-Så du har upptäckt en raid i din närhet som du vill dela med dig av? Raiden är för en Suicune, som **slutar** kl 09:45 vid gymmet Hästen.
+So you have discovered a raid nearby that you want to share with your friends?
+The raid is for a Suicune at the gym Café Lalo, and it **expires** at 09:45.
 
-Skriv då följande i kanalen som är till för botmeddelandespam (#bot i Uppsala):
+Type the following in your server's text channel where pokeraidbot is active:
 
-*!raid new Suicune 09:45 hästen*
+*!raid new Suicune 09:45 cafe lalo*
 
-![Create](img/started1.png)
+![Create](img/en/started1.png)
 
-Du vill sedan skapa en grupp som kör raiden 09:30.
+Then, you want to create a group that raids at 09:30.
 
-Skriv då följande i kanalen för Suicune-raider (#suicune_raid i Uppsala):
+Type the following:
+*!raid group 09:30 cafe lalo*
 
-*!raid group 09:30 hästen*
+![Group](img/en/started2.png)
 
-![Group](img/started2.png)
+To sign up yourself to the raid, click the emote with number "1". If you have two friends who are joining,
+click the emote with the number "3" to sign up yourself and your friends.
 
-Klicka sedan på emoten för siffran "1" för att anmäla bara dig. Om du har 2 vänner med dig, klicka på knappen "3" så anmäler du dig själv + dem.
-Om du klickar på ikonen igen, tas anmälan för de personer du lade till bort från gruppen.
+If you click the emote you chose again, the signup for the person(s) you added to the group are removed.
 
-Varför står det en 2:a bredvid ikonen för 1:an du tryckte på för att anmäla en person? 
+So why is there a 2 next to the emote that you pressed?
 
-Tja, för att du ska ha knappar att trycka på, så måste botten "reagera" på inlägget först. 
-Den lägger till alla emotes du ser på bilden ovan och lyssnar sedan efter om någon trycker på dem. 
+Well, in order for you to have emotes to press, the bot needs to react to the message first.
+It adds all the emotes you can see on the picture above, and listens for if a user presses them.
 
-![Signup](img/started3.png)
+![Signup](img/en/started3.png)
 
-Gruppens anmälningar kommer automatiskt uppdateras var 15:e sekund, och när din grupp ska köra, kommer meddelandet i Discord automatiskt tas bort.
+The group's signups will automatically be updated every 15 seconds, and when it's time for your group to 
+start the raid, the group message will be automatically removed.
 
-Vill du se vilka raids som är på gång just nu?
+Do you want to see the current active raids, which have been reported?
 
-Skriv då följande i kanalen för botspam för att se alla möjliga raider:
+Type the following:
 
 *!raid list*
 
-![List](img/raidlist.png)
+![List](img/en/raidlist.png)
 
-Vill du sedan se vilka raider som bara är för en viss pokemon, t.ex. Suicune, skriv följande:
+If you want to see what raids are only for a certain pokemon, for example Suicune, type the following:
 
 *!raid list Suicune*
 
-.. så får du bara se aktuella raider för just den bossen.
+.. and you'll see only those raids.
 
-Vill du få hjälp med vilka pokemons som är bra mot din raidboss?
+Do you want help with deciding what pokemons to use against your raid boss?
 
-Skriv då följande i kanalen för botspam (#bot):
+Type the following:
 
 *!raid vs suicune*
 
-![Vs](img/started4.png)
+![Vs](img/en/vs.png)
 
-Vill någon ha hjälp att hitta till gymmet Hästen? Det finns dels länkar från olika meddelanden, 
-men sedan kan man också skriva:
+Do you need help finding the gym the raid is at? Type:
 
-*!raid map Hästen*
+*!raid map cafe lalo*
 
-Där får man en minikarta som kan hjälpa till med orientering. 
+You'll get a static mini map of the gym, but you can also click the Gym name for a link to Google Maps,
+featuring directions, calculating how long it will take you to get there, and being able to save the location. 
 
-![Map](img/started5.png)
+![Map](img/en/map.png)
 
-Vill man sedan ha en bra vägbeskrivning från där man är nu, kan man klicka på gymnamnet, 
-och då laddas Google Maps.
-
-För mer detaljerad hjälp kring botten, skriv följande:
+For more detailed help, access the help manual via typing:
 
 *!raid man*
 
-Den svarar i direktmeddelande vilka hjälpämnen som finns. Sedan kan man t.ex. skriva
+It will respond in direct message and give you assistance with choosing the right help manual topics.
+To read help for a certain topic, type for example:
 
 *!raid man raid*
 
-.. för att få hjälp kring funktioner rörande raids, som att skapa dem. Dessa hjälpämnen finns:
+.. to get help on raid functions, such as reporting a raid. The available help manual topics are:
 
-* raid - Raidfunktioner, som att skapa en raid, se en lista över raids du kan köra och kika på detaljer för en raid vid ett visst gym
-* change - Funktioner för att ändra en skapad raid, som att ändra pokemon eller byta sluttid (om man gjorde fel)
-* signup - Funktioner för att anmäla sig till en raid, eller ta bort anmälan
-* group - Hur man skapar en raidgrupp enligt bilden ovan och hur det funkar
-* tracking - Hur man kan använda botten för att få meddelande om en raid skapas för en viss pokemon man är intresserad av
-* install - Hur en serveradministratör får botten att fungera
+* raid - Raid functions, like reporting a raid, seeing a list of available raids, and checking details for a certain raid
+* change - Functions to change a raid, such as changing the raid boss, the expiry time etc. (if the reporter made a mistake for example)
+* signup - Functions to sign up to a raid, and removing your signup
+* group - How to create a raid group for a certain time, like the example above
+* tracking - Tell the bot to notify the user in direct message if a raid is reported for a raid boss you're interested in
+* install - How a server administrator gets the bot working
 
-Skriver man följande får man hjälp i direktmeddelande:
+If you type the following, you get help in direct messages:
 
 *!raid man raid dm*
 
-Skriver man såhär får man hjälp antingen i DM eller i serverchatten, beroende på vilka inställningar ni har för er server:
+If you type like this, you can get help either in DM or in server chat, depending on what settings you have for your server:
 
 *!raid man raid*
 
-Hoppas detta ger en idé om vad botten kan göra, och att det inte ska behöva vara så himla svårt. 
-Rapportera gärna problem eller kom med förslag via Github's ärendehantering.
+I hope this gives you an idea of what the bot can do, and that it shouldn't be **too** hard to get started.
 
-Lycka till!
+Report any problems or suggestions via Github's issue handling.
+
+Good luck and have fun!

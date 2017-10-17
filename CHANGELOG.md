@@ -1,3 +1,8 @@
+1.0.0
+=====
+* Fixed readme for both english and swedish including images
+* Fixed getting started guide for english locale
+
 0.9.0
 ======
 * \+ command for signups, as users are used to it (+{number} {time} {gym} is now a signup)
