@@ -114,6 +114,7 @@ public abstract class ConfigAwareCommand extends Command {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
+            commandEvent.reactSuccess();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);

@@ -157,7 +157,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     throw new RuntimeException(e);
                 }
             } while (emoticonSignUpMessageListener.getStartAt() != null &&
-                    clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt()));
+                    clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt().plusMinutes(5)));
             LOGGER.debug("Raid group has now expired or message been removed, will clean up listener and messages..");
             cleanUp(commandEvent, startAt, raid, emoticonSignUpMessageListener);
 

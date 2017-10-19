@@ -8,7 +8,6 @@ Needs testing:
 
 Being developed:
 
-* Complete English locale handling and do a English language deploy of the bot
 * !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
 will enable admins to have overviews in separate channels which are read-only
 
@@ -32,7 +31,6 @@ to set
 - doesn't seem to break anything but needs checking.
 
 Fix, misc:
-* Message in !raid add that you can do +1 instead
 * raid group removed 5 mins after finished group, not at exact time
 * Regexp to remove all duplicate or more spaces in between arguments
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
@@ -41,7 +39,6 @@ Do, features:
 
 * Fuzzy search for pokemon names
 * !raid list should show ETA:s (Instead of signed up - time1 (number), time2 (number) etc)
-* Input parameter to application with default locale (en or sv)
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Emote to move signup

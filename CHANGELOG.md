@@ -2,6 +2,7 @@
 =====
 * Fixed readme for both english and swedish including images
 * Fixed getting started guide for english locale
+* Input parameter to application with default locale (en or sv)
 
 0.9.0
 ======

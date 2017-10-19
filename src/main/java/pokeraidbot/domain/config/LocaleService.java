@@ -168,10 +168,10 @@ public class LocaleService {
                 "Du saknar behörighet för att göra det du försökte göra. Be hjälp av en admin."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, Locale.ENGLISH),
-                "New signups updated every 15 seconds. When the raid time expires, this message is removed."
+                "New signups updated every 15 seconds. When the raid time expires (+5 mins), this message is removed."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, SWEDISH),
-                "Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut tas meddelandet bort."
+                "Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut (+5 minuter) tas meddelandet bort."
         );
 
         i18nMessages.put(new I18nLookup(RAID_DETAILS, Locale.ENGLISH),

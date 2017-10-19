@@ -74,6 +74,7 @@ public class SignupWithPlusCommandListener implements EventListener {
                     guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
                 }
                 if (!StringUtils.isEmpty(message)) {
+                    guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
                     embedBuilder.setAuthor(null, null, null);
                     embedBuilder.setTitle(null);

@@ -20,13 +20,17 @@ public class WhatsNewCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
-            message = "**Nytt i 0.9.0 (2017-10-13):**\n\n" +
-                    "- Man kan nu göra signup via *+1 09:45 Hästen* (+{antal} {tid man kommer (HH:mm)} {gym})\n" +
-                    "- Vissa feedbackmeddelanden rensas nu automatiskt, på samma sätt som felmeddelanden.";
+            message = "**Nytt i 1.0.0:**\n\n" +
+                    "- Ny readme för EN och SV, inklusive nya bilder\n" +
+                    "- \"Komma igång\"-guide på engelska\n" +
+                    "- Raidgrupper tas nu bort efter raidtid + 5 minuter\n" +
+                    "- Parameter för att välja server default locale (en eller sv)";
         } else {
-            message = "**New in 0.9.0 (2017-10-13):**\n\n" +
-                    "- You can now signup via commanda *+1 09:45 Cafe Lalo* (+{number of people} {ETA (HH:mm)} {gym})\n" +
-                    "- Some feedback messages are now deleted automatically, just like error messages.";
+            message = "**New in 1.0.0:**\n\n" +
+                    "- Fixed readme for both english and swedish including images\n" +
+                    "- Fixed getting started guide for english locale\n" +
+                    "- Raid groups now expire after raid time + 5 minutes\n" +
+                    "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }
