@@ -3,11 +3,13 @@
 * Fixed readme for both english and swedish including images
 * Fixed getting started guide for english locale
 * Input parameter to application with default locale (en or sv)
+* raid group removed 5 mins after finished group, not at exact time
 
 0.9.0
 ======
 * \+ command for signups, as users are used to it (+{number} {time} {gym} is now a signup)
 * More automatic cleanup of messages/feedback
+* "What's new"-command so people can see what new features.
 
 0.8.0
 =====

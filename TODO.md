@@ -31,7 +31,6 @@ to set
 - doesn't seem to break anything but needs checking.
 
 Fix, misc:
-* raid group removed 5 mins after finished group, not at exact time
 * Regexp to remove all duplicate or more spaces in between arguments
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
@@ -42,7 +41,7 @@ Do, features:
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Emote to move signup
-* Emote to remove signup from group
+* Emote to remove signup from group?
 * Config for permission setting of various groups of commands:
     * Raid functions like create, list can be set to be admin only
     * Raid group creation can be set to admin only
@@ -56,7 +55,6 @@ Do, features:
 * Admin commands where bot owner can purge configuration, get statistics, help a user (send man help via DM?)
 * !raid install needs to be "protected" so admins can only affect the configuration of their own server
 (this may mean the install command has to be run in the context of a server chat so we can fetch server name)
-* "What's new"-command so people can see what new features.
 * Timezone handling via config, used in all commands related to time
 * Credit Iconninja for icons
 * Check permissions during config - need to have MANAGE_MESSAGE and access to send messages, among other things
