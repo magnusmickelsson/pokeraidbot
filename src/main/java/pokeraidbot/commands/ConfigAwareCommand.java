@@ -12,12 +12,15 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public abstract class ConfigAwareCommand extends Command {
     protected final ConfigRepository configRepository;
     protected final CommandListener commandListener;
     private final LocaleService localeService;
+    protected static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener,
                               LocaleService localeService) {

@@ -105,7 +105,9 @@ public class BotService {
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
                         aggregateCommandListener),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener, this, clockService)
+                        configRepository, aggregateCommandListener, this, clockService),
+                new RaidOverviewCommand(raidRepository, localeService, configRepository, pokemonRepository,
+                        aggregateCommandListener)
         );
 
         try {

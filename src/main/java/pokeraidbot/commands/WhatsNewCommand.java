@@ -24,12 +24,14 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Ny readme för EN och SV, inklusive nya bilder\n" +
                     "- \"Komma igång\"-guide på engelska\n" +
                     "- Raidgrupper tas nu bort efter raidtid + 5 minuter\n" +
+                    "- Raidöversikt, automatiskt uppdaterad var 60:e sekund - !raid overview\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
                     "- Fixed readme for both english and swedish including images\n" +
                     "- Fixed getting started guide for english locale\n" +
                     "- Raid groups now expire after raid time + 5 minutes\n" +
+                    "- Raid overview, automatically updated every 60 seconds - !raid overview\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);

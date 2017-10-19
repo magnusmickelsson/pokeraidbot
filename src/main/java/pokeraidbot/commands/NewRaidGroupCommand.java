@@ -46,7 +46,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final BotService botService;
     private final ClockService clockService;
-    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,

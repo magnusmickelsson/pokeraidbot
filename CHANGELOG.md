@@ -4,6 +4,8 @@
 * Fixed getting started guide for english locale
 * Input parameter to application with default locale (en or sv)
 * raid group removed 5 mins after finished group, not at exact time
+* !raid overview - automatically updated "!raid list" every 60 seconds, 
+should be put in a read-only channel
 
 0.9.0
 ======

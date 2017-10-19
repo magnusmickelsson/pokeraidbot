@@ -4,12 +4,12 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
+will enable admins to have overviews in separate channels which are read-only
 
 Being developed:
 
-* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
-will enable admins to have overviews in separate channels which are read-only
+-
 
 Discussion:
 
