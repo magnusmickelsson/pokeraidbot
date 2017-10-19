@@ -39,6 +39,8 @@ Fix, misc:
 
 Do, features:
 
+* Fuzzy search for pokemon names
+* !raid list should show ETA:s (Instead of signed up - time1 (number), time2 (number) etc)
 * Input parameter to application with default locale (en or sv)
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
