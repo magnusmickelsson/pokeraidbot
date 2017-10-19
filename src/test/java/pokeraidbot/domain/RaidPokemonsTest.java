@@ -15,9 +15,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class RaidPokemonsTest {
+    private static LocaleService localeService = new LocaleService("sv");
     @Test
     public void verifyAllRaidBossesInRepo() throws Exception {
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         for (RaidBossPokemons raidBoss : RaidBossPokemons.values()) {
             try {
                 assertThat(repo.getByName(raidBoss.name()) != null, is(true));
@@ -37,7 +38,7 @@ public class RaidPokemonsTest {
 
     @Test
     public void verifyTyranitarBestCounter() throws Exception {
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         PokemonRaidStrategyService strategyService = new PokemonRaidStrategyService(repo);
         final String tyranitarBestCounter = strategyService.getCounters(repo.getByName("Tyranitar"))
                 .getSupremeCounters().iterator().next().getCounterPokemonName();
@@ -47,7 +48,7 @@ public class RaidPokemonsTest {
     @Test
     public void verifyAllPokemonsInPokemonGoInRepo() throws Exception {
         Set<Integer> numbers = new HashSet<>();
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         try {
             for (int n = 1; n < 252; n++) {
                 numbers.add(n);

@@ -44,7 +44,7 @@ public class GymRepository {
         if (configRepository != null) {
             Map<String, Config> configMap = configRepository.getAllConfig();
             Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
-            System.out.println("Config has following servers: " + configMap.keySet());
+            LOGGER.info("Config has following servers: " + configMap.keySet());
             for (String server : configMap.keySet()) {
                 final Config config = configRepository.getConfigForServer(server);
                 final String region = config.getRegion();
@@ -52,7 +52,7 @@ public class GymRepository {
                 if (existingGyms == null) {
                     final Set<Gym> gymsInRegion = new CSVGymDataReader("/gyms_" + region + ".csv").readAll();
                     gymsPerRegion.put(region, gymsInRegion);
-                    System.out.println("Loaded " + gymsInRegion.size() + " gyms for region " + region + ".");
+                    LOGGER.info("Loaded " + gymsInRegion.size() + " gyms for region " + region + ".");
                 }
             }
 

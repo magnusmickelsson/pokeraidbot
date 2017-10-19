@@ -14,7 +14,7 @@ public class LocaleServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        localeService = new LocaleService();
+        localeService = new LocaleService("sv");
     }
 
     @Test

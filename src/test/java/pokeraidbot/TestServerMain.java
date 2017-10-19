@@ -40,7 +40,7 @@ public class TestServerMain {
 
     @Bean
     public LocaleService getLocaleService() {
-        return new LocaleService();
+        return new LocaleService("sv");
     }
 
     @Bean

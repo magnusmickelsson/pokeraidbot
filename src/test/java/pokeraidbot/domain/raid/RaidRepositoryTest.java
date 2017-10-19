@@ -62,7 +62,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);
@@ -95,7 +95,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);
@@ -123,7 +123,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, new LocaleService(), uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);

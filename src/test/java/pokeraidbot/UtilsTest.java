@@ -128,7 +128,7 @@ public class UtilsTest {
 
     @Test
     public void testDoubleWeaknesses() throws Exception {
-        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json", new LocaleService("sv"));
         Pokemon pokemon;
         String typeToCheck;
         pokemon = pokemonRepository.getByName("Tyranitar");
@@ -142,7 +142,7 @@ public class UtilsTest {
 
     @Test
     public void testPrintWeaknesses() throws Exception {
-        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json", new LocaleService("sv"));
         Pokemon pokemon = pokemonRepository.getByName("Tyranitar");
 
         assertThat(Utils.printWeaknesses(pokemon), is("Water, **Fighting**, Bug, Ground, Steel, Fairy"));

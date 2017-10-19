@@ -44,8 +44,8 @@ public class BotServerMain {
     }
 
     @Bean
-    public LocaleService getLocaleService() {
-        return new LocaleService();
+    public LocaleService getLocaleService(@Value("${locale:sv}")String locale) {
+        return new LocaleService(locale);
     }
 
     @Bean

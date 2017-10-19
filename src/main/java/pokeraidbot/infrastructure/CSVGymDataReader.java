@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.gym.Gym;
 
 import java.io.*;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 public class CSVGymDataReader {
     private String resourceName;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CSVGymDataReader.class);
 
     public CSVGymDataReader(String resourceName) {
         this.resourceName = resourceName;
@@ -40,10 +43,10 @@ public class CSVGymDataReader {
             }
 
         } catch (IOException e) {
-            System.err.println("Error while trying to open gym file " + resourceName + ": " + e.getMessage());
+            LOGGER.error("Error while trying to open gym file " + resourceName + ": " + e.getMessage());
         }
 
-        System.out.println("Parsed " + gyms.size() + " gyms from \"" + resourceName + "\".");
+        LOGGER.info("Parsed " + gyms.size() + " gyms from \"" + resourceName + "\".");
 
         return gyms;
     }

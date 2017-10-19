@@ -1,12 +1,14 @@
 package pokeraidbot.domain.config;
 
 import net.dv8tion.jda.core.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class LocaleService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocaleService.class);
+
     public static final String NEW_EX_RAID_HELP = "NEW_EX_RAID_HELP";
     public static final String RAIDSTATUS = "RAIDSTATUS";
     public static final String NO_RAID_AT_GYM = "NO_RAID_AT_GYM";
@@ -63,8 +65,8 @@ public class LocaleService {
     public static final Locale SWEDISH = new Locale("sv");
 
     // Change this if you want another default locale, affects the usage texts etc
-    public static final Locale DEFAULT = Locale.ENGLISH;
-    public static final Locale[] SUPPORTED_LOCALES = {DEFAULT, Locale.ENGLISH};
+    public static Locale DEFAULT = Locale.ENGLISH;
+    public static Locale[] SUPPORTED_LOCALES = {SWEDISH, Locale.ENGLISH};
     public static final String MANUAL_RAID = "MANUAL_RAID";
     public static final String MANUAL_SIGNUP = "MANUAL_SIGNUP";
     public static final String MANUAL_MAP = "MANUAL_MAP";
@@ -111,8 +113,19 @@ public class LocaleService {
 
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
-    // todo: change to use Spring resource bundles instead
-    public LocaleService() {
+    public LocaleService(String locale) {
+        LOGGER.info("Initialize with server default locale: " + locale);
+        final Locale forLanguageTag = Locale.forLanguageTag(locale);
+        if (!new HashSet<>(Arrays.asList(SUPPORTED_LOCALES)).contains(forLanguageTag)) {
+            throw new IllegalStateException("Given system locale " + locale + " is not in list of " +
+                    "supported locales (" + SUPPORTED_LOCALES + "). Add it, and associated texts!");
+        }
+        DEFAULT = forLanguageTag;
+        initTexts();
+        LOGGER.info("Initialized. Got " + i18nMessages.keySet().size() + " texts for " + SUPPORTED_LOCALES.length + " locales.");
+    }
+
+    private void initTexts() {
         i18nMessages.put(new I18nLookup(NO_CONFIG, Locale.ENGLISH),
                 "There is no configuration setup for this server. Make sure an administrator runs the command" +
                         " \"!raid install\"."
@@ -229,7 +242,7 @@ public class LocaleService {
         );
         i18nMessages.put(new I18nLookup(EX_NO_CHANGE_POKEMON, Locale.ENGLISH),
                 "Can't change pokemon for an EX raid. If you want to change an EX raid, remove it and create a new " +
-                       "raid via: !raid change remove {gym}"
+                        "raid via: !raid change remove {gym}"
         );
         i18nMessages.put(new I18nLookup(EX_NO_CHANGE_POKEMON, SWEDISH),
                 "Kan inte ändra pokemon för en EX raid. " +
@@ -316,7 +329,7 @@ public class LocaleService {
                         "!raid group [start time (HH:MM)] [gym name]");
         i18nMessages.put(new I18nLookup(RAID_GROUP_HELP, SWEDISH),
                 "Skapa ett tillfälle för en grupp att köra vid en skapad raid: " +
-                "!raid group [start time (HH:MM)] [gym name]");
+                        "!raid group [start time (HH:MM)] [gym name]");
 
         i18nMessages.put(new I18nLookup(FOR_HINTS, Locale.ENGLISH), "For hints - type:");
         i18nMessages.put(new I18nLookup(FOR_HINTS, SWEDISH), "För tips - skriv:");
@@ -501,7 +514,7 @@ public class LocaleService {
                 "Det finns just nu inga registrerade raids. " +
                         "För att registrera en raid, skriv:\n" +
                         "!raid new {pokemon} {sluttid (HH:mm)} {gym}\n" +
-        "Exempel: !raid new Entei 09:45 Solna Platform");
+                        "Exempel: !raid new Entei 09:45 Solna Platform");
 
         i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH),
                 "Check current raids - !raid list [optional: Pokemon]");
@@ -579,14 +592,14 @@ public class LocaleService {
         );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
-                "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +
+                        "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid new entei 09:25 Solna Platform\n\n" +
                         "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n" +
                         "*Example:* !raid status Solna Platform\n\n" +
                         "**Get a list of all active raids:**\n!raid list\n" +
                         "*Examples:* !raid list Entei - list all raids for Entei.\n" +
                         "!raid list - list all active raids.\n\n" +
-                "**Info about a raid boss:**\n!raid vs *[Pokemon]*\n" +
+                        "**Info about a raid boss:**\n!raid vs *[Pokemon]*\n" +
                         "*Example:* !raid vs Entei"
         );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, SWEDISH),
@@ -605,7 +618,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_CHANGE, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
-                "**Change endtime for a raid:** !raid change when *[New end of raid (HH:MM)]* *[Pokestop name]* " +
+                        "**Change endtime for a raid:** !raid change when *[New end of raid (HH:MM)]* *[Pokestop name]* " +
                         "(Only raid creator or server admins may do this)\n" +
                         "*Example:* !raid change when 09:45 Solna Platform\n\n" +
                         "**Change raid boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
@@ -616,7 +629,7 @@ public class LocaleService {
         );
         i18nMessages.put(new I18nLookup(MANUAL_CHANGE, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
-                "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* " +
+                        "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* " +
                         "(Endast raidskapare eller admin får göra detta)\n" +
                         "*Exempel:* !raid change when 09:45 Solna Platform\n\n" +
                         "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
@@ -628,7 +641,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_GROUPS, Locale.ENGLISH),
                 "**Note:This command must be executed in a server text channel, not in DM!**\n\n" +
-                "**Create a group to run a raid at a certain time:** !raid group {time (HH:MM)} {gym name}\n" +
+                        "**Create a group to run a raid at a certain time:** !raid group {time (HH:MM)} {gym name}\n" +
                         "*Example:* !raid group 09:45 Solna Platform"
                 // todo: fix this message
         );
@@ -648,9 +661,9 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, Locale.ENGLISH),
                 "**Install configuration for this server:** !raid install - starts install process\n" +
-        "!raid install server=[server name];region=[region dataset reference];" +
+                        "!raid install server=[server name];region=[region dataset reference];" +
                         "replyInDm=[true or false];locale=[2 char language code]\n" +
-        "**Example:** !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv"
+                        "**Example:** !raid install server=My test server;region=stockholm;replyInDm=false;locale=sv"
         );
         i18nMessages.put(new I18nLookup(MANUAL_INSTALL, SWEDISH),
                 "**Installera konfiguration för denna server:** !raid install - startar processen\n" +
@@ -661,22 +674,22 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_MAP, Locale.ENGLISH),
                 "**Note: This command must be executed in a server text channel, not in DM!**\n\n" +
-                "**Get map for a certain gym:**\n!raid map *[Gym name]*\n" +
-                "*Example:* !raid map Solna Platform\n\n" +
+                        "**Get map for a certain gym:**\n!raid map *[Gym name]*\n" +
+                        "*Example:* !raid map Solna Platform\n\n" +
                         "Note: You can click the name of the gym to go to it in Google Maps. There, you " +
                         "can get directions, estimated time of arrival etc."
         );
         i18nMessages.put(new I18nLookup(MANUAL_MAP, SWEDISH),
                 "**OBS: Detta kommando måste köras i en servers textkanal, inte i DM!**\n\n" +
-                "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n" +
-                "*Exempel:* !raid map Solna Platform\n\n" +
-                "OBS: Du kan klicka på gymnamnet för att gå till det i Google Maps. Där kan du sedan få t.ex. " +
+                        "**Hämta karta för gym:**\n!raid map *[Gym-namn]*\n" +
+                        "*Exempel:* !raid map Solna Platform\n\n" +
+                        "OBS: Du kan klicka på gymnamnet för att gå till det i Google Maps. Där kan du sedan få t.ex. " +
                         "vägbeskrivning, beräknad ankomsttid och så vidare."
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
-                "**Sign up for a raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
+                        "**Sign up for a raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
                         "*Example:* !raid add 3 09:15 Solna Platform\n\n" +
                         "**Unsign raid:**\n!raid remove *[Gym name]*\n" +
                         "*Example:* !raid remove Solna Platform"
@@ -684,7 +697,7 @@ public class LocaleService {
         );
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
-                "**Säg att du kommer till en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
+                        "**Säg att du kommer till en viss raid:**\n!raid add *[antal som kommer] [ETA (HH:MM)] [Gym-namn]*\n" +
                         "*Exempel:* !raid add 3 09:15 Solna Platform\n" +
                         "**Man kan också använda:** \\+{antal} {ETA (HH:MM)} {Gym-namn}\n" +
                         "*Exempel:* +3 09:15 Solna Platform\n\n" +
