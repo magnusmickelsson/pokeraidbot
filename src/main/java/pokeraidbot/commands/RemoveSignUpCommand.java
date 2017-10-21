@@ -27,7 +27,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.name = "remove";
         this.help = localeService.getMessageFor(LocaleService.REMOVE_SIGNUP_HELP, LocaleService.DEFAULT);
-        this.aliases = new String[]{"unsign"};
+        this.aliases = new String[]{"unsign", "done"};
     }
 
     @Override

@@ -23,15 +23,17 @@ public class WhatsNewCommand extends ConfigAwareCommand {
             message = "**Nytt i 1.0.0:**\n\n" +
                     "- Ny readme för EN och SV, inklusive nya bilder\n" +
                     "- \"Komma igång\"-guide på engelska\n" +
-                    "- Raidgrupper tas nu bort efter raidtid + 5 minuter\n" +
+                    "- Raidgrupper tas nu bort efter raidtid + 5 minuter, och anmälningar till gruppen tas då bort\n" +
                     "- Raidöversikt, automatiskt uppdaterad var 60:e sekund - !raid overview\n" +
+                    "- Raid map i serverchatt oavsett konfiguration: !raid mapinchat {gym-namn}\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
                     "- Fixed readme for both english and swedish including images\n" +
                     "- Fixed getting started guide for english locale\n" +
-                    "- Raid groups now expire after raid time + 5 minutes\n" +
+                    "- Raid groups now expire after raid time + 5 minutes, removing all signups for the group\n" +
                     "- Raid overview, automatically updated every 60 seconds - !raid overview\n" +
+                    "- Raid map in serverchat regardless of configuration: !raid mapinchat {gym name}\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);

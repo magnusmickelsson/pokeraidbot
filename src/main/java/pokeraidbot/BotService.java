@@ -90,6 +90,8 @@ public class BotService {
                         configRepository, aggregateCommandListener),
                 new WhereIsGymCommand(gymRepository, localeService,
                         configRepository, aggregateCommandListener),
+                new WhereIsGymInChatCommand(gymRepository, localeService,
+                        configRepository, aggregateCommandListener),
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
                         configRepository, aggregateCommandListener),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository,

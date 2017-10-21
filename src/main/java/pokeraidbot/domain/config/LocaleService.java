@@ -63,6 +63,7 @@ public class LocaleService {
     public static final String GENERIC_USER_ERROR = "GENERIC_USER_ERROR";
 
     public static final Locale SWEDISH = new Locale("sv");
+    public static final String WHERE_GYM_IN_CHAT_HELP = "WHERE_GYM_IN_CHAT_HELP";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -449,6 +450,9 @@ public class LocaleService {
                 "%2 - remove your current signup then signup again.");
         i18nMessages.put(new I18nLookup(ALREADY_SIGNED_UP, SWEDISH), "Du har redan anmält dig till raid vid %1 ... " +
                 "%2 - ta bort din anmälan och gör om som du vill ha det.");
+
+        i18nMessages.put(new I18nLookup(WHERE_GYM_IN_CHAT_HELP, Locale.ENGLISH), "Get map link for gym in chat - !raid mapinchat [Gym name]");
+        i18nMessages.put(new I18nLookup(WHERE_GYM_IN_CHAT_HELP, SWEDISH), "Visa karta för gym i chatten - !raid mapinchat [Gym]");
 
         i18nMessages.put(new I18nLookup(WHERE_GYM_HELP, Locale.ENGLISH), "Get map link for gym - !raid map [Gym name]");
         i18nMessages.put(new I18nLookup(WHERE_GYM_HELP, SWEDISH), "Visa karta för gym - !raid map [Gym]");
