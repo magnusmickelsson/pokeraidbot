@@ -15,6 +15,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 
@@ -85,9 +86,10 @@ public class RaidListCommand extends ConfigAwareCommand {
                     .append(printTimeIfSameDay(raid.getEndOfRaid()))
                     .append(". ").append(numberOfPeople)
                     .append(" ")
-                    .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale)).append("\n");
-                }
-                else {
+                    .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append("\n");
+                } else {
                     exRaids.append("\n").append(raidGym.getName())
                             .append(" (")
                             .append(raidBoss.getName()).append(") - ")
@@ -97,6 +99,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                             .append(". ").append(numberOfPeople)
                             .append(" ")
                             .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
                             .append(".\n");
                 }
             }

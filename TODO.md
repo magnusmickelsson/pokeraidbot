@@ -6,6 +6,7 @@ Needs testing:
 
 * !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
 will enable admins to have overviews in separate channels which are read-only
+* !raid list should show next ETA
 
 Being developed:
 
@@ -37,7 +38,6 @@ Fix, misc:
 Do, features:
 
 * Fuzzy search for pokemon names
-* !raid list should show ETA:s (Instead of signed up - time1 (number), time2 (number) etc)
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Emote to move signup

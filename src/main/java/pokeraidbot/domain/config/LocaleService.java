@@ -64,6 +64,7 @@ public class LocaleService {
 
     public static final Locale SWEDISH = new Locale("sv");
     public static final String WHERE_GYM_IN_CHAT_HELP = "WHERE_GYM_IN_CHAT_HELP";
+    public static final String NEXT_ETA = "NEXT_ETA";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -127,6 +128,13 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(NEXT_ETA, Locale.ENGLISH),
+                "next ETA: %1"
+        );
+        i18nMessages.put(new I18nLookup(NEXT_ETA, SWEDISH),
+                "närmaste ETA: %1"
+        );
+
         i18nMessages.put(new I18nLookup(NO_CONFIG, Locale.ENGLISH),
                 "There is no configuration setup for this server. Make sure an administrator runs the command" +
                         " \"!raid install\"."
