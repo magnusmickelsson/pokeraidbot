@@ -1,15 +1,27 @@
 package pokeraidbot.infrastructure;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class CounterTextFileParserText {
 
-    private LocaleService localeService = new LocaleService("sv");
+    private LocaleService localeService;
+
+    @Before
+    public void setUp() throws Exception {
+        UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
+        when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
+        localeService = new LocaleService("sv", userConfigRepository);
+    }
 
     @Test
     public void checkEnteiFile() throws Exception {

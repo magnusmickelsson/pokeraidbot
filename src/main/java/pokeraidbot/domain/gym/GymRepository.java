@@ -1,6 +1,7 @@
 package pokeraidbot.domain.gym;
 
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,18 +23,18 @@ public class GymRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(GymRepository.class);
 
     private Map<String, Set<Gym>> gymsPerRegion = new ConcurrentHashMap<>();
-    private final ConfigRepository configRepository;
+    private final ServerConfigRepository serverConfigRepository;
     private final LocaleService localeService;
 
-    public GymRepository(ConfigRepository configRepository, LocaleService localeService) {
-        this.configRepository = configRepository;
+    public GymRepository(ServerConfigRepository serverConfigRepository, LocaleService localeService) {
+        this.serverConfigRepository = serverConfigRepository;
         this.localeService = localeService;
     }
 
     // Only used for testing!
     public GymRepository(Map<String, Set<Gym>> gyms, LocaleService localeService) {
         this.localeService = localeService;
-        this.configRepository = null;
+        this.serverConfigRepository = null;
         for (String region : gyms.keySet()) {
             Set<Gym> gymsForRegion = gyms.get(region);
             this.gymsPerRegion.put(region, gymsForRegion);
@@ -41,12 +42,12 @@ public class GymRepository {
     }
 
     public void reloadGymData() {
-        if (configRepository != null) {
-            Map<String, Config> configMap = configRepository.getAllConfig();
+        if (serverConfigRepository != null) {
+            Map<String, Config> configMap = serverConfigRepository.getAllConfig();
             Map<String, Set<Gym>> gymsPerRegion = new HashMap<>();
             LOGGER.info("Config has following servers: " + configMap.keySet());
             for (String server : configMap.keySet()) {
-                final Config config = configRepository.getConfigForServer(server);
+                final Config config = serverConfigRepository.getConfigForServer(server);
                 final String region = config.getRegion();
                 final Set<Gym> existingGyms = gymsPerRegion.get(region);
                 if (existingGyms == null) {
@@ -63,15 +64,15 @@ public class GymRepository {
         }
     }
 
-    public Gym search(String userName, String query, String region) {
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(query)) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.GYM_SEARCH,
+    public Gym search(User user, String query, String region) {
+        if (user == null || StringUtils.isEmpty(query)) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GYM_SEARCH,
                     LocaleService.DEFAULT));
         }
 
         final Set<Gym> gyms = getAllGymsForRegion(region);
 
-        final Locale localeForUser = localeService.getLocaleForUser(userName);
+        final Locale localeForUser = localeService.getLocaleForUser(user);
         final Optional<Gym> gym = get(query, region);
         if (gym.isPresent()) {
             return gym.get();
@@ -89,10 +90,10 @@ public class GymRepository {
                 }
                 if (candidates.size() <= 5) {
                     String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region).getName()).collect(Collectors.joining(", "));
-                    throw new UserMessedUpException(userName,
+                    throw new UserMessedUpException(user,
                             localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, possibleMatches));
                 } else {
-                    throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
+                    throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
                 }
             }
         }

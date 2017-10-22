@@ -14,7 +14,7 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import java.time.LocalDateTime;
@@ -43,14 +43,14 @@ public class RaidRepositoryTest {
     @Autowired
     LocaleService localeService;
     @Autowired
-    ConfigRepository configRepository;
+    ServerConfigRepository serverConfigRepository;
     @Autowired
     RaidEntityRepository raidEntityRepository;
 
     @Before
     public void setUp() throws Exception {
         Utils.setClockService(clockService);
-        gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, configRepository);
+        gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, serverConfigRepository);
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
         raidEntityRepository.deleteAllInBatch();
     }

@@ -5,12 +5,12 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public class WhatsNewCommand extends ConfigAwareCommand {
-    public WhatsNewCommand(ConfigRepository configRepository, CommandListener commandListener,
+    public WhatsNewCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
                            LocaleService localeService) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.name = "whatsnew";
         this.aliases = new String[]{"latest", "version"};
         this.help = localeService.getMessageFor(LocaleService.WHATS_NEW_HELP, localeService.getLocaleForUser((User) null));

@@ -1,17 +1,13 @@
 package pokeraidbot.domain.raid.signup;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReactionEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -21,17 +17,16 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDateTime;
-import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class EmoticonSignUpMessageListener implements EventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmoticonSignUpMessageListener.class);
     private final BotService botService;
     private final LocaleService localeService;
-    private final ConfigRepository configRepository;
+    private final ServerConfigRepository serverConfigRepository;
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final GymRepository gymRepository;
@@ -41,13 +36,13 @@ public class EmoticonSignUpMessageListener implements EventListener {
     private LocalDateTime startAt;
     private String userHadError = null;
 
-    public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService, ConfigRepository configRepository,
+    public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService, ServerConfigRepository serverConfigRepository,
                                          RaidRepository raidRepository, PokemonRepository pokemonRepository,
                                          GymRepository gymRepository,
                                          String raidId, LocalDateTime startAt) {
         this.botService = botService;
         this.localeService = localeService;
-        this.configRepository = configRepository;
+        this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;

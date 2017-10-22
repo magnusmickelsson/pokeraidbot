@@ -11,7 +11,7 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidBossCounters;
 import pokeraidbot.infrastructure.CounterPokemon;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,8 +25,8 @@ public class PokemonVsCommand extends ConfigAwareCommand {
     private final PokemonRepository repo;
 
     public PokemonVsCommand(PokemonRepository repo, PokemonRaidStrategyService raidInfoService,
-                            LocaleService localeService, ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+                            LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.raidInfoService = raidInfoService;
         this.localeService = localeService;
         this.name = "vs";
@@ -41,7 +41,7 @@ public class PokemonVsCommand extends ConfigAwareCommand {
         final RaidBossCounters counters = raidInfoService.getCounters(pokemon);
         final String maxCp = raidInfoService.getMaxCp(pokemon);
         StringBuilder builder = new StringBuilder();
-        final Locale localeForUser = localeService.getLocaleForUser(commandEvent.getAuthor().getName());
+        final Locale localeForUser = localeService.getLocaleForUser(commandEvent.getAuthor());
         builder.append("**").append(pokemon).append("**\n");
         builder.append(localeService.getMessageFor(LocaleService.WEAKNESSES, localeForUser))
                 .append(Utils.printWeaknesses(pokemon)).append("\n").append(

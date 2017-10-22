@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.commands.NewRaidCommand;
 import pokeraidbot.commands.NewRaidExCommand;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.Locale;
@@ -15,12 +16,12 @@ import java.util.Locale;
 public class PokemonTrackingTarget implements TrackingTarget, Comparable<PokemonTrackingTarget> {
     private String region;
     private String userId;
-    private String pokemonName;
+    private Pokemon pokemon;
 
-    public PokemonTrackingTarget(String region, String userId, String pokemonName) {
+    public PokemonTrackingTarget(String region, String userId, Pokemon pokemon) {
         this.region = region;
         this.userId = userId;
-        this.pokemonName = pokemonName;
+        this.pokemon = pokemon;
     }
 
     public String getRegion() {
@@ -31,8 +32,8 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         return userId;
     }
 
-    public String getPokemonName() {
-        return pokemonName;
+    public Pokemon getPokemon() {
+        return pokemon;
     }
 
     @Override
@@ -45,7 +46,8 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         }
         if (command instanceof NewRaidCommand || command instanceof NewRaidExCommand) {
             boolean rawContentContainsPokemonName =
-                    StringUtils.containsIgnoreCase(commandEvent.getEvent().getMessage().getRawContent(), pokemonName);
+                    StringUtils.containsIgnoreCase(commandEvent.getEvent().getMessage().getRawContent(),
+                            pokemon.getName());
             return rawContentContainsPokemonName;
         }
         return false;
@@ -58,7 +60,8 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         final String userName = commandEvent.getEvent().getAuthor().getName();
         final String rawContent = commandEvent.getEvent().getMessage().getRawContent();
 
-        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemonName, userName, rawContent);
+        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
+                userName, rawContent);
         sendPrivateMessage(user, message);
     }
 
@@ -85,14 +88,14 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
         if (region != null ? !region.equals(that.region) : that.region != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
-        return pokemonName != null ? pokemonName.equals(that.pokemonName) : that.pokemonName == null;
+        return pokemon != null ? pokemon.equals(that.pokemon) : that.pokemon == null;
     }
 
     @Override
     public int hashCode() {
         int result = region != null ? region.hashCode() : 0;
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (pokemonName != null ? pokemonName.hashCode() : 0);
+        result = 31 * result + (pokemon != null ? pokemon.hashCode() : 0);
         return result;
     }
 
@@ -101,7 +104,7 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         return "PokemonTrackingTarget{" +
                 "region='" + region + '\'' +
                 ", userId='" + userId + '\'' +
-                ", pokemonName='" + pokemonName + '\'' +
+                ", pokemon='" + pokemon + '\'' +
                 '}';
     }
 

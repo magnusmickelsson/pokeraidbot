@@ -8,7 +8,7 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.Locale;
 
@@ -21,8 +21,8 @@ public class SignUpCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public SignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                         ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+                         ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "add";
         this.help = localeService.getMessageFor(LocaleService.SIGNUP_HELP, LocaleService.DEFAULT);

@@ -10,24 +10,24 @@ import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public abstract class ConfigAwareCommand extends Command {
-    protected final ConfigRepository configRepository;
+    protected final ServerConfigRepository serverConfigRepository;
     protected final CommandListener commandListener;
     private final LocaleService localeService;
     protected static final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public ConfigAwareCommand(ConfigRepository configRepository, CommandListener commandListener,
+    public ConfigAwareCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
                               LocaleService localeService) {
-        Validate.notNull(configRepository);
+        Validate.notNull(serverConfigRepository);
         this.localeService = localeService;
         this.commandListener = commandListener;
-        this.configRepository = configRepository;
+        this.serverConfigRepository = serverConfigRepository;
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, String message) {
@@ -79,7 +79,7 @@ public abstract class ConfigAwareCommand extends Command {
             final Guild guild = commandEvent.getGuild();
             if (guild != null) {
                 final String server = guild.getName().trim().toLowerCase();
-                configForServer = configRepository.getConfigForServer(server);
+                configForServer = serverConfigRepository.getConfigForServer(server);
                 if (configForServer == null) {
                     final String noConfigText = localeService.getMessageFor(LocaleService.NO_CONFIG,
                             localeService.getLocaleForUser(commandEvent.getAuthor()));

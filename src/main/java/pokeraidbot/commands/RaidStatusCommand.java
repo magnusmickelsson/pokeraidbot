@@ -19,7 +19,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.Locale;
 import java.util.Set;
@@ -39,9 +39,9 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ConfigRepository configRepository, BotService botService, CommandListener commandListener,
+                             ServerConfigRepository serverConfigRepository, BotService botService, CommandListener commandListener,
                              PokemonRepository pokemonRepository) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.botService = botService;
         this.pokemonRepository = pokemonRepository;
@@ -57,12 +57,12 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         String gymName = commandEvent.getArgs();
         final User user = commandEvent.getAuthor();
         final String userName = user.getName();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final Set<SignUp> signUps = raid.getSignUps();
         final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 
-        final Locale localeForUser = localeService.getLocaleForUser(userName);
+        final Locale localeForUser = localeService.getLocaleForUser(user);
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();

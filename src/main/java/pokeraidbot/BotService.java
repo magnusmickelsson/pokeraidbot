@@ -22,7 +22,8 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.jda.AggregateCommandListener;
 import pokeraidbot.jda.EventLoggingListener;
 import pokeraidbot.jda.SignupWithPlusCommandListener;
@@ -42,15 +43,20 @@ public class BotService {
     private CommandListener aggregateCommandListener;
     private TrackingCommandListener trackingCommandListener;
     private GymRepository gymRepository;
-    private ConfigRepository configRepository;
+    private ServerConfigRepository serverConfigRepository;
+    private UserConfigRepository userConfigRepository;
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
-                      ConfigRepository configRepository, ClockService clockService, String ownerId, String token) {
+                      ServerConfigRepository serverConfigRepository, UserConfigRepository userConfigRepository,
+                      ClockService clockService, String ownerId, String token,
+                      TrackingCommandListener trackingCommandListener) {
         this.gymRepository = gymRepository;
-        this.configRepository = configRepository;
+        this.serverConfigRepository = serverConfigRepository;
+        this.userConfigRepository = userConfigRepository;
         this.ownerId = ownerId;
         this.token = token;
+        this.trackingCommandListener = trackingCommandListener;
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
             System.err.println("ERROR: Not using UTF-8 encoding");
             System.exit(-1);
@@ -58,10 +64,9 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
-        trackingCommandListener = new TrackingCommandListener(configRepository, localeService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
-                pokemonRepository, configRepository, this, localeService);
-        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(trackingCommandListener));
+                pokemonRepository, serverConfigRepository, this, localeService);
+        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
@@ -69,46 +74,46 @@ public class BotService {
         client.setPrefix("!raid ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
-                new WhatsNewCommand(configRepository, aggregateCommandListener, localeService),
-                new HelpManualCommand(localeService, configRepository, aggregateCommandListener),
+                new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService),
+                new HelpManualCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new UsageCommand(localeService, configRepository, aggregateCommandListener),
+                new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener),
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
-                        configRepository, this, aggregateCommandListener, pokemonRepository),
-                new RaidListCommand(raidRepository, localeService, configRepository, pokemonRepository,
+                        serverConfigRepository, this, aggregateCommandListener, pokemonRepository),
+                new RaidListCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
                         aggregateCommandListener),
                 new SignUpCommand(gymRepository, raidRepository, localeService,
-                        configRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener),
                 new WhereIsGymCommand(gymRepository, localeService,
-                        configRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener),
                 new WhereIsGymInChatCommand(gymRepository, localeService,
-                        configRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener),
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
-                        configRepository, aggregateCommandListener),
-                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, configRepository,
+                        serverConfigRepository, aggregateCommandListener),
+                new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, serverConfigRepository,
                         aggregateCommandListener),
-                new ServerInfoCommand(configRepository, localeService, aggregateCommandListener, clockService),
-                new DonateCommand(localeService, configRepository, aggregateCommandListener),
-                new TrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
+                new ServerInfoCommand(serverConfigRepository, localeService, aggregateCommandListener, clockService),
+                new DonateCommand(localeService, serverConfigRepository, aggregateCommandListener),
+                new TrackPokemonCommand(this, serverConfigRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
-                new UnTrackPokemonCommand(this, configRepository, localeService, pokemonRepository,
+                new UnTrackPokemonCommand(this, serverConfigRepository, localeService, pokemonRepository,
                         aggregateCommandListener),
-                new InstallCommand(configRepository, gymRepository),
+                new InstallCommand(serverConfigRepository, gymRepository),
                 new InstallEmotesCommand(localeService),
-                new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, configRepository,
+                new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
                         aggregateCommandListener),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        configRepository, aggregateCommandListener, this, clockService),
-                new RaidOverviewCommand(raidRepository, localeService, configRepository, pokemonRepository,
+                        serverConfigRepository, aggregateCommandListener, this, clockService),
+                new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
                         aggregateCommandListener)
         );
 
@@ -138,22 +143,22 @@ public class BotService {
     @PostConstruct
     @Transactional
     public void initializeConfig() {
-        if (configRepository.findAll().size() == 0) {
+        if (serverConfigRepository.findAll().size() == 0) {
             LOGGER.warn("Could not find any configuration in database, assuming fresh install. Creating basic server configurations..");
             // My test servers
-            configRepository.save(new Config("manhattan_new_york", "pokeraidbot_us_test"));
-            configRepository.save(new Config("uppsala", "zhorhn tests stuff"));
-            configRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
-            configRepository.save(new Config("uppsala", "pokeraidbot_stage"));
-            configRepository.save(new Config("uppsala", "pokeraidbot_test"));
+            serverConfigRepository.save(new Config("manhattan_new_york", "pokeraidbot_us_test"));
+            serverConfigRepository.save(new Config("uppsala", "zhorhn tests stuff"));
+            serverConfigRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
+            serverConfigRepository.save(new Config("uppsala", "pokeraidbot_stage"));
+            serverConfigRepository.save(new Config("uppsala", "pokeraidbot_test"));
 
             // External user's servers
-            configRepository.save(new Config("uppsala", "pokemon go uppsala"));
-            configRepository.save(new Config("umeå", "pokémon go sverige admin"));
-            configRepository.save(new Config("luleå", "pokémon luleå"));
-            configRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
-            configRepository.save(new Config("norrköping", true, "raid-test-nkpg"));
-            configRepository.save(new Config("norrköping", true, "raid - pokemon go norrköping"));
+            serverConfigRepository.save(new Config("uppsala", "pokemon go uppsala"));
+            serverConfigRepository.save(new Config("umeå", "pokémon go sverige admin"));
+            serverConfigRepository.save(new Config("luleå", "pokémon luleå"));
+            serverConfigRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
+            serverConfigRepository.save(new Config("norrköping", true, "raid-test-nkpg"));
+            serverConfigRepository.save(new Config("norrköping", true, "raid - pokemon go norrköping"));
             LOGGER.info("Server configurations created. Add more via the command for an administrator in a server where pokeraidbot has been added: !raid install");
         }
         gymRepository.reloadGymData();

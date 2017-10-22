@@ -236,7 +236,7 @@ public class Utils {
         } catch (RuntimeException e) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS,
-                            localeService.getLocaleForUser(user.getName()),
+                            localeService.getLocaleForUser(user),
                             people, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
         return numberOfPeople;

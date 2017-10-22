@@ -24,7 +24,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,9 +49,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
 
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,
-                               ConfigRepository configRepository,
+                               ServerConfigRepository serverConfigRepository,
                                CommandListener commandListener, BotService botService, ClockService clockService) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -80,7 +80,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
@@ -90,7 +90,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
 
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
-                        configRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
+                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
@@ -202,7 +202,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
+                localeService.getLocaleForUser(user), raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 localeService.getLocaleForUser(user));

@@ -13,7 +13,7 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,9 +33,9 @@ public class NewRaidExCommand extends ConfigAwareCommand {
 
     public NewRaidExCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
-                            ConfigRepository configRepository,
+                            ServerConfigRepository serverConfigRepository,
                             CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "ex";
@@ -69,10 +69,10 @@ public class NewRaidExCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
         raidRepository.newRaid(userName, raid);
         replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                localeService.getLocaleForUser(userName), raid.toString()));
+                localeService.getLocaleForUser(user), raid.toString()));
     }
 }

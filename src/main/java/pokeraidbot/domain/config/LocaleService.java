@@ -3,12 +3,13 @@ package pokeraidbot.domain.config;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pokeraidbot.infrastructure.jpa.config.UserConfig;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.*;
 
 public class LocaleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocaleService.class);
-
     public static final String NEW_EX_RAID_HELP = "NEW_EX_RAID_HELP";
     public static final String RAIDSTATUS = "RAIDSTATUS";
     public static final String NO_RAID_AT_GYM = "NO_RAID_AT_GYM";
@@ -65,6 +66,7 @@ public class LocaleService {
     public static final Locale SWEDISH = new Locale("sv");
     public static final String WHERE_GYM_IN_CHAT_HELP = "WHERE_GYM_IN_CHAT_HELP";
     public static final String NEXT_ETA = "NEXT_ETA";
+    public static final String TRACKING_NONE_FREE = "TRACKING_NONE_FREE";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -112,10 +114,17 @@ public class LocaleService {
     public static final String ERROR_KEEP_CHAT_CLEAN = "ERROR_KEEP_CHAT_CLEAN";
     public static final String WHATS_NEW_HELP = "WHATS_NEW_HELP";
     public static final String NO_CONFIG = "NO_CONFIG";
+    private final UserConfigRepository userConfigRepository;
 
     private Map<I18nLookup, String> i18nMessages = new HashMap<>();
 
-    public LocaleService(String locale) {
+    public LocaleService(Map<I18nLookup, String> i18nMessages, UserConfigRepository userConfigRepository) {
+        this.i18nMessages = i18nMessages;
+        this.userConfigRepository = userConfigRepository;
+    }
+
+    public LocaleService(String locale, UserConfigRepository userConfigRepository) {
+        this.userConfigRepository = userConfigRepository;
         LOGGER.info("Initialize with server default locale: " + locale);
         final Locale forLanguageTag = Locale.forLanguageTag(locale);
         if (!new HashSet<>(Arrays.asList(SUPPORTED_LOCALES)).contains(forLanguageTag)) {
@@ -128,6 +137,14 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(TRACKING_NONE_FREE, Locale.ENGLISH),
+                "There are no free spots for pokemon tracking in your user configuration (3 spots filled). " +
+                        "Please remove one or more via *!raid untrack {pokemon}*"
+        );
+        i18nMessages.put(new I18nLookup(TRACKING_NONE_FREE, SWEDISH),
+                "Alla dina 3 trackingpokemon är upptagna. Ta bort en eller fler via *!raid untrack*"
+        );
+
         i18nMessages.put(new I18nLookup(NEXT_ETA, Locale.ENGLISH),
                 "next ETA: %1"
         );
@@ -737,17 +754,21 @@ public class LocaleService {
         );
     }
 
-    // todo: implement saving locale setting for user (will require pay version of Heroku database)
     public Locale getLocaleForUser(User user) {
-        return DEFAULT;
+        if (userConfigRepository == null || user == null || user.getId() == null) {
+            return DEFAULT;
+        }
+
+        final UserConfig userConfig = userConfigRepository.findOne(user.getId());
+        if (userConfig == null) {
+            return DEFAULT;
+        } else {
+            return userConfig.getLocale();
+        }
     }
 
     public Locale getLocaleForUser(String username) {
         return DEFAULT;
-    }
-
-    public LocaleService(Map<I18nLookup, String> i18nMessages) {
-        this.i18nMessages = i18nMessages;
     }
 
     public void storeMessage(String messageKey, Locale locale, String message) {
@@ -775,6 +796,10 @@ public class LocaleService {
                     " - an admin needs to add it to the LocaleService!");
         }
         return message;
+    }
+
+    public static boolean isSupportedLocale(Locale locale) {
+        return Arrays.asList(SUPPORTED_LOCALES).contains(locale);
     }
 
     private class I18nLookup {

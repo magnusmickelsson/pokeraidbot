@@ -15,7 +15,7 @@ import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,15 +24,15 @@ public class SignupWithPlusCommandListener implements EventListener {
 
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
-    private final ConfigRepository configRepository;
+    private final ServerConfigRepository serverConfigRepository;
     private final BotService botService;
     private final LocaleService localeService;
 
     public SignupWithPlusCommandListener(RaidRepository raidRepository, PokemonRepository pokemonRepository,
-                                         ConfigRepository configRepository, BotService botService, LocaleService localeService) {
+                                         ServerConfigRepository serverConfigRepository, BotService botService, LocaleService localeService) {
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
-        this.configRepository = configRepository;
+        this.serverConfigRepository = serverConfigRepository;
         this.botService = botService;
         this.localeService = localeService;
     }
@@ -62,7 +62,7 @@ public class SignupWithPlusCommandListener implements EventListener {
                             StringUtils.join(gymArgument, ","));
                 }
                 final String guild = guildMessageReceivedEvent.getGuild().getName().trim().toLowerCase();
-                final Config configForServer = configRepository.getConfigForServer(guild);
+                final Config configForServer = serverConfigRepository.getConfigForServer(guild);
                 final User user = guildMessageReceivedEvent.getAuthor();
                 String message;
                 try {

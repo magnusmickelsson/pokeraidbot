@@ -3,14 +3,15 @@ package pokeraidbot.infrastructure.jpa.config;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * Server configuration entity
+ */
 @Entity
-
+//@Table(indexes = @Index(columnList = "default,server,region"), name="config")
 public class Config {
     @Id
     @Column(nullable = false, unique = true)
@@ -28,8 +29,8 @@ public class Config {
     @Column
     private Boolean pinGroups = true;
 
-    public Config() {
-        id = UUID.randomUUID().toString();
+    // For JPA
+    protected Config() {
     }
 
     public Config(String region, Boolean replyInDmWhenPossible, Locale locale, String server) {

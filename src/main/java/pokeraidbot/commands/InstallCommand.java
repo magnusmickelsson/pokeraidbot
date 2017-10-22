@@ -6,18 +6,18 @@ import net.dv8tion.jda.core.Permission;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public class InstallCommand extends Command {
-    private final ConfigRepository configRepository;
+    private final ServerConfigRepository serverConfigRepository;
     private final GymRepository gymRepository;
 
-    public InstallCommand(ConfigRepository configRepository, GymRepository gymRepository) {
-        this.configRepository = configRepository;
+    public InstallCommand(ServerConfigRepository serverConfigRepository, GymRepository gymRepository) {
+        this.serverConfigRepository = serverConfigRepository;
         this.gymRepository = gymRepository;
         this.name = "install";
         this.help = "Installation command, only meant for server administrator.";
@@ -58,7 +58,7 @@ public class InstallCommand extends Command {
 
             final String server = settingsToSet.get("server");
             try {
-                Config config = configRepository.getConfigForServer(server);
+                Config config = serverConfigRepository.getConfigForServer(server);
                 final Locale locale = new Locale(settingsToSet.get("locale"));
                 final String region = settingsToSet.get("region");
                 final Boolean replyInDmWhenPossible = Boolean.valueOf(settingsToSet.get("replyindm"));
@@ -71,7 +71,7 @@ public class InstallCommand extends Command {
                     config.setRegion(region);
                     config.setReplyInDmWhenPossible(replyInDmWhenPossible);
                 }
-                event.replyInDM("Configuration complete. Saved configuration: " + configRepository.save(config));
+                event.replyInDM("Configuration complete. Saved configuration: " + serverConfigRepository.save(config));
                 event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
                         "emotes the bot needs.");
                 event.reactSuccess();

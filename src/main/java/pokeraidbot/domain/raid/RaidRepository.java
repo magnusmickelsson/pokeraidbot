@@ -64,7 +64,7 @@ public class RaidRepository {
         String people = args[0];
         String userName = user.getName();
         if (args.length < 3 || args.length > 10) {
-            throw new WrongNumberOfArgumentsException(userName, localeService, 3, args.length, help);
+            throw new WrongNumberOfArgumentsException(user, localeService, 3, args.length, help);
         }
         Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(user, localeService, people);
 
@@ -75,7 +75,7 @@ public class RaidRepository {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
 
         LocalTime eta = Utils.parseTime(user, timeString, localeService);
@@ -294,7 +294,7 @@ public class RaidRepository {
     private void assertSumNotLessThanOne(User user, int sum) {
         if (sum <= 0) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS,
-                    localeService.getLocaleForUser(user.getName()),
+                    localeService.getLocaleForUser(user),
                     "" + sum, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
     }

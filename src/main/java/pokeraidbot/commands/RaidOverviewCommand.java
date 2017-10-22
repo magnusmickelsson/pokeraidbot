@@ -2,9 +2,6 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,12 +13,10 @@ import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -39,8 +34,8 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidOverviewCommand(RaidRepository raidRepository, LocaleService localeService,
-                               ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+                               ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "overview";
@@ -111,7 +106,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
 
     private String getOverviewMessage(User user, Config config, String args) {
         String userName = user.getName();
-        final Locale locale = localeService.getLocaleForUser(userName);
+        final Locale locale = localeService.getLocaleForUser(user);
         Set<Raid> raids;
         if (args != null && args.length() > 0) {
             raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.getByName(args));

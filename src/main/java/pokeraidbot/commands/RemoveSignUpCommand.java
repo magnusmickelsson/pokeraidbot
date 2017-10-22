@@ -10,7 +10,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.Locale;
 
@@ -20,8 +20,8 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public RemoveSignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                               ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+                               ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;
@@ -34,9 +34,9 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
         final String userName = user.getName();
-        final Locale localeForUser = localeService.getLocaleForUser(userName);
+        final Locale localeForUser = localeService.getLocaleForUser(user);
         String gymName = commandEvent.getArgs();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final SignUp removed = raid.remove(userName, raidRepository);
         if (removed != null) {

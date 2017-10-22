@@ -15,7 +15,7 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,9 +36,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
 
     public AlterRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
-                            ConfigRepository configRepository,
+                            ServerConfigRepository serverConfigRepository,
                             CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "change";
@@ -64,7 +64,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     gymNameBuilder.append(args[i]).append(" ");
                 }
                 String gymName = gymNameBuilder.toString().trim();
-                gym = gymRepository.search(userName, gymName, config.getRegion());
+                gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
                 LocalTime endsAtTime = parseTime(user, whatToChangeTo, localeService);
@@ -82,7 +82,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     gymNameBuilder.append(args[i]).append(" ");
                 }
                 gymName = gymNameBuilder.toString().trim();
-                gym = gymRepository.search(userName, gymName, config.getRegion());
+                gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
                 if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
@@ -102,7 +102,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     gymNameBuilder.append(args[i]).append(" ");
                 }
                 gymName = gymNameBuilder.toString().trim();
-                gym = gymRepository.search(userName, gymName, config.getRegion());
+                gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
                 final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),

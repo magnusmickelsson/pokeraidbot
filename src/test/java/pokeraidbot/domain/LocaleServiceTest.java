@@ -2,19 +2,25 @@ package pokeraidbot.domain;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class LocaleServiceTest {
     private LocaleService localeService;
 
     @Before
     public void setUp() throws Exception {
-        localeService = new LocaleService("sv");
+        UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
+        when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
+        localeService = new LocaleService("sv", userConfigRepository);
     }
 
     @Test

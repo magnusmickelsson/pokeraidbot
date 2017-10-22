@@ -19,7 +19,10 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.domain.tracking.TrackingCommandListenerBean;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
@@ -44,8 +47,8 @@ public class BotServerMain {
     }
 
     @Bean
-    public LocaleService getLocaleService(@Value("${locale:sv}")String locale) {
-        return new LocaleService(locale);
+    public LocaleService getLocaleService(UserConfigRepository userConfigRepository, @Value("${locale:sv}")String locale) {
+        return new LocaleService(locale, userConfigRepository);
     }
 
     @Bean
@@ -58,16 +61,27 @@ public class BotServerMain {
     }
 
     @Bean
-    public BotService getBotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
-                                    PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
-                                    ConfigRepository configRepository, ClockService clockService) {
-        return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
-                configRepository, clockService, ownerId, token);
+    public TrackingCommandListener getTrackingCommandListener(ServerConfigRepository serverConfigRepository,
+                                                              LocaleService localeService,
+                                                              UserConfigRepository userConfigRepository,
+                                                              PokemonRepository pokemonRepository) {
+        return new TrackingCommandListenerBean(serverConfigRepository, localeService, userConfigRepository,
+                pokemonRepository);
     }
 
     @Bean
-    public GymRepository getGymRepository(LocaleService localeService, ConfigRepository configRepository) {
-        return new GymRepository(configRepository, localeService);
+    public BotService getBotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
+                                    PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
+                                    ServerConfigRepository serverConfigRepository,
+                                    UserConfigRepository userConfigRepository, ClockService clockService,
+                                    TrackingCommandListener trackingCommandListener) {
+        return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
+                serverConfigRepository, userConfigRepository, clockService, ownerId, token, trackingCommandListener);
+    }
+
+    @Bean
+    public GymRepository getGymRepository(LocaleService localeService, ServerConfigRepository serverConfigRepository) {
+        return new GymRepository(serverConfigRepository, localeService);
     }
 
     @Bean

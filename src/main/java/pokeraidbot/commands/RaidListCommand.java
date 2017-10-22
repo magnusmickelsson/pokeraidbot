@@ -12,7 +12,7 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -30,8 +30,8 @@ public class RaidListCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener, localeService);
+                           ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";
@@ -43,9 +43,8 @@ public class RaidListCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
-        String userName = user.getName();
         final String args = commandEvent.getArgs();
-        final Locale locale = localeService.getLocaleForUser(userName);
+        final Locale locale = localeService.getLocaleForUser(user);
         Set<Raid> raids;
         if (args != null && args.length() > 0) {
             raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.getByName(args));

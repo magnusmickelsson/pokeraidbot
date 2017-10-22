@@ -6,15 +6,15 @@ import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public class ServerInfoCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final ClockService clockService;
 
-    public ServerInfoCommand(ConfigRepository configRepository, LocaleService localeService,
+    public ServerInfoCommand(ServerConfigRepository serverConfigRepository, LocaleService localeService,
                              CommandListener commandListener, ClockService clockService) {
-        super(configRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.clockService = clockService;
         this.name = "server";
