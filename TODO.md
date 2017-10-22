@@ -6,13 +6,13 @@ Needs testing:
 
 * !raid list should show next ETA
 * Clean up signups for expired group
+* Persistent tracking (needs non-free Heroku version)
+* User configuration, stored in database. 3 available trackings, and locale.
 
 Being developed:
 
 * !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
 will enable admins to have overviews in separate channels which are read-only
-* Persistent tracking (needs non-free Heroku version)
-* User configuration, stored in database. 3 available trackings, and locale.
 * User can set their own locale
 
 Discussion:

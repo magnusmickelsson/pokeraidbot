@@ -27,6 +27,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Raidöversikt, automatiskt uppdaterad var 60:e sekund - !raid overview\n" +
                     "- Raid map i serverchatt oavsett konfiguration: !raid mapinchat {gym-namn}\n" +
                     "- Feedbackmeddelande efter *!raid new* tas bort efter 15 sek\n" +
+                    "- Persistent tracking (*!raid track* sparas i databas, " +
+                    "varje användare kan ha 3 pokemons man spårar)\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
@@ -36,6 +38,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Raid overview, automatically updated every 60 seconds - !raid overview\n" +
                     "- Raid map in serverchat regardless of configuration: !raid mapinchat {gym name}\n" +
                     "- Feedback message after *!raid new* is removed after 15 sec\n" +
+                    "- Persistent tracking (*!raid track* is saved in database, " +
+                    "every user can have 3 pokemons to track)\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);
