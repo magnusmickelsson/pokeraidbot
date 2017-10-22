@@ -172,6 +172,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private void cleanUp(CommandEvent commandEvent, LocalDateTime startAt, Raid raid,
                          EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
         try {
+            // Clean up all signups that should have done their raid now
+            raidRepository.removeAllSignUpsAt(raid, startAt);
             // Clean up after raid expires
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {

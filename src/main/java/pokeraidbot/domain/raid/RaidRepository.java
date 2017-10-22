@@ -319,4 +319,22 @@ public class RaidRepository {
         }
         return getRaidInstance(raidEntity);
     }
+
+    public void removeAllSignUpsAt(Raid raid, LocalDateTime startAt) {
+        Validate.notNull(raid, "Raid cannot be null");
+        Validate.notNull(startAt, "Start time cannot be null");
+        RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (entity != null) {
+            for (SignUp signUp : raid.getSignUps()) {
+                if (signUp.getArrivalTime().equals(startAt.toLocalTime())) {
+                    RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(), signUp.getHowManyPeople(),
+                            Utils.printTime(signUp.getArrivalTime())));
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Removed signup: " + removed);
+                    }
+                }
+            }
+            raidEntityRepository.save(entity);
+        }
+    }
 }

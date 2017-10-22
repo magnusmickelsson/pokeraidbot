@@ -4,13 +4,16 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
-will enable admins to have overviews in separate channels which are read-only
 * !raid list should show next ETA
+* Clean up signups for expired group
 
 Being developed:
 
--
+* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
+will enable admins to have overviews in separate channels which are read-only
+* Persistent tracking (needs non-free Heroku version)
+* User configuration, stored in database. 3 available trackings, and locale.
+* User can set their own locale
 
 Discussion:
 
@@ -48,7 +51,6 @@ Do, features:
 * Config for time of automatic message deletion
     * Number of seconds, or -1 = never delete
 * Config for turning on and off some feature groups (map, info, raid)
-* The big feedback windows could have emotes for removing the message, and for updating it with latest info (raid status)
 * Enable bot owner to trigger import of a regional dataset "on the fly" and save gym region data in database 
 (needs non-free Heroku version)
 * !raid me - Answer in PM with my current signups over all raids in the region and my current trackings 
@@ -70,6 +72,5 @@ Maybe, features:
 so we can't get test config on a prod server running by mistake
 * Add counters/counter moves to all pokemon, based on "good dps pokemons" for each type?
 * Make locale configurable both on server level, but also for each user to be able to choose locale
-* Persistent tracking (needs non-free Heroku version)
 * Checking error codes?
 ...

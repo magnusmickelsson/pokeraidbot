@@ -26,6 +26,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Raidgrupper tas nu bort efter raidtid + 5 minuter, och anmälningar till gruppen tas då bort\n" +
                     "- Raidöversikt, automatiskt uppdaterad var 60:e sekund - !raid overview\n" +
                     "- Raid map i serverchatt oavsett konfiguration: !raid mapinchat {gym-namn}\n" +
+                    "- Feedbackmeddelande efter *!raid new* tas bort efter 15 sek\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
@@ -34,6 +35,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Raid groups now expire after raid time + 5 minutes, removing all signups for the group\n" +
                     "- Raid overview, automatically updated every 60 seconds - !raid overview\n" +
                     "- Raid map in serverchat regardless of configuration: !raid mapinchat {gym name}\n" +
+                    "- Feedback message after *!raid new* is removed after 15 sec\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);
