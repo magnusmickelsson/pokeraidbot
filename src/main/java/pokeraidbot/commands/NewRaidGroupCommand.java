@@ -88,9 +88,11 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(userName, errorText);
         }
 
+        // todo: Check that user doesn't have more than one group for a raid, in that case he/she should use raid change to change time
+
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
-                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
+                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt, user);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
@@ -132,7 +134,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                                                                  String gymName, Raid raid,
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                                  Message embed) {
-        final LocalDateTime startAt = emoticonSignUpMessageListener.getStartAt();
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(15);
@@ -140,8 +141,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     LOGGER.debug("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + embed.getId());
                 }
+                LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
-                        getRaidGroupMessageEmbed(user, startAt, raidRepository.getById(raid.getId()), localeService);
+                        getRaidGroupMessageEmbed(user, start, raidRepository.getById(raid.getId()), localeService);
                 embed.getChannel().editMessageById(embed.getId(),
                         newContent)
                         .queue(m -> {}, m -> {
@@ -158,11 +160,12 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             } while (emoticonSignUpMessageListener.getStartAt() != null &&
                     clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt().plusMinutes(5)));
             LOGGER.debug("Raid group has now expired or message been removed, will clean up listener and messages..");
-            cleanUp(commandEvent, startAt, raid, emoticonSignUpMessageListener);
+            cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid, emoticonSignUpMessageListener);
 
             // todo: should we automatically remove signups for this group when time expires from total? Makes sense.
             final String removedGroupText = localeService.getMessageFor(LocaleService.REMOVED_GROUP,
-                    localeService.getLocaleForUser(user), printTimeIfSameDay(startAt), gymName);
+                    localeService.getLocaleForUser(user),
+                    printTimeIfSameDay(emoticonSignUpMessageListener.getStartAt()), gymName);
             commandEvent.reply(user.getAsMention() + ": " + removedGroupText);
             return true;
         };

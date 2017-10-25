@@ -110,7 +110,7 @@ public class BotService {
                 new InstallCommand(serverConfigRepository, gymRepository),
                 new InstallEmotesCommand(localeService),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
-                        aggregateCommandListener),
+                        aggregateCommandListener, this),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener, this, clockService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,

@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.PermissionUtil;
+import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -14,6 +15,7 @@ import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
@@ -33,14 +35,16 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
+    private final BotService botService;
 
     public AlterRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ServerConfigRepository serverConfigRepository,
-                            CommandListener commandListener) {
+                            CommandListener commandListener, BotService botService) {
         super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
+        this.botService = botService;
         this.name = "change";
         this.help = localeService.getMessageFor(LocaleService.CHANGE_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
@@ -54,21 +58,26 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();
         String whatToChangeTo;
+        StringBuilder gymNameBuilder;
+        String gymName;
         Gym gym;
         Raid raid;
+        LocalTime endsAtTime;
+        LocalDateTime endsAt;
+
         switch (whatToChange) {
             case "when":
                 whatToChangeTo = args[1].trim().toLowerCase();
-                StringBuilder gymNameBuilder = new StringBuilder();
+                gymNameBuilder = new StringBuilder();
                 for (int i = 2; i < args.length; i++) {
                     gymNameBuilder.append(args[i]).append(" ");
                 }
-                String gymName = gymNameBuilder.toString().trim();
+                gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
-                LocalTime endsAtTime = parseTime(user, whatToChangeTo, localeService);
-                LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
+                endsAtTime = parseTime(user, whatToChangeTo, localeService);
+                endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
                 assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
                 assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
@@ -109,9 +118,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         commandEvent.getMember(), Permission.ADMINISTRATOR);
                 if (userIsNotAdministrator && raid.getSignUps().size() > 0) {
                     throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.ONLY_ADMINS_REMOVE_RAID,
-                            localeService.getLocaleForUser(user))
-                            );
+                            localeService.getMessageFor(LocaleService.ONLY_ADMINS_REMOVE_RAID,
+                                    localeService.getLocaleForUser(user))
+                    );
                 }
                 if (raidRepository.delete(raid)) {
                     raid = null;
@@ -119,6 +128,50 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     throw new UserMessedUpException(userName,
                             localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,
                                     localeService.getLocaleForUser(user)));
+                }
+                break;
+            case "group":
+                whatToChangeTo = args[1].trim().toLowerCase();
+                gymNameBuilder = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    gymNameBuilder.append(args[i]).append(" ");
+                }
+                gymName = gymNameBuilder.toString().trim();
+                gym = gymRepository.search(user, gymName, config.getRegion());
+                raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
+                verifyPermission(commandEvent, user, raid);
+                LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
+                LocalDateTime newDateTime = LocalDateTime.of(LocalDate.now(), newTime);
+
+                assertTimeNotInNoRaidTimespan(user, newTime, localeService);
+                assertTimeNotMoreThanXHoursFromNow(user, newTime, localeService, 2);
+                assertCreateRaidTimeNotBeforeNow(user, newDateTime, localeService);
+                boolean groupChanged = false;
+                for (Object o : botService.getBot().getRegisteredListeners()) {
+                    if (o instanceof EmoticonSignUpMessageListener) {
+                        EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) o;
+                        final String raidId = raid.getId();
+                        final boolean isCorrectRaidAndIsUsersGroup =
+                                raidId.equals(listener.getRaidId()) && user.getId().equals(listener.getUserId());
+                        if (isCorrectRaidAndIsUsersGroup) {
+                            final LocalDateTime currentStartAt = listener.getStartAt();
+                            raidRepository.moveAllSignUpsForTimeToNewTime(raid, currentStartAt, newDateTime, user);
+                            listener.setStartAt(newDateTime);
+                            groupChanged = true;
+                            replyBasedOnConfig(config, commandEvent, "Flyttade grupp från " +
+                                    printTimeIfSameDay(currentStartAt) + " till " + printTimeIfSameDay(newDateTime) +
+                            ".");
+                            replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                                    "**OBS: Alla gjorda anmälningar för denna tid flyttas med.** " +
+                                    "Den användare som inte är ok med det får ändra sin anmälning, antingen via " +
+                            "att skapa en ny grupp, eller *!raid remove " + raid.getGym().getName() + "* och lägga " +
+                                    "till sig igen.", 30);
+                        }
+                    }
+                }
+                if (!groupChanged) {
+                    throw new UserMessedUpException(userName,
+                            localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
                 }
                 break;
             default:

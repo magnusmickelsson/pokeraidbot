@@ -12,6 +12,7 @@ should be put in a read-only channel
 * Feedback after !raid new removed after 15 seconds
 * !raid mapinchat - raid map forced in server chat, despite server settings (meant for admins in servers with such config)
 * Minor text changes here and there
+* Possible to change time for a raid group: !raid change group (time) (gym)
 
 0.9.1 (2017-10-14)
 ======

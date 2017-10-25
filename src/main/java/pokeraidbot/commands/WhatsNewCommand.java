@@ -29,6 +29,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Feedbackmeddelande efter *!raid new* tas bort efter 15 sek\n" +
                     "- Persistent tracking (*!raid track* sparas i databas, " +
                     "varje användare kan ha 3 pokemons man spårar)\n" +
+                    "- Flytta tid för en raidgrupp: *!raid change group {ny tid} {gym-namn}*\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
@@ -40,6 +41,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Feedback message after *!raid new* is removed after 15 sec\n" +
                     "- Persistent tracking (*!raid track* is saved in database, " +
                     "every user can have 3 pokemons to track)\n" +
+                    "- Change time for a raid group: *!raid change group {new time} {gym name}*\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);

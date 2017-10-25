@@ -8,6 +8,7 @@ Needs testing:
 * Clean up signups for expired group
 * Persistent tracking (needs non-free Heroku version)
 * User configuration, stored in database. 3 available trackings, and locale.
+* Move time for raid group: !raid change group (time) (gym)
 
 Being developed:
 

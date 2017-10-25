@@ -511,8 +511,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(SIGNUP_HELP, SWEDISH),
                 "Anmäl dig till en raid: !raid add [antal spelare] [ETA (HH:MM)] [Gym]");
 
-        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, Locale.ENGLISH), "%1 had no signup to remove for gym %2");
-        i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH), "%1 hade ingen anmälan att ta bort för raid vid %2");
+        i18nMessages.put(new I18nLookup(NO_SIGNUP_AT_GYM, Locale.ENGLISH), "%1 had no signup to remove for gym %2");
+        i18nMessages.put(new I18nLookup(NO_SIGNUP_AT_GYM, SWEDISH), "%1 hade ingen anmälan att ta bort för raid vid %2");
 
         i18nMessages.put(new I18nLookup(SIGNUP_REMOVED, Locale.ENGLISH), "Signup removed for gym %1: %2");
         i18nMessages.put(new I18nLookup(SIGNUP_REMOVED, SWEDISH), "Tog bort din anmälan för gym %1: %2");
@@ -658,6 +658,8 @@ public class LocaleService {
                         "**Change endtime for a raid:** !raid change when *[New end of raid (HH:MM)]* *[Pokestop name]* " +
                         "(Only raid creator or server admins may do this)\n" +
                         "*Example:* !raid change when 09:45 Solna Platform\n\n" +
+                        "**Change start time for a raid group:** !raid change group *[New time (HH:MM)]* *[Pokestop name]*\n" +
+                        "*Example:* !raid change group 09:35 Solna Platform*\n\n" +
                         "**Change raid boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
                         "(Only raid creator or server admins may do this)\n" +
                         "*Example:* !raid change pokemon Suicune Solna Platform\n\n" +
@@ -669,6 +671,8 @@ public class LocaleService {
                         "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* " +
                         "(Endast raidskapare eller admin får göra detta)\n" +
                         "*Exempel:* !raid change when 09:45 Solna Platform\n\n" +
+                        "**Ändra tid för en raidgrupp:** !raid change group *[Ny tid (HH:MM)]* *[Gym-namn]*\n" +
+                        "*Exempel:* !raid change group 09:35 Solna Platform*\n\n" +
                         "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
                         "(Endast raidskapare eller admin får göra detta)\n" +
                         "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +

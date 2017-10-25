@@ -337,4 +337,33 @@ public class RaidRepository {
             raidEntityRepository.save(entity);
         }
     }
+
+    public void moveAllSignUpsForTimeToNewTime(Raid raid, LocalDateTime currentStartAt, LocalDateTime newDateTime, User user) {
+        Validate.notNull(raid, "Raid cannot be null");
+        Validate.notNull(currentStartAt, "Current start time cannot be null");
+        Validate.notNull(newDateTime, "New start time cannot be null");
+        Validate.notNull(user, "User cannot be null");
+        RaidEntity entity = raidEntityRepository.findOne(raid.getId());
+        if (entity != null) {
+            for (SignUp signUp : raid.getSignUps()) {
+                if (signUp.getArrivalTime().equals(currentStartAt.toLocalTime())) {
+                    final RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(),
+                            signUp.getHowManyPeople(),
+                            Utils.printTime(signUp.getArrivalTime())));
+                    final RaidEntitySignUp movedSignUp = new RaidEntitySignUp(signUp.getUserName(),
+                            signUp.getHowManyPeople(),
+                            Utils.printTime(newDateTime.toLocalTime()));
+                    entity.addSignUp(movedSignUp);
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Moved signup: " + removed + " to " + movedSignUp);
+                    }
+                }
+            }
+            raidEntityRepository.save(entity);
+        } else {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+        }
+        // todo: throw error if problem?
+    }
 }
