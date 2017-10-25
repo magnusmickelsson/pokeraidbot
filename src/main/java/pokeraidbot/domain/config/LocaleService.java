@@ -67,6 +67,7 @@ public class LocaleService {
     public static final String WHERE_GYM_IN_CHAT_HELP = "WHERE_GYM_IN_CHAT_HELP";
     public static final String NEXT_ETA = "NEXT_ETA";
     public static final String TRACKING_NONE_FREE = "TRACKING_NONE_FREE";
+    public static final String OVERVIEW_UPDATE = "OVERVIEW_UPDATE";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -137,6 +138,13 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, Locale.ENGLISH),
+                "Updated every 60 seconds. Last update: %1"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, SWEDISH),
+                "Uppdateras var 60:e sekund. Senast uppdaterad: %1"
+        );
+
         i18nMessages.put(new I18nLookup(TRACKING_NONE_FREE, Locale.ENGLISH),
                 "There are no free spots for pokemon tracking in your user configuration (3 spots filled). " +
                         "Please remove one or more via *!raid untrack {pokemon}*"
@@ -194,10 +202,10 @@ public class LocaleService {
                 "Du saknar behörighet för att göra det du försökte göra. Be hjälp av en admin."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, Locale.ENGLISH),
-                "New signups updated every 15 seconds. When the raid time expires (+5 mins), this message is removed."
+                "Updated every 15 seconds. When the group expires (+5 mins), this message is removed."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, SWEDISH),
-                "Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut (+5 minuter) tas meddelandet bort."
+                "Uppdateras var 15:e sekund. När tiden gått ut (+5 minuter) tas meddelandet bort."
         );
 
         i18nMessages.put(new I18nLookup(RAID_DETAILS, Locale.ENGLISH),
@@ -515,9 +523,9 @@ public class LocaleService {
                 "Ta bort din anmälan för raid på ett gym: !raid remove [Gym]");
 
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, Locale.ENGLISH),
-                "Could not find an active raid for this gym: \"%1\".");
+                "Could not find a raid for this gym: \"%1\".");
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH),
-                "Kunde inte hitta någon aktiv raid för \"%1\".");
+                "Kunde inte hitta någon aktuell raid för \"%1\".");
 
         i18nMessages.put(new I18nLookup(RAIDSTATUS, Locale.ENGLISH), "%1:");
         i18nMessages.put(new I18nLookup(RAIDSTATUS, SWEDISH), "%1:");
@@ -531,7 +539,7 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(SIGNED_UP, SWEDISH), "Anmäld(a)");
 
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, Locale.ENGLISH), "Current raids");
-        i18nMessages.put(new I18nLookup(CURRENT_RAIDS, SWEDISH), "Pågående raids");
+        i18nMessages.put(new I18nLookup(CURRENT_RAIDS, SWEDISH), "Aktuella raids");
 
         i18nMessages.put(new I18nLookup(RAID_BETWEEN, Locale.ENGLISH), "between %1 and %2");
         i18nMessages.put(new I18nLookup(RAID_BETWEEN, SWEDISH), "mellan %1 och %2");
@@ -547,7 +555,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(LIST_HELP, Locale.ENGLISH),
                 "Check current raids - !raid list [optional: Pokemon]");
-        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktiva raids - " +
+        i18nMessages.put(new I18nLookup(LIST_HELP, SWEDISH), "Visa aktuella raids - " +
                 "!raid list [Pokemon (frivilligt att ange)]");
 
 
@@ -639,8 +647,8 @@ public class LocaleService {
                         "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
                         "*Exempel:* !raid status Solna Platform\n\n" +
                         "**Visa alla registrerade raider:**\n!raid list\n" +
-                        "*Exempel:* !raid list Entei - visa alla aktiva raider med Entei som boss.\n" +
-                        "!raid list - lista alla aktiva raider oavsett boss.\n\n" +
+                        "*Exempel:* !raid list Entei - visa alla aktuella raider med Entei som boss.\n" +
+                        "!raid list - lista alla aktuella raider oavsett boss.\n\n" +
                         "**Information om en raidboss:**\n!raid vs *[Pokemon]*\n" +
                         "*Exempel:* !raid vs Entei"
         );
@@ -840,6 +848,7 @@ public class LocaleService {
 
     public static String featuresString_EN =
             "Pokeraidbot - a Discord bot to help Pokémon Go raiders. Raid, map, pokemon info functions.\n\n" +
+                    "Getting started guide: https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_en.md\n\n" +
                     "**Get detailed help about how the bot works:**\n!raid man\n\n" +
                     "**To see one of its features, type the following:** " +
                     "!raid map {name of a raid gym in your vicinity}\n" +
@@ -850,6 +859,7 @@ public class LocaleService {
     public static String featuresString_SV =
             "Pokeraidbot - en Discord-bot för att hjälpa Pokémon Go raiders, med t.ex. kartor till gym, raidplanering" +
                     " och information om pokemons.\n\n" +
+                    "Kom igång guide: https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md\n\n" +
                     "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
                     "*Exempel:* !raid man - berättar om hur man använder raid man och vilka hjälpämnen som finns\n\n" +
                     "**För ett exempel på vad botten kan göra, skriv:** !raid map {namn på ett gym i området}\n" +

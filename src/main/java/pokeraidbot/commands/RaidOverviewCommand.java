@@ -17,10 +17,12 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.*;
 
+import static pokeraidbot.Utils.printTime;
 import static pokeraidbot.Utils.printTimeIfSameDay;
 
 /**
@@ -163,7 +165,9 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                 stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
             }
         }
-        stringBuilder.append("\n\nDetta meddelande uppdateras var 60:e sekund med nytillkomna raider och anmälningar.");
+        stringBuilder.append("\n\n").append(localeService.getMessageFor(LocaleService.OVERVIEW_UPDATE,
+                localeService.getLocaleForUser(user),
+                printTime(LocalTime.now())));
         final String message = stringBuilder.toString();
         return message;
     }

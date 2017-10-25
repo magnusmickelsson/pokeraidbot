@@ -1,4 +1,4 @@
-1.0.0
+1.0.0 (TBD)
 =====
 * Fixed readme for both english and swedish including images
 * Fixed getting started guide for english locale
@@ -6,14 +6,24 @@
 * raid group removed 5 mins after finished group, not at exact time
 * !raid overview - automatically updated "!raid list" every 60 seconds, 
 should be put in a read-only channel
+* Link to getting started guides from !raid usage
+* Persistent !raid track - is now stored in database. Up to 3 pokemons to track per user.
+* Raid creator can remove their created raid, if there are no signups
+* Feedback after !raid new removed after 15 seconds
+* !raid mapinchat - raid map forced in server chat, despite server settings (meant for admins in servers with such config)
+* Minor text changes here and there
 
-0.9.0
+0.9.1 (2017-10-14)
+======
+* Minor bugfixes
+
+0.9.0 (2017-10-13)
 ======
 * \+ command for signups, as users are used to it (+{number} {time} {gym} is now a signup)
 * More automatic cleanup of messages/feedback
 * "What's new"-command so people can see what new features.
 
-0.8.0
+0.8.0 (2017-10-12)
 =====
 * Group signup, existing sign ups blanked out if a user changes the time within the same raid.
 * Cut down on text for a lot of messages.
