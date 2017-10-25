@@ -63,7 +63,7 @@ public class BotService {
         }
 
         EventWaiter waiter = new EventWaiter();
-        EventLoggingListener eventLoggingListener = new EventLoggingListener();
+        EventLoggingListener eventLoggingListener = new EventLoggingListener(serverConfigRepository, raidRepository, localeService, clockService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
@@ -114,7 +114,7 @@ public class BotService {
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener, this, clockService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
-                        aggregateCommandListener)
+                        aggregateCommandListener, clockService)
         );
 
         try {
