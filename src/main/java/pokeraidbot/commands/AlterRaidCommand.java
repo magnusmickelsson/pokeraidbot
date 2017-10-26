@@ -158,14 +158,15 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             raidRepository.moveAllSignUpsForTimeToNewTime(raid, currentStartAt, newDateTime, user);
                             listener.setStartAt(newDateTime);
                             groupChanged = true;
-                            replyBasedOnConfig(config, commandEvent, "Flyttade grupp från " +
-                                    printTimeIfSameDay(currentStartAt) + " till " + printTimeIfSameDay(newDateTime) +
-                            ".");
+                            // todo: i18n
                             replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                                    "**OBS: Alla gjorda anmälningar för denna tid flyttas med.** " +
-                                    "Den användare som inte är ok med det får ändra sin anmälning, antingen via " +
-                            "att skapa en ny grupp, eller *!raid remove " + raid.getGym().getName() + "* och lägga " +
-                                    "till sig igen.", 30);
+                                    "Flyttade grupp från " +
+                                            printTimeIfSameDay(currentStartAt) + " till " +
+                                            printTimeIfSameDay(newDateTime) +
+                                            " för raid vid " + raid.getGym().getName() + ".\n" +
+                                            "**OBS: Alla gjorda anmälningar för denna tid flyttas med.** " +
+                                    "Vill du inte det - ändra sin anmälning, t.ex. via *!raid remove " +
+                                            raid.getGym().getName() + "* och lägg till dig igen.", 30);
                         }
                     }
                 }

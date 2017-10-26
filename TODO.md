@@ -9,11 +9,12 @@ Needs testing:
 * Persistent tracking (needs non-free Heroku version)
 * User configuration, stored in database. 3 available trackings, and locale.
 * Move time for raid group: !raid change group (time) (gym)
+* !raid overview for removed message seems to have issues - needs better error message and a fix
+* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
+will enable admins to have overviews in separate channels which are read-only
 
 Being developed:
 
-* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
-will enable admins to have overviews in separate channels which are read-only
 * User can set their own locale
 
 Discussion:

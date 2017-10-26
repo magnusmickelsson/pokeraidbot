@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import pokeraidbot.commands.RaidOverviewCommand;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
@@ -59,15 +60,20 @@ public class EventLoggingListener implements EventListener{
                                                     null, config, messageId, localeService, serverConfigRepository,
                                                     raidRepository, clockService, channel
                                             );
+                                    executorService.submit(overviewTask);
+                                    LOGGER.info("Found overview message for channel " + channel.getName() +
+                                            " (server " + guild.getName() + "). Attaching to it.");
                                     if (guild.getDefaultChannel() != null) {
                                         // todo: i18n
                                         guild.getDefaultChannel().sendMessage(
-                                                "Pokeraidbot är här. Raidöversikten uppdateras." +
-                                                        " För info om botten: *!raid usage*").queue();
+                                                "Pokeraidbot är här. Raidöversikten uppdateras i kanalen " +
+                                                        "#" + channel.getName() +
+                                                        ". För info om botten: *!raid usage*").queue();
                                     }
-                                    executorService.submit(overviewTask);
                                     return;
                                 }
+                            } catch (UserMessedUpException e) {
+                                channel.sendMessage(e.getMessage()).queue();
                             } catch (ErrorResponseException e) {
                                 // We couldn't find the message in this channel, move to next
                             }
