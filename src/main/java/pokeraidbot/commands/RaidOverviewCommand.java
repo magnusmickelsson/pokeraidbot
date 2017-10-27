@@ -162,7 +162,9 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                             .append(printTimeIfSameDay(raid.getEndOfRaid()))
                             .append(". ").append(numberOfPeople)
                             .append(" ")
-                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale)).append("\n");
+                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append("\n");
                 }
                 else {
                     exRaids.append("\n").append(raidGym.getName())
