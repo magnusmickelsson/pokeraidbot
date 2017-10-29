@@ -27,6 +27,7 @@ import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.jda.AggregateCommandListener;
 import pokeraidbot.jda.EventLoggingListener;
 import pokeraidbot.jda.SignupWithPlusCommandListener;
+import pokeraidbot.jda.StartUpEventListener;
 
 import javax.annotation.PostConstruct;
 import javax.security.auth.login.LoginException;
@@ -63,7 +64,9 @@ public class BotService {
         }
 
         EventWaiter waiter = new EventWaiter();
-        EventLoggingListener eventLoggingListener = new EventLoggingListener(serverConfigRepository, raidRepository, localeService, clockService);
+        EventLoggingListener eventLoggingListener = new EventLoggingListener();
+        StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
+                raidRepository, localeService, clockService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
@@ -131,6 +134,7 @@ public class BotService {
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
                     .addEventListener(eventLoggingListener)
+                    .addEventListener(startUpEventListener)
                     .addEventListener(plusCommandEventListener)
 
                     // start it up!

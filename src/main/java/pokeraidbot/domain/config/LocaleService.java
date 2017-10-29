@@ -8,6 +8,8 @@ import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.*;
 
+import static pokeraidbot.Utils.printTimeIfSameDay;
+
 public class LocaleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocaleService.class);
     public static final String NEW_EX_RAID_HELP = "NEW_EX_RAID_HELP";
@@ -68,6 +70,10 @@ public class LocaleService {
     public static final String NEXT_ETA = "NEXT_ETA";
     public static final String TRACKING_NONE_FREE = "TRACKING_NONE_FREE";
     public static final String OVERVIEW_UPDATE = "OVERVIEW_UPDATE";
+    public static final String MOVED_GROUP = "MOVED_GROUP";
+    public static final String OVERVIEW_HELP = "OVERVIEW_HELP";
+    public static final String OVERVIEW_ATTACH = "OVERVIEW_ATTACH";
+    public static final String OVERVIEW_DELETED = "OVERVIEW_DELETED";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -138,11 +144,44 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(MOVED_GROUP, Locale.ENGLISH),
+                "Moved group from %1 to %2 for raid at %3.\n" +
+                        "**Note: all signups for this time are moved to the new time.** " +
+                        "Users who don't want to be moved have to run " +
+                        "*!raid remove %3* and then add their signup again."
+        );
+        i18nMessages.put(new I18nLookup(MOVED_GROUP, SWEDISH),
+                "Flyttade grupp från %1 till %2 för raid vid %3.\n" +
+                        "**OBS: Alla gjorda anmälningar för denna tid flyttas med.** " +
+                        "Vill du inte det - ändra sin anmälning, t.ex. via *!raid remove %3* och lägg till dig igen."
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_DELETED, Locale.ENGLISH),
+                "Overview message has been removed by someone. " +
+                        "Run *!raid overview* again to create a new one."
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_DELETED, SWEDISH),
+                "Översiktsmeddelandet har tagits bort av någon. " +
+                        "Kör *!raid overview* igen för att skapa ett nytt."
+        );
         i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, Locale.ENGLISH),
                 "Updated every 60 seconds. Last update: %1"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, SWEDISH),
                 "Uppdateras var 60:e sekund. Senast uppdaterad: %1"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, Locale.ENGLISH),
+                "Pokeraidbot is here. Raid overview till be updated in channel " +
+                        "#%1. For bot info, type: *!raid usage*"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, SWEDISH),
+                "Pokeraidbot är här. Raidöversikten uppdateras i kanalen " +
+                        "#%1. För info om botten: *!raid usage*"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_HELP, Locale.ENGLISH),
+                "Create a message with a !raid list overview that automatically updates: !raid overview"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_HELP, SWEDISH),
+                "Skapa ett meddelande med en !raid list översikt som automatiskt uppdateras: !raid overview"
         );
 
         i18nMessages.put(new I18nLookup(TRACKING_NONE_FREE, Locale.ENGLISH),

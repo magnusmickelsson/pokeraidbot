@@ -28,61 +28,12 @@ import java.util.concurrent.Executors;
 
 public class EventLoggingListener implements EventListener{
     private static final Logger LOGGER = LoggerFactory.getLogger(EventLoggingListener.class);
-    private ServerConfigRepository serverConfigRepository;
-    private final RaidRepository raidRepository;
-    private final LocaleService localeService;
-    private final ClockService clockService;
-    protected static final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public EventLoggingListener(ServerConfigRepository serverConfigRepository,
-                                RaidRepository raidRepository, LocaleService localeService,
-                                ClockService clockService) {
-        this.serverConfigRepository = serverConfigRepository;
-        this.raidRepository = raidRepository;
-        this.localeService = localeService;
-        this.clockService = clockService;
+    public EventLoggingListener() {
     }
 
     @Override
     public void onEvent(Event event) {
-        if (event instanceof ReadyEvent) {
-            final List<Guild> guilds = event.getJDA().getGuilds();
-            for (Guild guild : guilds) {
-                Config config = serverConfigRepository.getConfigForServer(guild.getName().trim().toLowerCase());
-                if (config != null) {
-                    final String messageId = config.getOverviewMessageId();
-                    if (!StringUtils.isEmpty(messageId)) {
-                        for (MessageChannel channel : guild.getTextChannels()) {
-                            try {
-                                if (channel.getMessageById(messageId).complete() != null) {
-                                    final Callable<Boolean> overviewTask =
-                                            RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
-                                                    null, config, messageId, localeService, serverConfigRepository,
-                                                    raidRepository, clockService, channel
-                                            );
-                                    executorService.submit(overviewTask);
-                                    LOGGER.info("Found overview message for channel " + channel.getName() +
-                                            " (server " + guild.getName() + "). Attaching to it.");
-                                    if (guild.getDefaultChannel() != null) {
-                                        // todo: i18n
-                                        guild.getDefaultChannel().sendMessage(
-                                                "Pokeraidbot är här. Raidöversikten uppdateras i kanalen " +
-                                                        "#" + channel.getName() +
-                                                        ". För info om botten: *!raid usage*").queue();
-                                    }
-                                    return;
-                                }
-                            } catch (UserMessedUpException e) {
-                                channel.sendMessage(e.getMessage()).queue();
-                            } catch (ErrorResponseException e) {
-                                // We couldn't find the message in this channel, move to next
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         if (LOGGER.isTraceEnabled()) {
             if (event instanceof GuildMessageReactionAddEvent) {
                 final GuildMessageReactionAddEvent reactionAddEvent = (GuildMessageReactionAddEvent) event;

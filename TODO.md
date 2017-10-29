@@ -12,10 +12,13 @@ Needs testing:
 * !raid overview for removed message seems to have issues - needs better error message and a fix
 * !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
 will enable admins to have overviews in separate channels which are read-only
+* Move attaching to overview to its own listener. Doesn't belong in EventLoggingListener.
 
 Being developed:
 
-* User can set their own locale
+* Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
+time (equalling no time to "now", if raid is active) to signup using that?
+* Read Pokemon go screenshot to create raid automatically (Swepocks)
 
 Discussion:
 
@@ -23,9 +26,7 @@ Discussion:
 
 Experiment with:
 
-* Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting time (equalling no time to "now", if raid is active) to signup using that?
 * Ability to create channels on the fly to put certain raids in
-* Read Pokemon go screenshot to create raid automatically (Swepocks)
 
 Fix issue:
 
@@ -42,11 +43,11 @@ Fix, misc:
 
 Do, features:
 
-* Fuzzy search for pokemon names
+* Snooze button for raid group
+* User can set their own locale
+* Fuzzy search for pokemon names (or 3 first char match?)
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
-* Emote to move signup
-* Emote to remove signup from group?
 * Config for permission setting of various groups of commands:
     * Raid functions like create, list can be set to be admin only
     * Raid group creation can be set to admin only

@@ -19,7 +19,6 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
@@ -47,9 +46,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
         this.pokemonRepository = pokemonRepository;
         this.clockService = clockService;
         this.name = "overview";
-        // todo: i18n help
-        this.help = "!raid overview";
-                //localeService.getMessageFor(LocaleService.LIST_HELP, LocaleService.DEFAULT);
+        this.help = localeService.getMessageFor(LocaleService.OVERVIEW_HELP, LocaleService.DEFAULT);
         this.raidRepository = raidRepository;
     }
 
@@ -96,7 +93,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                 messageChannel.editMessageById(messageId,
                         messageString)
                         .queue(m -> {}, m -> {
-                            cleanUp(config, user, messageId, serverConfigRepository, messageChannel);
+                            cleanUp(config, user, messageId, serverConfigRepository, localeService, messageChannel);
                         });
                 return true;
             };
@@ -112,7 +109,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
     }
 
     private static void cleanUp(Config config, User user, String messageId,
-                                ServerConfigRepository serverConfigRepository, MessageChannel messageChannel) {
+                                ServerConfigRepository serverConfigRepository, LocaleService localeService, MessageChannel messageChannel) {
         try {
             if (!StringUtils.isEmpty(messageId)) {
                 messageChannel.deleteMessageById(messageId).queue();
@@ -124,9 +121,8 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Cleaned up message related to this overview.");
             }
-            // todo: i18n
-            throw new UserMessedUpException(user, "Overview message has been removed by someone. " +
-                    "Run *!raid overview* again to create a new one.");
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.OVERVIEW_DELETED,
+                    localeService.getLocaleForUser(user)));
         }
     }
 
