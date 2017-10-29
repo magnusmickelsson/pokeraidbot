@@ -1,6 +1,8 @@
 package pokeraidbot.domain.pokemon;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.JsonPokemon;
 import pokeraidbot.infrastructure.JsonPokemons;
@@ -10,6 +12,8 @@ import java.io.InputStream;
 import java.util.*;
 
 public class PokemonRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PokemonRepository.class);
+
     private final LocaleService localeService;
     private Map<String, Pokemon> pokemons = new LinkedHashMap<>();
 
@@ -28,7 +32,7 @@ public class PokemonRepository {
                     pokemons.put(p.getName().toUpperCase(), pokemon);
                 }
             }
-            System.out.println("Parsed " + jsonPokemons.getPokemons().size() + " pokemons.");
+            LOGGER.info("Parsed " + jsonPokemons.getPokemons().size() + " pokemons.");
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

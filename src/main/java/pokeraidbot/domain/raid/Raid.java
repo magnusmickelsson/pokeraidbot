@@ -106,7 +106,7 @@ public class Raid {
             signUp = new SignUp(user.getName(), howManyPeople, arrivalTime);
             signUps.put(user.getName(), signUp);
         }
-        repository.addSignUp(user.getName(), this, signUp);
+        repository.addSignUp(user, this, signUp);
     }
 
     public Set<SignUp> getSignUps() {
@@ -143,5 +143,24 @@ public class Raid {
 
     public Set<SignUp> getSignUpsAt(LocalTime localTime) {
         return signUps.values().stream().filter(s -> s.getArrivalTime().equals(localTime)).collect(Collectors.toSet());
+    }
+
+    public String getNextEta(LocaleService localeService, User user, LocalTime now) {
+        if (signUps.size() == 0) {
+            return "";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            final LocalTime endTime = endOfRaid.toLocalTime();
+            LocalTime nextEta = endTime;
+            for (SignUp signUp : signUps.values()) {
+                final LocalTime arrivalTime = signUp.getArrivalTime();
+                if (arrivalTime.isAfter(now) && arrivalTime.isBefore(nextEta)) {
+                    nextEta = arrivalTime;
+                }
+            }
+            sb.append(", ").append(localeService.getMessageFor(LocaleService.NEXT_ETA,
+                    localeService.getLocaleForUser(user), Utils.printTime(nextEta)));
+            return sb.toString();
+        }
     }
 }

@@ -22,6 +22,12 @@ Confusion
 Psycho Cut
 Psychic
 Shadow Ball
+Tyranitar
+
+Tyranitar
+Quick Move	Charge Move
+Bite
+Stone Edge
 Donphan
 
 Donphan
@@ -36,16 +42,3 @@ Dragon Tail
 Dragon Breath
 Outrage
 Dragon Claw
-Exeggutor
-
-Exeggutor
-Quick Move	Charge Move
-Confusion
-Extrasensory
-Solar Beam
-Nidoking
-
-Nidoking
-Quick Move	Charge Move
-Fury Cutter
-Earthquake

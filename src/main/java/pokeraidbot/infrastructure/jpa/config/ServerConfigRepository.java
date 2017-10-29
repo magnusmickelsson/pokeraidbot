@@ -1,11 +1,14 @@
 package pokeraidbot.infrastructure.jpa.config;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public interface ConfigRepository extends JpaRepository<Config, String> {
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public interface ServerConfigRepository extends JpaRepository<Config, String> {
     Config findByServer(String server);
 
     default Config getConfigForServer(String server) {
@@ -19,5 +22,11 @@ public interface ConfigRepository extends JpaRepository<Config, String> {
             configs.put(config.getServer(), config);
         }
         return configs;
+    }
+
+    default void setOverviewMessageIdForServer(String server, String overviewMessageId) {
+        final Config config = findByServer(server);
+        config.setOverviewMessageId(overviewMessageId);
+        save(config);
     }
 }

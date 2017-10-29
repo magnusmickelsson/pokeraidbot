@@ -8,15 +8,15 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public class WhereIsGymCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final LocaleService localeService;
 
     public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService,
-                             ConfigRepository configRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+                             ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);
@@ -27,7 +27,7 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String gymName = commandEvent.getArgs();
-        final Gym gym = gymRepository.search(commandEvent.getAuthor().getName(), gymName, config.getRegion());
+        final Gym gym = gymRepository.search(commandEvent.getAuthor(), gymName, config.getRegion());
         String staticUrl = Utils.getStaticMapUrl(gym);
         String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
         replyBasedOnConfig(config, commandEvent,

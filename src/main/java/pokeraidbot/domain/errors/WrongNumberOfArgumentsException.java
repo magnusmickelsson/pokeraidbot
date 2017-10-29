@@ -11,12 +11,4 @@ public class WrongNumberOfArgumentsException extends UserMessedUpException {
                 "" + expectedArguments,
                 "" + actualArguments) + "\n\nHjälptext:\n" + helpTextForCommand);
     }
-
-    public WrongNumberOfArgumentsException(String userName, LocaleService localeService, int expectedArguments,
-                                           int actualArguments, String helpTextForCommand) {
-        super(userName, localeService.getMessageFor(LocaleService.WRONG_NUMBER_OF_ARGUMENTS,
-                localeService.getLocaleForUser(userName),
-                "" + expectedArguments,
-                "" + actualArguments) + "\n\nHjälptext:\n" + helpTextForCommand);
-    }
 }

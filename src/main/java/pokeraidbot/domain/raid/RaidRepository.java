@@ -64,7 +64,7 @@ public class RaidRepository {
         String people = args[0];
         String userName = user.getName();
         if (args.length < 3 || args.length > 10) {
-            throw new WrongNumberOfArgumentsException(userName, localeService, 3, args.length, help);
+            throw new WrongNumberOfArgumentsException(user, localeService, 3, args.length, help);
         }
         Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(user, localeService, people);
 
@@ -75,10 +75,10 @@ public class RaidRepository {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
-        final Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
+        final Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
 
-        LocalTime eta = Utils.parseTime(user, timeString);
+        LocalTime eta = Utils.parseTime(user, timeString, localeService);
         LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
 
         assertEtaNotAfterRaidEnd(user, raid, realEta, localeService);
@@ -142,10 +142,10 @@ public class RaidRepository {
         return raid;
     }
 
-    public Raid getActiveRaidOrFallbackToExRaid(Gym gym, String region) {
+    public Raid getActiveRaidOrFallbackToExRaid(Gym gym, String region, User user) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(gym, region);
         if (raidEntity == null) {
-            throw new RaidNotFoundException(gym, localeService);
+            throw new RaidNotFoundException(gym, localeService, user);
         }
         final Raid raid = getRaidInstance(raidEntity);
         return raid;
@@ -202,14 +202,14 @@ public class RaidRepository {
         }
     }
 
-    public void addSignUp(String userName, Raid raid, SignUp theSignUp) {
+    public void addSignUp(User user, Raid raid, SignUp theSignUp) {
         RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
-        RaidEntitySignUp entitySignUp = entity.getSignUp(userName);
+        RaidEntitySignUp entitySignUp = entity.getSignUp(user.getName());
         if (entitySignUp == null) {
-            entity.addSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
+            entity.addSignUp(new RaidEntitySignUp(user.getName(), theSignUp.getHowManyPeople(),
                     Utils.printTime(theSignUp.getArrivalTime())));
         } else {
-            entitySignUp.setNumberOfPeople(theSignUp.getHowManyPeople());
+            entitySignUp.setNumberOfPeople(theSignUp.getHowManyPeople(), localeService, user);
             entitySignUp.setEta(Utils.printTime(theSignUp.getArrivalTime()));
         }
         raidEntityRepository.save(entity);
@@ -276,7 +276,7 @@ public class RaidRepository {
             raidEntity.addSignUp(new RaidEntitySignUp(user.getName(), sum, startAtTime));
         } else {
             int sum = signUp.getNumberOfPeople();
-            if (startAt.toLocalTime().equals(Utils.parseTime(user, signUp.getEta()))) {
+            if (startAt.toLocalTime().equals(Utils.parseTime(user, signUp.getEta(), localeService))) {
                 sum = sum + mystic + instinct + valor + plebs;
             } else {
                 signUp.setEta(startAtTime);
@@ -284,7 +284,7 @@ public class RaidRepository {
                 sum = mystic + instinct + valor + plebs;
             }
             assertSumNotLessThanOne(user, sum);
-            signUp.setNumberOfPeople(sum);
+            signUp.setNumberOfPeople(sum, localeService, user);
         }
         raidEntity = raidEntityRepository.save(raidEntity);
 
@@ -294,7 +294,7 @@ public class RaidRepository {
     private void assertSumNotLessThanOne(User user, int sum) {
         if (sum <= 0) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.ERROR_PARSE_PLAYERS,
-                    localeService.getLocaleForUser(user.getName()),
+                    localeService.getLocaleForUser(user),
                     "" + sum, String.valueOf(HIGH_LIMIT_FOR_SIGNUPS)));
         }
     }
@@ -304,21 +304,66 @@ public class RaidRepository {
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
-            // todo: i18n
-            // Ignore this since there is apparantly no signup to remove users from
-//            throw new UserMessedUpException(user, "Det fanns ingen anmälan att ta bort folk från!");//"There was no signup to remove people from!");
+            // Ignore this case, when there is no signup to remove from. Silent ignore.
         } else if (startAtTime.equals(signUp.getEta())){
             final int sum = signUp.getNumberOfPeople() - mystic - instinct - valor - plebs;
             if (sum <= 0) {
                 // Remove signup
                 raidEntity.removeSignUp(signUp);
             } else {
-                signUp.setNumberOfPeople(sum);
+                signUp.setNumberOfPeople(sum, localeService, user);
             }
             raidEntity = raidEntityRepository.save(raidEntity);
         } else {
             // Ignore if they're trying to remove signups for a group they're no longer signed up for - we let them untick their emote
         }
         return getRaidInstance(raidEntity);
+    }
+
+    public void removeAllSignUpsAt(Raid raid, LocalDateTime startAt) {
+        Validate.notNull(raid, "Raid cannot be null");
+        Validate.notNull(startAt, "Start time cannot be null");
+        RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (entity != null) {
+            for (SignUp signUp : raid.getSignUps()) {
+                if (signUp.getArrivalTime().equals(startAt.toLocalTime())) {
+                    RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(), signUp.getHowManyPeople(),
+                            Utils.printTime(signUp.getArrivalTime())));
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Removed signup: " + removed);
+                    }
+                }
+            }
+            raidEntityRepository.save(entity);
+        }
+    }
+
+    public void moveAllSignUpsForTimeToNewTime(Raid raid, LocalDateTime currentStartAt, LocalDateTime newDateTime, User user) {
+        Validate.notNull(raid, "Raid cannot be null");
+        Validate.notNull(currentStartAt, "Current start time cannot be null");
+        Validate.notNull(newDateTime, "New start time cannot be null");
+        Validate.notNull(user, "User cannot be null");
+        RaidEntity entity = raidEntityRepository.findOne(raid.getId());
+        if (entity != null) {
+            for (SignUp signUp : raid.getSignUps()) {
+                if (signUp.getArrivalTime().equals(currentStartAt.toLocalTime())) {
+                    final RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(),
+                            signUp.getHowManyPeople(),
+                            Utils.printTime(signUp.getArrivalTime())));
+                    final RaidEntitySignUp movedSignUp = new RaidEntitySignUp(signUp.getUserName(),
+                            signUp.getHowManyPeople(),
+                            Utils.printTime(newDateTime.toLocalTime()));
+                    entity.addSignUp(movedSignUp);
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Moved signup: " + removed + " to " + movedSignUp);
+                    }
+                }
+            }
+            raidEntityRepository.save(entity);
+        } else {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+        }
+        // todo: throw error if problem?
     }
 }

@@ -37,6 +37,11 @@ Raid commands:
 
 ![Raid group signup](img/groupmuk.png)
 
+## Getting started as a user
+
+[English version](GETTING_STARTED_USER_en.md)
+[Swedish version](GETTING_STARTED_USER_sv.md)
+
 ## Support development
 
 Please do. :) It will help out a lot if it happens that I need to move from
@@ -126,11 +131,15 @@ or a local Postgres)
 
 NOTE: You need to provide two application properties so it can start, ownerId and token. Example:
 
-    java -jar pokeraidbot.jar --ownerId={your owner_id from registering a bot app/account above} --token={bot secret token as above}
+    java -jar pokeraidbot.jar --locale={language tag, sv or en available} 
+    --ownerId={your owner_id from registering a bot app/account above} 
+    --token={bot secret token as above}
     
 In IntelliJ, add
 
-    --ownerId={your owner_id from registering a bot app/account above} --token={bot secret token as above}
+    --locale={language tag, sv or en available} 
+    --ownerId={your owner_id from registering a bot app/account above} 
+    --token={bot secret token as above}
     
 to the "Program Arguments" field when creating a run configuration.
 

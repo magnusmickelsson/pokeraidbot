@@ -3,6 +3,8 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.User;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -10,9 +12,10 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 
@@ -27,8 +30,8 @@ public class RaidListCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ConfigRepository configRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+                           ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";
@@ -39,9 +42,9 @@ public class RaidListCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        String userName = commandEvent.getAuthor().getName();
+        final User user = commandEvent.getAuthor();
         final String args = commandEvent.getArgs();
-        final Locale locale = localeService.getLocaleForUser(userName);
+        final Locale locale = localeService.getLocaleForUser(user);
         Set<Raid> raids;
         if (args != null && args.length() > 0) {
             raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.getByName(args));
@@ -57,50 +60,53 @@ public class RaidListCommand extends ConfigAwareCommand {
             commandEvent.reply(embedBuilder.build());
         } else {
             StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder exRaids = new StringBuilder();
             stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
             if (args != null && args.length() > 0) {
                 stringBuilder.append(" (").append(args).append(")");
             }
             stringBuilder.append(":**");
-            // todo: i18n
-            stringBuilder.append("\nFör att se detaljer för en raid: !raid status {gym-namn}\n");
+            stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
+                    localeService.getLocaleForUser(user))).append("\n");
             final LocalDate today = LocalDate.now();
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
-                if (currentPokemon == null || (!currentPokemon.equals(raidBoss))) {
+                if (!Utils.isRaidEx(raid) && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
                     stringBuilder.append("\n**").append(currentPokemon.getName()).append("**\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
-                if (raid.getEndOfRaid().toLocalDate().isEqual(today)) {
+                if (!Utils.isRaidEx(raid)) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
                     .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")
                     .append(printTimeIfSameDay(raid.getEndOfRaid()))
                     .append(". ").append(numberOfPeople)
                     .append(" ")
-                    .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale)).append("\n");
+                    .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append("\n");
+                } else {
+                    exRaids.append("\n").append(raidGym.getName())
+                            .append(" (")
+                            .append(raidBoss.getName()).append(") - ")
+                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
+                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(raid.getEndOfRaid())))
+                            .append(". ").append(numberOfPeople)
+                            .append(" ")
+                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append(".\n");
                 }
-//                else {
-//                    exRaids.append("[").append(raidGym.getName()).append("](")
-//                            .append(Utils.getStaticMapUrl(raidGym)).append(") (")
-//                            .append(raidBoss.getName()).append(") - ")
-//                            .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-//                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
-//                                    printTimeIfSameDay(raid.getEndOfRaid())))
-//                            .append(". ").append(numberOfPeople)
-//                            .append(" ")
-//                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-//                            .append(".\n");
-//                }
             }
-//            final String exRaidList = exRaids.toString();
-//            if (exRaidList.length() > 1) {
-////                embedBuilder = new EmbedBuilder();
-//                embedBuilder.addField("**Raid-EX:**", exRaidList, true);
-//            }
+            final String exRaidList = exRaids.toString();
+            if (exRaidList.length() > 1) {
+//                embedBuilder = new EmbedBuilder();
+                stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
+            }
             commandEvent.reply(stringBuilder.toString());
         }
     }

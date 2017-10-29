@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.Locale;
 import java.util.Set;
@@ -38,9 +39,9 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ConfigRepository configRepository, BotService botService, CommandListener commandListener,
+                             ServerConfigRepository serverConfigRepository, BotService botService, CommandListener commandListener,
                              PokemonRepository pokemonRepository) {
-        super(configRepository, commandListener);
+        super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.botService = botService;
         this.pokemonRepository = pokemonRepository;
@@ -54,13 +55,14 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String gymName = commandEvent.getArgs();
-        final String userName = commandEvent.getAuthor().getName();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
-        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+        final User user = commandEvent.getAuthor();
+        final String userName = user.getName();
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final Set<SignUp> signUps = raid.getSignUps();
         final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
 
-        final Locale localeForUser = localeService.getLocaleForUser(userName);
+        final Locale localeForUser = localeService.getLocaleForUser(user);
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();
@@ -86,8 +88,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(gymName).append("*\n")
                 .append(raidBossText).append(" **").append(pokemon).append("** - ") //.append(hintsText)
                 .append("*!raid vs ").append(pokemon.getName()).append("*");
-                // todo: i18n
-        embedBuilder.setFooter(findYourWayText + " klicka på meddelandetitel för Google Maps.",
+        embedBuilder.setFooter(findYourWayText + localeService.getMessageFor(LocaleService.GOOGLE_MAPS,
+                localeService.getLocaleForUser(user)),
                 Utils.getPokemonIcon(pokemon));
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();

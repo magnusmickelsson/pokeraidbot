@@ -1,23 +1,37 @@
 package pokeraidbot.domain;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class RaidPokemonsTest {
+    private LocaleService localeService;
+
+    @Before
+    public void setUp() throws Exception {
+        UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
+        when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
+        localeService = new LocaleService("sv", userConfigRepository);
+    }
+
     @Test
     public void verifyAllRaidBossesInRepo() throws Exception {
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         for (RaidBossPokemons raidBoss : RaidBossPokemons.values()) {
             try {
                 assertThat(repo.getByName(raidBoss.name()) != null, is(true));
@@ -37,7 +51,7 @@ public class RaidPokemonsTest {
 
     @Test
     public void verifyTyranitarBestCounter() throws Exception {
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         PokemonRaidStrategyService strategyService = new PokemonRaidStrategyService(repo);
         final String tyranitarBestCounter = strategyService.getCounters(repo.getByName("Tyranitar"))
                 .getSupremeCounters().iterator().next().getCounterPokemonName();
@@ -47,7 +61,7 @@ public class RaidPokemonsTest {
     @Test
     public void verifyAllPokemonsInPokemonGoInRepo() throws Exception {
         Set<Integer> numbers = new HashSet<>();
-        PokemonRepository repo = new PokemonRepository("/mons.json", new LocaleService());
+        PokemonRepository repo = new PokemonRepository("/mons.json", localeService);
         try {
             for (int n = 1; n < 252; n++) {
                 numbers.add(n);

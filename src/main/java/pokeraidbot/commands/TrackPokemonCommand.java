@@ -10,16 +10,16 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public class TrackPokemonCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final PokemonRepository pokemonRepository;
     private final TrackingCommandListener commandListener;
 
-    public TrackPokemonCommand(BotService botService, ConfigRepository configRepository, LocaleService localeService,
+    public TrackPokemonCommand(BotService botService, ServerConfigRepository serverConfigRepository, LocaleService localeService,
                                PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(configRepository, commandListener);
+        super(serverConfigRepository, commandListener, localeService);
         this.commandListener = botService.getTrackingCommandListener();
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
@@ -33,7 +33,7 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         Pokemon pokemon = pokemonRepository.getByName(args);
         final String userId = commandEvent.getAuthor().getId();
         final User user = commandEvent.getAuthor();
-        commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon.getName()), user);
+        commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon), user);
         commandEvent.reactSuccess();
     }
 }

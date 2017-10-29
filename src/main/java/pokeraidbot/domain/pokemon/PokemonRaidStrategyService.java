@@ -1,5 +1,7 @@
 package pokeraidbot.domain.pokemon;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.raid.RaidBossCounters;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
@@ -7,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PokemonRaidStrategyService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PokemonRaidStrategyService.class);
+
     private Map<String, RaidBossCounters> counters = new HashMap<>();
     private Map<String, String> maxCp = new HashMap<>();
     private static String[] raidBosses = {
@@ -47,7 +51,7 @@ public class PokemonRaidStrategyService {
                 // No file for this boss, skip it
             }
         }
-        System.out.println("Parsed " + counters.size() + " raid boss counters.");
+        LOGGER.info("Parsed " + counters.size() + " raid boss counters.");
 
         maxCp.put("BAYLEEF", "740");
 
@@ -111,7 +115,7 @@ public class PokemonRaidStrategyService {
 
         maxCp.put("Mewtwo".toUpperCase(), "2275");
 
-        System.out.println("Configured " + maxCp.size() + " raid boss max CP entries.");
+        LOGGER.info("Configured " + maxCp.size() + " raid boss max CP entries.");
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {

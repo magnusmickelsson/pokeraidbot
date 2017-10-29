@@ -24,7 +24,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,13 +46,12 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
     private final BotService botService;
     private final ClockService clockService;
-    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,
-                               ConfigRepository configRepository,
+                               ServerConfigRepository serverConfigRepository,
                                CommandListener commandListener, BotService botService, ClockService clockService) {
-        super(configRepository, commandListener);
+        super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -69,7 +68,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String timeString = args[0];
-        LocalTime startAtTime = Utils.parseTime(user, timeString);
+        LocalTime startAtTime = Utils.parseTime(user, timeString, localeService);
         LocalDateTime startAt = LocalDateTime.of(LocalDate.now(), startAtTime);
 
         assertTimeNotInNoRaidTimespan(user, startAtTime, localeService);
@@ -81,17 +80,19 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             gymNameBuilder.append(args[i]).append(" ");
         }
         String gymName = gymNameBuilder.toString().trim();
-        final Gym gym = gymRepository.search(userName, gymName, config.getRegion());
-        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion());
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
+        final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
                     localeService.getLocaleForUser(user));
             throw new UserMessedUpException(userName, errorText);
         }
 
+        // todo: Check that user doesn't have more than one group for a raid, in that case he/she should use raid change to change time
+
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
-                        configRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt);
+                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt, user);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
@@ -133,7 +134,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                                                                  String gymName, Raid raid,
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                                  Message embed) {
-        final LocalDateTime startAt = emoticonSignUpMessageListener.getStartAt();
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(15);
@@ -141,8 +141,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     LOGGER.debug("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + embed.getId());
                 }
+                LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
-                        getRaidGroupMessageEmbed(user, startAt, raidRepository.getById(raid.getId()), localeService);
+                        getRaidGroupMessageEmbed(user, start, raidRepository.getById(raid.getId()), localeService);
                 embed.getChannel().editMessageById(embed.getId(),
                         newContent)
                         .queue(m -> {}, m -> {
@@ -157,13 +158,14 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                     throw new RuntimeException(e);
                 }
             } while (emoticonSignUpMessageListener.getStartAt() != null &&
-                    clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt()));
+                    clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt().plusMinutes(5)));
             LOGGER.debug("Raid group has now expired or message been removed, will clean up listener and messages..");
-            cleanUp(commandEvent, startAt, raid, emoticonSignUpMessageListener);
+            cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid, emoticonSignUpMessageListener);
 
             // todo: should we automatically remove signups for this group when time expires from total? Makes sense.
             final String removedGroupText = localeService.getMessageFor(LocaleService.REMOVED_GROUP,
-                    localeService.getLocaleForUser(user), printTimeIfSameDay(startAt), gymName);
+                    localeService.getLocaleForUser(user),
+                    printTimeIfSameDay(emoticonSignUpMessageListener.getStartAt()), gymName);
             commandEvent.reply(user.getAsMention() + ": " + removedGroupText);
             return true;
         };
@@ -173,6 +175,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     private void cleanUp(CommandEvent commandEvent, LocalDateTime startAt, Raid raid,
                          EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
         try {
+            // Clean up all signups that should have done their raid now
+            raidRepository.removeAllSignUpsAt(raid, startAt);
             // Clean up after raid expires
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
@@ -201,25 +205,29 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                localeService.getLocaleForUser(userName), raid.getPokemon().getName(), gym.getName(),
+                localeService.getLocaleForUser(user), raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
-        embedBuilder.setTitle("Hitta hit: Google Maps", Utils.getNonStaticMapUrl(gym));
+        final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
+                localeService.getLocaleForUser(user));
+        embedBuilder.setTitle(getHereText, Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(headline, null, Utils.getPokemonIcon(pokemon));
         final Set<SignUp> signUpsAt = raid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
         final String allSignUpNames = signUpNames.size() > 0 ? StringUtils.join(signUpNames, ", ") : "-";
         final int numberOfPeopleArrivingAt = signUpsAt.stream().mapToInt(s -> s.getHowManyPeople()).sum();
-        // todo: i18n
-        final String totalSignUpsText = "**Antal anmälda:** **" + numberOfPeopleArrivingAt + "**";
+        final String numberOfSignupsText = localeService.getMessageFor(LocaleService.SIGNED_UP,
+                localeService.getLocaleForUser(user));
+        final String totalSignUpsText = "**" + numberOfSignupsText + ":** **" + numberOfPeopleArrivingAt + "**\n";
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append(totalSignUpsText);
-        // todo: i18n
-        descriptionBuilder.append("\n**De som kommer:** ");
+//        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
+//                localeService.getLocaleForUser(user));
+//        descriptionBuilder.append("**").append(thoseWhoAreComingText).append(":** ");
         descriptionBuilder.append(allSignUpNames);
         final String description = descriptionBuilder.toString();
         embedBuilder.setDescription(description);
-        // todo: i18n
-        embedBuilder.setFooter("Nya anmälningar uppdateras var 15:e sekund. När tiden gått ut tas meddelandet bort.", null);
+        embedBuilder.setFooter(localeService.getMessageFor(LocaleService.GROUP_MESSAGE_TO_BE_REMOVED,
+                localeService.getLocaleForUser(user)), null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }
