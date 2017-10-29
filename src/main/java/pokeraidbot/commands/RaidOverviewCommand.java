@@ -109,7 +109,8 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
     }
 
     private static void cleanUp(Config config, User user, String messageId,
-                                ServerConfigRepository serverConfigRepository, LocaleService localeService, MessageChannel messageChannel) {
+                                ServerConfigRepository serverConfigRepository, LocaleService localeService,
+                                MessageChannel messageChannel) {
         try {
             if (!StringUtils.isEmpty(messageId)) {
                 messageChannel.deleteMessageById(messageId).queue();
@@ -130,7 +131,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                                              LocaleService localeService,
                                              RaidRepository raidRepository,
                                              ClockService clockService) {
-        final Locale locale = localeService.getLocaleForUser(user);
+        final Locale locale = config.getLocale();
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
         final String messageString;
         StringBuilder stringBuilder = new StringBuilder();

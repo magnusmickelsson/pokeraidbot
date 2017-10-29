@@ -94,7 +94,11 @@ public class Config {
     }
 
     public Locale getLocale() {
-        return new Locale(locale);
+        if (locale != null) {
+            return new Locale(locale);
+        } else {
+            return LocaleService.DEFAULT;
+        }
     }
 
     public void setLocale(Locale locale) {

@@ -16,8 +16,11 @@ will enable admins to have overviews in separate channels which are read-only
 
 Being developed:
 
+* User can set their own locale
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
+* Snooze button for raid group
+* Fuzzy search for pokemon names (or 3 first char match?)
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
 
 Discussion:
@@ -43,9 +46,6 @@ Fix, misc:
 
 Do, features:
 
-* Snooze button for raid group
-* User can set their own locale
-* Fuzzy search for pokemon names (or 3 first char match?)
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:

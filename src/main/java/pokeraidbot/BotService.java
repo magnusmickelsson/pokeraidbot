@@ -33,6 +33,7 @@ import javax.annotation.PostConstruct;
 import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class BotService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
@@ -150,7 +151,7 @@ public class BotService {
         if (serverConfigRepository.findAll().size() == 0) {
             LOGGER.warn("Could not find any configuration in database, assuming fresh install. Creating basic server configurations..");
             // My test servers
-            serverConfigRepository.save(new Config("manhattan_new_york", "pokeraidbot_us_test"));
+            serverConfigRepository.save(new Config("manhattan_new_york", false, Locale.ENGLISH, "pokeraidbot_us_test"));
             serverConfigRepository.save(new Config("uppsala", "zhorhn tests stuff"));
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_stage"));
