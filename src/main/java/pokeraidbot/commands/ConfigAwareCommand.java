@@ -19,7 +19,7 @@ public abstract class ConfigAwareCommand extends Command {
     protected final CommandListener commandListener;
     private final LocaleService localeService;
     protected static final ExecutorService executorService = new ThreadPoolExecutor(100, Integer.MAX_VALUE,
-            120L, TimeUnit.SECONDS,
+            60L, TimeUnit.SECONDS,
             new SynchronousQueue<>());
 
     public ConfigAwareCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,

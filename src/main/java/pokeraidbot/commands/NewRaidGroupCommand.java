@@ -217,12 +217,12 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final int numberOfPeopleArrivingAt = signUpsAt.stream().mapToInt(s -> s.getHowManyPeople()).sum();
         final String numberOfSignupsText = localeService.getMessageFor(LocaleService.SIGNED_UP,
                 localeService.getLocaleForUser(user));
-        final String totalSignUpsText = "**" + numberOfSignupsText + ":** **" + numberOfPeopleArrivingAt + "**";
+        final String totalSignUpsText = "**" + numberOfSignupsText + ":** **" + numberOfPeopleArrivingAt + "**\n";
         StringBuilder descriptionBuilder = new StringBuilder();
         descriptionBuilder.append(totalSignUpsText);
-        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
-                localeService.getLocaleForUser(user));
-        descriptionBuilder.append("\n**").append(thoseWhoAreComingText).append(":** ");
+//        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
+//                localeService.getLocaleForUser(user));
+//        descriptionBuilder.append("**").append(thoseWhoAreComingText).append(":** ");
         descriptionBuilder.append(allSignUpNames);
         final String description = descriptionBuilder.toString();
         embedBuilder.setDescription(description);
