@@ -14,7 +14,6 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;

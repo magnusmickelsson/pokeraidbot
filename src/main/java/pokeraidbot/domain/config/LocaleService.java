@@ -1,8 +1,10 @@
 package pokeraidbot.domain.config;
 
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.UserConfig;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
@@ -74,6 +76,11 @@ public class LocaleService {
     public static final String OVERVIEW_HELP = "OVERVIEW_HELP";
     public static final String OVERVIEW_ATTACH = "OVERVIEW_ATTACH";
     public static final String OVERVIEW_DELETED = "OVERVIEW_DELETED";
+    public static final String HELP_USER_CONFIG = "HELP_USER_CONFIG";
+    public static final String USER_CONFIG_BAD_SYNTAX = "USER_CONFIG_BAD_SYNTAX";
+    public static final String USER_CONFIG_BAD_PARAM = "USER_CONFIG_BAD_PARAM";
+    public static final String UNSUPPORTED_LOCALE = "UNSUPPORTED_LOCALE";
+    public static final String LOCALE_SET = "LOCALE_SET";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -144,6 +151,44 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(LOCALE_SET, Locale.ENGLISH),
+                "Locale set to: %1"
+        );
+        i18nMessages.put(new I18nLookup(LOCALE_SET, SWEDISH),
+                "Locale (språk) satt till: %1"
+        );
+        i18nMessages.put(new I18nLookup(UNSUPPORTED_LOCALE, Locale.ENGLISH),
+                "You tried to set an unsupported locale: %1. Supported locales are: " +
+                        StringUtils.join(LocaleService.SUPPORTED_LOCALES, ", ")
+        );
+        i18nMessages.put(new I18nLookup(UNSUPPORTED_LOCALE, SWEDISH),
+                "Du försökte sätta en locale som inte stödjs: %1. Tillgängliga locales är: " +
+                        StringUtils.join(LocaleService.SUPPORTED_LOCALES, ", ")
+        );
+        i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_PARAM, Locale.ENGLISH),
+                "The only parameter that can be changed right now via this command is locale. " +
+                        "You tried to set %1."
+        );
+        i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_PARAM, SWEDISH),
+                "Den enda parametern som kan ändras just nu via detta kommando är språk (locale). " +
+                        "Du försökte sätta parametern %1."
+        );
+        i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_SYNTAX, Locale.ENGLISH),
+                "Bad syntax. To see user's configuration: *!raid config show*\n" +
+                        "To change: *!raid config {param}={value}*"
+        );
+        i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_SYNTAX, SWEDISH),
+                "Felaktigt kommando. För att visa användarens konfiguration: *!raid config show*\n" +
+                        "För att ändra den: *!raid config {param}={value}*"
+        );
+        i18nMessages.put(new I18nLookup(HELP_USER_CONFIG, Locale.ENGLISH),
+                "Get or change user configuration - !raid config show to display, " +
+                        "!raid config {param}={value} to change."
+        );
+        i18nMessages.put(new I18nLookup(HELP_USER_CONFIG, SWEDISH),
+                "Användarkonfiguration - !raid config show för att visa, " +
+                        "!raid config {param}={value} för att ändra."
+        );
         i18nMessages.put(new I18nLookup(MOVED_GROUP, Locale.ENGLISH),
                 "Moved group from %1 to %2 for raid at %3.\n" +
                         "**Note: all signups for this time are moved to the new time.** " +
@@ -722,8 +767,14 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(MANUAL_GROUPS, Locale.ENGLISH),
                 "**Note:This command must be executed in a server text channel, not in DM!**\n\n" +
                         "**Create a group to run a raid at a certain time:** !raid group {time (HH:MM)} {gym name}\n" +
-                        "*Example:* !raid group 09:45 Solna Platform"
-                // todo: fix this message
+                        "*Example:* !raid group 09:45 Solna Platform\n\n" +
+                        "A user can sign up themselves and their group friends via emotes below the raid group message.\n\n" +
+                        "1-6 buttons signs up the corresponding amount of people. " +
+                        "You can combine numbers to get the correct total. " +
+                        "Press the same button(s) again to remove the signups.\n\n" +
+                        "The message will be automatically updated with new signups. When the raid group start time" +
+                        " is expired, the message will be removed, along with the associated signups.\n\n" +
+                        "Since this function is pretty new, feedback on how to improve it is welcome."
         );
         i18nMessages.put(new I18nLookup(MANUAL_GROUPS, SWEDISH),
                 "**OBS: Kommandot måste köras i en servers textkanal, inte i DM!**\n\n" +
@@ -733,9 +784,7 @@ public class LocaleService {
                         "1-6 anmäler det antal som står på knappen. " +
                         "Tryck samma knapp igen för att ta bort samma antal.\n\n" +
                         "Meddelandet kommer uppdateras var 15:e sekund med alla som anmäler sig. När tiden gått " +
-                        "ut för gruppen, kommer meddelandet tas bort. Dock kommer alla anmälningar att ligga kvar " +
-                        "på raidens total, tills man antingen tar bort dem (via !raid remove {gym namn}) eller " +
-                        "att raidens tid tar slut.\n\n" +
+                        "ut för gruppen, kommer meddelandet tas bort, tillsammans med alla relaterade anmälningar.\n\n" +
                         "Eftersom denna funktion är tämligen ny, uppskattas feedback på hur man kan göra den bättre."
         );
 
@@ -771,9 +820,10 @@ public class LocaleService {
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
                         "**Sign up for a raid:**\n!raid add *[number of people] [ETA (HH:MM)] [Gym name]*\n" +
                         "*Example:* !raid add 3 09:15 Solna Platform\n\n" +
+                        "**You can also use an easier way:** \\+{number of people} {ETA (HH:MM)} {Gym name}\n" +
+                        "*Example:* +3 09:15 Solna Platform\n\n" +
                         "**Unsign raid:**\n!raid remove *[Gym name]*\n" +
                         "*Example:* !raid remove Solna Platform"
-                // todo: add +1 time gym syntax message
         );
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +

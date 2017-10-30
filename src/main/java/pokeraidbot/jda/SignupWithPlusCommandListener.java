@@ -76,12 +76,15 @@ public class SignupWithPlusCommandListener implements EventListener {
             message = raidRepository.executeSignUpCommand(configForServer, user,
                     localeService.getLocaleForUser(user),
                     splitArguments, "signup");
+            guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
         } catch (Throwable t) {
-            message = null; // Skip response if we can't do a signup
+            LOGGER.debug("Signup plus command failed: " + t.getMessage());
+            // todo: i18n
+            message = "Pokeraidbot wanted to sign you up, but couldn't:\n" + t.getMessage() + "\n\n" +
+            "Use syntax like: *+1 09:45 Solna Platform*";
             guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
         }
         if (!StringUtils.isEmpty(message)) {
-            guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);

@@ -30,7 +30,7 @@ import static pokeraidbot.Utils.printTimeIfSameDay;
 /**
  * !raid overview [Pokestop name]
  */
-public class RaidOverviewCommand extends ConfigAwareCommand {
+public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(RaidOverviewCommand.class);
 
     private final RaidRepository raidRepository;
@@ -40,8 +40,9 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
 
     public RaidOverviewCommand(RaidRepository raidRepository, LocaleService localeService,
                                ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository,
-                               CommandListener commandListener, ClockService clockService) {
-        super(serverConfigRepository, commandListener, localeService);
+                               CommandListener commandListener, ClockService clockService,
+                               ExecutorService executorService) {
+        super(serverConfigRepository, commandListener, localeService, executorService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.clockService = clockService;
@@ -57,7 +58,8 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
         if (!StringUtils.isEmpty(msgId)) {
             final Callable<Boolean> refreshEditThreadTask =
                     getMessageRefreshingTaskToSchedule(user, config, msgId, localeService,
-                            serverConfigRepository, raidRepository, clockService, commandEvent.getChannel());
+                            serverConfigRepository, raidRepository, clockService, commandEvent.getChannel(),
+                            executorService);
             executorService.submit(refreshEditThreadTask);
         } else {
             final String messageString = getOverviewMessage(config,
@@ -68,7 +70,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                 final Callable<Boolean> refreshEditThreadTask =
                         getMessageRefreshingTaskToSchedule(user, config, messageId,
                                 localeService, serverConfigRepository, raidRepository, clockService,
-                                commandEvent.getChannel());
+                                commandEvent.getChannel(), executorService);
                 executorService.submit(refreshEditThreadTask);
             });
         }
@@ -80,7 +82,8 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                                                                        ServerConfigRepository serverConfigRepository,
                                                                        RaidRepository raidRepository,
                                                                        ClockService clockService,
-                                                                       MessageChannel messageChannel) {
+                                                                       MessageChannel messageChannel,
+                                                                       final ExecutorService executorService) {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute

@@ -119,7 +119,9 @@ public class Raid {
 
     public SignUp remove(String userName, RaidRepository raidRepository) {
         final SignUp removed = signUps.remove(userName);
-        raidRepository.removeSignUp(userName, this, removed);
+        if (removed != null) {
+            raidRepository.removeSignUp(userName, this, removed);
+        }
         return removed;
     }
 

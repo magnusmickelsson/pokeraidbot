@@ -28,6 +28,10 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @Configuration
@@ -74,9 +78,17 @@ public class BotServerMain {
                                     PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                                     ServerConfigRepository serverConfigRepository,
                                     UserConfigRepository userConfigRepository, ClockService clockService,
-                                    TrackingCommandListener trackingCommandListener) {
+                                    TrackingCommandListener trackingCommandListener, ExecutorService executorService) {
         return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
-                serverConfigRepository, userConfigRepository, clockService, ownerId, token, trackingCommandListener);
+                serverConfigRepository, userConfigRepository, executorService, clockService, ownerId, token,
+                trackingCommandListener);
+    }
+
+    @Bean
+    public ExecutorService getExecutorService() {
+        return new ThreadPoolExecutor(100, Integer.MAX_VALUE,
+                65L, TimeUnit.SECONDS,
+                new SynchronousQueue<>());
     }
 
     @Bean

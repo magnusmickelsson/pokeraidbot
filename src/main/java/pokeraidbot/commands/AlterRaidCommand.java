@@ -114,8 +114,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
-                final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
-                        commandEvent.getMember(), Permission.ADMINISTRATOR);
+                final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
                 if (userIsNotAdministrator && raid.getSignUps().size() > 0) {
                     throw new UserMessedUpException(userName,
                             localeService.getMessageFor(LocaleService.ONLY_ADMINS_REMOVE_RAID,
@@ -151,9 +150,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     if (o instanceof EmoticonSignUpMessageListener) {
                         EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) o;
                         final String raidId = raid.getId();
-                        final boolean isCorrectRaidAndIsUsersGroup =
-                                raidId.equals(listener.getRaidId()) && user.getId().equals(listener.getUserId());
-                        if (isCorrectRaidAndIsUsersGroup) {
+                        final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
+                        final boolean isUsersGroup = user.getId().equals(listener.getUserId());
+                        if (isCorrectRaid && (isUsersGroup || isUserAdministrator(commandEvent))) {
                             final LocalDateTime currentStartAt = listener.getStartAt();
                             raidRepository.moveAllSignUpsForTimeToNewTime(raid, currentStartAt, newDateTime, user);
                             listener.setStartAt(newDateTime);
@@ -180,12 +179,16 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     }
 
     private void verifyPermission(CommandEvent commandEvent, User user, Raid raid) {
-        final boolean userIsNotAdministrator = !PermissionUtil.checkPermission(commandEvent.getTextChannel(),
-                commandEvent.getMember(), Permission.ADMINISTRATOR);
+        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
         final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
         if (userIsNotAdministrator && userIsNotRaidCreator) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
                     localeService.getLocaleForUser(user)));
         }
+    }
+
+    private boolean isUserAdministrator(CommandEvent commandEvent) {
+        return PermissionUtil.checkPermission(commandEvent.getTextChannel(),
+                commandEvent.getMember(), Permission.ADMINISTRATOR);
     }
 }

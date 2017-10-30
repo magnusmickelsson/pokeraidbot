@@ -4,17 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* !raid list should show next ETA
-* Clean up signups for expired group
-* Persistent tracking (needs non-free Heroku version)
-* User configuration, stored in database. 3 available trackings, and locale.
-* Move time for raid group: !raid change group (time) (gym)
-* !raid overview for removed message seems to have issues - needs better error message and a fix
-* !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
-will enable admins to have overviews in separate channels which are read-only
-* Move attaching to overview to its own listener. Doesn't belong in EventLoggingListener.
-* User can set their own locale
-* When raid group expires, signups aren't cleaned up
+-
 
 Being developed:
 
@@ -34,6 +24,7 @@ Experiment with:
 
 Fix issue:
 
+* Raid man page for user config
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights

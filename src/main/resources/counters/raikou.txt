@@ -34,11 +34,3 @@ Donphan
 Quick Move	Charge Move
 Counter
 Earthquake
-Dragonite
-
-Dragonite
-Quick Move	Charge Move
-Dragon Tail
-Dragon Breath
-Outrage
-Dragon Claw

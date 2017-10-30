@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.Raid;
@@ -44,7 +45,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         } else {
             final String message =
                     localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM, localeForUser, userName, gym.getName());
-            replyBasedOnConfigAndRemoveAfter(config, commandEvent, message, 15);
+            replyErrorBasedOnConfig(config, commandEvent, new UserMessedUpException(user, message));
         }
     }
 }

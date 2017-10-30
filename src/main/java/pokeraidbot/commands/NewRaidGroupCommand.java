@@ -38,7 +38,7 @@ import static pokeraidbot.Utils.*;
 /**
  * !raid group [start raid at (HH:MM)] [Pokestop name]
  */
-public class NewRaidGroupCommand extends ConfigAwareCommand {
+public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRaidGroupCommand.class);
 
     private final GymRepository gymRepository;
@@ -51,8 +51,9 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,
                                ServerConfigRepository serverConfigRepository,
-                               CommandListener commandListener, BotService botService, ClockService clockService) {
-        super(serverConfigRepository, commandListener, localeService);
+                               CommandListener commandListener, BotService botService,
+                               ClockService clockService, ExecutorService executorService) {
+        super(serverConfigRepository, commandListener, localeService, executorService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -94,7 +95,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
 
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
-                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository, raid.getId(), startAt, user);
+                        serverConfigRepository, raidRepository, pokemonRepository, gymRepository,
+                        raid.getId(), startAt, user);
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
@@ -125,7 +127,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                         }
                     });
             final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(commandEvent, user, gymName,
+                    getMessageRefreshingTaskToSchedule(commandEvent, user,
                             raid, emoticonSignUpMessageListener, embed);
             executorService.submit(refreshEditThreadTask);
         });
@@ -133,7 +135,7 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
     }
 
     private Callable<Boolean> getMessageRefreshingTaskToSchedule(CommandEvent commandEvent, User user,
-                                                                 String gymName, Raid raid,
+                                                                 Raid raid,
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                                  Message embed) {
         final MessageChannel channel = commandEvent.getTextChannel();
@@ -196,8 +198,11 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                          EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
         Raid raid = null;
         try {
-            // Clean up all signups that should have done their raid now
-            raid = raidRepository.removeAllSignUpsAt(raidId, startAt);
+            if (startAt != null) {
+                // Clean up all signups that should have done their raid now, if there still is a time
+                // (Could be set to null due to an error, in that case keep signups in database)
+                raid = raidRepository.removeAllSignUpsAt(raidId, startAt);
+            }
         } catch (Throwable t) {
             // Do nothing, just log
             LOGGER.warn("Exception occurred when removing signups: " + t + "-" + t.getMessage());

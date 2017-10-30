@@ -5,7 +5,6 @@ import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
-import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
@@ -34,6 +33,7 @@ import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
 
 public class BotService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
@@ -51,7 +51,7 @@ public class BotService {
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                       ServerConfigRepository serverConfigRepository, UserConfigRepository userConfigRepository,
-                      ClockService clockService, String ownerId, String token,
+                      ExecutorService executorService, ClockService clockService, String ownerId, String token,
                       TrackingCommandListener trackingCommandListener) {
         this.gymRepository = gymRepository;
         this.serverConfigRepository = serverConfigRepository;
@@ -118,9 +118,9 @@ public class BotService {
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
                         aggregateCommandListener, this),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener, this, clockService),
+                        serverConfigRepository, aggregateCommandListener, this, clockService, executorService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
-                        aggregateCommandListener, clockService)
+                        aggregateCommandListener, clockService, executorService)
         );
 
         try {

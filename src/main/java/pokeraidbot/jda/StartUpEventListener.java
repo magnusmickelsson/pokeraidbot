@@ -2,12 +2,8 @@ package pokeraidbot.jda;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageEmbedEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.exceptions.ErrorResponseException;
 import net.dv8tion.jda.core.hooks.EventListener;
 import org.apache.commons.lang3.StringUtils;
@@ -59,8 +55,8 @@ public class StartUpEventListener implements EventListener{
                                     final Callable<Boolean> overviewTask =
                                             RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
                                                     null, config, messageId, localeService, serverConfigRepository,
-                                                    raidRepository, clockService, channel
-                                            );
+                                                    raidRepository, clockService, channel,
+                                                    executorService);
                                     executorService.submit(overviewTask);
                                     LOGGER.info("Found overview message for channel " + channel.getName() +
                                             " (server " + guild.getName() + "). Attaching to it.");
