@@ -142,7 +142,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
             stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
             stringBuilder.append(":**");
             stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
-                    localeService.getLocaleForUser(user))).append("\n");
+                    locale)).append("\n");
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
@@ -182,7 +182,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
             }
         }
         stringBuilder.append("\n\n").append(localeService.getMessageFor(LocaleService.OVERVIEW_UPDATE,
-                localeService.getLocaleForUser(user),
+                locale,
                 printTime(clockService.getCurrentTime())));
         final String message = stringBuilder.toString();
         return message;

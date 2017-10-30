@@ -158,9 +158,14 @@ public class Raid {
                     nextEta = arrivalTime;
                 }
             }
-            sb.append(", ").append(localeService.getMessageFor(LocaleService.NEXT_ETA,
-                    localeService.getLocaleForUser(user), Utils.printTime(nextEta)));
-            return sb.toString();
+            // If we have an actual ETA that is not just the raid ending, return it.
+            if (!nextEta.equals(endTime)) {
+                sb.append(", ").append(localeService.getMessageFor(LocaleService.NEXT_ETA,
+                        localeService.getLocaleForUser(user), Utils.printTime(nextEta)));
+                return sb.toString();
+            } else {
+                return "";
+            }
         }
     }
 }

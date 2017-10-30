@@ -2,10 +2,8 @@ package pokeraidbot.domain.tracking;
 
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -85,15 +83,15 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
     }
 
     @Override
-    public void add(PokemonTrackingTarget trackingTarget, User user) {
+    public void add(PokemonTrackingTarget trackingTarget, User user, Config config) {
         if (getTrackingTargets(trackingTarget.getRegion()).contains(trackingTarget)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_EXISTS,
                     localeService.getLocaleForUser(user)));//, trackingTarget.toString()));
         }
-        addToDbAndCollection(trackingTarget, user);
+        addToDbAndCollection(trackingTarget, user, config);
     }
 
-    private void addToDbAndCollection(PokemonTrackingTarget trackingTarget, User user) {
+    private void addToDbAndCollection(PokemonTrackingTarget trackingTarget, User user, Config config) {
         UserConfig userConfig = userConfigRepository.findOne(user.getId());
         if (userConfig != null) {
             if (userConfig.hasFreeTrackingSpot()) {
@@ -103,7 +101,8 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
                         localeService.getLocaleForUser(user)));
             }
         } else {
-            userConfig = new UserConfig(user.getId(), trackingTarget.getPokemon(), null, null, null);
+            // Per default, let user have the same locale as the server
+            userConfig = new UserConfig(user.getId(), trackingTarget.getPokemon(), null, null, config.getLocale());
         }
         userConfigRepository.save(userConfig);
         trackingTargets.add(trackingTarget);

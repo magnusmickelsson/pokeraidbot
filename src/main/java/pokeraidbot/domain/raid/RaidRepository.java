@@ -320,22 +320,26 @@ public class RaidRepository {
         return getRaidInstance(raidEntity);
     }
 
-    public void removeAllSignUpsAt(Raid raid, LocalDateTime startAt) {
-        Validate.notNull(raid, "Raid cannot be null");
+    public Raid removeAllSignUpsAt(String raidId, LocalDateTime startAt) {
+        Validate.notNull(raidId, "Raid ID cannot be null");
         Validate.notNull(startAt, "Start time cannot be null");
-        RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("About to remove signups for raid " + raidId + " at " + printTimeIfSameDay(startAt));
+        }
+        RaidEntity entity = raidEntityRepository.findOne(raidId);
         if (entity != null) {
-            for (SignUp signUp : raid.getSignUps()) {
+            for (RaidEntitySignUp signUp : entity.getSignUps()) {
                 if (signUp.getArrivalTime().equals(startAt.toLocalTime())) {
-                    RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(), signUp.getHowManyPeople(),
-                            Utils.printTime(signUp.getArrivalTime())));
+                    RaidEntitySignUp removed = entity.removeSignUp(signUp);
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Removed signup: " + removed);
                     }
                 }
             }
-            raidEntityRepository.save(entity);
+            entity = raidEntityRepository.save(entity);
         }
+
+        return getRaidInstance(entity);
     }
 
     public void moveAllSignUpsForTimeToNewTime(Raid raid, LocalDateTime currentStartAt, LocalDateTime newDateTime, User user) {

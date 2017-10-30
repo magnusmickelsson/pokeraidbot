@@ -91,6 +91,8 @@ public class BotService {
                         serverConfigRepository, aggregateCommandListener),
 //                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
 //                        serverConfigRepository, aggregateCommandListener),
+                new UserConfigCommand(serverConfigRepository, trackingCommandListener, localeService,
+                        userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         serverConfigRepository, this, aggregateCommandListener, pokemonRepository),
                 new RaidListCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,

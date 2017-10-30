@@ -88,7 +88,8 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(userName, errorText);
         }
 
-        // todo: Check that user doesn't have more than one group for a raid, in that case he/she should use raid change to change time
+        // todo: Check that user doesn't have more than one group for a raid?
+        // In that case he/she should use raid change to change time
 
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
@@ -151,16 +152,20 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
                         });
                 return true;
             };
-            do {
+            while (emoticonSignUpMessageListener.getStartAt() != null &&
+                    clockService.getCurrentDateTime().isBefore(
+                            emoticonSignUpMessageListener.getStartAt().plusMinutes(5))
+                    && clockService.getCurrentDateTime().isBefore(raid.getEndOfRaid())) {
                 try {
                     executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
-            } while (emoticonSignUpMessageListener.getStartAt() != null &&
-                    clockService.getCurrentDateTime().isBefore(emoticonSignUpMessageListener.getStartAt().plusMinutes(5)));
-            LOGGER.debug("Raid group has now expired or message been removed, will clean up listener and messages..");
-            cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid, emoticonSignUpMessageListener);
+            }
+            LOGGER.debug("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
+                    ", creator: " + emoticonSignUpMessageListener.getUserId());
+            cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid.getId(),
+                    emoticonSignUpMessageListener);
 
             // todo: should we automatically remove signups for this group when time expires from total? Makes sense.
             final String removedGroupText = localeService.getMessageFor(LocaleService.REMOVED_GROUP,
@@ -172,26 +177,38 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         return refreshEditThreadTask;
     }
 
-    private void cleanUp(CommandEvent commandEvent, LocalDateTime startAt, Raid raid,
+    private void cleanUp(CommandEvent commandEvent, LocalDateTime startAt, String raidId,
                          EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
+        Raid raid = null;
         try {
             // Clean up all signups that should have done their raid now
-            raidRepository.removeAllSignUpsAt(raid, startAt);
+            raid = raidRepository.removeAllSignUpsAt(raidId, startAt);
+        } catch (Throwable t) {
+            // Do nothing, just log
+            LOGGER.warn("Exception occurred when removing signups: " + t + "-" + t.getMessage());
+        } finally {
             // Clean up after raid expires
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
-                commandEvent.getChannel().deleteMessageById(emoteMessageId).queue();
+                try {
+                    commandEvent.getChannel().deleteMessageById(emoteMessageId).queue();
+                } catch (Throwable t) {
+                    LOGGER.warn("Exception occurred when removing emote message: " + t.getMessage());
+                }
             }
             final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
-                commandEvent.getChannel().deleteMessageById(infoMessageId).queue();
+                try {
+                    commandEvent.getChannel().deleteMessageById(infoMessageId).queue();
+                } catch (Throwable t) {
+                LOGGER.warn("Exception occurred when removing group message: " + t.getMessage());
             }
-        } catch (Throwable t) {
-            // Do nothing
-        } finally {
+
+        }
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Cleaned up listener and messages related to this group - raid: " + raid +
+                LOGGER.debug("Cleaned up listener and messages related to this group - raid: " + (raid == null ?
+                        "not cleaned up :( - had ID: " + raidId : raid) +
                         " , start time: " + startAt);
             }
         }
@@ -199,7 +216,6 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
 
     public static MessageEmbed getRaidGroupMessageEmbed(User user, LocalDateTime startAt, Raid raid,
                                                         LocaleService localeService) {
-        final String userName = user.getName();
         final Gym gym = raid.getGym();
         final Pokemon pokemon = raid.getPokemon();
         MessageEmbed messageEmbed;
@@ -217,15 +233,11 @@ public class NewRaidGroupCommand extends ConfigAwareCommand {
         final int numberOfPeopleArrivingAt = signUpsAt.stream().mapToInt(s -> s.getHowManyPeople()).sum();
         final String numberOfSignupsText = localeService.getMessageFor(LocaleService.SIGNED_UP,
                 localeService.getLocaleForUser(user));
-        final String totalSignUpsText = "**" + numberOfSignupsText + ":** **" + numberOfPeopleArrivingAt + "**\n";
-        StringBuilder descriptionBuilder = new StringBuilder();
-        descriptionBuilder.append(totalSignUpsText);
-//        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
-//                localeService.getLocaleForUser(user));
-//        descriptionBuilder.append("**").append(thoseWhoAreComingText).append(":** ");
-        descriptionBuilder.append(allSignUpNames);
-        final String description = descriptionBuilder.toString();
-        embedBuilder.setDescription(description);
+        final String totalSignUpsText = numberOfSignupsText + ": " + numberOfPeopleArrivingAt;
+        final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
+                localeService.getLocaleForUser(user)) + ":";
+        embedBuilder.clearFields();
+        embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
         embedBuilder.setFooter(localeService.getMessageFor(LocaleService.GROUP_MESSAGE_TO_BE_REMOVED,
                 localeService.getLocaleForUser(user)), null);
         messageEmbed = embedBuilder.build();

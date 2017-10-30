@@ -8,6 +8,7 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.LocalTime;
 
 @Embeddable
 public class RaidEntitySignUp implements Serializable {
@@ -81,5 +82,9 @@ public class RaidEntitySignUp implements Serializable {
 
     public void setEta(String arrivalTime) {
         this.eta = arrivalTime;
+    }
+
+    public LocalTime getArrivalTime() {
+        return LocalTime.parse(eta, Utils.timeParseFormatter);
     }
 }

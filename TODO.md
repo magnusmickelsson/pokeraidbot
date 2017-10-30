@@ -13,15 +13,15 @@ Needs testing:
 * !raid overview - admin only command that creates a message updated every minute between 07-22 and does a raid list (with params) -
 will enable admins to have overviews in separate channels which are read-only
 * Move attaching to overview to its own listener. Doesn't belong in EventLoggingListener.
+* User can set their own locale
+* When raid group expires, signups aren't cleaned up
 
 Being developed:
 
-* User can set their own locale
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
 * Fuzzy search for pokemon names (or 3 first char match?)
-* Read Pokemon go screenshot to create raid automatically (Swepocks)
 
 Discussion:
 
@@ -29,10 +29,12 @@ Discussion:
 
 Experiment with:
 
+* Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
 
+* Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set

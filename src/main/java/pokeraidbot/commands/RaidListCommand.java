@@ -68,7 +68,6 @@ public class RaidListCommand extends ConfigAwareCommand {
             stringBuilder.append(":**");
             stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
                     localeService.getLocaleForUser(user))).append("\n");
-            final LocalDate today = LocalDate.now();
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();

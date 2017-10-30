@@ -386,9 +386,9 @@ public class LocaleService {
 //                        "skriv \"!raid group {tid}\" och ange en senare tid.");
 
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-                "Handle sign up via the buttons below.");
+                "Press emotes for number of people to sign up:");
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-                "Hantera anmälning via knapparna nedan.");
+                "Tryck emotes motsvarande antal som kommer:");
 
         i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
                 "Can't create a group to raid after raid has ended. :("
@@ -814,7 +814,12 @@ public class LocaleService {
         if (userConfig == null) {
             return DEFAULT;
         } else {
-            return userConfig.getLocale();
+            final Locale userLocale = userConfig.getLocale();
+            if (userLocale == null) {
+                return DEFAULT;
+            } else {
+                return userLocale;
+            }
         }
     }
 
@@ -838,7 +843,11 @@ public class LocaleService {
     }
 
     public String getMessageTextToInjectParametersIn(String messageKey, Locale locale) {
-        String message = i18nMessages.get(new I18nLookup(messageKey.toUpperCase(), locale));
+        Locale actualLocale = locale;
+        if (locale == null) {
+            actualLocale = DEFAULT;
+        }
+        String message = i18nMessages.get(new I18nLookup(messageKey.toUpperCase(), actualLocale));
         if (message == null || message.length() < 1) {
             message = i18nMessages.get(new I18nLookup(messageKey.toUpperCase(), DEFAULT));
         }
