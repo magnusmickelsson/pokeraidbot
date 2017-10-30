@@ -157,6 +157,7 @@ public class RaidRepository {
         RaidEntity exEntity = null;
         for (RaidEntity entity : raidEntities) {
             if (entity.isExpired(clockService)) {
+                LOGGER.info("Removing expired raid: " + entity.getId());
                 raidEntityRepository.delete(entity);
             } else if (Utils.isRaidExPokemon(entity.getPokemon())) {
                 exEntity = entity;

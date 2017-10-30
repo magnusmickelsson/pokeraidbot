@@ -85,7 +85,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                     .append(". ").append(numberOfPeople)
                     .append(" ")
                     .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append(raid.getNextEta(localeService, locale, LocalTime.now()))
                             .append("\n");
                 } else {
                     exRaids.append("\n").append(raidGym.getName())
@@ -97,7 +97,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                             .append(". ").append(numberOfPeople)
                             .append(" ")
                             .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append(raid.getNextEta(localeService, locale, LocalTime.now()))
                             .append(".\n");
                 }
             }

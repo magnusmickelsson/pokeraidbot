@@ -60,7 +60,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                             serverConfigRepository, raidRepository, clockService, commandEvent.getChannel());
             executorService.submit(refreshEditThreadTask);
         } else {
-            final String messageString = getOverviewMessage(user, config,
+            final String messageString = getOverviewMessage(config,
                     localeService, raidRepository, clockService);
             commandEvent.reply(messageString, msg -> {
                 final String messageId = msg.getId();
@@ -88,7 +88,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                     LOGGER.debug("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + messageId);
                 }
-                final String messageString = getOverviewMessage(user, config,
+                final String messageString = getOverviewMessage(config,
                         localeService, raidRepository, clockService);
                 messageChannel.editMessageById(messageId,
                         messageString)
@@ -127,7 +127,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
         }
     }
 
-    private static String getOverviewMessage(User user, Config config,
+    private static String getOverviewMessage(Config config,
                                              LocaleService localeService,
                                              RaidRepository raidRepository,
                                              ClockService clockService) {
@@ -160,7 +160,7 @@ public class RaidOverviewCommand extends ConfigAwareCommand {
                             .append(". ").append(numberOfPeople)
                             .append(" ")
                             .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(raid.getNextEta(localeService, user, LocalTime.now()))
+                            .append(raid.getNextEta(localeService, locale, LocalTime.now()))
                             .append("\n");
                 }
                 else {

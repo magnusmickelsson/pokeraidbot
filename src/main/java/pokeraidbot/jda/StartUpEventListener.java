@@ -34,6 +34,7 @@ public class StartUpEventListener implements EventListener{
     private final ClockService clockService;
     protected static final ExecutorService executorService = Executors.newCachedThreadPool();
 
+    // todo: pass thread pool as an argument, so we have the same pool for all worker threads
     public StartUpEventListener(ServerConfigRepository serverConfigRepository,
                                 RaidRepository raidRepository, LocaleService localeService,
                                 ClockService clockService) {
@@ -66,8 +67,7 @@ public class StartUpEventListener implements EventListener{
                                     if (guild.getDefaultChannel() != null) {
                                         guild.getDefaultChannel().sendMessage(
                                                 localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
-                                                        config.getLocale() == null ?
-                                                                LocaleService.DEFAULT : config.getLocale(),
+                                                        config.getLocale(),
                                                         channel.getName())).queue();
                                     }
                                     return;

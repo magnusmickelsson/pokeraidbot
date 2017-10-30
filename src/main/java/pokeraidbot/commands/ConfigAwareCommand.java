@@ -18,8 +18,9 @@ public abstract class ConfigAwareCommand extends Command {
     protected final ServerConfigRepository serverConfigRepository;
     protected final CommandListener commandListener;
     private final LocaleService localeService;
+    // todo: pass thread pool as an argument, so we have the same pool for all worker threads
     protected static final ExecutorService executorService = new ThreadPoolExecutor(100, Integer.MAX_VALUE,
-            60L, TimeUnit.SECONDS,
+            120L, TimeUnit.SECONDS,
             new SynchronousQueue<>());
 
     public ConfigAwareCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,

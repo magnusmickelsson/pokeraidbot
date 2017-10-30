@@ -145,7 +145,7 @@ public class Raid {
         return signUps.values().stream().filter(s -> s.getArrivalTime().equals(localTime)).collect(Collectors.toSet());
     }
 
-    public String getNextEta(LocaleService localeService, User user, LocalTime now) {
+    public String getNextEta(LocaleService localeService, Locale locale, LocalTime now) {
         if (signUps.size() == 0) {
             return "";
         } else {
@@ -161,7 +161,7 @@ public class Raid {
             // If we have an actual ETA that is not just the raid ending, return it.
             if (!nextEta.equals(endTime)) {
                 sb.append(", ").append(localeService.getMessageFor(LocaleService.NEXT_ETA,
-                        localeService.getLocaleForUser(user), Utils.printTime(nextEta)));
+                        locale, Utils.printTime(nextEta)));
                 return sb.toString();
             } else {
                 return "";

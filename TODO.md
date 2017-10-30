@@ -48,6 +48,8 @@ Fix, misc:
 
 Do, features:
 
+* !raid change remove-group (gym) so admins can clean up user mess when for example setting
+wrong time
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:
