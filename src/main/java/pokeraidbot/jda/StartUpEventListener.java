@@ -71,7 +71,9 @@ public class StartUpEventListener implements EventListener{
                             } catch (UserMessedUpException e) {
                                 channel.sendMessage(e.getMessage()).queue();
                             } catch (ErrorResponseException e) {
-                                // We couldn't find the message in this channel, move to next
+                                // We couldn't find the message in this channel or had permission issues, ignore
+                            } catch (Throwable e) {
+                                // Ignore any other error and try the other server channels
                             }
                         }
                     }
