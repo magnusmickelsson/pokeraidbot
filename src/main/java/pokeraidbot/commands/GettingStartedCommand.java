@@ -20,13 +20,9 @@ public class GettingStartedCommand extends Command {
     @Override
     protected void execute(CommandEvent commandEvent) {
         final String message = "**Kom-i-gång guide (Svenska):**\n" +
-                "https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md\n\n" +
+                "<https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md>\n\n" +
                 "**Getting started guide (English):**\n" +
-                "https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_en.md";
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(null);
-        embedBuilder.setAuthor(null, null, null);
-        embedBuilder.setDescription(message);
-        commandEvent.reply(embedBuilder.build());
+                "<https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_en.md>";
+        commandEvent.reply(message);
     }
 }
