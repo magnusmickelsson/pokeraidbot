@@ -32,6 +32,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- \"Fuzzy search\" för pokemonnamn (dvs den klarar vissa felstavningar)\n" +
                     "- Flytta tid för en raidgrupp: *!raid change group {ny tid} {gym-namn}*\n" +
                     "- Användare kan själva välja locale via: *!raid config locale={språkkod, t.ex. en eller sv}*\n" +
+                    "- Kom-igång-guide - *!raid getting-started*\n" +
                     "- Parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
@@ -47,6 +48,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Change time for a raid group: *!raid change group {new time} {gym name}*\n" +
                     "- Users can choose their own locale via: *!raid config locale=" +
                     "{language code, for example en or sv}*\n" +
+                    "- Getting started guide - *!raid getting-started*\n" +
                     "- Input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);

@@ -82,6 +82,7 @@ public class LocaleService {
     public static final String UNSUPPORTED_LOCALE = "UNSUPPORTED_LOCALE";
     public static final String LOCALE_SET = "LOCALE_SET";
     public static final String MANUAL_CONFIG = "MANUAL_CONFIG";
+    public static final String GETTING_STARTED_HELP = "GETTING_STARTED_HELP";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -152,6 +153,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(GETTING_STARTED_HELP, Locale.ENGLISH),
+                "Getting started guide for the bot"
+        );
+        i18nMessages.put(new I18nLookup(GETTING_STARTED_HELP, SWEDISH),
+                "Kom-igång-guide för pokeraidbot"
+        );
         i18nMessages.put(new I18nLookup(LOCALE_SET, Locale.ENGLISH),
                 "Locale set to: %1"
         );
