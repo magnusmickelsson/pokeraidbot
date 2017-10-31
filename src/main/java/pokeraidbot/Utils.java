@@ -133,7 +133,7 @@ public class Utils {
     }
 
     public static void assertTimeNotInNoRaidTimespan(User user, LocalTime time, LocaleService localeService) {
-        if (time.isAfter(LocalTime.of(22, 00)) || time.isBefore(LocalTime.of(7, 0))) {
+        if (time.isAfter(LocalTime.of(22, 00)) || time.isBefore(LocalTime.of(6, 0))) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_RAIDS_NOW, localeService.getLocaleForUser(user),
                             printTime(time)));
