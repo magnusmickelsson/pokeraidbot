@@ -79,9 +79,8 @@ public class SignupWithPlusCommandListener implements EventListener {
             guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
         } catch (Throwable t) {
             LOGGER.debug("Signup plus command failed: " + t.getMessage());
-            // todo: i18n
-            message = "Pokeraidbot wanted to sign you up, but couldn't:\n" + t.getMessage() + "\n\n" +
-            "Use syntax like: *+1 09:45 Solna Platform*";
+            message = t.getMessage() + "\n\n" +
+            "Syntax: *+1 09:45 Solna Platform*";
             guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
         }
         if (!StringUtils.isEmpty(message)) {

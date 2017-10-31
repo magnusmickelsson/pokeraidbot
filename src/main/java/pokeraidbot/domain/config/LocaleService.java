@@ -83,6 +83,7 @@ public class LocaleService {
     public static final String LOCALE_SET = "LOCALE_SET";
     public static final String MANUAL_CONFIG = "MANUAL_CONFIG";
     public static final String GETTING_STARTED_HELP = "GETTING_STARTED_HELP";
+    public static final String PLUS_SIGNUP_FAIL = "PLUS_SIGNUP_FAIL";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -153,6 +154,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
+//        i18nMessages.put(new I18nLookup(PLUS_SIGNUP_FAIL, Locale.ENGLISH),
+//                "Pokeraidbot wanted to sign you up, but couldn't"
+//        );
+//        i18nMessages.put(new I18nLookup(PLUS_SIGNUP_FAIL, SWEDISH),
+//                "Pokeraidbot vill hjälpa till med din anmälan, men kunde inte"
+//        );
         i18nMessages.put(new I18nLookup(GETTING_STARTED_HELP, Locale.ENGLISH),
                 "Getting started guide for the bot"
         );
