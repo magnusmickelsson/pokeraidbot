@@ -1,4 +1,4 @@
-1.0.0 (TBD)
+1.0.0 (2017-10-31)
 =====
 * Fixed readme for both english and swedish including images
 * Fixed getting started guide for english locale
@@ -15,11 +15,11 @@ should be put in a read-only channel
 * Possible to change time for a raid group: !raid change group (time) (gym)
 * !raid list should show next ETA
 * Clean up signups for expired group
-* Persistent tracking
-* User configuration, stored in database. 3 available trackings, and locale.
+* Persistent tracking of certain pokemon raids
 * User can set their own locale
 * Move time for raid group: !raid change group (time) (gym)
-* Move attaching to overview to its own listener. Doesn't belong in EventLoggingListener.
+* Moved attaching to overview to its own event listener
+* Fuzzy search for pokemon names
 
 0.9.1 (2017-10-14)
 ======

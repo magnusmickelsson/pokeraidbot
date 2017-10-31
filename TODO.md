@@ -4,7 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* Fuzzy search for pokemon names (or 3 first char match?)
+-
 
 Being developed:
 
