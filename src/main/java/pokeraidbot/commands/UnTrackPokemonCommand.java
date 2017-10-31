@@ -35,7 +35,7 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
             commandListener.removeAll(user);
             commandEvent.reactSuccess();
         } else {
-            Pokemon pokemon = pokemonRepository.getByName(args);
+            Pokemon pokemon = pokemonRepository.search(args, user);
             commandListener.remove(new PokemonTrackingTarget(config.getRegion(), userId, pokemon), user);
             commandEvent.reactSuccess();
         }

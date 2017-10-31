@@ -30,7 +30,7 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String args = commandEvent.getArgs();
-        Pokemon pokemon = pokemonRepository.getByName(args);
+        Pokemon pokemon = pokemonRepository.search(args, commandEvent.getAuthor());
         final String userId = commandEvent.getAuthor().getId();
         final User user = commandEvent.getAuthor();
         commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon), user, config);

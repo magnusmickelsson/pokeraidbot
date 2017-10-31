@@ -47,11 +47,12 @@ public class CounterTextFileParser {
                     Set<String> moves = new HashSet<>();
                     while (((line = br.readLine()) != null) && !(line.equals(""))) {
                         final String trimmedLine = line.trim();
-                        final Pokemon pokemon = pokemonRepository.getPokemon(trimmedLine);
+                        final Pokemon pokemon = pokemonRepository.getByName(trimmedLine);
                         if (pokemon != null) {
                             break;
                         }
-                        if ((!trimmedLine.contains("Counters")) && (!trimmedLine.contains("Quick Move")) && (!trimmedLine.contains("Charge Move"))) {
+                        if ((!trimmedLine.contains("Counters")) &&
+                                (!trimmedLine.contains("Quick Move")) && (!trimmedLine.contains("Charge Move"))) {
                             moves.add(trimmedLine);
                         }
                         if (trimmedLine.contains("Good Counters")) {

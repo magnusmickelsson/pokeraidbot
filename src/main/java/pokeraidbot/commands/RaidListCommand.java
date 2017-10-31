@@ -46,7 +46,7 @@ public class RaidListCommand extends ConfigAwareCommand {
         final Locale locale = localeService.getLocaleForUser(user);
         Set<Raid> raids;
         if (args != null && args.length() > 0) {
-            raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.getByName(args));
+            raids = raidRepository.getRaidsInRegionForPokemon(config.getRegion(), pokemonRepository.search(args, user));
         } else {
             raids = raidRepository.getAllRaidsForRegion(config.getRegion());
         }

@@ -62,7 +62,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.search("Entei", null), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);
@@ -95,7 +95,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.search("Entei", null), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);
@@ -107,7 +107,7 @@ public class RaidRepositoryTest {
         when(user.getName()).thenReturn(raidCreatorName);
 
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
-        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.getByName("Mewtwo"));
+        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.search("Mewtwo", user));
         assertThat(raid.getEndOfRaid(), is(changedRaid.getEndOfRaid()));
         assertThat(raid.getGym(), is(changedRaid.getGym()));
         assertThat(raid.getSignUps(), is(changedRaid.getSignUps()));
@@ -123,7 +123,7 @@ public class RaidRepositoryTest {
         final LocalTime nowTime = now.toLocalTime();
         LocalDateTime endOfRaid = now.plusMinutes(45);
         final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
-        Raid enteiRaid = new Raid(pokemonRepository.getByName("Entei"), endOfRaid, gym, localeService, uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.search("Entei", null), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         try {
             repo.newRaid(raidCreatorName, enteiRaid);

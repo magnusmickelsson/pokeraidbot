@@ -57,15 +57,15 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
             for (UserConfig config : userConfigRepository.findAll()) {
                 if (config.getTracking1() != null) {
                     trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
-                            pokemonRepository.getByName(config.getTracking1())));
+                            pokemonRepository.search(config.getTracking1(), null)));
                 }
                 if (config.getTracking2() != null) {
                     trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
-                            pokemonRepository.getByName(config.getTracking2())));
+                            pokemonRepository.search(config.getTracking2(), null)));
                 }
                 if (config.getTracking3() != null) {
                     trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
-                            pokemonRepository.getByName(config.getTracking3())));
+                            pokemonRepository.search(config.getTracking3(), null)));
                 }
             }
         }

@@ -93,7 +93,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-                final Pokemon pokemon = pokemonRepository.getByName(whatToChangeTo);
+                final Pokemon pokemon = pokemonRepository.search(whatToChangeTo, user);
                 if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
                     throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.EX_NO_CHANGE_POKEMON,
                             localeService.getLocaleForUser(user)));

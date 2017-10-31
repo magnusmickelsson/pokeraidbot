@@ -48,7 +48,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String pokemonName = args[0];
-        final Pokemon pokemon = pokemonRepository.getByName(pokemonName);
+        final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         String timeString = args[1];
         LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService);
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);

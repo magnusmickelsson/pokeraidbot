@@ -4,7 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* Fuzzy search for pokemon names (or 3 first char match?)
 
 Being developed:
 
@@ -38,7 +38,6 @@ Do, features:
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
-* Fuzzy search for pokemon names (or 3 first char match?)
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
 * Gymhuntr integration via GymhuntrMessageListener (isBot())

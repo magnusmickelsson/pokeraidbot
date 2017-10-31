@@ -146,11 +146,11 @@ public class UtilsTest {
                 new LocaleService("sv", userConfigRepository));
         Pokemon pokemon;
         String typeToCheck;
-        pokemon = pokemonRepository.getByName("Tyranitar");
+        pokemon = pokemonRepository.search("Tyranitar", null);
         typeToCheck = "Fighting";
         assertPokemonIsDoubleWeakAgainst(pokemon, typeToCheck);
 
-        pokemon = pokemonRepository.getByName("Articuno");
+        pokemon = pokemonRepository.search("Articuno", null);
         typeToCheck = "Rock";
         assertPokemonIsDoubleWeakAgainst(pokemon, typeToCheck);
     }
@@ -159,7 +159,7 @@ public class UtilsTest {
     public void testPrintWeaknesses() throws Exception {
         PokemonRepository pokemonRepository = new PokemonRepository("/mons.json",
                 new LocaleService("sv", userConfigRepository));
-        Pokemon pokemon = pokemonRepository.getByName("Tyranitar");
+        Pokemon pokemon = pokemonRepository.search("Tyranitar", null);
 
         assertThat(Utils.printWeaknesses(pokemon), is("Water, **Fighting**, Bug, Ground, Steel, Fairy"));
     }

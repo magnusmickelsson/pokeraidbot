@@ -1,5 +1,6 @@
 package pokeraidbot.domain.pokemon;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.raid.RaidBossCounters;
@@ -45,6 +46,10 @@ public class PokemonRaidStrategyService {
             try {
                 final CounterTextFileParser parser = new CounterTextFileParser("/counters", raidBossName, pokemonRepository);
                 final Pokemon raidBoss = pokemonRepository.getByName(raidBossName);
+                if (raidBoss == null) {
+                    LOGGER.error("Could not find raidBoss in pokemon repository: " + raidBossName);
+                    System.exit(-1);
+                }
                 final RaidBossCounters raidBossCounters = new RaidBossCounters(raidBoss, parser.getBestCounters(), parser.getGoodCounters());
                 counters.put(raidBossName.toUpperCase(), raidBossCounters);
             } catch (RuntimeException e) {
@@ -119,6 +124,7 @@ public class PokemonRaidStrategyService {
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {
+        Validate.notNull(pokemon, "Input pokemon cannot be null!");
         final RaidBossCounters counters = this.counters.get(pokemon.getName().toUpperCase());
         return counters;
     }

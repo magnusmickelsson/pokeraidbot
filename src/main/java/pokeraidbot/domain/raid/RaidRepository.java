@@ -128,7 +128,7 @@ public class RaidRepository {
     private Raid getRaidInstance(RaidEntity raidEntity) {
         Validate.notNull(raidEntity);
         final String region = raidEntity.getRegion();
-        final Raid raid = new Raid(pokemonRepository.getPokemon(raidEntity.getPokemon()),
+        final Raid raid = new Raid(pokemonRepository.fuzzySearch(raidEntity.getPokemon()),
                 raidEntity.getEndOfRaid(),
                 gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
         raid.setCreator(raidEntity.getCreator());

@@ -1,5 +1,8 @@
 package pokeraidbot.domain.pokemon;
 
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
+import net.dv8tion.jda.core.entities.User;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import pokeraidbot.infrastructure.JsonPokemons;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PokemonRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(PokemonRepository.class);
@@ -38,17 +42,55 @@ public class PokemonRepository {
         }
     }
 
-    public Pokemon getByName(String name) {
-        final Pokemon pokemon = getPokemon(name);
+    public Pokemon search(String name, User user) {
+        final Pokemon pokemon = fuzzySearch(name);
         if (pokemon == null) {
-            throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, LocaleService.DEFAULT, name));
+            final Locale locale = user == null ? LocaleService.DEFAULT : localeService.getLocaleForUser(user);
+            throw new RuntimeException(localeService.getMessageFor(LocaleService.NO_POKEMON, locale, name));
         }
         return pokemon;
     }
 
-    // This method is a getter that doesn't throw an exception if it doesn't find a pokemon, just returns null
-    public Pokemon getPokemon(String name) {
-        return pokemons.get(name.trim().toUpperCase());
+    public Pokemon getByName(String name) {
+        if (name == null) {
+            return null;
+        }
+        final String nameToGet = name.trim().toUpperCase();
+        final Pokemon pokemon = pokemons.get(nameToGet);
+        return pokemon;
+    }
+
+    // This method is a getter with fuzzy search that doesn't throw an exception if it doesn't find a pokemon, just returns null
+    public Pokemon fuzzySearch(String name) {
+        final Collection<Pokemon> allPokemons = pokemons.values();
+
+        final String nameToSearchFor = name.trim().toUpperCase();
+        final Optional<Pokemon> pokemon = Optional.ofNullable(pokemons.get(nameToSearchFor));
+        if (pokemon.isPresent()) {
+            return pokemon.get();
+        } else {
+            List<ExtractedResult> candidates = FuzzySearch.extractTop(nameToSearchFor,
+                    allPokemons.stream().map(p -> p.getName().toUpperCase()).collect(Collectors.toList()), 5, 50);
+            if (candidates.size() == 1) {
+                return pokemons.get(candidates.iterator().next().getString());
+            } else if (candidates.size() < 1) {
+                return null;
+            } else {
+                int score = 0;
+                String highestScoreResultName = null;
+                for (ExtractedResult result : candidates) {
+                    if (result.getScore() > score) {
+                        score = result.getScore();
+                        highestScoreResultName = result.getString();
+                    }
+                }
+                if (highestScoreResultName != null) {
+                    return pokemons.get(highestScoreResultName);
+                } else {
+                    return null;
+                }
+            }
+        }
     }
 
     public Set<Pokemon> getAll() {

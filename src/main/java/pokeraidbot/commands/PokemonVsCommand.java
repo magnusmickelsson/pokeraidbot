@@ -37,7 +37,7 @@ public class PokemonVsCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String pokemonName = commandEvent.getArgs();
-        final Pokemon pokemon = repo.getByName(pokemonName);
+        final Pokemon pokemon = repo.search(pokemonName, commandEvent.getAuthor());
         final RaidBossCounters counters = raidInfoService.getCounters(pokemon);
         final String maxCp = raidInfoService.getMaxCp(pokemon);
         StringBuilder builder = new StringBuilder();
