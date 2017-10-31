@@ -565,9 +565,9 @@ public class LocaleService {
                         "förutom för EX raider. Du angav %1.");
 
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, Locale.ENGLISH),
-                "You can't create raids between 22:00 and 07:00 - your time was %1.");
+                "You can't create raids between 22:00 and 06:00 - your time was %1.");
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, SWEDISH),
-                "Du kan inte skapa en raid som slutar mellan 22.00 och 07:00. Du angav %1.");
+                "Du kan inte skapa en raid som slutar mellan 22.00 och 06:00. Du angav %1.");
 
         i18nMessages.put(new I18nLookup(TIMEZONE, Locale.ENGLISH),
                 "You seem to be living in a different timezone. Your input was %1, while it's currently %2.");
