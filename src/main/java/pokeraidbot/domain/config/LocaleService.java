@@ -81,6 +81,7 @@ public class LocaleService {
     public static final String USER_CONFIG_BAD_PARAM = "USER_CONFIG_BAD_PARAM";
     public static final String UNSUPPORTED_LOCALE = "UNSUPPORTED_LOCALE";
     public static final String LOCALE_SET = "LOCALE_SET";
+    public static final String MANUAL_CONFIG = "MANUAL_CONFIG";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -710,6 +711,18 @@ public class LocaleService {
                         "om man t.ex. vill visa hjälpen i en textkanal för en användare}\n" +
                         "Möjliga ämnen: raid, signup, map, install, change, tracking, group, ALL.\n" +
                         "**Exempel (för att få hjälp angående raidkommandon):** !raid man raid"
+        );
+        i18nMessages.put(new I18nLookup(MANUAL_CONFIG, Locale.ENGLISH),
+                "**Note: This command must be executed in a server text channel, not in DM!**\n\n" +
+                        "**To find out your configuration:**\n!raid config show\n\n" +
+                        "**To change language:**\n!raid config *[param=value]*\n" +
+                        "*Example (setting Swedish locale):* !raid config locale=sv"
+        );
+        i18nMessages.put(new I18nLookup(MANUAL_CONFIG, SWEDISH),
+                "**OBS: Detta kommando måste köras i en servers textkanal, inte i DM!**\n\n" +
+                        "**För att få reda på din konfiguration:**\n!raid config show\n\n" +
+                        "**För att ändra språk:**\n!raid config *[param=value]*\n" +
+                        "*Exempel (set English as language):* !raid config locale=en"
         );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +

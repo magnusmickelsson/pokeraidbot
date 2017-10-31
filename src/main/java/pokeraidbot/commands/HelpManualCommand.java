@@ -41,6 +41,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_GROUPS, "group");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_TRACKING, "tracking");
         addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_INSTALL, "install");
+        addTextsToHelpTopics(LocaleService.SUPPORTED_LOCALES, LocaleService.MANUAL_CONFIG, "config");
     }
 
     private void addTextsToHelpTopics(Locale[] supportedLocales, String messageKey, String topic) {

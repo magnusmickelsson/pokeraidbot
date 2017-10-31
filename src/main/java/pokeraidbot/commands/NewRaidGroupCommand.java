@@ -30,6 +30,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ConcurrentModificationException;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -164,7 +165,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                     throw new RuntimeException(e);
                 }
             }
-            LOGGER.debug("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
+            LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
                     ", creator: " + emoticonSignUpMessageListener.getUserId());
             cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid.getId(),
                     emoticonSignUpMessageListener);
@@ -206,6 +207,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         } catch (Throwable t) {
             // Do nothing, just log
             LOGGER.warn("Exception occurred when removing signups: " + t + "-" + t.getMessage());
+            if (t instanceof ConcurrentModificationException) {
+                LOGGER.warn("This is probably due to raid being removed while cleaning up signups, which is normal.");
+            }
         } finally {
             // Clean up after raid expires
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
@@ -231,8 +235,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         emoticonSignUpMessageListener.getRaidId());
             }
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Cleaned up listener and messages related to this group - raid: " + (raid == null ?
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Cleaned up listener and messages related to this group - raid: " + (raid == null ?
                         "not cleaned up :( - had ID: " + raidId : raid) +
                         " , start time: " + startAt);
             }

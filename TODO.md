@@ -8,10 +8,7 @@ Needs testing:
 
 Being developed:
 
-* Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
-time (equalling no time to "now", if raid is active) to signup using that?
-* Snooze button for raid group
-* Fuzzy search for pokemon names (or 3 first char match?)
+-
 
 Discussion:
 
@@ -24,7 +21,6 @@ Experiment with:
 
 Fix issue:
 
-* Raid man page for user config
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -39,6 +35,10 @@ Fix, misc:
 
 Do, features:
 
+* Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
+time (equalling no time to "now", if raid is active) to signup using that?
+* Snooze button for raid group
+* Fuzzy search for pokemon names (or 3 first char match?)
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
 * Gymhuntr integration via GymhuntrMessageListener (isBot())

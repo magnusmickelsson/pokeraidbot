@@ -198,8 +198,10 @@ public class RaidRepository {
 
     private void removeRaidIfExpired(RaidEntity raidEntity) {
         if (raidEntity.isExpired(clockService)) {
+            final String id = raidEntity.getId();
             // Clean up expired raid
             raidEntityRepository.delete(raidEntity);
+            LOGGER.info("Removed expired raid with ID: " + id);
         }
     }
 

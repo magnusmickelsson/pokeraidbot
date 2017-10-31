@@ -25,7 +25,8 @@ import java.util.Set;
 
 public class Utils {
     public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("HH[:][.]mm");
-    public static final DateTimeFormatter dateAndTimeParseFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH[:][.]mm");
+    public static final DateTimeFormatter dateAndTimeParseFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH[:][.]mm");
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
@@ -116,7 +117,7 @@ public class Utils {
         final LocalDateTime now = clockService.getCurrentDateTime();
         if (dateAndTime.isBefore(now)) {
             throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.SIGN_BEFORE_RAID, LocaleService.DEFAULT,
+                    localeService.getMessageFor(LocaleService.SIGN_BEFORE_RAID, localeService.getLocaleForUser(user),
                             printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
         }
     }
@@ -126,7 +127,7 @@ public class Utils {
         final LocalDateTime now = clockService.getCurrentDateTime();
         if (dateAndTime.isBefore(now)) {
             throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.TIMEZONE, LocaleService.DEFAULT,
+                    localeService.getMessageFor(LocaleService.TIMEZONE, localeService.getLocaleForUser(user),
                             printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
         }
     }
@@ -134,7 +135,8 @@ public class Utils {
     public static void assertTimeNotInNoRaidTimespan(User user, LocalTime time, LocaleService localeService) {
         if (time.isAfter(LocalTime.of(22, 00)) || time.isBefore(LocalTime.of(7, 0))) {
             throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.NO_RAIDS_NOW, LocaleService.DEFAULT, printTime(time)));
+                    localeService.getMessageFor(LocaleService.NO_RAIDS_NOW, localeService.getLocaleForUser(user),
+                            printTime(time)));
         }
     }
 
@@ -143,7 +145,7 @@ public class Utils {
         final LocalTime now = clockService.getCurrentTime();
         if (now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, LocaleService.DEFAULT,
+                    localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, localeService.getLocaleForUser(user),
                             printTime(time), printTime(now), String.valueOf(hours)));
         }
     }
@@ -152,7 +154,7 @@ public class Utils {
         if (eta.isAfter(raid.getEndOfRaid())) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_ETA_AFTER_RAID,
-                            LocaleService.DEFAULT, printTimeIfSameDay(eta),
+                            localeService.getLocaleForUser(user), printTimeIfSameDay(eta),
                             printTimeIfSameDay(raid.getEndOfRaid())));
         }
     }
