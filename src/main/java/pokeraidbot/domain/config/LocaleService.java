@@ -230,7 +230,7 @@ public class LocaleService {
                 "Uppdateras var 60:e sekund. Senast uppdaterad: %1"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, Locale.ENGLISH),
-                "Pokeraidbot is here. Raid overview till be updated in channel " +
+                "Pokeraidbot is here. Raid overview will be updated in channel " +
                         "#%1. For bot info, type: *!raid usage*"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, SWEDISH),

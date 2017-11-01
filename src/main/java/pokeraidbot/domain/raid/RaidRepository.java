@@ -27,6 +27,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static pokeraidbot.Utils.*;
 
@@ -53,7 +54,7 @@ public class RaidRepository {
         this.raidEntityRepository = raidEntityRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
-        removeExpiredRaids();
+        removeAllExpiredRaids();
     }
 
     public String executeSignUpCommand(Config config,
@@ -95,7 +96,7 @@ public class RaidRepository {
     }
 
     public void newRaid(String raidCreatorName, Raid raid) {
-        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        RaidEntity raidEntity = findEntityByRaidId(raid);
 
         final String pokemonName = raid.getPokemon().getName();
 
@@ -109,6 +110,18 @@ public class RaidRepository {
         }
 
         saveRaid(raidCreatorName, raid);
+    }
+
+    private RaidEntity findEntityByRaidId(Raid raid) {
+        final RaidEntity raidEntity = raid.getId() == null ? null : raidEntityRepository.findOne(raid.getId());
+        removeRaidIfExpired(raidEntity);
+        return raidEntity;
+    }
+
+    private RaidEntity findEntityByRaidId(String raidId) {
+        final RaidEntity raidEntity = raidId == null ? null : raidEntityRepository.findOne(raidId);
+        removeRaidIfExpired(raidEntity);
+        return raidEntity;
     }
 
     private void saveRaid(String raidCreatorName, Raid raid) {
@@ -133,7 +146,7 @@ public class RaidRepository {
                 gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
         raid.setCreator(raidEntity.getCreator());
         raid.setId(raidEntity.getId());
-        Map<String, SignUp> signUps = new HashMap<>();
+        Map<String, SignUp> signUps = new ConcurrentHashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
             signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
                     LocalTime.parse(signUp.getEta(), Utils.timeParseFormatter)));
@@ -180,7 +193,7 @@ public class RaidRepository {
     }
 
     public Set<Raid> getAllRaidsForRegion(String region) {
-        removeExpiredRaids();
+        removeExpiredRaids(region);
         List<RaidEntity> raidEntityList = raidEntityRepository.findByRegionOrderByPokemonAscEndOfRaidAsc(region);
         Set<Raid> activeRaids = new LinkedHashSet<>();
         for (RaidEntity entity : raidEntityList) {
@@ -189,19 +202,30 @@ public class RaidRepository {
         return activeRaids;
     }
 
-    private void removeExpiredRaids() {
+    private void removeAllExpiredRaids() {
         List<RaidEntity> raidEntityList = raidEntityRepository.findAll();
         for (RaidEntity entity : raidEntityList) {
             removeRaidIfExpired(entity);
         }
     }
 
-    private void removeRaidIfExpired(RaidEntity raidEntity) {
-        if (raidEntity.isExpired(clockService)) {
+    private void removeExpiredRaids(String region) {
+        List<RaidEntity> raidEntityList = raidEntityRepository.findByRegion(region);
+        for (RaidEntity entity : raidEntityList) {
+            removeRaidIfExpired(entity);
+        }
+    }
+
+    // Returns null if raid is expired
+    private RaidEntity removeRaidIfExpired(RaidEntity raidEntity) {
+        if (raidEntity != null && raidEntity.isExpired(clockService)) {
             final String id = raidEntity.getId();
             // Clean up expired raid
             raidEntityRepository.delete(raidEntity);
             LOGGER.info("Removed expired raid with ID: " + id);
+            return null;
+        } else {
+            return raidEntity;
         }
     }
 
@@ -219,14 +243,14 @@ public class RaidRepository {
     }
 
     public void removeSignUp(String userName, Raid raid, SignUp theSignUp) {
-        RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        RaidEntity entity = raidEntityRepository.findOne(raid.getId());
         entity.removeSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
                 Utils.printTime(theSignUp.getArrivalTime())));
         raidEntityRepository.save(entity);
     }
 
     public Set<Raid> getRaidsInRegionForPokemon(String region, Pokemon pokemon) {
-        removeExpiredRaids();
+        removeExpiredRaids(region);
         List<RaidEntity> raidEntityList = raidEntityRepository.findByPokemonAndRegionOrderByEndOfRaidAsc(pokemon.getName(), region);
         Set<Raid> activeRaids = new LinkedHashSet<>();
         for (RaidEntity entity : raidEntityList) {
@@ -269,8 +293,9 @@ public class RaidRepository {
         return getRaidInstance(raidEntityRepository.getOne(id));
     }
 
-    public Raid modifySignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
-        RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+    public Raid modifySignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs,
+                             LocalDateTime startAt) {
+        RaidEntity raidEntity = findEntityByRaidId(raidId);
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
@@ -302,7 +327,8 @@ public class RaidRepository {
         }
     }
 
-    public Raid removeFromSignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs, LocalDateTime startAt) {
+    public Raid removeFromSignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs,
+                                 LocalDateTime startAt) {
         RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());

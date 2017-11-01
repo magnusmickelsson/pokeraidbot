@@ -110,7 +110,7 @@ public class Raid {
     }
 
     public Set<SignUp> getSignUps() {
-        return Collections.unmodifiableSet(new HashSet<>(signUps.values()));
+        return Collections.unmodifiableSet(new LinkedHashSet<>(signUps.values()));
     }
 
     public int getNumberOfPeopleSignedUp() {

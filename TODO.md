@@ -16,11 +16,20 @@ Discussion:
 
 Experiment with:
 
+* Present !raid overview as a table
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Ability to create channels on the fly to put certain raids in
+* Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
 
 Fix issue:
 
+* ConcurrentModificationException when removing signups from raid when raid group expires -
+create test case for this scenario
+* Feedback for create new raid should probably be kept, as people may type really short stuff and that
+message says what the actual gym name is.
+* Fix release tag for 1.0.0
+* Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
+signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -32,6 +41,7 @@ Fix, misc:
 
 Do, features:
 
+* -1 syntax to remove signups from a raid
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
