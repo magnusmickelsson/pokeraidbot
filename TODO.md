@@ -4,7 +4,8 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* ConcurrentModificationException when removing signups from raid when raid group expires -
+create test case for this scenario
 
 Being developed:
 
@@ -23,10 +24,6 @@ Experiment with:
 
 Fix issue:
 
-* ConcurrentModificationException when removing signups from raid when raid group expires -
-create test case for this scenario
-* Feedback for create new raid should probably be kept, as people may type really short stuff and that
-message says what the actual gym name is.
 * Fix release tag for 1.0.0
 * Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
 signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.

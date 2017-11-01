@@ -30,8 +30,9 @@ public class RaidEntity implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private String creator;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<RaidEntitySignUp> signUps = new CopyOnWriteArraySet<>();
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name="raid", referencedColumnName="id")
+    private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)
     private String region;

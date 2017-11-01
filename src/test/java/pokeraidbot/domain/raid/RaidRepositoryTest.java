@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {TestServerMain.class})
+@Transactional
 public class RaidRepositoryTest {
     private static final String uppsalaRegion = "uppsala";
     @Autowired

@@ -5,13 +5,15 @@ import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.UUID;
 
-@Embeddable
+@Entity
 public class RaidEntitySignUp implements Serializable {
+    @Id
+    private String id;
     @Column(nullable = false)
     private String responsible;
     @Column(nullable = false)
@@ -24,6 +26,7 @@ public class RaidEntitySignUp implements Serializable {
     }
 
     public RaidEntitySignUp(String responsible, Integer numberOfPeople, String eta) {
+        id = UUID.randomUUID().toString();
         this.responsible = responsible;
         this.numberOfPeople = numberOfPeople;
         this.eta = eta;

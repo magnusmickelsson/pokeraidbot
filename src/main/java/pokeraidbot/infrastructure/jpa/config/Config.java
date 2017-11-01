@@ -3,7 +3,9 @@ package pokeraidbot.infrastructure.jpa.config;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Locale;
 import java.util.UUID;
 
