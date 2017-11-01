@@ -1,3 +1,7 @@
+1.0.1 (2017-11-01)
+=====
+* Bugfix for removing signups for a raid, could lead to ConcurrentModificationException
+
 1.0.0 (2017-10-31)
 =====
 * Fixed readme for both english and swedish including images
