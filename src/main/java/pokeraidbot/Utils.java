@@ -24,7 +24,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Utils {
-    public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("HH[:][.]mm");
+    public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("H[:][.]mm");
     public static final DateTimeFormatter dateAndTimeParseFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH[:][.]mm");
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
