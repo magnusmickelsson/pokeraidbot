@@ -82,7 +82,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
                 assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
                 assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
-                raid = raidRepository.changeEndOfRaid(raid, endsAt);
+                raid = raidRepository.changeEndOfRaid(raid.getId(), endsAt, user);
                 break;
             case "pokemon":
                 whatToChangeTo = args[1].trim().toLowerCase();
@@ -154,7 +154,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         final boolean isUsersGroup = user.getId().equals(listener.getUserId());
                         if (isCorrectRaid && (isUsersGroup || isUserAdministrator(commandEvent))) {
                             final LocalDateTime currentStartAt = listener.getStartAt();
-                            raidRepository.moveAllSignUpsForTimeToNewTime(raid, currentStartAt, newDateTime, user);
+                            raidRepository.moveAllSignUpsForTimeToNewTime(raidId, currentStartAt, newDateTime, user);
                             listener.setStartAt(newDateTime);
                             groupChanged = true;
                             replyBasedOnConfigAndRemoveAfter(config, commandEvent,

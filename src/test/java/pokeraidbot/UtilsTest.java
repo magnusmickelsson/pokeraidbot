@@ -1,22 +1,28 @@
 package pokeraidbot;
 
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UtilsTest {
@@ -40,12 +46,14 @@ public class UtilsTest {
             "Steel",
             "Fairy"
     ));
-    private UserConfigRepository userConfigRepository;
+    private static UserConfigRepository userConfigRepository;
+    private static LocaleService localeService;
 
-    @Before
-    public void setUp() throws Exception {
-        userConfigRepository = Mockito.mock(UserConfigRepository.class);
+    @BeforeClass
+    public static void before() {
+        userConfigRepository = mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
+        localeService = new LocaleService("sv", userConfigRepository);
     }
 
     @Test
@@ -191,6 +199,32 @@ public class UtilsTest {
         assertThat(Utils.isSamePokemon("mewTwO", "mewtwo"), is(true));
         assertThat(Utils.isSamePokemon("mewtwo", "mewTwO"), is(true));
         assertThat(Utils.isSamePokemon(" mewtwo", "mewtwo"), is(false));
+    }
+
+    @Test
+    public void parseTime() throws Exception {
+        User user = mock(User.class);
+        when(user.getName()).thenReturn("TheUser");
+        assertThat(Utils.parseTime(user, "925", localeService), is(LocalTime.of(9, 25)));
+        assertThat(Utils.parseTime(user, "9.25", localeService), is(LocalTime.of(9, 25)));
+        assertThat(Utils.parseTime(user, "9:25", localeService), is(LocalTime.of(9, 25)));
+        assertThat(Utils.parseTime(user, "025", localeService), is(LocalTime.of(0, 25)));
+        assertThat(Utils.parseTime(user, "1925", localeService), is(LocalTime.of(19, 25)));
+        assertErrorWhenParsing("12345", user);
+        assertErrorWhenParsing("1A45", user);
+        assertErrorWhenParsing("10,45", user);
+        assertErrorWhenParsing("2545", user);
+        assertErrorWhenParsing("999", user);
+        assertErrorWhenParsing("969", user);
+    }
+
+    private void assertErrorWhenParsing(String timeString, User user) {
+        try {
+            Utils.parseTime(user, timeString, localeService);
+            fail("This value should have failed: " + timeString);
+        } catch (UserMessedUpException e) {
+            // Expected
+        }
     }
 
     private void assertPokemonIsDoubleWeakAgainst(Pokemon pokemon, String typeToCheck) {

@@ -84,6 +84,7 @@ public class LocaleService {
     public static final String MANUAL_CONFIG = "MANUAL_CONFIG";
     public static final String GETTING_STARTED_HELP = "GETTING_STARTED_HELP";
     public static final String PLUS_SIGNUP_FAIL = "PLUS_SIGNUP_FAIL";
+    public static final String NO_RAID = "NO_RAID";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -626,6 +627,11 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(NO_RAID_AT_GYM, SWEDISH),
                 "Kunde inte hitta någon aktuell raid för \"%1\".");
 
+        i18nMessages.put(new I18nLookup(NO_RAID, Locale.ENGLISH),
+                "Could not find the target raid.");
+        i18nMessages.put(new I18nLookup(NO_RAID, SWEDISH),
+                "Kunde inte hitta den aktuella raiden.");
+
         i18nMessages.put(new I18nLookup(RAIDSTATUS, Locale.ENGLISH), "%1:");
         i18nMessages.put(new I18nLookup(RAIDSTATUS, SWEDISH), "%1:");
 
@@ -769,12 +775,13 @@ public class LocaleService {
                         "**Change endtime for a raid:** !raid change when *[New end of raid (HH:MM)]* *[Pokestop name]* " +
                         "(Only raid creator or server admins may do this)\n" +
                         "*Example:* !raid change when 09:45 Solna Platform\n\n" +
-                        "**Change start time for a raid group:** !raid change group *[New time (HH:MM)]* *[Pokestop name]*\n" +
+                        "**Change start time for a raid group:** !raid change group *[New time (HH:MM)]* *[Pokestop name]*" +
+                        " (Only raid creator or server admin)\n" +
                         "*Example:* !raid change group 09:35 Solna Platform*\n\n" +
                         "**Change raid boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
-                        "(Only raid creator or server admins may do this)\n" +
+                        "(Only raid creator or server admin)\n" +
                         "*Example:* !raid change pokemon Suicune Solna Platform\n\n" +
-                        "**Delete a raid:** !raid change remove *[Pokestop name]* (Only server admins may do this)\n" +
+                        "**Delete a raid:** !raid change remove *[Pokestop name]* (Only server admin)\n" +
                         "*Example:* !raid change remove Solna Platform"
         );
         i18nMessages.put(new I18nLookup(MANUAL_CHANGE, SWEDISH),
@@ -782,12 +789,13 @@ public class LocaleService {
                         "**Ändra en raids sluttid:** !raid change when *[Ny sluttid (HH:MM)]* *[Gym-namn]* " +
                         "(Endast raidskapare eller admin får göra detta)\n" +
                         "*Exempel:* !raid change when 09:45 Solna Platform\n\n" +
-                        "**Ändra tid för en raidgrupp:** !raid change group *[Ny tid (HH:MM)]* *[Gym-namn]*\n" +
+                        "**Ändra tid för en raidgrupp:** !raid change group *[Ny tid (HH:MM)]* *[Gym-namn]*" +
+                        " (Endast raidskapare eller admin)\n" +
                         "*Exempel:* !raid change group 09:35 Solna Platform*\n\n" +
                         "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
-                        "(Endast raidskapare eller admin får göra detta)\n" +
+                        "(Endast raidskapare eller admin)\n" +
                         "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +
-                        "**Ta bort en raid:** !raid change remove *[Pokestop name]* (Endast admins får göra detta)\n" +
+                        "**Ta bort en raid:** !raid change remove *[Pokestop name]* (Endast admin)\n" +
                         "*Exempel:* !raid change remove Solna Platform"
         );
 

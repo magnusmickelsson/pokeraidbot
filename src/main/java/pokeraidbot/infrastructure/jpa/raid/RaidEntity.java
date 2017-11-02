@@ -7,9 +7,7 @@ import pokeraidbot.domain.config.ClockService;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.*;
 
 @Entity
 @Table(indexes = {@Index(name = "id", columnList = "id"), @Index(name = "region", columnList = "region"),
@@ -72,10 +70,6 @@ public class RaidEntity implements Serializable {
 
     public String getRegion() {
         return region;
-    }
-
-    public Set<RaidEntitySignUp> getSignUps() {
-        return signUps;
     }
 
     public boolean addSignUp(RaidEntitySignUp signUp) {
@@ -156,11 +150,15 @@ public class RaidEntity implements Serializable {
     }
 
     public RaidEntitySignUp getSignUp(String userName) {
-        for (RaidEntitySignUp signUp : getSignUps()) {
+        for (RaidEntitySignUp signUp : signUps) {
             if (signUp.getResponsible().equalsIgnoreCase(userName)) {
                 return signUp;
             }
         }
         return null;
+    }
+
+    public Set<RaidEntitySignUp> getSignUpsAsSet() {
+        return Collections.unmodifiableSet(new LinkedHashSet<>(signUps));
     }
 }

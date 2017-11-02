@@ -39,7 +39,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
         String gymName = commandEvent.getArgs();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        final SignUp removed = raid.remove(userName, raidRepository);
+        final SignUp removed = raid.remove(user, raidRepository);
         if (removed != null) {
             commandEvent.reactSuccess();
         } else {

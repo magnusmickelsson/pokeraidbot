@@ -58,10 +58,10 @@ public class RaidRepository {
     }
 
     public String executeSignUpCommand(Config config,
-                                     User user,
-                                     Locale localeForUser,
-                                     String[] args,
-                                     String help) {
+                                       User user,
+                                       Locale localeForUser,
+                                       String[] args,
+                                       String help) {
         String people = args[0];
         String userName = user.getName();
         if (args.length < 3 || args.length > 10) {
@@ -95,8 +95,8 @@ public class RaidRepository {
                 gym.getName(), signUpText);
     }
 
-    public void newRaid(String raidCreatorName, Raid raid) {
-        RaidEntity raidEntity = findEntityByRaidId(raid);
+    public void newRaid(User raidCreator, Raid raid) {
+        RaidEntity raidEntity = findEntityByRaidId(raid, raidCreator);
 
         final String pokemonName = raid.getPokemon().getName();
 
@@ -104,32 +104,34 @@ public class RaidRepository {
             final String existingEntityPokemon = raidEntity.getPokemon();
             final boolean oneRaidIsEx = Utils.isRaidExPokemon(pokemonName) || Utils.isRaidExPokemon(existingEntityPokemon);
             if ((!oneRaidIsEx) || Utils.raidsCollide(raid.getEndOfRaid(), raidEntity.getEndOfRaid())) {
-                throw new RaidExistsException(raidCreatorName, getRaidInstance(raidEntity),
-                        localeService, LocaleService.DEFAULT);
+                throw new RaidExistsException(raidCreator, getRaidInstance(raidEntity),
+                        localeService, localeService.getLocaleForUser(raidCreator));
             }
         }
 
-        saveRaid(raidCreatorName, raid);
+        saveRaid(raidCreator, raid);
     }
 
-    private RaidEntity findEntityByRaidId(Raid raid) {
-        final RaidEntity raidEntity = raid.getId() == null ? null : raidEntityRepository.findOne(raid.getId());
-        removeRaidIfExpired(raidEntity);
-        return raidEntity;
+    private RaidEntity findEntityByRaidId(Raid raid, User user) {
+        if (raid == null) {
+            return null;
+        }
+        return findEntityByRaidId(raid.getId(), user);
     }
 
-    private RaidEntity findEntityByRaidId(String raidId) {
+
+    private RaidEntity findEntityByRaidId(String raidId, User user) {
         final RaidEntity raidEntity = raidId == null ? null : raidEntityRepository.findOne(raidId);
         removeRaidIfExpired(raidEntity);
         return raidEntity;
     }
 
-    private void saveRaid(String raidCreatorName, Raid raid) {
+    private void saveRaid(User raidCreator, Raid raid) {
         final RaidEntity toBeSaved = new RaidEntity(UUID.randomUUID().toString(),
                 raid.getPokemon().getName(),
                 raid.getEndOfRaid(),
                 raid.getGym().getName(),
-                raidCreatorName,
+                raidCreator.getName(),
                 raid.getRegion());
         raidEntityRepository.save(toBeSaved);
 
@@ -147,7 +149,7 @@ public class RaidRepository {
         raid.setCreator(raidEntity.getCreator());
         raid.setId(raidEntity.getId());
         Map<String, SignUp> signUps = new ConcurrentHashMap<>();
-        for (RaidEntitySignUp signUp : raidEntity.getSignUps()) {
+        for (RaidEntitySignUp signUp : raidEntity.getSignUpsAsSet()) {
             signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
                     LocalTime.parse(signUp.getEta(), Utils.timeParseFormatter)));
         }
@@ -230,7 +232,8 @@ public class RaidRepository {
     }
 
     public void addSignUp(User user, Raid raid, SignUp theSignUp) {
-        RaidEntity entity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
+        RaidEntity entity = findEntityByRaidId(raid.getId(), user);
+
         RaidEntitySignUp entitySignUp = entity.getSignUp(user.getName());
         if (entitySignUp == null) {
             entity.addSignUp(new RaidEntitySignUp(user.getName(), theSignUp.getHowManyPeople(),
@@ -242,9 +245,9 @@ public class RaidRepository {
         raidEntityRepository.save(entity);
     }
 
-    public void removeSignUp(String userName, Raid raid, SignUp theSignUp) {
-        RaidEntity entity = raidEntityRepository.findOne(raid.getId());
-        entity.removeSignUp(new RaidEntitySignUp(userName, theSignUp.getHowManyPeople(),
+    public void removeSignUp(User user, Raid raid, SignUp theSignUp) {
+        RaidEntity entity = findEntityByRaidId(raid.getId(), user);
+        entity.removeSignUp(new RaidEntitySignUp(user.getName(), theSignUp.getHowManyPeople(),
                 Utils.printTime(theSignUp.getArrivalTime())));
         raidEntityRepository.save(entity);
     }
@@ -269,11 +272,8 @@ public class RaidRepository {
         return getRaidInstance(raidEntity);
     }
 
-    public Raid changeEndOfRaid(Raid raid, LocalDateTime newEndOfRaid) {
-        RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
-        if (!raidEntity.getPokemon().equalsIgnoreCase(raid.getPokemon().getName())) {
-            throw new IllegalStateException("Database issues. Please notify the developer: magnus.mickelsson@gmail.com and describe what happened.");
-        }
+    public Raid changeEndOfRaid(String raidId, LocalDateTime newEndOfRaid, User user) {
+        RaidEntity raidEntity = findEntityByRaidId(raidId, user);
         raidEntity.setEndOfRaid(newEndOfRaid);
         raidEntity = raidEntityRepository.save(raidEntity);
         return getRaidInstance(raidEntity);
@@ -295,7 +295,7 @@ public class RaidRepository {
 
     public Raid modifySignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs,
                              LocalDateTime startAt) {
-        RaidEntity raidEntity = findEntityByRaidId(raidId);
+        RaidEntity raidEntity = findEntityByRaidId(raidId, user);
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
@@ -329,12 +329,16 @@ public class RaidRepository {
 
     public Raid removeFromSignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs,
                                  LocalDateTime startAt) {
-        RaidEntity raidEntity = raidEntityRepository.findOne(raidId);
+        RaidEntity raidEntity = findEntityByRaidId(raidId, user);
+        if (raidEntity == null) {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+        }
         RaidEntitySignUp signUp = raidEntity.getSignUp(user.getName());
         final String startAtTime = Utils.printTime(startAt.toLocalTime());
         if (signUp == null) {
             // Ignore this case, when there is no signup to remove from. Silent ignore.
-        } else if (startAtTime.equals(signUp.getEta())){
+        } else if (startAtTime.equals(signUp.getEta())) {
             final int sum = signUp.getNumberOfPeople() - mystic - instinct - valor - plebs;
             if (sum <= 0) {
                 // Remove signup
@@ -355,9 +359,9 @@ public class RaidRepository {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("About to remove signups for raid " + raidId + " at " + printTimeIfSameDay(startAt));
         }
-        RaidEntity entity = raidEntityRepository.findOne(raidId);
+        RaidEntity entity = findEntityByRaidId(raidId, null);
         if (entity != null) {
-            for (RaidEntitySignUp signUp : entity.getSignUps()) {
+            for (RaidEntitySignUp signUp : entity.getSignUpsAsSet()) {
                 if (signUp.getArrivalTime().equals(startAt.toLocalTime())) {
                     RaidEntitySignUp removed = entity.removeSignUp(signUp);
                     if (LOGGER.isDebugEnabled()) {
@@ -371,24 +375,18 @@ public class RaidRepository {
         return getRaidInstance(entity);
     }
 
-    public void moveAllSignUpsForTimeToNewTime(Raid raid, LocalDateTime currentStartAt, LocalDateTime newDateTime, User user) {
-        Validate.notNull(raid, "Raid cannot be null");
+    public void moveAllSignUpsForTimeToNewTime(String raidId, LocalDateTime currentStartAt, LocalDateTime newDateTime, User user) {
+        Validate.notNull(raidId, "Raid ID cannot be null");
         Validate.notNull(currentStartAt, "Current start time cannot be null");
         Validate.notNull(newDateTime, "New start time cannot be null");
         Validate.notNull(user, "User cannot be null");
-        RaidEntity entity = raidEntityRepository.findOne(raid.getId());
+        RaidEntity entity = raidEntityRepository.findOne(raidId);
         if (entity != null) {
-            for (SignUp signUp : raid.getSignUps()) {
+            for (RaidEntitySignUp signUp : entity.getSignUpsAsSet()) {
                 if (signUp.getArrivalTime().equals(currentStartAt.toLocalTime())) {
-                    final RaidEntitySignUp removed = entity.removeSignUp(new RaidEntitySignUp(signUp.getUserName(),
-                            signUp.getHowManyPeople(),
-                            Utils.printTime(signUp.getArrivalTime())));
-                    final RaidEntitySignUp movedSignUp = new RaidEntitySignUp(signUp.getUserName(),
-                            signUp.getHowManyPeople(),
-                            Utils.printTime(newDateTime.toLocalTime()));
-                    entity.addSignUp(movedSignUp);
+                    signUp.setEta(Utils.printTime(newDateTime.toLocalTime()));
                     if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Moved signup: " + removed + " to " + movedSignUp);
+                        LOGGER.debug("Changed ETA for signup: " + signUp);
                     }
                 }
             }

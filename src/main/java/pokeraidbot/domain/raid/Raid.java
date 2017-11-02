@@ -10,6 +10,7 @@ import pokeraidbot.domain.raid.signup.SignUp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.printDateTime;
@@ -19,7 +20,7 @@ public class Raid {
     private final LocalDateTime endOfRaid;
     private final Gym gym;
     private final LocaleService localeService;
-    private Map<String, SignUp> signUps = new HashMap<>();
+    private Map<String, SignUp> signUps = new ConcurrentHashMap<>();
     private String region;
     private String creator;
     private String id;
@@ -117,10 +118,10 @@ public class Raid {
         return signUps.values().stream().mapToInt(signup -> signup.getHowManyPeople()).sum();
     }
 
-    public SignUp remove(String userName, RaidRepository raidRepository) {
-        final SignUp removed = signUps.remove(userName);
+    public SignUp remove(User user, RaidRepository raidRepository) {
+        final SignUp removed = signUps.remove(user.getName());
         if (removed != null) {
-            raidRepository.removeSignUp(userName, this, removed);
+            raidRepository.removeSignUp(user, this, removed);
         }
         return removed;
     }

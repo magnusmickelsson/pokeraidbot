@@ -4,8 +4,9 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
+* Parsing time should be able to handle 9.00, 9:00 etc without a starting 0 (Swepocks)
 * ConcurrentModificationException when removing signups from raid when raid group expires -
-create test case for this scenario
+  create test case for this scenario
 
 Being developed:
 
@@ -38,6 +39,7 @@ Fix, misc:
 
 Do, features:
 
+* In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
 * -1 syntax to remove signups from a raid
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
