@@ -38,7 +38,7 @@ public class SignupWithPlusCommandListener implements EventListener {
         this.localeService = localeService;
     }
 
-    public static final String plusXRegExp = "^[+]\\d{1,2}\\s{1,2}\\d{2}[:.]?\\d{2}\\s{1,2}.*";
+    public static final String plusXRegExp = "^[+]\\d{1,2}\\s{1,2}\\d{1,2}[:.]?\\d{2}\\s{1,2}.*";
     @Override
     public void onEvent(Event event) {
         if (event instanceof GuildMessageReceivedEvent) {
