@@ -219,6 +219,7 @@ public class Utils {
     public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {
         LocalTime endsAtTime;
         try {
+            timeString = preProcessTimeString(timeString);
             endsAtTime = LocalTime.parse(timeString, Utils.timeParseFormatter);
         } catch (DateTimeParseException | NullPointerException e) {
             throw new UserMessedUpException(user,
@@ -283,5 +284,13 @@ public class Utils {
 
     public static boolean isRaidEx(Raid raid) {
         return isRaidExPokemon(raid.getPokemon().getName());
+    }
+
+    private static String preProcessTimeString(String timeString) {
+        if (timeString != null && timeString.matches("[0-9]{3,4}")) {
+            return new StringBuilder(timeString).insert(timeString.length()-2, ":").toString();
+        } else {
+            return timeString;
+        }
     }
 }
