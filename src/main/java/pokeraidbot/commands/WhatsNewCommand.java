@@ -33,7 +33,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Flytta tid för en raidgrupp: *!raid change group {ny tid} {gym-namn}*\n" +
                     "- Användare kan själva välja locale via: *!raid config locale={språkkod, t.ex. en eller sv}*\n" +
                     "- Kom-igång-guide - *!raid getting-started*\n" +
-                    "- Parameter för att välja server default locale (en eller sv)";
+                    "- För serveradmins: parameter för att välja server default locale (en eller sv)";
         } else {
             message = "**New in 1.0.0:**\n\n" +
                     "- Fixed readme for both english and swedish including images\n" +
@@ -49,7 +49,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Users can choose their own locale via: *!raid config locale=" +
                     "{language code, for example en or sv}*\n" +
                     "- Getting started guide - *!raid getting-started*\n" +
-                    "- Input parameter to application with default locale (en or sv)";
+                    "- For serveradmins: input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }
