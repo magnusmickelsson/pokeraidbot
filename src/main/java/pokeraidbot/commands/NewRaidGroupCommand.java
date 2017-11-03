@@ -154,6 +154,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         newContent)
                         .queue(m -> {
                         }, m -> {
+                            LOGGER.warn(m.getClass().getName() + " occurred in edit message loop: " + m.getMessage());
                             emoticonSignUpMessageListener.setStartAt(null);
                         });
                 return true;

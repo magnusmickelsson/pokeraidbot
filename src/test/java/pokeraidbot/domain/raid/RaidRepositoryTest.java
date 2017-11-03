@@ -144,7 +144,7 @@ public class RaidRepositoryTest {
         }
 
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
-        Raid changedRaid = repo.changeEndOfRaid(raid.getId(), endOfRaid.plusMinutes(5), user);
+        Raid changedRaid = repo.changeEndOfRaid(raid.getId(), endOfRaid.plusMinutes(5));
         assertThat(raid.getEndOfRaid(), not(changedRaid.getEndOfRaid()));
         assertThat(changedRaid.getEndOfRaid(), is(raid.getEndOfRaid().plusMinutes(5)));
         assertThat(raid.getGym(), is(changedRaid.getGym()));

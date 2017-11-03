@@ -82,7 +82,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
                 assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
                 assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
-                raid = raidRepository.changeEndOfRaid(raid.getId(), endsAt, user);
+                raid = raidRepository.changeEndOfRaid(raid.getId(), endsAt);
                 break;
             case "pokemon":
                 whatToChangeTo = args[1].trim().toLowerCase();
@@ -154,15 +154,23 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         final boolean isUsersGroup = user.getId().equals(listener.getUserId());
                         if (isCorrectRaid && (isUsersGroup || isUserAdministrator(commandEvent))) {
                             final LocalDateTime currentStartAt = listener.getStartAt();
-                            raidRepository.moveAllSignUpsForTimeToNewTime(raidId, currentStartAt, newDateTime, user);
-                            listener.setStartAt(newDateTime);
-                            groupChanged = true;
-                            replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                                    localeService.getMessageFor(LocaleService.MOVED_GROUP,
-                                            localeService.getLocaleForUser(user),
-                                            printTimeIfSameDay(currentStartAt),
-                                            printTimeIfSameDay(newDateTime), raid.getGym().getName()),
-                                    30);
+                            if (currentStartAt != null) {
+                                raidRepository.moveAllSignUpsForTimeToNewTime(raidId, currentStartAt, newDateTime, user);
+                                listener.setStartAt(newDateTime);
+                                groupChanged = true;
+                                replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                                        localeService.getMessageFor(LocaleService.MOVED_GROUP,
+                                                localeService.getLocaleForUser(user),
+                                                printTimeIfSameDay(currentStartAt),
+                                                printTimeIfSameDay(newDateTime), raid.getGym().getName()),
+                                        30);
+                            } else {
+                                // This group is about to get cleaned up since its start time is null
+                                replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                                        // todo: i18n
+                                        "Detta meddelande är på gång att städas undan. " +
+                                                "Skapa en ny grupp via *!raid group {tid} {gym}*", 15);
+                            }
                         }
                     }
                 }
