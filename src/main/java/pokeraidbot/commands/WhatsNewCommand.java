@@ -20,7 +20,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
-            message = "**Nytt i 1.0.0:**\n\n" +
+            message = "**Nytt i 1.0.1:**\n\n" +
                     "- Ny readme för EN och SV, inklusive nya bilder\n" +
                     "- \"Komma igång\"-guide på engelska\n" +
                     "- Raidgrupper tas nu bort efter raidtid + 5 minuter, och anmälningar till gruppen tas då bort\n" +
@@ -33,9 +33,10 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Flytta tid för en raidgrupp: *!raid change group {ny tid} {gym-namn}*\n" +
                     "- Användare kan själva välja locale via: *!raid config locale={språkkod, t.ex. en eller sv}*\n" +
                     "- Kom-igång-guide - *!raid getting-started*\n" +
+                    "- Lite bugfixar\n" +
                     "- För serveradmins: parameter för att välja server default locale (en eller sv)";
         } else {
-            message = "**New in 1.0.0:**\n\n" +
+            message = "**New in 1.0.1:**\n\n" +
                     "- Fixed readme for both english and swedish including images\n" +
                     "- Fixed getting started guide for english locale\n" +
                     "- Raid groups now expire after raid time + 5 minutes, removing all signups for the group\n" +
@@ -49,6 +50,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Users can choose their own locale via: *!raid config locale=" +
                     "{language code, for example en or sv}*\n" +
                     "- Getting started guide - *!raid getting-started*\n" +
+                    "- Some bugfixes\n" +
                     "- For serveradmins: input parameter to application with default locale (en or sv)";
         }
         replyBasedOnConfig(config, commandEvent, message);

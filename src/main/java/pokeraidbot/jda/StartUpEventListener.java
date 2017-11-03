@@ -26,18 +26,16 @@ public class StartUpEventListener implements EventListener{
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
     private final ClockService clockService;
-    protected static final ExecutorService executorService = new ThreadPoolExecutor(100, Integer.MAX_VALUE,
-            65L, TimeUnit.SECONDS,
-            new LinkedTransferQueue<>());
+    private final ExecutorService executorService;
 
-    // todo: pass thread pool as an argument, so we have the same pool for all worker threads
     public StartUpEventListener(ServerConfigRepository serverConfigRepository,
                                 RaidRepository raidRepository, LocaleService localeService,
-                                ClockService clockService) {
+                                ClockService clockService, ExecutorService executorService) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;
         this.clockService = clockService;
+        this.executorService = executorService;
     }
 
     @Override

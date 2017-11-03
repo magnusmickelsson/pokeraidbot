@@ -67,7 +67,7 @@ public class BotService {
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
-                raidRepository, localeService, clockService);
+                raidRepository, localeService, clockService, executorService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
