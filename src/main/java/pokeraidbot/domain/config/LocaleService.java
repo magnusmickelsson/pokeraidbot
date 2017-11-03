@@ -85,6 +85,7 @@ public class LocaleService {
     public static final String GETTING_STARTED_HELP = "GETTING_STARTED_HELP";
     public static final String PLUS_SIGNUP_FAIL = "PLUS_SIGNUP_FAIL";
     public static final String NO_RAID = "NO_RAID";
+    public static final String GROUP_CLEANING_UP = "GROUP_CLEANING_UP";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -155,6 +156,14 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(GROUP_CLEANING_UP, Locale.ENGLISH),
+                "This group is about to be removed. " +
+                        "Create a new group via *!raid group {time (HH:MM)} {gym name}*"
+        );
+        i18nMessages.put(new I18nLookup(GROUP_CLEANING_UP, SWEDISH),
+                "Detta meddelande är på gång att städas undan. " +
+                        "Skapa en ny grupp via *!raid group {tid (HH:MM)} {gym}*"
+        );
 //        i18nMessages.put(new I18nLookup(PLUS_SIGNUP_FAIL, Locale.ENGLISH),
 //                "Pokeraidbot wanted to sign you up, but couldn't"
 //        );

@@ -22,6 +22,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.concurrent.TimeUnit;
 
 import static pokeraidbot.Utils.*;
 
@@ -167,9 +168,10 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             } else {
                                 // This group is about to get cleaned up since its start time is null
                                 replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                                        // todo: i18n
-                                        "Detta meddelande är på gång att städas undan. " +
-                                                "Skapa en ny grupp via *!raid group {tid} {gym}*", 15);
+                                        localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
+                                                localeService.getLocaleForUser(user)), 15);
+                                commandEvent.getMessage().delete().queueAfter(50, TimeUnit.MILLISECONDS);
+                                return;
                             }
                         }
                     }

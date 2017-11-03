@@ -98,9 +98,8 @@ public class RaidRepository {
     public void newRaid(User raidCreator, Raid raid) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
-        final String pokemonName = raid.getPokemon().getName();
-
         if (raidEntity != null) {
+            final String pokemonName = raid.getPokemon().getName();
             final String existingEntityPokemon = raidEntity.getPokemon();
             final boolean oneRaidIsEx = Utils.isRaidExPokemon(pokemonName) || Utils.isRaidExPokemon(existingEntityPokemon);
             if ((!oneRaidIsEx) || Utils.raidsCollide(raid.getEndOfRaid(), raidEntity.getEndOfRaid())) {
