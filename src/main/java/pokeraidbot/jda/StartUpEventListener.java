@@ -26,7 +26,7 @@ public class StartUpEventListener implements EventListener{
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
     private final ClockService clockService;
-    protected static final ExecutorService executorService = new ThreadPoolExecutor(0, 200,
+    protected static final ExecutorService executorService = new ThreadPoolExecutor(100, Integer.MAX_VALUE,
             65L, TimeUnit.SECONDS,
             new LinkedTransferQueue<>());
 
@@ -50,35 +50,40 @@ public class StartUpEventListener implements EventListener{
                     final String messageId = config.getOverviewMessageId();
                     if (!StringUtils.isEmpty(messageId)) {
                         for (MessageChannel channel : guild.getTextChannels()) {
-                            try {
-                                if (channel.getMessageById(messageId).complete() != null) {
-                                    final Callable<Boolean> overviewTask =
-                                            RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
-                                                    null, config, messageId, localeService, serverConfigRepository,
-                                                    raidRepository, clockService, channel,
-                                                    executorService);
-                                    executorService.submit(overviewTask);
-                                    LOGGER.info("Found overview message for channel " + channel.getName() +
-                                            " (server " + guild.getName() + "). Attaching to it.");
-                                    if (guild.getDefaultChannel() != null) {
-                                        guild.getDefaultChannel().sendMessage(
-                                                localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
-                                                        config.getLocale(),
-                                                        channel.getName())).queue();
-                                    }
-                                    return;
-                                }
-                            } catch (UserMessedUpException e) {
-                                channel.sendMessage(e.getMessage()).queue();
-                            } catch (ErrorResponseException e) {
-                                // We couldn't find the message in this channel or had permission issues, ignore
-                            } catch (Throwable e) {
-                                // Ignore any other error and try the other server channels
-                            }
+                            getAndAttachToOverviewMessageIfExists(guild, config, messageId, channel);
                         }
                     }
                 }
             }
         }
+    }
+
+    private boolean getAndAttachToOverviewMessageIfExists(Guild guild, Config config, String messageId, MessageChannel channel) {
+        try {
+            if (channel.getMessageById(messageId).complete() != null) {
+                final Callable<Boolean> overviewTask =
+                        RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
+                                null, config, messageId, localeService, serverConfigRepository,
+                                raidRepository, clockService, channel,
+                                executorService);
+                executorService.submit(overviewTask);
+                LOGGER.info("Found overview message for channel " + channel.getName() +
+                        " (server " + guild.getName() + "). Attaching to it.");
+                if (guild.getDefaultChannel() != null) {
+                    guild.getDefaultChannel().sendMessage(
+                            localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
+                                    config.getLocale(),
+                                    channel.getName())).queue();
+                }
+                return true;
+            }
+        } catch (UserMessedUpException e) {
+            channel.sendMessage(e.getMessage()).queue();
+        } catch (ErrorResponseException e) {
+            // We couldn't find the message in this channel or had permission issues, ignore
+        } catch (Throwable e) {
+            // Ignore any other error and try the other server channels
+        }
+        return false;
     }
 }
