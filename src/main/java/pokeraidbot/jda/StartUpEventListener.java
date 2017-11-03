@@ -18,9 +18,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class StartUpEventListener implements EventListener{
     private static final Logger LOGGER = LoggerFactory.getLogger(StartUpEventListener.class);
@@ -28,7 +26,9 @@ public class StartUpEventListener implements EventListener{
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
     private final ClockService clockService;
-    protected static final ExecutorService executorService = Executors.newCachedThreadPool();
+    protected static final ExecutorService executorService = new ThreadPoolExecutor(0, 200,
+            65L, TimeUnit.SECONDS,
+            new LinkedTransferQueue<>());
 
     // todo: pass thread pool as an argument, so we have the same pool for all worker threads
     public StartUpEventListener(ServerConfigRepository serverConfigRepository,
