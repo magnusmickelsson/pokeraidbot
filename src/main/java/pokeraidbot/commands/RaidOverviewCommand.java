@@ -96,6 +96,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 messageChannel.editMessageById(messageId,
                         messageString)
                         .queue(m -> {}, m -> {
+                            LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
                             cleanUp(config, user, messageId, serverConfigRepository, localeService, messageChannel);
                         });
                 return true;
@@ -121,7 +122,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         } catch (Throwable t) {
             // Do nothing
         } finally {
-            serverConfigRepository.setOverviewMessageIdForServer(config.getServer(), null);
+            try {
+                serverConfigRepository.setOverviewMessageIdForServer(config.getServer(), null);
+            } catch (Throwable t) {
+                LOGGER.warn(t.getClass().getSimpleName() + " while getting overview message: " + t.getMessage());
+            }
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Cleaned up message related to this overview.");
             }

@@ -28,10 +28,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @SpringBootApplication
 @Configuration
@@ -88,7 +85,7 @@ public class BotServerMain {
     public ExecutorService getExecutorService() {
         return new ThreadPoolExecutor(100, Integer.MAX_VALUE,
                 65L, TimeUnit.SECONDS,
-                new SynchronousQueue<>());
+                new LinkedTransferQueue<>());
     }
 
     @Bean
