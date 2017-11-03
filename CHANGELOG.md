@@ -1,6 +1,11 @@
-1.0.1 (2017-11-01)
+1.0.1 (2017-11-03)
 =====
 * Bugfix for removing signups for a raid, could lead to ConcurrentModificationException
+* Parsing time should be able to handle 9.00, 9:00 etc without a starting 0 (Swepocks)
+* Some refactoring
+* Minor other fixes
+* Changed raid entity and signup entity to not use @ElementCollection from JPA, but signup entity is now 
+its own JPA @Entity
 
 1.0.0 (2017-10-31)
 =====

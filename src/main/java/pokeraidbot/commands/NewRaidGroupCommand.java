@@ -143,8 +143,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(15);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Thread: " + Thread.currentThread().getId() +
+                if (LOGGER.isTraceEnabled()) {
+                    LOGGER.trace("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + embed.getId());
                 }
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();

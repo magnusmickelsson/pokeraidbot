@@ -4,9 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* Parsing time should be able to handle 9.00, 9:00 etc without a starting 0 (Swepocks)
-* ConcurrentModificationException when removing signups from raid when raid group expires -
-  create test case for this scenario
+-
 
 Being developed:
 

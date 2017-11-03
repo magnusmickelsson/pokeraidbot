@@ -87,8 +87,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Thread: " + Thread.currentThread().getId() +
+                if (LOGGER.isTraceEnabled()) {
+                    LOGGER.trace("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + messageId);
                 }
                 final String messageString = getOverviewMessage(config,
