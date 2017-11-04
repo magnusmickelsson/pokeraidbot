@@ -70,13 +70,13 @@ public class RaidListCommand extends ConfigAwareCommand {
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
-                if (!Utils.isRaidEx(raid) && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
+                if (!raid.isExRaid() && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
                     stringBuilder.append("\n**").append(currentPokemon.getName()).append("**\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
-                if (!Utils.isRaidEx(raid)) {
+                if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
                     .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")

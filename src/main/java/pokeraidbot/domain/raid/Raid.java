@@ -171,4 +171,8 @@ public class Raid {
             }
         }
     }
+
+    public boolean isExRaid() {
+        return Utils.isRaidEx(this);
+    }
 }

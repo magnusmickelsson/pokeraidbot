@@ -78,10 +78,12 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
                 endsAtTime = parseTime(user, whatToChangeTo, localeService);
-                endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
+                endsAt = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), endsAtTime);
 
                 assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
-                assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
+                if (!raid.isExRaid()) {
+                    assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
+                }
                 assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
                 raid = raidRepository.changeEndOfRaid(raid.getId(), endsAt);
                 break;
@@ -95,12 +97,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 final Pokemon pokemon = pokemonRepository.search(whatToChangeTo, user);
-                if (Utils.isRaidExPokemon(raid.getPokemon().getName())) {
-                    throw new UserMessedUpException(userName, localeService.getMessageFor(LocaleService.EX_NO_CHANGE_POKEMON,
+                if (raid.isExRaid()) {
+                    throw new UserMessedUpException(userName, localeService.getMessageFor(
+                            LocaleService.EX_NO_CHANGE_POKEMON,
                             localeService.getLocaleForUser(user)));
                 }
                 verifyPermission(commandEvent, user, raid);
-                if (pokemon.getName().equalsIgnoreCase("mewtwo")) {
+                if (Utils.isRaidExPokemon("mewtwo")) {
                     throw new UserMessedUpException(userName, localeService.getMessageFor(
                             LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
                 }
@@ -141,10 +144,12 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
                 verifyPermission(commandEvent, user, raid);
                 LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
-                LocalDateTime newDateTime = LocalDateTime.of(LocalDate.now(), newTime);
+                LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
 
                 assertTimeNotInNoRaidTimespan(user, newTime, localeService);
-                assertTimeNotMoreThanXHoursFromNow(user, newTime, localeService, 2);
+                if (!raid.isExRaid()) {
+                    assertTimeNotMoreThanXHoursFromNow(user, newTime, localeService, 2);
+                }
                 assertCreateRaidTimeNotBeforeNow(user, newDateTime, localeService);
                 boolean groupChanged = false;
                 for (Object o : botService.getBot().getRegisteredListeners()) {

@@ -57,7 +57,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         String msgId = config.getOverviewMessageId();
         if (!StringUtils.isEmpty(msgId)) {
             final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(user, config, msgId, localeService,
+                    getMessageRefreshingTaskToSchedule(user, config.getServer(), msgId, localeService,
                             serverConfigRepository, raidRepository, clockService, commandEvent.getChannel(),
                             executorService);
             executorService.submit(refreshEditThreadTask);
@@ -66,9 +66,10 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     localeService, raidRepository, clockService);
             commandEvent.reply(messageString, msg -> {
                 final String messageId = msg.getId();
-                serverConfigRepository.setOverviewMessageIdForServer(config.getServer(), messageId);
+                final String server = config.getServer();
+                serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
                 final Callable<Boolean> refreshEditThreadTask =
-                        getMessageRefreshingTaskToSchedule(user, config, messageId,
+                        getMessageRefreshingTaskToSchedule(user, server, messageId,
                                 localeService, serverConfigRepository, raidRepository, clockService,
                                 commandEvent.getChannel(), executorService);
                 executorService.submit(refreshEditThreadTask);
@@ -77,7 +78,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     }
 
     public static Callable<Boolean> getMessageRefreshingTaskToSchedule(User user,
-                                                                       Config config,
+                                                                       String server,
                                                                        String messageId, LocaleService localeService,
                                                                        ServerConfigRepository serverConfigRepository,
                                                                        RaidRepository raidRepository,
@@ -87,6 +88,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute
+                Config config = serverConfigRepository.getConfigForServer(server);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
                             " - Updating message with ID " + messageId);
@@ -97,6 +99,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         messageString)
                         .queue(m -> {}, m -> {
                             LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
+                            serverConfigRepository.save(config);
                             cleanUp(config, user, messageId, serverConfigRepository, localeService, messageChannel);
                         });
                 return true;
@@ -154,13 +157,13 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             Pokemon currentPokemon = null;
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
-                if (!Utils.isRaidEx(raid) && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
+                if (!raid.isExRaid() && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
                     stringBuilder.append("\n**").append(currentPokemon.getName()).append("**\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
-                if (!Utils.isRaidEx(raid)) {
+                if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
                             .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")

@@ -113,12 +113,32 @@ public class Utils {
         return false;
     }
 
-    public static void assertSignupTimeNotBeforeNow(User user, LocalDateTime dateAndTime, LocaleService localeService) {
+    public static void assertSignupTimeNotBeforeRaidStartAndNow(User user, LocalDateTime dateAndTime,
+                                                                LocalDateTime endOfRaid, LocaleService localeService,
+                                                                boolean isExRaid) {
+        final LocalDateTime startOfRaid = getStartOfRaid(endOfRaid, isExRaid);
         final LocalDateTime now = clockService.getCurrentDateTime();
+        assertSignupTimeNotBeforeRaidStart(user, dateAndTime, endOfRaid, localeService, isExRaid);
         if (dateAndTime.isBefore(now)) {
             throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.SIGN_BEFORE_NOW, localeService.getLocaleForUser(user),
+                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(startOfRaid)));
+        }
+    }
+
+    // todo: test case
+    public static LocalDateTime getStartOfRaid(LocalDateTime endOfRaid, boolean isExRaid) {
+        return isExRaid ? endOfRaid.minusMinutes(45) : endOfRaid.minusHours(1);
+    }
+
+    public static void assertSignupTimeNotBeforeRaidStart(User user, LocalDateTime dateAndTime,
+                                                          LocalDateTime endOfRaid, LocaleService localeService,
+                                                          boolean isExRaid) {
+        final LocalDateTime startOfRaid = getStartOfRaid(endOfRaid, isExRaid);
+        if (dateAndTime.isBefore(startOfRaid)) {
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.SIGN_BEFORE_RAID, localeService.getLocaleForUser(user),
-                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
+                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(startOfRaid)));
         }
     }
 
@@ -194,14 +214,10 @@ public class Utils {
         return pokemonName.equalsIgnoreCase(existingEntityPokemon);
     }
 
-    public static boolean oneIsMewTwo(String pokemonName, String existingEntityPokemon) {
-        return pokemonName.equalsIgnoreCase("mewtwo") ||
-                existingEntityPokemon.equalsIgnoreCase("mewtwo");
-    }
-
-    public static boolean raidsCollide(LocalDateTime endOfRaid, LocalDateTime endOfRaidTwo) {
-        LocalDateTime startTime = endOfRaid.minusHours(1);
-        LocalDateTime startTimeTwo = endOfRaidTwo.minusHours(1);
+    public static boolean raidsCollide(LocalDateTime endOfRaid, boolean isExRaid, LocalDateTime endOfRaidTwo,
+                                       boolean isExRaidTwo) {
+        LocalDateTime startTime = getStartOfRaid(endOfRaid, isExRaid);
+        LocalDateTime startTimeTwo = getStartOfRaid(endOfRaidTwo, isExRaidTwo);
         return isInInterval(startTime, endOfRaid, startTimeTwo, endOfRaidTwo) ||
                 isInInterval(startTimeTwo, endOfRaidTwo, startTime, endOfRaid);
     }

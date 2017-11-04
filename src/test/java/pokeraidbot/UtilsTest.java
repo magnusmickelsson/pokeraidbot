@@ -2,10 +2,8 @@ package pokeraidbot;
 
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -13,7 +11,6 @@ import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -180,15 +177,15 @@ public class UtilsTest {
         LocalDateTime endOne = startOne.plusHours(1);
         LocalDateTime startTwo = currentTimeService.getCurrentDateTime().minusMinutes(1);
         LocalDateTime endTwo = startTwo.plusHours(1);
-        assertThat(Utils.raidsCollide(endOne, endTwo), is(true));
-        assertThat(Utils.raidsCollide(endTwo, endOne), is(true));
+        assertThat(Utils.raidsCollide(endOne, false, endTwo, false), is(true));
+        assertThat(Utils.raidsCollide(endTwo, false, endOne, false), is(true));
 
         startOne = currentTimeService.getCurrentDateTime();
         endOne = startOne.plusMinutes(10);
         startTwo = currentTimeService.getCurrentDateTime().plusMinutes(11);
         endTwo = startTwo.plusHours(1);
-        assertThat(Utils.raidsCollide(endOne, endTwo), is(false));
-        assertThat(Utils.raidsCollide(endTwo, endOne), is(false));
+        assertThat(Utils.raidsCollide(endOne, false, endTwo, false), is(false));
+        assertThat(Utils.raidsCollide(endTwo, false, endOne, false), is(false));
     }
 
     @Test

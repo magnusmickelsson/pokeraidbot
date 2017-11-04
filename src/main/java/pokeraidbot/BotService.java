@@ -90,8 +90,8 @@ public class BotService {
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
-//                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-//                        serverConfigRepository, aggregateCommandListener),
+                new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        serverConfigRepository, aggregateCommandListener),
                 new UserConfigCommand(serverConfigRepository, trackingCommandListener, localeService,
                         userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
@@ -137,7 +137,7 @@ public class BotService {
                     // add the listeners
                     .addEventListener(waiter)
                     .addEventListener(commandClient)
-                    .addEventListener(eventLoggingListener)
+//                    .addEventListener(eventLoggingListener)
                     .addEventListener(startUpEventListener)
                     .addEventListener(plusCommandEventListener)
 

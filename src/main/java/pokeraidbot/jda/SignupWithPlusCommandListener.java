@@ -65,7 +65,7 @@ public class SignupWithPlusCommandListener implements EventListener {
         final String etaArgument = splitArguments[1];
         final String[] gymArgument = ArrayUtils.removeAll(splitArguments, 0, 1);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Adding " + numberOfPeopleArgument + " to raid, ETA " + etaArgument + " to gym " +
+            LOGGER.debug("Trying to add " + numberOfPeopleArgument + " to raid, ETA " + etaArgument + " to gym " +
                     StringUtils.join(gymArgument, ","));
         }
         final String guild = guildMessageReceivedEvent.getGuild().getName().trim().toLowerCase();

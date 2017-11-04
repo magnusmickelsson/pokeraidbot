@@ -45,8 +45,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
-        final String userName = user.getName();
-        final String[] args = commandEvent.getArgs().split(" ");
+        final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         String timeString = args[1];

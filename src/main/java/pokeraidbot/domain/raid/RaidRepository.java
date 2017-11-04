@@ -83,7 +83,7 @@ public class RaidRepository {
         LocalDateTime realEta = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), eta);
 
         assertEtaNotAfterRaidEnd(user, raid, realEta, localeService);
-        assertSignupTimeNotBeforeNow(user, realEta, localeService);
+        assertSignupTimeNotBeforeRaidStartAndNow(user, realEta, raid.getEndOfRaid(), localeService, raid.isExRaid());
 
         raid.signUp(user, numberOfPeople, eta, this);
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
@@ -99,10 +99,8 @@ public class RaidRepository {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         if (raidEntity != null) {
-            final String pokemonName = raid.getPokemon().getName();
-            final String existingEntityPokemon = raidEntity.getPokemon();
-            final boolean oneRaidIsEx = Utils.isRaidExPokemon(pokemonName) || Utils.isRaidExPokemon(existingEntityPokemon);
-            if ((!oneRaidIsEx) || Utils.raidsCollide(raid.getEndOfRaid(), raidEntity.getEndOfRaid())) {
+            if ((raidEntity.isExRaid() && raid.isExRaid()) || Utils.raidsCollide(raid.getEndOfRaid(), raid.isExRaid(),
+                    raidEntity.getEndOfRaid(), raidEntity.isExRaid())) {
                 throw new RaidExistsException(raidCreator, getRaidInstance(raidEntity),
                         localeService, localeService.getLocaleForUser(raidCreator));
             }

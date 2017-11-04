@@ -2,6 +2,7 @@ package pokeraidbot.infrastructure.jpa.raid;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.format.annotation.DateTimeFormat;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 
 import javax.persistence.*;
@@ -160,5 +161,9 @@ public class RaidEntity implements Serializable {
 
     public Set<RaidEntitySignUp> getSignUpsAsSet() {
         return Collections.unmodifiableSet(new LinkedHashSet<>(signUps));
+    }
+
+    public boolean isExRaid() {
+        return Utils.isRaidExPokemon(pokemon);
     }
 }

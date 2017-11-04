@@ -18,9 +18,9 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 
-import static pokeraidbot.Utils.assertCreateRaidTimeNotBeforeNow;
-import static pokeraidbot.Utils.assertTimeNotInNoRaidTimespan;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid new [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
@@ -47,8 +47,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
-        final String userName = user.getName();
-        final String[] args = commandEvent.getArgs().split(" ");
+        final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         String dateString = args[1];
@@ -58,9 +57,10 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
+        final Locale locale = localeService.getLocaleForUser(user);
         if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EX_DATE_LIMITS,
-                    localeService.getLocaleForUser(user)));
+                    locale));
         }
         assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
 
@@ -71,8 +71,12 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
+        if (!raid.isExRaid()) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NOT_EX_RAID,
+                    locale, pokemonName));
+        }
         raidRepository.newRaid(user, raid);
         replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                localeService.getLocaleForUser(user), raid.toString()));
+                locale, raid.toString()));
     }
 }

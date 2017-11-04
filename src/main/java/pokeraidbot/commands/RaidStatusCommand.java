@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static pokeraidbot.Utils.getNamesOfThoseWithSignUps;
+import static pokeraidbot.Utils.printTime;
 import static pokeraidbot.Utils.printTimeIfSameDay;
 
 /**
@@ -84,7 +85,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")
                 .append(signUps.size() > 0 ? ":\n" + allSignUpNames : "").append("\n").append(startGroupText)
                 .append(":\n*!raid group ")
-                .append(printTimeIfSameDay(raid.getEndOfRaid().minusMinutes(15))).append(" ")
+                .append(printTime(raid.getEndOfRaid().toLocalTime().minusMinutes(15))).append(" ")
                 .append(gymName).append("*\n")
                 .append(raidBossText).append(" **").append(pokemon).append("** - ") //.append(hintsText)
                 .append("*!raid vs ").append(pokemon.getName()).append("*");

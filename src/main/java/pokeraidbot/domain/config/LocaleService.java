@@ -4,13 +4,11 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.UserConfig;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.*;
-
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import java.util.concurrent.TimeUnit;
 
 public class LocaleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocaleService.class);
@@ -86,6 +84,8 @@ public class LocaleService {
     public static final String PLUS_SIGNUP_FAIL = "PLUS_SIGNUP_FAIL";
     public static final String NO_RAID = "NO_RAID";
     public static final String GROUP_CLEANING_UP = "GROUP_CLEANING_UP";
+    public static final String SIGN_BEFORE_NOW = "SIGN_BEFORE_NOW";
+    public static final String NOT_EX_RAID = "NOT_EX_RAID";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -156,6 +156,13 @@ public class LocaleService {
     }
 
     private void initTexts() {
+
+        i18nMessages.put(new I18nLookup(NOT_EX_RAID, Locale.ENGLISH),
+                "%1 is not an EX raid boss. Use *!raid new* command instead to create a standard raid."
+        );
+        i18nMessages.put(new I18nLookup(NOT_EX_RAID, SWEDISH),
+                "%1 är inte en EX raid boss. Använd *!raid new* istället för att skapa en vanlig raid."
+        );
         i18nMessages.put(new I18nLookup(GROUP_CLEANING_UP, Locale.ENGLISH),
                 "This group is about to be removed. " +
                         "Create a new group via *!raid group {time (HH:MM)} {gym name}*"
@@ -311,10 +318,10 @@ public class LocaleService {
                 "Du saknar behörighet för att göra det du försökte göra. Be hjälp av en admin."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, Locale.ENGLISH),
-                "Updated every 15 seconds. When the group expires (+5 mins), this message is removed."
+                "Updated every %2 %1."
         );
         i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, SWEDISH),
-                "Uppdateras var 15:e sekund. När tiden gått ut (+5 minuter) tas meddelandet bort."
+                "Uppdateras var %2:e %1."
         );
 
         i18nMessages.put(new I18nLookup(RAID_DETAILS, Locale.ENGLISH),
@@ -557,10 +564,15 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GYM_SEARCH, SWEDISH),
                 "Tom söksträng för gymnamn, ge mig något skoj att söka efter!");
 
-        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, Locale.ENGLISH),
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_NOW, Locale.ENGLISH),
                 "Can't sign up for this raid before current time. Your given time is %1, time is currently %2");
-        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, SWEDISH),
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_NOW, SWEDISH),
                 "Du kan inte anmäla dig att anlända innan nuvarande tid. Din ETA är %1, men klockan är %2.");
+
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, Locale.ENGLISH),
+                "Can't sign up for this raid before raid start. Your given time is %1, raid start is %2");
+        i18nMessages.put(new I18nLookup(SIGN_BEFORE_RAID, SWEDISH),
+                "Du kan inte anmäla dig att anlända innan raiden börjar. Din ETA är %1, men raiden börjar %2.");
 
         i18nMessages.put(new I18nLookup(NO_ETA_AFTER_RAID, Locale.ENGLISH),
                 "Can't arrive after raid has ended. Your given time is %1, raid ends at %2");
@@ -568,7 +580,7 @@ public class LocaleService {
                 "Det är väl inte så lämpligt att anlända efter att raiden slutat? Din ETA är %1, raiden slutar %2.");
 
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, Locale.ENGLISH),
-                "You can't set an end of raid time which are later than %3 hours from the current time " +
+                "You can't set an end of raid time which is later than %3 hours from the current time " +
                         "%2 except for EX raids - your input was %1.");
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, SWEDISH),
                 "Du kan inte sätta en sluttid för raid senare än %3 timmar från vad klockan är nu (%2), " +
@@ -954,6 +966,17 @@ public class LocaleService {
 
     public static boolean isSupportedLocale(Locale locale) {
         return Arrays.asList(SUPPORTED_LOCALES).contains(locale);
+    }
+
+    public static String asString(TimeUnit timeUnit, Locale locale) {
+        switch (timeUnit) {
+            case SECONDS:
+                return (locale == SWEDISH ? "sekund" : "second");
+            case MINUTES:
+                return (locale == SWEDISH ? "minut" : "minute");
+            default:
+                return timeUnit.name().toLowerCase();
+        }
     }
 
     private class I18nLookup {

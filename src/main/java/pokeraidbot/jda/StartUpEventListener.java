@@ -61,7 +61,7 @@ public class StartUpEventListener implements EventListener{
             if (channel.getMessageById(messageId).complete() != null) {
                 final Callable<Boolean> overviewTask =
                         RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
-                                null, config, messageId, localeService, serverConfigRepository,
+                                null, config.getServer(), messageId, localeService, serverConfigRepository,
                                 raidRepository, clockService, channel,
                                 executorService);
                 executorService.submit(overviewTask);
