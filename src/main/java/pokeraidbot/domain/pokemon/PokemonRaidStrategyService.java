@@ -38,7 +38,29 @@ public class PokemonRaidStrategyService {
             "Venusaur".toUpperCase(), "Entei".toUpperCase(), "Articuno".toUpperCase(), "Moltres".toUpperCase(),
             "Zapdos".toUpperCase(), "Lugia".toUpperCase(),
             "Raikou".toUpperCase(), "Suicune".toUpperCase(),
-            "Mewtwo".toUpperCase()
+            "Mewtwo".toUpperCase(),
+            "Ivysaur".toUpperCase(),
+    "Metapod".toUpperCase(),
+    "Charmeleon".toUpperCase(),
+    "Wartortle".toUpperCase(),
+    // Tier 2
+    "Magneton".toUpperCase(),
+    "Sableye".toUpperCase(),
+    "Sandslash".toUpperCase(),
+    "Tentacruel".toUpperCase(),
+    "Marowak".toUpperCase(),
+    "Cloyster".toUpperCase(),
+    // Tier 3
+    "Ninetales".toUpperCase(),
+    "Scyther".toUpperCase(),
+    "Omastar".toUpperCase(),
+    "Porygon".toUpperCase(),
+    // Tier 4
+    "Poliwrath".toUpperCase(),
+    "Victreebel".toUpperCase(),
+    "Golem".toUpperCase(),
+    "Nidoking".toUpperCase(),
+    "Nidoqueen".toUpperCase()
 };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {

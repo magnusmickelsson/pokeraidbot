@@ -99,8 +99,9 @@ public class RaidRepository {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         if (raidEntity != null) {
-            if ((raidEntity.isExRaid() && raid.isExRaid()) || Utils.raidsCollide(raid.getEndOfRaid(), raid.isExRaid(),
-                    raidEntity.getEndOfRaid(), raidEntity.isExRaid())) {
+            if ((raidEntity.isExRaid() && !raid.isExRaid()) || (!raidEntity.isExRaid() && raid.isExRaid())) {
+                // This is a situation we should allow, in case Niantic now allows for raids to happen at EX gyms
+            } else {
                 throw new RaidExistsException(raidCreator, getRaidInstance(raidEntity),
                         localeService, localeService.getLocaleForUser(raidCreator));
             }

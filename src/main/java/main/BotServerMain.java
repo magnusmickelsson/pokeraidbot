@@ -42,7 +42,7 @@ public class BotServerMain {
     private String ownerId;
     @Value("${token}")
     private String token;
-    public static final String version = "1.2.0";
+    public static final String version = "1.2.0-SNAPSHOT"; // todo: should be filter copied from pom.xml
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         SpringApplication.run(BotServerMain.class, args);

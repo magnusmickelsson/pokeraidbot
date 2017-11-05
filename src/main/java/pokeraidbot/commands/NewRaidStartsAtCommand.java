@@ -17,6 +17,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 
 import static pokeraidbot.Utils.*;
 
@@ -56,7 +57,7 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
         assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
-        assertCreateRaidTimeNotBeforeNow(user, endsAt.minusMinutes(Utils.RAID_DURATION_IN_MINUTES), localeService);
+        assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();
         for (int i = 2; i < args.length; i++) {
@@ -66,7 +67,8 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
         raidRepository.newRaid(user, raid);
+        final Locale locale = localeService.getLocaleForUser(user);
         replyBasedOnConfigAndRemoveAfter(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                localeService.getLocaleForUser(user), raid.toString()), 15);
+                locale, raid.toString(locale)), 15);
     }
 }
