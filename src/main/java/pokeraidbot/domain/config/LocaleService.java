@@ -88,6 +88,7 @@ public class LocaleService {
     public static final String SIGN_BEFORE_NOW = "SIGN_BEFORE_NOW";
     public static final String NOT_EX_RAID = "NOT_EX_RAID";
     public static final String NO_GROUP_BEFORE_RAID = "NO_GROUP_BEFORE_RAID";
+    public static final String NEW_RAID_START_HELP = "NEW_RAID_START_HELP";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -158,6 +159,11 @@ public class LocaleService {
     }
 
     private void initTexts() {
+
+        i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, Locale.ENGLISH),
+                "Create new raid starting at time - !raid start [Name of Pokemon] [Start (HH:MM)] [Gym name]");
+        i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, SWEDISH),
+                "Skapa ny raid som startar vid viss tid - !raid start [Pokemon] [Start klockan (HH:MM)] [Gym]");
 
         i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_RAID, Locale.ENGLISH),
                 "Can't set a raid group to start at %1, which is before raid start at %2."
@@ -713,8 +719,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(VS_HELP, SWEDISH),
                 "Se information om en pokemon, dess typ, svagheter etc. - !raid vs [Pokemon]");
 
-        i18nMessages.put(new I18nLookup(RAID_TOSTRING, Locale.ENGLISH), "Raid for %1 at gym %2, ends at %3");
-        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 raid vid %2, slut %3");
+        i18nMessages.put(new I18nLookup(RAID_TOSTRING, Locale.ENGLISH), "Raid for %1 at gym %2, from %3 to %4");
+        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 raid vid %2, från %3 till %4");
 
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, Locale.ENGLISH), "Raid created: %1");
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, SWEDISH), "Raid skapad: %1");
@@ -777,6 +783,10 @@ public class LocaleService {
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
                         "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid new entei 09:25 Solna Platform\n\n" +
+                        "**To register a new EX raid:**\n!raid ex *[Pokemon]* *[Ends at (yyyy-mm-dd HH:MM)]* *[Gym name]*\n" +
+                        "*Example:* !raid ex mewtwo 2017-10-10 09:25 Solna Platform\n\n" +
+                        "**To register a new raid via start time:**\n!raid start *[Pokemon]* *[Starts at (HH:MM)]* *[Gym name]*\n" +
+                        "*Example:* !raid start entei 08:40 Solna Platform\n\n" +
                         "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n" +
                         "*Example:* !raid status Solna Platform\n\n" +
                         "**Get a list of all active raids:**\n!raid list\n" +
@@ -790,6 +800,12 @@ public class LocaleService {
                         "**För att registrera en raid:**\n!raid new *[Pokemon]* " +
                         "*[Slutar klockan (HH:MM)]* *[Gym-namn]*\n" +
                         "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
+                        "**För att registrera en EX raid:**\n!raid ex *[Pokemon]* " +
+                        "*[Slutar (yyyy-mm-dd HH:MM)]* *[Gym-namn]*\n" +
+                        "*Exempel:* !raid ex mewtwo 2017-10-10 09:25 Solna Platform\n\n" +
+                        "**För att registrera en raid via starttid:**\n!raid start *[Pokemon]* " +
+                        "*[Startar klockan (HH:MM)]* *[Gym-namn]*\n" +
+                        "*Exempel:* !raid start entei 08:40 Solna Platform\n\n" +
                         "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
                         "*Exempel:* !raid status Solna Platform\n\n" +
                         "**Visa alla registrerade raider:**\n!raid list\n" +

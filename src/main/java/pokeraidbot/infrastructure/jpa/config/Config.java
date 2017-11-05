@@ -32,6 +32,8 @@ public class Config {
     private Boolean pinGroups = true;
     @Column
     private String overviewMessageId;
+    @Column
+    private String modPermissionGroup;
 
     // For JPA
     protected Config() {
@@ -120,35 +122,12 @@ public class Config {
         return overviewMessageId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Config)) return false;
-
-        Config config = (Config) o;
-
-        if (id != null ? !id.equals(config.id) : config.id != null) return false;
-        if (server != null ? !server.equals(config.server) : config.server != null) return false;
-        if (region != null ? !region.equals(config.region) : config.region != null) return false;
-        if (replyInDmWhenPossible != null ? !replyInDmWhenPossible.equals(config.replyInDmWhenPossible) : config.replyInDmWhenPossible != null)
-            return false;
-        if (locale != null ? !locale.equals(config.locale) : config.locale != null) return false;
-        if (giveHelp != null ? !giveHelp.equals(config.giveHelp) : config.giveHelp != null) return false;
-        if (pinGroups != null ? !pinGroups.equals(config.pinGroups) : config.pinGroups != null) return false;
-        return overviewMessageId != null ? overviewMessageId.equals(config.overviewMessageId) : config.overviewMessageId == null;
+    public String getModPermissionGroup() {
+        return modPermissionGroup;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (server != null ? server.hashCode() : 0);
-        result = 31 * result + (region != null ? region.hashCode() : 0);
-        result = 31 * result + (replyInDmWhenPossible != null ? replyInDmWhenPossible.hashCode() : 0);
-        result = 31 * result + (locale != null ? locale.hashCode() : 0);
-        result = 31 * result + (giveHelp != null ? giveHelp.hashCode() : 0);
-        result = 31 * result + (pinGroups != null ? pinGroups.hashCode() : 0);
-        result = 31 * result + (overviewMessageId != null ? overviewMessageId.hashCode() : 0);
-        return result;
+    public void setModPermissionGroup(String modPermissionGroup) {
+        this.modPermissionGroup = modPermissionGroup;
     }
 
     @Override
@@ -160,6 +139,7 @@ public class Config {
                 ", locale='" + locale + '\'' +
                 ", giveHelp=" + giveHelp +
                 ", pinGroups=" + pinGroups +
+                ", modGroup=" + modPermissionGroup +
                 '}';
     }
 }

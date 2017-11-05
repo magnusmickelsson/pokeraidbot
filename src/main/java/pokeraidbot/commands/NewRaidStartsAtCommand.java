@@ -21,24 +21,24 @@ import java.time.LocalTime;
 import static pokeraidbot.Utils.*;
 
 /**
- * !raid new [Pokemon] [Ends in (HH:MM)] [Pokestop name]
+ * !raid start [Pokemon] [Ends in (HH:MM)] [Pokestop name]
  */
-public class NewRaidCommand extends ConfigAwareCommand {
+public class NewRaidStartsAtCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
 
-    public NewRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
-                          PokemonRepository pokemonRepository, LocaleService localeService,
-                          ServerConfigRepository serverConfigRepository,
-                          CommandListener commandListener) {
+    public NewRaidStartsAtCommand(GymRepository gymRepository, RaidRepository raidRepository,
+                                  PokemonRepository pokemonRepository, LocaleService localeService,
+                                  ServerConfigRepository serverConfigRepository,
+                                  CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
-        this.name = "new";
-        this.aliases = new String[]{"end", "endsat", "ends"};
-        this.help = localeService.getMessageFor(LocaleService.NEW_RAID_HELP, LocaleService.DEFAULT);
+        this.name = "start";
+        this.aliases = new String[]{"startsat"};
+        this.help = localeService.getMessageFor(LocaleService.NEW_RAID_START_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
     }
@@ -50,12 +50,13 @@ public class NewRaidCommand extends ConfigAwareCommand {
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         String timeString = args[1];
-        LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService);
+        LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService)
+                .plusMinutes(Utils.RAID_DURATION_IN_MINUTES);
         LocalDateTime endsAt = LocalDateTime.of(LocalDate.now(), endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
         assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
-        assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
+        assertCreateRaidTimeNotBeforeNow(user, endsAt.minusMinutes(Utils.RAID_DURATION_IN_MINUTES), localeService);
 
         StringBuilder gymNameBuilder = new StringBuilder();
         for (int i = 2; i < args.length; i++) {

@@ -3,8 +3,10 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.utils.PermissionUtil;
+import org.thymeleaf.util.StringUtils;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -19,7 +21,6 @@ import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +77,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-                verifyPermission(commandEvent, user, raid);
+                verifyPermission(commandEvent, user, raid, config);
                 endsAtTime = parseTime(user, whatToChangeTo, localeService);
                 endsAt = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), endsAtTime);
 
@@ -102,7 +103,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             LocaleService.EX_NO_CHANGE_POKEMON,
                             localeService.getLocaleForUser(user)));
                 }
-                verifyPermission(commandEvent, user, raid);
+                verifyPermission(commandEvent, user, raid, config);
                 if (Utils.isRaidExPokemon("mewtwo")) {
                     throw new UserMessedUpException(userName, localeService.getMessageFor(
                             LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
@@ -117,7 +118,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-                verifyPermission(commandEvent, user, raid);
+                verifyPermission(commandEvent, user, raid, config);
                 final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
                 if (userIsNotAdministrator && raid.getSignUps().size() > 0) {
                     throw new UserMessedUpException(userName,
@@ -142,7 +143,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 gymName = gymNameBuilder.toString().trim();
                 gym = gymRepository.search(user, gymName, config.getRegion());
                 raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-                verifyPermission(commandEvent, user, raid);
+                verifyPermission(commandEvent, user, raid, config);
                 LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
                 LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
 
@@ -193,13 +194,28 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         commandEvent.reactSuccess();
     }
 
-    private void verifyPermission(CommandEvent commandEvent, User user, Raid raid) {
-        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
+    private void verifyPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {
+        final boolean isServerMod = isUserServerMod(commandEvent, config);
+        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent) && !isServerMod;
         final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
         if (userIsNotAdministrator && userIsNotRaidCreator) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
                     localeService.getLocaleForUser(user)));
         }
+    }
+
+    private boolean isUserServerMod(CommandEvent commandEvent, Config config) {
+        boolean isServerMod = false;
+        final String modPermissionGroup = config.getModPermissionGroup();
+        if (!StringUtils.isEmpty(modPermissionGroup)) {
+            for (Role role : commandEvent.getMember().getRoles()) {
+                if (modPermissionGroup.trim().toLowerCase().equalsIgnoreCase(role.getName().toLowerCase())) {
+                    isServerMod = true;
+                    break;
+                }
+            }
+        }
+        return isServerMod;
     }
 
     private boolean isUserAdministrator(CommandEvent commandEvent) {

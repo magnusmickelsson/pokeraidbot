@@ -4,7 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* Admin group per server that can do everything the server admin can
 
 Being developed:
 
@@ -23,12 +23,10 @@ Experiment with:
 
 Fix issue:
 
-* Fix EX raid handling all out
-* Raid ex raid group - need to accept date and time, right now gives error
-* Fix release tag for 1.0.0
 * Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
 signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
+* Fix release tag for 1.0.0
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 
@@ -38,6 +36,7 @@ Fix, misc:
 
 Do, features:
 
+* Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
 * -1 syntax to remove signups from a raid
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 

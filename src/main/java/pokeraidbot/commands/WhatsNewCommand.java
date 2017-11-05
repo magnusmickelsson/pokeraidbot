@@ -22,14 +22,17 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- Nya bossarna inlagda med max CP (dock ej full counterdata)\n" +
-                    "- Raidtimer numera 45 minuter i stället för 60\n" +
-                    "- Fullt stöd för EX raider - använd *!raid ex* istället för !raid new";
+                    "- Kommando för att rapportera raid utifrån starttid och inte sluttid - *!raid start*\n" +
+                    "- Nya bossarna har nu full counterdata så *!raid vs (pokemon)* " +
+                    "ger ok resultat för alla tier 3+ bossar\n" +
+                    "- Kan konfigurera mod roll per server som har rätt att göra det server admin har\n" +
+                    "- EX-raidhantering finns nu i hjälpmanualen via *!raid man raid*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- New bosses added with max CP (but not full counter data)\n" +
-                    "- Raid timer now 45 minutes instead of 60\n" +
-                    "- Support for EX raids - use *!raid ex* instead of !raid new";
+                    "- Command to report raid based on start time and not end - *!raid start*\n" +
+                    "- New bosses now have full counter data for tier 3+\n" +
+                    "- Possible to configure a mod role per server, so mods can do what the server admin can\n" +
+                    "- EX raid handling added to help manual *!raid man raid*";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }

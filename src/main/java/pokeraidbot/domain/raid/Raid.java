@@ -88,7 +88,7 @@ public class Raid {
     @Override
     public String toString() {
         return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(),
-                gym.toString(), printDateTime(endOfRaid));
+                gym.toString(), printDateTime(Utils.getStartOfRaid(endOfRaid, isExRaid())), printDateTime(endOfRaid));
     }
 
     public void signUp(User user, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {

@@ -95,6 +95,8 @@ public class BotService {
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
+                new NewRaidStartsAtCommand(gymRepository, raidRepository, pokemonRepository, localeService,
+                        serverConfigRepository, aggregateCommandListener),
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
                 new UserConfigCommand(serverConfigRepository, trackingCommandListener, localeService,
