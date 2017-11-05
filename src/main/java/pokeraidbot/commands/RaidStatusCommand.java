@@ -24,9 +24,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.util.Locale;
 import java.util.Set;
 
-import static pokeraidbot.Utils.getNamesOfThoseWithSignUps;
-import static pokeraidbot.Utils.printTime;
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid status [Pokestop name]
@@ -79,7 +77,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final String allSignUpNames = StringUtils.join(signUpNames, ", ");
 
         sb.append("**").append(activeText).append(":** ")
-                .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)))
+                .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false)))
                 .append("-").append(printTimeIfSameDay(raid.getEndOfRaid()))
                 .append("\t**").append(numberOfPeople).append(" ")
                 .append(localeService.getMessageFor(LocaleService.SIGNED_UP, localeForUser)).append("**")

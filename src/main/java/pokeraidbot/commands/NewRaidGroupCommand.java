@@ -84,7 +84,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final LocalDate raidDate = raid.getEndOfRaid().toLocalDate();
+        final LocalDateTime raidStart = Utils.getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid());
         LocalDateTime startAt = LocalDateTime.of(raidDate, startAtTime);
+        Utils.assertGroupStartNotBeforeRaidStart(raidStart, startAt, user, localeService);
         if (!raid.isExRaid()) {
             assertTimeNotMoreThanXHoursFromNow(user, startAtTime, localeService, 2);
         }
@@ -105,7 +107,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
         int delay = raid.isExRaid() ? 1 : 15;
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService,
-                delayTimeUnit, delay);
+                clockService, delayTimeUnit, delay);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
             final String handleSignUpText =
@@ -157,7 +159,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
                         getRaidGroupMessageEmbed(user, start, raidRepository.getById(raid.getId()),
-                                localeService, delayTimeUnit, delay);
+                                localeService, clockService, delayTimeUnit, delay);
                 embed.getChannel().editMessageById(embed.getId(),
                         newContent)
                         .queue(m -> {
@@ -253,7 +255,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     }
 
     public static MessageEmbed getRaidGroupMessageEmbed(User user, LocalDateTime startAt, Raid raid,
-                                                        LocaleService localeService, TimeUnit delayTimeUnit,
+                                                        LocaleService localeService, ClockService clockService,
+                                                        TimeUnit delayTimeUnit,
                                                         int delay) {
         final Gym gym = raid.getGym();
         final Pokemon pokemon = raid.getPokemon();
@@ -278,9 +281,12 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 locale) + ":";
         embedBuilder.clearFields();
         embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
-        embedBuilder.setFooter(localeService.getMessageFor(LocaleService.GROUP_MESSAGE_TO_BE_REMOVED,
+        final String footerMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                 locale, LocaleService.asString(delayTimeUnit, locale),
-                String.valueOf(delay)), null);
+                String.valueOf(delay)) + " " + localeService.getMessageFor(LocaleService.LAST_UPDATE,
+                locale,
+                printTime(clockService.getCurrentTime()));
+        embedBuilder.setFooter(footerMessage, null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }

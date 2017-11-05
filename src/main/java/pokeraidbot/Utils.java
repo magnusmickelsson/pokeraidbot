@@ -30,6 +30,7 @@ public class Utils {
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
+    public static final int RAID_DURATION_IN_MINUTES = 45;
     private static ClockService clockService = new ClockService();
 
     public static ClockService getClockService() {
@@ -128,7 +129,8 @@ public class Utils {
 
     // todo: test case
     public static LocalDateTime getStartOfRaid(LocalDateTime endOfRaid, boolean isExRaid) {
-        return isExRaid ? endOfRaid.minusMinutes(45) : endOfRaid.minusHours(1);
+        return isExRaid ? endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES) :
+                endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES);
     }
 
     public static void assertSignupTimeNotBeforeRaidStart(User user, LocalDateTime dateAndTime,
@@ -307,6 +309,16 @@ public class Utils {
             return new StringBuilder(timeString).insert(timeString.length()-2, ":").toString();
         } else {
             return timeString;
+        }
+    }
+
+    public static void assertGroupStartNotBeforeRaidStart(LocalDateTime raidStart, LocalDateTime groupStart,
+                                                          User user, LocaleService localeService) {
+        if (raidStart.isAfter(groupStart)) {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_GROUP_BEFORE_RAID,
+                            localeService.getLocaleForUser(user), printTimeIfSameDay(groupStart),
+                            printTimeIfSameDay(raidStart)));
         }
     }
 }

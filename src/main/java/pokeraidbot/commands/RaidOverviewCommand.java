@@ -7,7 +7,6 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -24,6 +23,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.*;
 
+import static pokeraidbot.Utils.getStartOfRaid;
 import static pokeraidbot.Utils.printTime;
 import static pokeraidbot.Utils.printTimeIfSameDay;
 
@@ -166,7 +166,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
-                            .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")
+                            .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append(" - ")
                             .append(printTimeIfSameDay(raid.getEndOfRaid()))
                             .append(". ").append(numberOfPeople)
                             .append(" ")
@@ -179,7 +179,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             .append(" (")
                             .append(raidBoss.getName()).append(") - ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
                                     printTimeIfSameDay(raid.getEndOfRaid())))
                             .append(". ").append(numberOfPeople)
                             .append(" ")
@@ -192,7 +192,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
             }
         }
-        stringBuilder.append("\n\n").append(localeService.getMessageFor(LocaleService.OVERVIEW_UPDATE,
+        stringBuilder.append("\n\n")
+                .append(localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
+                        locale, LocaleService.asString(TimeUnit.SECONDS, locale),
+                        String.valueOf(60)))
+                .append(localeService.getMessageFor(LocaleService.LAST_UPDATE,
                 locale,
                 printTime(clockService.getCurrentTime())));
         final String message = stringBuilder.toString();

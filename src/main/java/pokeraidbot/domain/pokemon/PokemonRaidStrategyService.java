@@ -90,37 +90,66 @@ public class PokemonRaidStrategyService {
 
         maxCp.put("VAPOREON", "1804");
 
-        maxCp.put("Blastoise".toUpperCase(), "1309");
+        addMaxCp("Blastoise", "1309");
 
-        maxCp.put("Charizard".toUpperCase(), "1535");
+        addMaxCp("Charizard", "1535");
 
-        maxCp.put("Lapras".toUpperCase(), "1487");
+        addMaxCp("Lapras", "1487");
 
-        maxCp.put("Rhydon".toUpperCase(), "1886");
+        addMaxCp("Rhydon", "1886");
 
-        maxCp.put("Snorlax".toUpperCase(), "1917");
+        addMaxCp("Snorlax", "1917");
 
-        maxCp.put("Tyranitar".toUpperCase(), "2097");
+        addMaxCp("Tyranitar", "2097");
 
-        maxCp.put("Venusaur".toUpperCase(), "1467");
+        addMaxCp("Venusaur", "1467");
 
-        maxCp.put("Entei".toUpperCase(), "1930");
+        addMaxCp("Entei", "1930");
 
-        maxCp.put("Articuno".toUpperCase(), "1676");
+        addMaxCp("Articuno", "1676");
 
-        maxCp.put("Moltres".toUpperCase(), "1870");
+        addMaxCp("Moltres", "1870");
 
-        maxCp.put("Zapdos".toUpperCase(), "1902");
+        addMaxCp("Zapdos", "1902");
 
-        maxCp.put("Lugia".toUpperCase(), "2056");
+        addMaxCp("Lugia", "2056");
 
-        maxCp.put("Raikou".toUpperCase(), "1913");
+        addMaxCp("Raikou", "1913");
 
-        maxCp.put("Suicune".toUpperCase(), "1613");
+        addMaxCp("Suicune", "1613");
 
-        maxCp.put("Mewtwo".toUpperCase(), "2275");
+        addMaxCp("Mewtwo", "2275");
+
+        // New bosses after Niantic surprise attack :p
+        // Tier 1
+        addMaxCp("Ivysaur", "886");
+        addMaxCp("Metapod", "239");
+        addMaxCp("Charmeleon", "847");
+        addMaxCp("Wartortle", "756");
+        // Tier 2
+        addMaxCp("Magneton", "1278");
+        addMaxCp("Sableye", "745");
+        addMaxCp("Sandslash", "1330");
+        addMaxCp("Tentacruel", "1356");
+        addMaxCp("Marowak", "966");
+        addMaxCp("Cloyster", "1414");
+        // Tier 3
+        addMaxCp("Ninetales", "1233");
+        addMaxCp("Scyther", "1408");
+        addMaxCp("Omastar", "1534");
+        addMaxCp("Porygon", "895");
+        // Tier 4
+        addMaxCp("Poliwrath", "1395");
+        addMaxCp("Victreebel", "1296");
+        addMaxCp("Golem", "1666");
+        addMaxCp("Nidoking", "1363");
+        addMaxCp("Nidoqueen", "1336");
 
         LOGGER.info("Configured " + maxCp.size() + " raid boss max CP entries.");
+    }
+
+    private void addMaxCp(String mewtwo, String cp) {
+        maxCp.put(mewtwo.toUpperCase(), cp);
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {

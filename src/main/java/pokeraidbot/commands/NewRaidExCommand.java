@@ -50,6 +50,12 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
+        final Locale locale = localeService.getLocaleForUser(user);
+        if (!Utils.isRaidExPokemon(pokemon.getName())) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NOT_EX_RAID,
+                    locale, pokemonName));
+        }
+
         String dateString = args[1];
         String timeString = args[2];
         LocalTime endsAtTime = Utils.parseTime(user, timeString, localeService);
@@ -57,7 +63,6 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
-        final Locale locale = localeService.getLocaleForUser(user);
         if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EX_DATE_LIMITS,
                     locale));

@@ -23,11 +23,12 @@ Experiment with:
 
 Fix issue:
 
+* Fix EX raid handling all out
+* Raid ex raid group - need to accept date and time, right now gives error
 * Fix release tag for 1.0.0
 * Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
 signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
-* Raid ex raid group - need to accept date and time, right now gives error
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 

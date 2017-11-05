@@ -1,5 +1,6 @@
 package pokeraidbot.domain.config;
 
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -69,7 +70,7 @@ public class LocaleService {
     public static final String WHERE_GYM_IN_CHAT_HELP = "WHERE_GYM_IN_CHAT_HELP";
     public static final String NEXT_ETA = "NEXT_ETA";
     public static final String TRACKING_NONE_FREE = "TRACKING_NONE_FREE";
-    public static final String OVERVIEW_UPDATE = "OVERVIEW_UPDATE";
+    public static final String LAST_UPDATE = "LAST_UPDATE";
     public static final String MOVED_GROUP = "MOVED_GROUP";
     public static final String OVERVIEW_HELP = "OVERVIEW_HELP";
     public static final String OVERVIEW_ATTACH = "OVERVIEW_ATTACH";
@@ -86,6 +87,7 @@ public class LocaleService {
     public static final String GROUP_CLEANING_UP = "GROUP_CLEANING_UP";
     public static final String SIGN_BEFORE_NOW = "SIGN_BEFORE_NOW";
     public static final String NOT_EX_RAID = "NOT_EX_RAID";
+    public static final String NO_GROUP_BEFORE_RAID = "NO_GROUP_BEFORE_RAID";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -126,7 +128,7 @@ public class LocaleService {
     public static final String BAD_SYNTAX = "BAD_SYNTAX";
     public static final String BAD_DATETIME_FORMAT = "BAD_DATETIME_FORMAT";
     public static final String RAID_DETAILS = "RAID_DETAILS";
-    public static final String GROUP_MESSAGE_TO_BE_REMOVED = "GROUP_MESSAGE_TO_BE_REMOVED";
+    public static final String UPDATED_EVERY_X = "UPDATED_EVERY_X";
     public static final String NO_PERMISSION = "NO_PERMISSION";
     public static final String GOOGLE_MAPS = "GOOGLE_MAPS";
     public static final String KEEP_CHAT_CLEAN = "KEEP_CHAT_CLEAN";
@@ -157,6 +159,12 @@ public class LocaleService {
 
     private void initTexts() {
 
+        i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_RAID, Locale.ENGLISH),
+                "Can't set a raid group to start at %1, which is before raid start at %2."
+        );
+        i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_RAID, SWEDISH),
+                "Kan inte sätta en raidgrupp att börja vid %1, eftersom raiden börjar %2."
+        );
         i18nMessages.put(new I18nLookup(NOT_EX_RAID, Locale.ENGLISH),
                 "%1 is not an EX raid boss. Use *!raid new* command instead to create a standard raid."
         );
@@ -240,18 +248,18 @@ public class LocaleService {
                 "Översiktsmeddelandet har tagits bort av någon. " +
                         "Kör *!raid overview* igen för att skapa ett nytt."
         );
-        i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, Locale.ENGLISH),
-                "Updated every 60 seconds. Last update: %1"
+        i18nMessages.put(new I18nLookup(LAST_UPDATE, Locale.ENGLISH),
+                "Last update: %1"
         );
-        i18nMessages.put(new I18nLookup(OVERVIEW_UPDATE, SWEDISH),
-                "Uppdateras var 60:e sekund. Senast uppdaterad: %1"
+        i18nMessages.put(new I18nLookup(LAST_UPDATE, SWEDISH),
+                "Senast uppdaterad: %1"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, Locale.ENGLISH),
-                "Pokeraidbot is here. Raid overview will be updated in channel " +
+                "Pokeraidbot v" + BotServerMain.version + " is here. Raid overview will be updated in channel " +
                         "#%1. For bot info, type: *!raid usage*"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_ATTACH, SWEDISH),
-                "Pokeraidbot är här. Raidöversikten uppdateras i kanalen " +
+                "Pokeraidbot v" + BotServerMain.version + " är här. Raidöversikten uppdateras i kanalen " +
                         "#%1. För info om botten: *!raid usage*"
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_HELP, Locale.ENGLISH),
@@ -317,10 +325,10 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(NO_PERMISSION, SWEDISH),
                 "Du saknar behörighet för att göra det du försökte göra. Be hjälp av en admin."
         );
-        i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, Locale.ENGLISH),
+        i18nMessages.put(new I18nLookup(UPDATED_EVERY_X, Locale.ENGLISH),
                 "Updated every %2 %1."
         );
-        i18nMessages.put(new I18nLookup(GROUP_MESSAGE_TO_BE_REMOVED, SWEDISH),
+        i18nMessages.put(new I18nLookup(UPDATED_EVERY_X, SWEDISH),
                 "Uppdateras var %2:e %1."
         );
 

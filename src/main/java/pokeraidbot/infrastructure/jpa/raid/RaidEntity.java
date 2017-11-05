@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static pokeraidbot.Utils.getStartOfRaid;
+
 @Entity
 @Table(indexes = {@Index(name = "id", columnList = "id"), @Index(name = "region", columnList = "region"),
         @Index(name = "pokemon", columnList = "pokemon,region")}
@@ -98,7 +100,8 @@ public class RaidEntity implements Serializable {
 
     public boolean isActive(ClockService clockService) {
         final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
-        return currentDateTime.isBefore(endOfRaid) && endOfRaid.minusHours(1).isBefore(currentDateTime);
+        return currentDateTime.isBefore(endOfRaid) &&
+                getStartOfRaid(endOfRaid, isExRaid()).isBefore(currentDateTime);
     }
 
     @Override

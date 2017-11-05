@@ -20,6 +20,7 @@ import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
@@ -66,6 +67,10 @@ public class BotService {
 
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
+        GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
+                serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
+                executorService,
+                clockService);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
                 raidRepository, localeService, clockService, executorService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
@@ -140,6 +145,7 @@ public class BotService {
 //                    .addEventListener(eventLoggingListener)
                     .addEventListener(startUpEventListener)
                     .addEventListener(plusCommandEventListener)
+//                    .addEventListener(gymHuntrRaidEventListener)
 
                     // start it up!
                     .buildBlocking();

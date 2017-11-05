@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 
+import static pokeraidbot.Utils.getStartOfRaid;
 import static pokeraidbot.Utils.printTimeIfSameDay;
 
 /**
@@ -79,7 +80,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                 if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
-                    .append(printTimeIfSameDay(raid.getEndOfRaid().minusHours(1))).append(" - ")
+                    .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append(" - ")
                     .append(printTimeIfSameDay(raid.getEndOfRaid()))
                     .append(". ").append(numberOfPeople)
                     .append(" ")
@@ -91,7 +92,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                             .append(" (")
                             .append(raidBoss.getName()).append(") - ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-                                    printTimeIfSameDay(raid.getEndOfRaid().minusHours(1)),
+                                    printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
                                     printTimeIfSameDay(raid.getEndOfRaid())))
                             .append(". ").append(numberOfPeople)
                             .append(" ")

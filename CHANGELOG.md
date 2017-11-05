@@ -1,3 +1,9 @@
+1.1.0 (2017-11-05)
+=====
+* EX raid support fully implemented and released
+* Adapt to Niantic making huge changes without warning (new bosses, 45 min raid duration - NOTE: counter data not yet
+updated!)
+
 1.0.1 (2017-11-03)
 =====
 * Bugfix for removing signups for a raid, could lead to ConcurrentModificationException
