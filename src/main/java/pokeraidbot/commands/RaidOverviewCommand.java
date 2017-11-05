@@ -196,6 +196,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                         locale, LocaleService.asString(TimeUnit.SECONDS, locale),
                         String.valueOf(60)))
+                .append(" ")
                 .append(localeService.getMessageFor(LocaleService.LAST_UPDATE,
                 locale,
                 printTime(clockService.getCurrentTime())));
