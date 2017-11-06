@@ -995,9 +995,9 @@ public class LocaleService {
     public static String asString(TimeUnit timeUnit, Locale locale) {
         switch (timeUnit) {
             case SECONDS:
-                return (locale == SWEDISH ? "sekund" : "second");
+                return (locale != null && locale.getLanguage().equals(SWEDISH.getLanguage()) ? "sekund" : "second");
             case MINUTES:
-                return (locale == SWEDISH ? "minut" : "minute");
+                return (locale != null && locale.getLanguage().equals(SWEDISH.getLanguage()) ? "minut" : "minute");
             default:
                 return timeUnit.name().toLowerCase();
         }
@@ -1041,7 +1041,8 @@ public class LocaleService {
 
     public static String featuresString_EN =
             "Pokeraidbot - a Discord bot to help Pokémon Go raiders. Raid, map, pokemon info functions.\n\n" +
-                    "Getting started guide: https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_en.md\n\n" +
+                    "Getting started guide: " +
+                    "https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_en.md\n\n" +
                     "**Get detailed help about how the bot works:**\n!raid man\n\n" +
                     "**To see one of its features, type the following:** " +
                     "!raid map {name of a raid gym in your vicinity}\n" +
@@ -1052,7 +1053,8 @@ public class LocaleService {
     public static String featuresString_SV =
             "Pokeraidbot - en Discord-bot för att hjälpa Pokémon Go raiders, med t.ex. kartor till gym, raidplanering" +
                     " och information om pokemons.\n\n" +
-                    "Kom igång guide: https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md\n\n" +
+                    "Kom igång guide: " +
+                    "https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md\n\n" +
                     "**Få detaljerad hjälp om hur botten fungerar:**\n!raid man {frivilligt: ämne}\n" +
                     "*Exempel:* !raid man - berättar om hur man använder raid man och vilka hjälpämnen som finns\n\n" +
                     "**För ett exempel på vad botten kan göra, skriv:** !raid map {namn på ett gym i området}\n" +

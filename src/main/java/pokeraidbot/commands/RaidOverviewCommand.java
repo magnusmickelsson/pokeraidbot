@@ -54,23 +54,24 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
+        final Locale locale = config.getLocale();
         String msgId = config.getOverviewMessageId();
         if (!StringUtils.isEmpty(msgId)) {
             final Callable<Boolean> refreshEditThreadTask =
                     getMessageRefreshingTaskToSchedule(user, config.getServer(), msgId, localeService,
-                            serverConfigRepository, raidRepository, clockService, commandEvent.getChannel(),
+                            locale, serverConfigRepository, raidRepository, clockService, commandEvent.getChannel(),
                             executorService);
             executorService.submit(refreshEditThreadTask);
         } else {
             final String messageString = getOverviewMessage(config,
-                    localeService, raidRepository, clockService);
+                    localeService, raidRepository, clockService, locale);
             commandEvent.reply(messageString, msg -> {
                 final String messageId = msg.getId();
                 final String server = config.getServer();
                 serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
                 final Callable<Boolean> refreshEditThreadTask =
                         getMessageRefreshingTaskToSchedule(user, server, messageId,
-                                localeService, serverConfigRepository, raidRepository, clockService,
+                                localeService, locale, serverConfigRepository, raidRepository, clockService,
                                 commandEvent.getChannel(), executorService);
                 executorService.submit(refreshEditThreadTask);
             });
@@ -80,7 +81,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     public static Callable<Boolean> getMessageRefreshingTaskToSchedule(User user,
                                                                        String server,
                                                                        String messageId, LocaleService localeService,
-                                                                       ServerConfigRepository serverConfigRepository,
+                                                                       Locale locale, ServerConfigRepository serverConfigRepository,
                                                                        RaidRepository raidRepository,
                                                                        ClockService clockService,
                                                                        MessageChannel messageChannel,
@@ -94,13 +95,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             " - Updating message with ID " + messageId);
                 }
                 final String messageString = getOverviewMessage(config,
-                        localeService, raidRepository, clockService);
+                        localeService, raidRepository, clockService, locale);
                 messageChannel.editMessageById(messageId,
                         messageString)
                         .queue(m -> {}, m -> {
                             LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
                             serverConfigRepository.save(config);
-                            cleanUp(config, user, messageId, serverConfigRepository, localeService, messageChannel);
+                            cleanUp(config, user, messageId, serverConfigRepository, localeService,
+                                    messageChannel, locale);
                         });
                 return true;
             };
@@ -117,7 +119,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
 
     private static void cleanUp(Config config, User user, String messageId,
                                 ServerConfigRepository serverConfigRepository, LocaleService localeService,
-                                MessageChannel messageChannel) {
+                                MessageChannel messageChannel, Locale locale) {
         try {
             if (!StringUtils.isEmpty(messageId)) {
                 messageChannel.deleteMessageById(messageId).queue();
@@ -134,15 +136,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 LOGGER.debug("Cleaned up message related to this overview.");
             }
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.OVERVIEW_DELETED,
-                    localeService.getLocaleForUser(user)));
+                    locale));
         }
     }
 
     private static String getOverviewMessage(Config config,
                                              LocaleService localeService,
                                              RaidRepository raidRepository,
-                                             ClockService clockService) {
-        final Locale locale = config.getLocale();
+                                             ClockService clockService, Locale locale) {
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
         final String messageString;
         StringBuilder stringBuilder = new StringBuilder();

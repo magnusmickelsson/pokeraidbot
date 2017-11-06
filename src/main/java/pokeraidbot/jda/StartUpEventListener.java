@@ -18,6 +18,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.*;
 
 public class StartUpEventListener implements EventListener{
@@ -59,9 +60,10 @@ public class StartUpEventListener implements EventListener{
     private boolean getAndAttachToOverviewMessageIfExists(Guild guild, Config config, String messageId, MessageChannel channel) {
         try {
             if (channel.getMessageById(messageId).complete() != null) {
+                final Locale locale = config.getLocale();
                 final Callable<Boolean> overviewTask =
                         RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
-                                null, config.getServer(), messageId, localeService, serverConfigRepository,
+                                null, config.getServer(), messageId, localeService, locale, serverConfigRepository,
                                 raidRepository, clockService, channel,
                                 executorService);
                 executorService.submit(overviewTask);
@@ -70,7 +72,7 @@ public class StartUpEventListener implements EventListener{
                 if (guild.getDefaultChannel() != null) {
                     guild.getDefaultChannel().sendMessage(
                             localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
-                                    config.getLocale(),
+                                    locale,
                                     channel.getName())).queue();
                 }
                 return true;

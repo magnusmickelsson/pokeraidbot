@@ -71,6 +71,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
+        final Locale locale = localeService.getLocaleForUser(user);
         String timeString = args[0];
         LocalTime startAtTime = Utils.parseTime(user, timeString, localeService);
 
@@ -93,7 +94,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         assertCreateRaidTimeNotBeforeNow(user, startAt, localeService);
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
-                    localeService.getLocaleForUser(user));
+                    locale);
             throw new UserMessedUpException(userName, errorText);
         }
 
@@ -106,12 +107,12 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         raid.getId(), startAt, user);
         TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
         int delay = raid.isExRaid() ? 1 : 15;
-        final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(user, startAt, raid, localeService,
-                clockService, delayTimeUnit, delay);
+        final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(startAt, raid, localeService,
+                clockService, locale, delayTimeUnit, delay);
         commandEvent.reply(messageEmbed, embed -> {
             emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
             final String handleSignUpText =
-                    localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, localeService.getLocaleForUser(user));
+                    localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, locale);
             embed.getChannel().sendMessage(handleSignUpText).queue(
                     msg -> {
                         final String messageId = msg.getId();
@@ -137,18 +138,19 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         }
                     });
             final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(commandEvent, user,
-                            raid, emoticonSignUpMessageListener, embed, delayTimeUnit, delay);
+                    getMessageRefreshingTaskToSchedule(commandEvent,
+                            raid, emoticonSignUpMessageListener, embed,
+                            locale, delayTimeUnit, delay);
             executorService.submit(refreshEditThreadTask);
         });
 
     }
 
-    private Callable<Boolean> getMessageRefreshingTaskToSchedule(CommandEvent commandEvent, User user,
+    private Callable<Boolean> getMessageRefreshingTaskToSchedule(CommandEvent commandEvent,
                                                                  Raid raid,
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
-                                                                 Message embed, TimeUnit delayTimeUnit, int delay) {
-        final MessageChannel channel = commandEvent.getTextChannel();
+                                                                 Message embed, Locale locale,
+                                                                 TimeUnit delayTimeUnit, int delay) {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 delayTimeUnit.sleep(delay);
@@ -158,8 +160,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 }
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
-                        getRaidGroupMessageEmbed(user, start, raidRepository.getById(raid.getId()),
-                                localeService, clockService, delayTimeUnit, delay);
+                        getRaidGroupMessageEmbed(start, raidRepository.getById(raid.getId()),
+                                localeService, clockService, locale, delayTimeUnit, delay);
                 embed.getChannel().editMessageById(embed.getId(),
                         newContent)
                         .queue(m -> {
@@ -169,7 +171,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         });
                 return true;
             };
-            while (raidIsActiveAndRaidGroupNotExpired(raid.getEndOfRaid(), emoticonSignUpMessageListener.getStartAt())) {
+            while (raidIsActiveAndRaidGroupNotExpired(raid.getEndOfRaid(),
+                    emoticonSignUpMessageListener.getStartAt())) {
                 try {
                     executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException e) {
@@ -254,15 +257,14 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         }
     }
 
-    public static MessageEmbed getRaidGroupMessageEmbed(User user, LocalDateTime startAt, Raid raid,
+    public static MessageEmbed getRaidGroupMessageEmbed(LocalDateTime startAt, Raid raid,
                                                         LocaleService localeService, ClockService clockService,
-                                                        TimeUnit delayTimeUnit,
+                                                        Locale locale, TimeUnit delayTimeUnit,
                                                         int delay) {
         final Gym gym = raid.getGym();
         final Pokemon pokemon = raid.getPokemon();
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        final Locale locale = localeService.getLocaleForUser(user);
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
                 locale, raid.getPokemon().getName(), gym.getName(),
                 Utils.printTimeIfSameDay(startAt));
