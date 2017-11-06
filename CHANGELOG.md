@@ -1,3 +1,14 @@
+1.2.0 (2017-11-06)
+=====
+* Bugfix: no duplicate raids
+* Persistent raid groups, survives restart of bot
+* Bugfix: !raid man of an unknown topic gave weird message in DM
+* Counter data and max CP for new raid bosses
+* Command to report raid based on start time and not end - *!raid start*
+* Possible to configure a mod role per server, so mods can do what the server admin can
+* *!raid vs* no longer lists explicit moves to reduce amount of text
+* *!raid overview* only available to server admin or mods
+
 1.1.0 (2017-11-05)
 =====
 * EX raid support fully implemented and released

@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure.jpa;
 
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
+import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +22,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static pokeraidbot.Utils.printTime;
 
 @RunWith(SpringRunner.class)
@@ -32,16 +34,37 @@ public class RaidEntityRepositoryTest {
     RaidEntityRepository entityRepository;
     private static final ExecutorService executorService =
             new ThreadPoolExecutor(3, 3, 20, TimeUnit.SECONDS, new LinkedTransferQueue<>());
-    private String id;
-
     @Before
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setUp() throws Exception {
         entityRepository.deleteAllInBatch();
-        id = "id2";
-        final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
+    }
+
+    @After
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void tearDown() throws Exception {
+        entityRepository.delete(entityRepository.findOne("id1"));
+    }
+
+    @Test
+    public void createWithGroup() throws Exception {
+        final String id = "id1";
+        RaidEntity raidEntity = new RaidEntity(id, "Mupp",
                 LocalDateTime.now().plusMinutes(20),
-                "Thegym", "Theuser", "Theregion"));
+                "Thegym", "Theuser", "Theregion");
+        final RaidGroup group = new RaidGroup("testserver", "channel", "abc1", "abc2", "testId",
+                LocalDateTime.now().plusMinutes(10));
+        assertThat(raidEntity.addGroup(group), is(true));
+        raidEntity = entityRepository.save(raidEntity);
+        final RaidEntity loaded = entityRepository.findOne(id);
+        assertThat(loaded, is(raidEntity));
+        final Set<RaidGroup> groups = loaded.getGroupsAsSet();
+        assertThat(groups.size(), is(1));
+        assertThat(groups.iterator().next(), is(group));
+
+        final List<RaidGroup> groupsForServer = entityRepository.findGroupsForServer("testserver");
+        assertThat(groupsForServer.size(), is(1));
+        assertThat(groupsForServer.iterator().next(), is(group));
     }
 
     @Test
@@ -56,6 +79,10 @@ public class RaidEntityRepositoryTest {
 
     @Test
     public void createWithSignupsTryToCleanUpWithoutConcurrentModificationException() throws Exception {
+        final String id = "id1";
+        final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
+                LocalDateTime.now().plusMinutes(20),
+                "Thegym", "Theuser", "Theregion"));
         final LocalTime now = LocalTime.now();
 
         // Create signups with 100 ms interval, during ~3 seconds
@@ -64,7 +91,7 @@ public class RaidEntityRepositoryTest {
             final Random random = new Random();
             for (int i = 0; i < 30; i++) {
                 Thread.sleep(100);
-                createSignUp(1, now, random, i);
+                createSignUp(id, 1, now, random, i);
                 numberOfSignUpsCreated++;
             }
             return numberOfSignUpsCreated;
@@ -75,7 +102,7 @@ public class RaidEntityRepositoryTest {
             final Random random = new Random();
             for (int i = 0; i < 30; i++) {
                 Thread.sleep(100);
-                createSignUp(2, now, random, i);
+                createSignUp(id, 2, now, random, i);
                 numberOfSignUpsCreated++;
             }
             return numberOfSignUpsCreated;
@@ -84,7 +111,7 @@ public class RaidEntityRepositoryTest {
         // After 2 seconds, try and remove all signups for a certain time
         Callable<Integer> cleanUpSignUpsTask = () -> {
             Thread.sleep(2000);
-            int numberDeleted = deleteSomeSignUps();
+            int numberDeleted = deleteSomeSignUps(id);
             return numberDeleted;
         };
 
@@ -107,7 +134,7 @@ public class RaidEntityRepositoryTest {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public int deleteSomeSignUps() {
+    public int deleteSomeSignUps(String id) {
         int numberDeleted = 0;
         final RaidEntity theEntity = entityRepository.findOne(id);
         for (RaidEntitySignUp signUp : theEntity.getSignUpsAsSet()) {
@@ -122,7 +149,7 @@ public class RaidEntityRepositoryTest {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public RaidEntitySignUp createSignUp(Integer thread, LocalTime now, Random random, int i) {
+    public RaidEntitySignUp createSignUp(String id, Integer thread, LocalTime now, Random random, int i) {
         RaidEntitySignUp signUp = new RaidEntitySignUp("Mupp" + thread + "_" + i,
                 random.nextInt(4) + 1, printTime(now));
         RaidEntity entity = entityRepository.findOne(id);

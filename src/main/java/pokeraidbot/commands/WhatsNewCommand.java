@@ -27,6 +27,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "ger ok resultat för alla tier 3+ bossar\n" +
                     "- Kan konfigurera mod roll per server som har rätt att göra det server admin har\n" +
                     "- *!raid vs* listar inte längre alla moves för att minska textmängden\n" +
+                    "- *!raid overview* endast tillgänglig för server admin eller mods\n" +
+                    "- Persistenta raidgrupper, överlever nu en server restart\n" +
                     "- EX-raidhantering finns nu i hjälpmanualen via *!raid man raid*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
@@ -34,6 +36,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- New bosses now have full counter data for tier 3+\n" +
                     "- Possible to configure a mod role per server, so mods can do what the server admin can\n" +
                     "- *!raid vs* no longer lists explicit moves to reduce amount of text\n" +
+                    "- *!raid overview* only available to server admin or mods\n" +
+                    "- Persistent raid groups, which survive a server restart\n" +
                     "- EX raid handling added to help manual *!raid man raid*";
         }
         replyBasedOnConfig(config, commandEvent, message);

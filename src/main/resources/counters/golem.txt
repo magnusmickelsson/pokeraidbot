@@ -5,3 +5,25 @@ Exeggutor
 Quick Move    Charge Move
 Bullet Seed
 Solar Beam
+Vaporeon
+
+Vaporeon
+Quick Move	Charge Move
+Water Gun
+Hydro Pump
+Aqua Tail
+Good Counters
+Venusaur
+
+Venusaur
+Quick Move	Charge Move
+Razor Leaf
+Vine Whip
+Solar Beam
+Petal Blizzard
+Feraligatr
+
+Feraligatr
+Quick Move	Charge Move
+Water Gun
+Hydro Pump

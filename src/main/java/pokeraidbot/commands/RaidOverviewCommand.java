@@ -55,6 +55,10 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
         final Locale locale = config.getLocale();
+        if (!isUserAdministrator(commandEvent) && !isUserServerMod(commandEvent, config)) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                    localeService.getLocaleForUser(user)));
+        }
         String msgId = config.getOverviewMessageId();
         if (!StringUtils.isEmpty(msgId)) {
             final Callable<Boolean> refreshEditThreadTask =

@@ -20,7 +20,9 @@ import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
+import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -60,6 +62,41 @@ public class RaidRepositoryTest {
         gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, serverConfigRepository);
         pokemonRepository = new PokemonRepository("/mons.json", localeService);
         raidEntityRepository.deleteAllInBatch();
+    }
+
+    @Test
+    public void testCreateGetAndDeleteGroup() throws Exception {
+        clockService.setMockTime(LocalTime.of(10, 0)); // We're not allowed to create signups at night, so mocking time
+        final LocalDateTime now = clockService.getCurrentDateTime();
+        final LocalTime nowTime = now.toLocalTime();
+        LocalDateTime endOfRaid = now.plusMinutes(45);
+        final Gym gym = gymRepository.findByName("Blenda", uppsalaRegion);
+        Raid enteiRaid = new Raid(pokemonRepository.search("Entei", null), endOfRaid, gym, localeService, uppsalaRegion);
+        String raidCreatorName = "testUser1";
+        User user = mock(User.class);
+        when(user.getName()).thenReturn(raidCreatorName);
+        try {
+            enteiRaid = repo.newRaid(user, enteiRaid);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+            fail("Could not save raid: " + e.getMessage());
+        }
+        User user2 = mock(User.class);
+        String userName = "testUser2";
+        when(user2.getName()).thenReturn(userName);
+        LocalTime arrivalTime = nowTime.plusMinutes(30);
+        RaidGroup group = new RaidGroup("testserver", "channel", "infoId", "emoteId", "userId",
+                LocalDateTime.of(LocalDate.now(), arrivalTime));
+        group = repo.newGroupForRaid(user2, group, enteiRaid);
+        List<RaidGroup> groupsForServer = repo.getGroupsForServer("testserver");
+        assertThat(group != null, is(true));
+        assertThat(groupsForServer.size(), is(1));
+        assertThat(groupsForServer.iterator().next(), is(group));
+
+        RaidGroup deleted = repo.deleteGroup(user, enteiRaid.getId(), group.getId());
+        assertThat(deleted != null, is(true));
+        groupsForServer = repo.getGroupsForServer("testserver");
+        assertThat(groupsForServer.size(), is(0));
     }
 
     @Test

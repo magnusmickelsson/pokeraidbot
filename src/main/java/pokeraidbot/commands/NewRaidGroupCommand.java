@@ -26,6 +26,7 @@ import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +34,10 @@ import java.time.LocalTime;
 import java.util.ConcurrentModificationException;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static pokeraidbot.Utils.*;
 
@@ -121,6 +125,12 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                     " - Adding event listener and emotes for emote message with ID: " + messageId);
                         }
                         emoticonSignUpMessageListener.setEmoteMessageId(messageId);
+                        RaidGroup group = new RaidGroup(config.getServer(), msg.getChannel().getName(),
+                                embed.getId(), messageId, user.getId(), startAt);
+                        group = raidRepository.newGroupForRaid(user, group, raid);
+                        if (LOGGER.isDebugEnabled()) {
+                            LOGGER.debug("Created group for emote message with ID: " + messageId + " - " + group);
+                        }
                         botService.getBot().addEventListener(emoticonSignUpMessageListener);
                         // Add number icons for pleb signups
                         msg.getChannel().addReactionById(msg.getId(), Emotes.ONE).queue();
@@ -138,31 +148,38 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         }
                     });
             final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(commandEvent,
-                            raid, emoticonSignUpMessageListener, embed,
-                            locale, delayTimeUnit, delay);
+                    getMessageRefreshingTaskToSchedule(commandEvent.getChannel(),
+                            raid, emoticonSignUpMessageListener, embed.getId(),
+                            locale,
+                            raidRepository, localeService, clockService, executorService, botService,
+                            delayTimeUnit, delay);
             executorService.submit(refreshEditThreadTask);
         });
 
     }
 
-    private Callable<Boolean> getMessageRefreshingTaskToSchedule(CommandEvent commandEvent,
+    public static Callable<Boolean> getMessageRefreshingTaskToSchedule(MessageChannel messageChannel,
                                                                  Raid raid,
                                                                  EmoticonSignUpMessageListener emoticonSignUpMessageListener,
-                                                                 Message embed, Locale locale,
+                                                                 String infoMessageId, Locale locale,
+                                                                 RaidRepository raidRepository,
+                                                                 LocaleService localeService,
+                                                                 ClockService clockService,
+                                                                 ExecutorService executorService,
+                                                                 BotService botService,
                                                                  TimeUnit delayTimeUnit, int delay) {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 delayTimeUnit.sleep(delay);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
-                            " - Updating message with ID " + embed.getId());
+                            " - Updating message with ID " + infoMessageId);
                 }
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
                         getRaidGroupMessageEmbed(start, raidRepository.getById(raid.getId()),
                                 localeService, clockService, locale, delayTimeUnit, delay);
-                embed.getChannel().editMessageById(embed.getId(),
+                messageChannel.editMessageById(infoMessageId,
                         newContent)
                         .queue(m -> {
                         }, m -> {
@@ -172,7 +189,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 return true;
             };
             while (raidIsActiveAndRaidGroupNotExpired(raid.getEndOfRaid(),
-                    emoticonSignUpMessageListener.getStartAt())) {
+                    emoticonSignUpMessageListener.getStartAt(), clockService)) {
                 try {
                     executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException e) {
@@ -181,8 +198,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             }
             LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
                     ", creator: " + emoticonSignUpMessageListener.getUserId());
-            cleanUp(commandEvent, emoticonSignUpMessageListener.getStartAt(), raid.getId(),
-                    emoticonSignUpMessageListener);
+            cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(), raid != null ? raid.getId() : null,
+                    emoticonSignUpMessageListener, raidRepository, botService);
 
             // todo: Have a "removed message" message?
 //            final LocalDateTime startAt = emoticonSignUpMessageListener.getStartAt();
@@ -199,8 +216,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         return refreshEditThreadTask;
     }
 
-    private boolean raidIsActiveAndRaidGroupNotExpired(LocalDateTime endOfRaid,
-                                                       LocalDateTime raidGroupStartTime) {
+    private static boolean raidIsActiveAndRaidGroupNotExpired(LocalDateTime endOfRaid,
+                                                              LocalDateTime raidGroupStartTime,
+                                                              ClockService clockService) {
         final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
         return raidGroupStartTime != null &&
                 currentDateTime.isBefore(
@@ -209,11 +227,13 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 && currentDateTime.isBefore(endOfRaid.minusSeconds(20));
     }
 
-    private void cleanUp(CommandEvent commandEvent, LocalDateTime startAt, String raidId,
-                         EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
+    private static void cleanUp(MessageChannel messageChannel, LocalDateTime startAt, String raidId,
+                                EmoticonSignUpMessageListener emoticonSignUpMessageListener,
+                                RaidRepository raidRepository,
+                                BotService botService) {
         Raid raid = null;
         try {
-            if (startAt != null) {
+            if (startAt != null && raidId != null) {
                 // Clean up all signups that should have done their raid now, if there still is a time
                 // (Could be set to null due to an error, in that case keep signups in database)
                 raid = raidRepository.removeAllSignUpsAt(raidId, startAt);
@@ -229,7 +249,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
                 try {
-                    commandEvent.getChannel().deleteMessageById(emoteMessageId).queue();
+                    messageChannel.deleteMessageById(emoteMessageId).queue();
                 } catch (Throwable t) {
                     LOGGER.warn("Exception occurred when removing emote message: " + t.getMessage());
                 }
@@ -240,7 +260,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
             if (!StringUtils.isEmpty(emoteMessageId)) {
                 try {
-                    commandEvent.getChannel().deleteMessageById(infoMessageId).queue();
+                    messageChannel.deleteMessageById(infoMessageId).queue();
                 } catch (Throwable t) {
                     LOGGER.warn("Exception occurred when removing group message: " + t.getMessage());
                 }

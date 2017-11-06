@@ -1,9 +1,8 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
-import groovy.util.OrderBy;
 import org.apache.commons.lang3.Validate;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.comparator.NullSafeComparator;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 
@@ -21,6 +20,7 @@ import static pokeraidbot.Utils.getStartOfRaid;
         ) // todo: uniqueconstraint that creator can only have one signup per id
 public class RaidEntity implements Serializable {
     @Id
+    @Column(nullable = false)
     private String id;
     @Basic(optional = false)
     @Column(nullable = false)
@@ -36,12 +36,14 @@ public class RaidEntity implements Serializable {
     private String creator;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name="raid", referencedColumnName="id")
+    @BatchSize(size = 20)
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)
     private String region;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name="raid", referencedColumnName="id")
+    @JoinColumn(name="raidid", referencedColumnName="id")
+    @BatchSize(size = 5)
     private Set<RaidGroup> groups = new HashSet<>();
 
     // JPA
@@ -194,7 +196,7 @@ public class RaidEntity implements Serializable {
 
     public RaidGroup getGroupByCreator(String userName) {
         for (RaidGroup group : groups) {
-            if (group.getCreator().equalsIgnoreCase(userName)) {
+            if (group.getCreatorId().equalsIgnoreCase(userName)) {
                 return group;
             }
         }
@@ -209,5 +211,15 @@ public class RaidEntity implements Serializable {
 
     public boolean isExRaid() {
         return Utils.isRaidExPokemon(pokemon);
+    }
+
+    public RaidGroup removeGroup(String groupId) {
+        for (RaidGroup group : groups) {
+            if (group.getId().equals(groupId)) {
+                groups.remove(group);
+                return group;
+            }
+        }
+        return null;
     }
 }

@@ -61,7 +61,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
         } else {
             language = config.getLocale().getLanguage();
         }
-        final String[] args = commandEvent.getArgs().split(" ");
+        final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
 
         // If bad arguments
         if (args.length < 1 || args.length > 2) {
@@ -88,7 +88,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
             if (text == null) {
                 commandEvent.replyInDM(helpText);
             } else {
-                if (!StringUtils.isEmpty(replyIn) && replyIn.equalsIgnoreCase("dm")) {
+                if (!StringUtils.isEmpty(replyIn) && (replyIn.equalsIgnoreCase("dm"))) {
                     commandEvent.replyInDM(text);
                 } else {
                     commandEvent.reply(text);

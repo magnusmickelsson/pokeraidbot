@@ -37,7 +37,8 @@ public class EmoticonSignUpMessageListener implements EventListener {
     private String userHadError = null;
     private String userId;
 
-    public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService, ServerConfigRepository serverConfigRepository,
+    public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService,
+                                         ServerConfigRepository serverConfigRepository,
                                          RaidRepository raidRepository, PokemonRepository pokemonRepository,
                                          GymRepository gymRepository,
                                          String raidId, LocalDateTime startAt, User user) {
@@ -50,6 +51,22 @@ public class EmoticonSignUpMessageListener implements EventListener {
         this.raidId = raidId;
         this.startAt = startAt;
         this.userId = user.getId();
+    }
+
+    public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService,
+                                         ServerConfigRepository serverConfigRepository,
+                                         RaidRepository raidRepository, PokemonRepository pokemonRepository,
+                                         GymRepository gymRepository,
+                                         String raidId, LocalDateTime startAt, String userId) {
+        this.botService = botService;
+        this.localeService = localeService;
+        this.serverConfigRepository = serverConfigRepository;
+        this.raidRepository = raidRepository;
+        this.pokemonRepository = pokemonRepository;
+        this.gymRepository = gymRepository;
+        this.raidId = raidId;
+        this.startAt = startAt;
+        this.userId = userId;
     }
 
     public void setEmoteMessageId(String emoteMessageId) {

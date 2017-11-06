@@ -43,7 +43,7 @@ public class BotServerMain {
     @Value("${token}")
     private String token;
     public static final String version = "1.2.0-SNAPSHOT"; // todo: should be filter copied from pom.xml
-    public static final int timeToRemoveFeedbackInSeconds = 15; // todo: should be setting?
+    public static final int timeToRemoveFeedbackInSeconds = 20; // todo: should be setting?
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
         SpringApplication.run(BotServerMain.class, args);
@@ -58,7 +58,7 @@ public class BotServerMain {
     public ClockService getClockService() {
         final ClockService clockService = new ClockService();
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-//        clockService.setMockTime(LocalTime.of(9, 0));
+        clockService.setMockTime(LocalTime.of(9, 0));
         Utils.setClockService(clockService);
         return clockService;
     }

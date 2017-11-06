@@ -65,6 +65,8 @@ public class BotService {
             System.exit(-1);
         }
 
+        initializeConfig();
+
         EventWaiter waiter = new EventWaiter();
         EventLoggingListener eventLoggingListener = new EventLoggingListener();
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
@@ -72,7 +74,7 @@ public class BotService {
                 executorService,
                 clockService);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
-                raidRepository, localeService, clockService, executorService);
+                raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
@@ -156,7 +158,6 @@ public class BotService {
         }
     }
 
-    @PostConstruct
     @Transactional
     public void initializeConfig() {
         if (serverConfigRepository.findAll().size() == 0) {

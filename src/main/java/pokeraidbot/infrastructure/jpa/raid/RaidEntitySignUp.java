@@ -13,6 +13,7 @@ import java.util.UUID;
 @Entity
 public class RaidEntitySignUp implements Serializable {
     @Id
+    @Column(nullable = false)
     private String id;
     @Column(nullable = false)
     private String responsible;

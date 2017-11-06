@@ -205,23 +205,4 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getLocaleForUser(user)));
         }
     }
-
-    private boolean isUserServerMod(CommandEvent commandEvent, Config config) {
-        boolean isServerMod = false;
-        final String modPermissionGroup = config.getModPermissionGroup();
-        if (!StringUtils.isEmpty(modPermissionGroup)) {
-            for (Role role : commandEvent.getMember().getRoles()) {
-                if (modPermissionGroup.trim().toLowerCase().equalsIgnoreCase(role.getName().toLowerCase())) {
-                    isServerMod = true;
-                    break;
-                }
-            }
-        }
-        return isServerMod;
-    }
-
-    private boolean isUserAdministrator(CommandEvent commandEvent) {
-        return PermissionUtil.checkPermission(commandEvent.getTextChannel(),
-                commandEvent.getMember(), Permission.ADMINISTRATOR);
-    }
 }

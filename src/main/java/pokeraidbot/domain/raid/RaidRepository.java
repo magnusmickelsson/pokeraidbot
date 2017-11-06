@@ -23,6 +23,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
+import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -95,7 +96,7 @@ public class RaidRepository {
                 gym.getName(), signUpText);
     }
 
-    public void newRaid(User raidCreator, Raid raid) {
+    public Raid newRaid(User raidCreator, Raid raid) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         if (raidEntity != null) {
@@ -107,7 +108,7 @@ public class RaidRepository {
             }
         }
 
-        saveRaid(raidCreator, raid);
+        return getRaidInstance(saveRaid(raidCreator, raid));
     }
 
     private RaidEntity findEntityByRaidId(String raidId) {
@@ -116,18 +117,18 @@ public class RaidRepository {
         return raidEntity;
     }
 
-    private void saveRaid(User raidCreator, Raid raid) {
+    private RaidEntity saveRaid(User raidCreator, Raid raid) {
         final RaidEntity toBeSaved = new RaidEntity(UUID.randomUUID().toString(),
                 raid.getPokemon().getName(),
                 raid.getEndOfRaid(),
                 raid.getGym().getName(),
                 raidCreator.getName(),
                 raid.getRegion());
-        raidEntityRepository.save(toBeSaved);
-
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Created raid: " + toBeSaved);
+            LOGGER.debug("Creating raid: " + toBeSaved);
         }
+        return raidEntityRepository.save(toBeSaved);
+
     }
 
     private Raid getRaidInstance(RaidEntity raidEntity) {
@@ -280,7 +281,8 @@ public class RaidRepository {
     }
 
     public Raid getById(String id) {
-        return getRaidInstance(raidEntityRepository.getOne(id));
+        final RaidEntity entity = raidEntityRepository.findOne(id);
+        return getRaidInstance(entity);
     }
 
     public Raid modifySignUp(String raidId, User user, int mystic, int instinct, int valor, int plebs,
@@ -386,5 +388,34 @@ public class RaidRepository {
                     localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
         }
         // todo: throw error if problem?
+    }
+
+    public RaidGroup newGroupForRaid(User user, RaidGroup group, Raid raid) {
+        Validate.notNull(user, "User");
+        Validate.notNull(group, "Group");
+        Validate.notNull(raid, "Raid");
+        Validate.notEmpty(raid.getId(), "Raid ID");
+        RaidEntity raidEntity = findEntityByRaidId(raid.getId());
+        final boolean added = raidEntity.addGroup(group);
+        if (!added) {
+            // todo: i18n
+            throw new UserMessedUpException(user, "Group " + group + " already existed for raid " + raid);
+        }
+        return group;
+    }
+
+    public List<RaidGroup> getGroupsForServer(String server) {
+        Validate.notEmpty(server, "Server is empty");
+        return raidEntityRepository.findGroupsForServer(server);
+    }
+
+    public RaidGroup deleteGroup(User user, String raidId, String groupId) {
+        final RaidEntity entity = findEntityByRaidId(raidId);
+        final RaidGroup removedGroup = entity.removeGroup(groupId);
+        if (removedGroup == null) {
+            // todo: i18n
+            throw new UserMessedUpException(user, "No group with ID " + groupId + " for raid " + entity);
+        }
+        return removedGroup;
     }
 }

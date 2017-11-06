@@ -45,7 +45,7 @@ public class CounterTextFileParserText {
 
     @Test
     public void checkPoliwrathFile() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Poliwrath", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Poliwrath", 3, 1);
     }
 
     @Test
@@ -55,13 +55,13 @@ public class CounterTextFileParserText {
 
     @Test
     public void checkRemainingFiles() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Golem", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Nidoking", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Nidoqueen", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Ninetales", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Omastar", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Scyther", 0, 1);
-        assertPokemonHasCorrectNumberOfCounters("Victreebel", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Golem", 2, 2);
+        assertPokemonHasCorrectNumberOfCounters("Nidoking", 3, 1);
+        assertPokemonHasCorrectNumberOfCounters("Nidoqueen", 3, 1);
+        assertPokemonHasCorrectNumberOfCounters("Ninetales", 6, 1);
+        assertPokemonHasCorrectNumberOfCounters("Omastar", 4, 1);
+        assertPokemonHasCorrectNumberOfCounters("Scyther", 3, 1);
+        assertPokemonHasCorrectNumberOfCounters("Victreebel", 3, 1);
     }
 
     private void assertPokemonHasCorrectNumberOfCounters(String pokemonName, int goodCounters, int supremeCounters) {

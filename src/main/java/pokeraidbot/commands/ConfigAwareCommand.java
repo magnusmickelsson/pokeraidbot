@@ -5,9 +5,13 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.commons.lang3.Validate;
+import org.thymeleaf.util.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -131,5 +135,24 @@ public abstract class ConfigAwareCommand extends Command {
                 msg.delete().queueAfter(numberOfSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
             });
         }
+    }
+
+    protected boolean isUserServerMod(CommandEvent commandEvent, Config config) {
+        boolean isServerMod = false;
+        final String modPermissionGroup = config.getModPermissionGroup();
+        if (!StringUtils.isEmpty(modPermissionGroup)) {
+            for (Role role : commandEvent.getMember().getRoles()) {
+                if (modPermissionGroup.trim().toLowerCase().equalsIgnoreCase(role.getName().toLowerCase())) {
+                    isServerMod = true;
+                    break;
+                }
+            }
+        }
+        return isServerMod;
+    }
+
+    protected boolean isUserAdministrator(CommandEvent commandEvent) {
+        return PermissionUtil.checkPermission(commandEvent.getTextChannel(),
+                commandEvent.getMember(), Permission.ADMINISTRATOR);
     }
 }

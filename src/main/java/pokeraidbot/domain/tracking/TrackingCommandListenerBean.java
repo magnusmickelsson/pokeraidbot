@@ -41,12 +41,14 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
 
     @Override
     public void onCompletedCommand(CommandEvent event, Command command) {
-        final String serverName = event.getGuild().getName().toLowerCase();
-        final Config configForServer = serverConfigRepository.getConfigForServer(serverName);
-        final Locale localeForUser = localeService.getLocaleForUser(event.getAuthor());
-        for (TrackingTarget t : getTrackingTargets(configForServer.getRegion())) {
-            if (t.canHandle(event, command)) {
-                t.handle(event, command, localeService, localeForUser, configForServer);
+        if (event != null && command != null && event.getGuild() != null) {
+            final String serverName = event.getGuild().getName().toLowerCase();
+            final Config configForServer = serverConfigRepository.getConfigForServer(serverName);
+            final Locale localeForUser = localeService.getLocaleForUser(event.getAuthor());
+            for (TrackingTarget t : getTrackingTargets(configForServer.getRegion())) {
+                if (t.canHandle(event, command)) {
+                    t.handle(event, command, localeService, localeForUser, configForServer);
+                }
             }
         }
     }
