@@ -82,6 +82,6 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         }
         raidRepository.newRaid(user, raid);
         replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                locale, raid.toString()));
+                locale, raid.toString(locale)));
     }
 }

@@ -25,33 +25,49 @@ public class CounterTextFileParserText {
 
     @Test
     public void checkEnteiFile() throws Exception {
-        CounterTextFileParser parser = new CounterTextFileParser("/counters", "Entei",
-                new PokemonRepository("/mons.json", localeService));
-        assertThat(parser.getBestCounters().size(), is(3));
-        assertThat(parser.getGoodCounters().size(), is(5));
+        assertPokemonHasCorrectNumberOfCounters("Entei", 5, 3);
     }
 
     @Test
     public void checkFlareonFile() throws Exception {
-        CounterTextFileParser parser = new CounterTextFileParser("/counters", "Flareon",
-                new PokemonRepository("/mons.json", localeService));
-        assertThat(parser.getBestCounters().size(), is(1));
-        assertThat(parser.getGoodCounters().size(), is(9));
+        assertPokemonHasCorrectNumberOfCounters("Flareon", 9, 1);
     }
 
     @Test
     public void checkMoltresFile() throws Exception {
-        CounterTextFileParser parser = new CounterTextFileParser("/counters", "Moltres",
-                new PokemonRepository("/mons.json", localeService));
-        assertThat(parser.getBestCounters().size(), is(2));
-        assertThat(parser.getGoodCounters().size(), is(6));
+        assertPokemonHasCorrectNumberOfCounters("Moltres", 6, 2);
     }
 
     @Test
     public void checkTyranitarFile() throws Exception {
-        CounterTextFileParser parser = new CounterTextFileParser("/counters", "Tyranitar",
+        assertPokemonHasCorrectNumberOfCounters("Tyranitar", 5, 2);
+    }
+
+    @Test
+    public void checkPoliwrathFile() throws Exception {
+        assertPokemonHasCorrectNumberOfCounters("Poliwrath", 0, 1);
+    }
+
+    @Test
+    public void checkPorygonFile() throws Exception {
+        assertPokemonHasCorrectNumberOfCounters("Porygon", 6, 2);
+    }
+
+    @Test
+    public void checkRemainingFiles() throws Exception {
+        assertPokemonHasCorrectNumberOfCounters("Golem", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Nidoking", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Nidoqueen", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Ninetales", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Omastar", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Scyther", 0, 1);
+        assertPokemonHasCorrectNumberOfCounters("Victreebel", 0, 1);
+    }
+
+    private void assertPokemonHasCorrectNumberOfCounters(String pokemonName, int goodCounters, int supremeCounters) {
+        CounterTextFileParser parser = new CounterTextFileParser("/counters", pokemonName,
                 new PokemonRepository("/mons.json", localeService));
-        assertThat(parser.getBestCounters().size(), is(2));
-        assertThat(parser.getGoodCounters().size(), is(5));
+        assertThat(parser.getBestCounters().size(), is(supremeCounters));
+        assertThat(parser.getGoodCounters().size(), is(goodCounters));
     }
 }

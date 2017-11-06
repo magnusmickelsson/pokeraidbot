@@ -91,6 +91,12 @@ public class Raid {
                 gym.toString(), printDateTime(Utils.getStartOfRaid(endOfRaid, isExRaid())), printDateTime(endOfRaid));
     }
 
+    public String toString(Locale locale) {
+        return localeService.getMessageFor(LocaleService.RAID_TOSTRING, locale, pokemon.toString(),
+                gym.toString(), Utils.printTimeIfSameDay(Utils.getStartOfRaid(endOfRaid, isExRaid())),
+                Utils.printTimeIfSameDay(endOfRaid));
+    }
+
     public void signUp(User user, int howManyPeople, LocalTime arrivalTime, RaidRepository repository) {
         SignUp signUp = signUps.get(user.getName());
         if (signUp != null) {

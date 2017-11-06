@@ -2,6 +2,8 @@ package dataimport;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie2;
@@ -55,15 +57,12 @@ public class GymDataImportTool {
                 throw new RuntimeException("Could not get session cookie from map site!");
             }
             final List<String> cookiesFromServer = responseEntity.getHeaders().get("Set-Cookie");
-            final String[] cookiesSplit = cookiesFromServer.iterator().next().split(";");
-            final String[] sessionCookie = cookiesSplit[0].split("=");
-            if (sessionCookie[0] == null || (!sessionCookie[0].equalsIgnoreCase("PHPSESSID"))) {
-                throw new RuntimeException("Couldn't get a session cookie from server! We got this: " + cookiesFromServer);
+            for (String c : cookiesFromServer) {
+                final String[] cookieNamesAndValues = c.split("[=]");
+                final String[] strippedArray = ArrayUtils.removeElements(cookieNamesAndValues, cookieNamesAndValues[0]);
+                final String joinedCookieValue = StringUtils.join(strippedArray);
+                cookieStore.addCookie(new BasicClientCookie2(cookieNamesAndValues[0], joinedCookieValue));
             }
-
-            String sessionIdCookie = sessionCookie[1];
-
-            cookieStore.addCookie(new BasicClientCookie2("PHPSESSID", sessionIdCookie));
             cookieStore.addCookie(new BasicClientCookie2("announcementnews4", ann4Cookie));
             cookieStore.addCookie(new BasicClientCookie2("mapfilters", mapFiltersCookie));
             cookieStore.addCookie(new BasicClientCookie2("announcementnews6", ann6Cookie));

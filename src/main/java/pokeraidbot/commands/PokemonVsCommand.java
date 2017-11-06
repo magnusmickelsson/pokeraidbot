@@ -46,14 +46,15 @@ public class PokemonVsCommand extends ConfigAwareCommand {
         builder.append(localeService.getMessageFor(LocaleService.WEAKNESSES, localeForUser))
                 .append(Utils.printWeaknesses(pokemon)).append("\n").append(
                 localeService.getMessageFor(LocaleService.RESISTANT, localeForUser))
-                .append(pokemon.getResistant()).append("\n");
+                .append(pokemon.getResistant());
 
         if (counters != null) {
+            builder.append("\n");
             appendBestCounters(counters, builder, localeForUser);
         }
 
         if (maxCp != null) {
-            builder.append("Max CP (100% IV): ").append(maxCp).append("\n");
+            builder.append("\nMax CP (100% IV): ").append(maxCp).append("\n");
         }
 
         replyBasedOnConfig(config, commandEvent, builder.toString());
