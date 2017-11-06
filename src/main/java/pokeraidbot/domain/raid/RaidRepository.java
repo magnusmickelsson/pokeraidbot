@@ -398,8 +398,8 @@ public class RaidRepository {
         RaidEntity raidEntity = findEntityByRaidId(raid.getId());
         final boolean added = raidEntity.addGroup(group);
         if (!added) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "Group " + group + " already existed for raid " + raid);
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
+                    localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
         return group;
     }
@@ -413,9 +413,17 @@ public class RaidRepository {
         final RaidEntity entity = findEntityByRaidId(raidId);
         final RaidGroup removedGroup = entity.removeGroup(groupId);
         if (removedGroup == null) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "No group with ID " + groupId + " for raid " + entity);
+            throw new RuntimeException("No group with ID " + groupId + " for raid " + entity);
         }
         return removedGroup;
+    }
+
+    public boolean hasGroupForRaid(User user, Raid raid, LocalDateTime startAt) {
+        RaidEntity entity = findEntityByRaidId(raid.getId());
+        if (entity.hasGroup(user, startAt)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

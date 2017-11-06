@@ -102,8 +102,10 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             throw new UserMessedUpException(userName, errorText);
         }
 
-        // todo: Check that user doesn't have more than one group for a raid?
-        // In that case he/she should use raid change to change time
+        if (raidRepository.hasGroupForRaid(user, raid, startAt)) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
+                    localeService.getLocaleForUser(user), String.valueOf(raid)));
+        }
 
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,

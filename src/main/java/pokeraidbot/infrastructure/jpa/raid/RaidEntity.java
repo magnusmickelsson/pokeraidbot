@@ -1,5 +1,6 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
+import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -194,13 +195,14 @@ public class RaidEntity implements Serializable {
         return Collections.unmodifiableSet(new LinkedHashSet<>(signUps));
     }
 
-    public RaidGroup getGroupByCreator(String userName) {
+    public List<RaidGroup> getGroupByCreator(String userId) {
+        List<RaidGroup> groups = new LinkedList<>();
         for (RaidGroup group : groups) {
-            if (group.getCreatorId().equalsIgnoreCase(userName)) {
-                return group;
+            if (group.getCreatorId().equalsIgnoreCase(userId)) {
+                groups.add(group);
             }
         }
-        return null;
+        return groups;
     }
 
     public Set<RaidGroup> getGroupsAsSet() {
@@ -221,5 +223,14 @@ public class RaidEntity implements Serializable {
             }
         }
         return null;
+    }
+
+    public boolean hasGroup(User user, LocalDateTime startAt) {
+        for (RaidGroup group : groups) {
+            if (group.getCreatorId().equals(user.getId()) && group.getStartsAt().equals(startAt)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

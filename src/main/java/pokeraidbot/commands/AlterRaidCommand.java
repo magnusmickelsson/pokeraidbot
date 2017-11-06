@@ -153,6 +153,10 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     assertTimeNotMoreThanXHoursFromNow(user, newTime, localeService, 2);
                 }
                 assertCreateRaidTimeNotBeforeNow(user, newDateTime, localeService);
+                if (raidRepository.hasGroupForRaid(user, raid, newDateTime)) {
+                    throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
+                            localeService.getLocaleForUser(user), String.valueOf(raid)));
+                }
                 boolean groupChanged = false;
                 for (Object o : botService.getBot().getRegisteredListeners()) {
                     if (o instanceof EmoticonSignUpMessageListener) {

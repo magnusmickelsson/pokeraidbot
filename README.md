@@ -37,6 +37,18 @@ Raid commands:
 
 ![Raid group signup](img/groupmuk.png)
 
+Other features worth mentioning:
+* Users can configure tracked pokemons, meaning if a raid is created, the user gets a DM about it
+* Admins can configure a mods group, so mods can help administrating things
+* Admins can configure a raid overview message which is automatically updated with all registered raids
+* User errors get automatically removed, along with any feedback (after user gets a chance to read it)
+
+Future development will most likely include:
+* Automatic integration with for example Gymhuntr bot, for automatic raid registration
+* OCR scanning of screenshots, possible to create raids from them
+* Webhooks API
+* What the users may be interested in.. wink, wink.
+
 ## Getting started as a user
 
 [English version](GETTING_STARTED_USER_en.md)
@@ -205,7 +217,9 @@ Bot created by Magnus Mickelsson - done mostly during evenings after the kids we
 
 Valuable contributions also by Johan Millert.
 
-Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Xandria.
+Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Pettri.
+
+Thanks to our donors for supporting this project <3 - biggest donor so far is Zinnas with 10$
 
 ## Notes
 

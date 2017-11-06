@@ -13,11 +13,11 @@ Needs testing:
 Check why, and fix.
 * Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
 signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.
-
-Being developed:
 * !raid man with bad topic, gives a message 
 "Detta meddelande och tillhörande fel kommer tas bort om 15 sekunder för att hålla chatten ren." at the bottom, which is wrong,
 should just give the !raid man default instead.
+
+Being developed:
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -33,6 +33,7 @@ Experiment with:
 
 Fix issue:
 
+* !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set

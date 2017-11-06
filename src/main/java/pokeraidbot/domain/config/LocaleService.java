@@ -89,6 +89,7 @@ public class LocaleService {
     public static final String NOT_EX_RAID = "NOT_EX_RAID";
     public static final String NO_GROUP_BEFORE_RAID = "NO_GROUP_BEFORE_RAID";
     public static final String NEW_RAID_START_HELP = "NEW_RAID_START_HELP";
+    public static final String GROUP_NOT_ADDED = "GROUP_NOT_ADDED";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -159,7 +160,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
-
+        i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, Locale.ENGLISH),
+                "Group for this user and at this time already existed for raid %1"
+        );
+        i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, SWEDISH),
+                "Gruppen för denna användare och tid finns redan för raiden %1"
+        );
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, Locale.ENGLISH),
                 "Create new raid starting at time - !raid start [Name of Pokemon] [Start (HH:MM)] [Gym name]");
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, SWEDISH),
