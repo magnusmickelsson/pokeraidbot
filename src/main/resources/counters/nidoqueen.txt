@@ -5,3 +5,27 @@ Mewtwo
 Quick Move    Charge Move
 Confusion
 Psychic
+Good Counters
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage
+Hurricane
+Lugia
+
+Lugia
+Quick Move	Charge Move
+Extrasensory
+Future Sight
+Alakazam
+
+Alakazam
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Focus Blast
+Future Sight

@@ -5,3 +5,25 @@ Mewtwo
 Quick Move    Charge Move
 Confusion
 Psychic
+Good Counters
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage
+Hurricane
+Lugia
+
+Lugia
+Quick Move	Charge Move
+Extrasensory
+Future Sight

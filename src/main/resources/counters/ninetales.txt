@@ -5,3 +5,47 @@ Golem
 Quick Move    Charge Move
 Rock Throw 
 Stone Edge
+Good Counters
+Vaporeon
+
+Vaporeon
+Quick Move	Charge Move
+Water Gun
+Hydro Pump
+Aqua Tail
+Tyranitar
+
+Tyranitar
+Quick Move	Charge Move
+Bite
+Stone Edge
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage
+Hurricane
+Kingdra
+
+Kingdra
+Quick Move	Charge Move
+Water Gun
+Hydro Pump
+Omastar
+
+Omastar
+Quick Move	Charge Move
+Rock Throw
+Water Gun
+Rock Slide
+Rock Blast
+Hydro Pump
+Feraligatr
+
+Feraligatr
+Quick Move	Charge Move
+Water Gun
+Hydro Pump

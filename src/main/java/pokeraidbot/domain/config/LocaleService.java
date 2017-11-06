@@ -608,8 +608,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(TIMEZONE, Locale.ENGLISH),
                 "You seem to be living in a different timezone. Your input was %1, while it's currently %2.");
         i18nMessages.put(new I18nLookup(TIMEZONE, SWEDISH),
-                "Du kan inte ange att en raid ska sluta innan nuvarande tid (utom för EX-raid). " +
-                        "Du angav %1, vilket är innan %2.");
+                "Fel tidszon? " +
+                        "Du angav %1, och klockan är just nu %2.");
 
         i18nMessages.put(new I18nLookup(NO_POKEMON, Locale.ENGLISH), "Could not find a pokemon with name \"%1\".");
         i18nMessages.put(new I18nLookup(NO_POKEMON, SWEDISH), "Kunde inte hitta pokemon med namn \"%1\".");

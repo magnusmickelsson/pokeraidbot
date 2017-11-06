@@ -26,12 +26,14 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Nya bossarna har nu full counterdata så *!raid vs (pokemon)* " +
                     "ger ok resultat för alla tier 3+ bossar\n" +
                     "- Kan konfigurera mod roll per server som har rätt att göra det server admin har\n" +
+                    "- *!raid vs* listar inte längre alla moves för att minska textmängden\n" +
                     "- EX-raidhantering finns nu i hjälpmanualen via *!raid man raid*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
                     "- Command to report raid based on start time and not end - *!raid start*\n" +
                     "- New bosses now have full counter data for tier 3+\n" +
                     "- Possible to configure a mod role per server, so mods can do what the server admin can\n" +
+                    "- *!raid vs* no longer lists explicit moves to reduce amount of text\n" +
                     "- EX raid handling added to help manual *!raid man raid*";
         }
         replyBasedOnConfig(config, commandEvent, message);

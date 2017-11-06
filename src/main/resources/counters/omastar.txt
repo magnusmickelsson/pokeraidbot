@@ -5,3 +5,32 @@ Exeggutor
 Quick Move    Charge Move
 Bullet Seed
 Solar Beam
+Good Counters
+Venusaur
+
+Venusaur
+Quick Move	Charge Move
+Razor Leaf
+Vine Whip
+Solar Beam
+Petal Blizzard
+Vileplume
+
+Vileplume
+Quick Move	Charge Move
+Razor Leaf
+Solar Beam
+Petal Blizzard
+Victreebel
+
+Victreebel
+Quick Move	Charge Move
+Razor Leaf
+Solar Beam
+Tangela
+
+Tangela
+Quick Move	Charge Move
+Vine Whip
+Solar Beam
+Grass Knot

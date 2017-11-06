@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -66,7 +67,8 @@ public class UserConfigCommand extends ConfigAwareCommand {
             userConfigRepository.save(userConfig);
             replyBasedOnConfigAndRemoveAfter(config, commandEvent,
                     localeService.getMessageFor(LocaleService.LOCALE_SET,
-                            localeService.getLocaleForUser(user), newLocale.getLanguage()), 15);
+                            localeService.getLocaleForUser(user), newLocale.getLanguage()),
+                    BotServerMain.timeToRemoveFeedbackInSeconds);
         }
     }
 }

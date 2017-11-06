@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -60,11 +61,14 @@ public abstract class ConfigAwareCommand extends Command {
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(t.getMessage());
             final String msgRemoveText = localeService.getMessageFor(LocaleService.ERROR_KEEP_CHAT_CLEAN,
-                    localeService.getLocaleForUser(commandEvent.getAuthor()), "15");
+                    localeService.getLocaleForUser(commandEvent.getAuthor()),
+                    String.valueOf(BotServerMain.timeToRemoveFeedbackInSeconds));
             embedBuilder.setFooter(msgRemoveText, null);
             commandEvent.reply(embedBuilder.build(), msg -> {
-                commandEvent.getMessage().delete().queueAfter(15, TimeUnit.SECONDS); // Clean up bad message
-                msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
+                commandEvent.getMessage().delete()
+                        .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS); // Clean up bad message
+                msg.delete()
+                        .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
             });
         }
     }

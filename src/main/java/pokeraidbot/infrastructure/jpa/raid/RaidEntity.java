@@ -1,7 +1,9 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
+import groovy.util.OrderBy;
 import org.apache.commons.lang3.Validate;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.comparator.NullSafeComparator;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 
@@ -9,6 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.getStartOfRaid;
 
@@ -37,6 +40,9 @@ public class RaidEntity implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private String region;
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name="raid", referencedColumnName="id")
+    private Set<RaidGroup> groups = new HashSet<>();
 
     // JPA
     protected RaidEntity() {
@@ -75,6 +81,24 @@ public class RaidEntity implements Serializable {
         return region;
     }
 
+    public boolean addGroup(RaidGroup group) {
+        if (groups.contains(group)) {
+            return false;
+        } else {
+            groups.add(group);
+            return true;
+        }
+    }
+
+    public RaidGroup removeSignUp(RaidGroup group) {
+        if (!groups.contains(group)) {
+            return null;
+        } else {
+            groups.remove(group);
+            return group;
+        }
+    }
+
     public boolean addSignUp(RaidEntitySignUp signUp) {
         if (signUps.contains(signUp)) {
             return false;
@@ -109,15 +133,16 @@ public class RaidEntity implements Serializable {
         if (this == o) return true;
         if (!(o instanceof RaidEntity)) return false;
 
-        RaidEntity that = (RaidEntity) o;
+        RaidEntity entity = (RaidEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (pokemon != null ? !pokemon.equals(that.pokemon) : that.pokemon != null) return false;
-        if (endOfRaid != null ? !endOfRaid.equals(that.endOfRaid) : that.endOfRaid != null) return false;
-        if (gym != null ? !gym.equals(that.gym) : that.gym != null) return false;
-        if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
-        if (signUps != null ? !signUps.equals(that.signUps) : that.signUps != null) return false;
-        return region != null ? region.equals(that.region) : that.region == null;
+        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (pokemon != null ? !pokemon.equals(entity.pokemon) : entity.pokemon != null) return false;
+        if (endOfRaid != null ? !endOfRaid.equals(entity.endOfRaid) : entity.endOfRaid != null) return false;
+        if (gym != null ? !gym.equals(entity.gym) : entity.gym != null) return false;
+        if (creator != null ? !creator.equals(entity.creator) : entity.creator != null) return false;
+        if (signUps != null ? !signUps.equals(entity.signUps) : entity.signUps != null) return false;
+        if (region != null ? !region.equals(entity.region) : entity.region != null) return false;
+        return groups != null ? groups.equals(entity.groups) : entity.groups == null;
     }
 
     @Override
@@ -129,6 +154,7 @@ public class RaidEntity implements Serializable {
         result = 31 * result + (creator != null ? creator.hashCode() : 0);
         result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
         result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
         return result;
     }
 
@@ -164,6 +190,21 @@ public class RaidEntity implements Serializable {
 
     public Set<RaidEntitySignUp> getSignUpsAsSet() {
         return Collections.unmodifiableSet(new LinkedHashSet<>(signUps));
+    }
+
+    public RaidGroup getGroupByCreator(String userName) {
+        for (RaidGroup group : groups) {
+            if (group.getCreator().equalsIgnoreCase(userName)) {
+                return group;
+            }
+        }
+        return null;
+    }
+
+    public Set<RaidGroup> getGroupsAsSet() {
+        return Collections.unmodifiableSet(new LinkedHashSet<>(groups).stream().sorted(
+                Comparator.comparing(RaidGroup::getStartsAt)
+        ).collect(Collectors.toSet()));
     }
 
     public boolean isExRaid() {

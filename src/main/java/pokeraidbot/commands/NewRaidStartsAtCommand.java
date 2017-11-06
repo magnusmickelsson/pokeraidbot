@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -69,6 +70,6 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
         raidRepository.newRaid(user, raid);
         final Locale locale = localeService.getLocaleForUser(user);
         replyBasedOnConfigAndRemoveAfter(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                locale, raid.toString(locale)), 15);
+                locale, raid.toString(locale)), BotServerMain.timeToRemoveFeedbackInSeconds);
     }
 }

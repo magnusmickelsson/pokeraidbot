@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
@@ -175,7 +176,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                                 // This group is about to get cleaned up since its start time is null
                                 replyBasedOnConfigAndRemoveAfter(config, commandEvent,
                                         localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
-                                                localeService.getLocaleForUser(user)), 15);
+                                                localeService.getLocaleForUser(user)),
+                                        BotServerMain.timeToRemoveFeedbackInSeconds);
                                 commandEvent.getMessage().delete().queueAfter(50, TimeUnit.MILLISECONDS);
                                 return;
                             }

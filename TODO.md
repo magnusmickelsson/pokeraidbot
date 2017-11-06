@@ -5,10 +5,13 @@ See [Changelog](CHANGELOG.md).
 Needs testing:
 
 * Admin group per server that can do everything the server admin can
-* Bug: Can create duplicate raids
+* Bugfix: Can no longer create duplicate raids
+* "Second" instead of "sekund" for some messages due to locale issue
+* !raid start and !raid end to create raids
 
 Being developed:
 
+* Persistent group, save in database and when restarted, attach bot to messages like it's for overview
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -51,6 +54,7 @@ time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
+
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:

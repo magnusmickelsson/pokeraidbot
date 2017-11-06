@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -37,6 +38,6 @@ public class SignUpCommand extends ConfigAwareCommand {
         final Locale localeForUser = localeService.getLocaleForUser(user);
         final String[] args = Utils.prepareArguments(commandEvent);
         final String returnMessage = raidRepository.executeSignUpCommand(config, user, localeForUser, args, help);
-        replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage, 15);
+        replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage, BotServerMain.timeToRemoveFeedbackInSeconds);
     }
 }

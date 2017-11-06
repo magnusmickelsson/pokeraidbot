@@ -40,6 +40,6 @@ public class CounterPokemon {
 
     @Override
     public String toString() {
-        return counterPokemonName + " " + moves;
+        return counterPokemonName;
     }
 }

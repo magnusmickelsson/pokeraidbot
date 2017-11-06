@@ -5,3 +5,26 @@ Golem
 Quick Move    Charge Move
 Rock Throw 
 Stone Edge
+Good Counters
+Omastar
+
+Omastar
+Quick Move	Charge Move
+Rock Throw
+Water Gun
+Rock Slide
+Rock Blast
+Hydro Pump
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Zapdos
+
+Zapdos
+Quick Move	Charge Move
+Charge Beam
+Thunderbolt
+Zap Cannon

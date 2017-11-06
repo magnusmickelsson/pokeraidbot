@@ -5,3 +5,25 @@ Mewtwo
 Quick Move    Charge Move
 Confusion
 Psychic
+Good Counters
+Exeggutor
+
+Exeggutor
+Quick Move    Charge Move
+Bullet Seed
+Solar Beam
+Alakazam
+
+Alakazam
+Quick Move	Charge Move
+Confusion
+Psycho Cut
+Focus Blast
+Future Sight
+Zapdos
+
+Zapdos
+Quick Move	Charge Move
+Charge Beam
+Thunderbolt
+Zap Cannon
