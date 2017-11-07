@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.printDateTime;
+import static pokeraidbot.Utils.printTime;
 
 public class Raid {
     private final Pokemon pokemon;
@@ -88,7 +89,8 @@ public class Raid {
     @Override
     public String toString() {
         return localeService.getMessageFor(LocaleService.RAID_TOSTRING, LocaleService.DEFAULT, pokemon.toString(),
-                gym.toString(), printDateTime(Utils.getStartOfRaid(endOfRaid, isExRaid())), printDateTime(endOfRaid));
+                gym.toString(), printDateTime(Utils.getStartOfRaid(endOfRaid, isExRaid())),
+                printTime(endOfRaid.toLocalTime()));
     }
 
     public String toString(Locale locale) {
@@ -170,7 +172,7 @@ public class Raid {
             // If we have an actual ETA that is not just the raid ending, return it.
             if (!nextEta.equals(endTime)) {
                 sb.append(", ").append(localeService.getMessageFor(LocaleService.NEXT_ETA,
-                        locale, Utils.printTime(nextEta)));
+                        locale, printTime(nextEta)));
                 return sb.toString();
             } else {
                 return "";
