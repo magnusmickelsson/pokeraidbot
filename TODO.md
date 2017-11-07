@@ -4,18 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* Admin group per server that can do everything the server admin can
-* Bugfix: Can no longer create duplicate raids
-* "Second" instead of "sekund" for some messages due to locale issue
-* !raid start and !raid end to create raids
-* Persistent group, save in database and when restarted, attach bot to messages like it's for overview
-* In the raid group message, the locale for "minute" and "second" is messed up, probably reverting to default. 
-Check why, and fix.
-* Raid group sometimes gives a bad number for individual user signing up. Happens when the first person in the list
-signsup and then unsigns. Resets sometimes when somebody adds themselves to the list.
-* !raid man with bad topic, gives a message 
-"Detta meddelande och tillhörande fel kommer tas bort om 15 sekunder för att hålla chatten ren." at the bottom, which is wrong,
-should just give the !raid man default instead.
+-
 
 Being developed:
 * Regexp to remove all duplicate or more spaces in between arguments
@@ -44,6 +33,8 @@ Fix, misc:
 
 Do, features:
 
+* Use nickname instead of user name in raid list etc (s1lence)
+* Handle changing raid group when user has many raid groups for a raid
 * -1 syntax to remove signups from a raid
 * Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"

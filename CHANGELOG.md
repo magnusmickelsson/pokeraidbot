@@ -1,3 +1,7 @@
+FUTURE (?)
+=====
+TBD
+
 1.2.0 (2017-11-06)
 =====
 * Bugfix: no duplicate raids
@@ -8,6 +12,11 @@
 * Possible to configure a mod role per server, so mods can do what the server admin can
 * *!raid vs* no longer lists explicit moves to reduce amount of text
 * *!raid overview* only available to server admin or mods
+* Bugfix: "Second" instead of "sekund" for some messages due to locale issue
+* !raid start and !raid end to create raids
+* Bugfix: Raid group sometimes gives a bad number for individual user signing up. - hasn't happened since
+we changed message layout
+* Bugfix: !raid man with bad topic, gives bad message 
 
 1.1.0 (2017-11-05)
 =====
