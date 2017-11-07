@@ -170,26 +170,33 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         final String raidId = raid.getId();
                         final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
                         final boolean isUsersGroup = user.getId().equals(listener.getUserId());
-                        if (isCorrectRaid && (isUsersGroup || isUserAdministrator(commandEvent))) {
-                            final LocalDateTime currentStartAt = listener.getStartAt();
-                            if (currentStartAt != null) {
-                                raidRepository.moveAllSignUpsForTimeToNewTime(raidId, currentStartAt, newDateTime, user);
-                                listener.setStartAt(newDateTime);
-                                groupChanged = true;
-                                replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                                        localeService.getMessageFor(LocaleService.MOVED_GROUP,
-                                                localeService.getLocaleForUser(user),
-                                                printTimeIfSameDay(currentStartAt),
-                                                printTimeIfSameDay(newDateTime), raid.getGym().getName()),
-                                        30);
+                        if (isCorrectRaid) {
+                            if (isUsersGroup || isUserAdministrator(commandEvent) ||
+                                    isUserServerMod(commandEvent, config)) {
+                                final LocalDateTime currentStartAt = listener.getStartAt();
+                                if (currentStartAt != null) {
+                                    raidRepository.moveAllSignUpsForTimeToNewTime(raidId, currentStartAt, newDateTime, user);
+                                    listener.setStartAt(newDateTime);
+                                    groupChanged = true;
+                                    replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                                            localeService.getMessageFor(LocaleService.MOVED_GROUP,
+                                                    localeService.getLocaleForUser(user),
+                                                    printTimeIfSameDay(currentStartAt),
+                                                    printTimeIfSameDay(newDateTime), raid.getGym().getName()),
+                                            30);
+                                } else {
+                                    // This group is about to get cleaned up since its start time is null
+                                    replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                                            localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
+                                                    localeService.getLocaleForUser(user)),
+                                            BotServerMain.timeToRemoveFeedbackInSeconds);
+                                    commandEvent.getMessage().delete().queueAfter(50, TimeUnit.MILLISECONDS);
+                                    return;
+                                }
                             } else {
-                                // This group is about to get cleaned up since its start time is null
-                                replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                                        localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
-                                                localeService.getLocaleForUser(user)),
-                                        BotServerMain.timeToRemoveFeedbackInSeconds);
-                                commandEvent.getMessage().delete().queueAfter(50, TimeUnit.MILLISECONDS);
-                                return;
+                                throw new UserMessedUpException(user,
+                                        localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                                        localeService.getLocaleForUser(user)));
                             }
                         }
                     }

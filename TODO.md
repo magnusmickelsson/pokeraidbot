@@ -7,6 +7,7 @@ Needs testing:
 -
 
 Being developed:
+* Mods can't change group time still
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -22,19 +23,31 @@ Experiment with:
 
 Fix issue:
 
+* Lots of stacktrace in the log regarding !raid overview if someone has removed the message and messed things up.
+Check the problem and fix so logs don't get spammed. (Things still work, just annoying in the log)
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 
 Fix, misc:
+* Remove raid group entity when group is cleaned up
+* Max number of chars for a gym name in !raid list and !raid overview?
+* On Android, the raidgroup title is bad if long, doesn't linebreak properly. Put date/time on separate row.
+* !raid overview and !raid list - Gamla Officers Massen (Mewtwo) - mellan 2017-11-11 14:00 och 2017-11-11 14:45. 4 Anmäld(a). Change so that
+only the first date is shown, to save space.
 * Fix release tag for 1.0.0
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
 
+* !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
+* !raid change groupbyid (id) (time)
+* !raid remove group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
+* !raid remove groupbyid (id)
 * Use nickname instead of user name in raid list etc (s1lence)
 * Handle changing raid group when user has many raid groups for a raid
+* Handle changing raid group as mod when there are many raid groups for a raid
 * -1 syntax to remove signups from a raid
 * Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
