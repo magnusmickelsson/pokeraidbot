@@ -157,6 +157,12 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                             localeService.getLocaleForUser(user), String.valueOf(raid)));
                 }
+
+                if (raidRepository.hasManyGroupsForRaid(user, raid)) {
+                    throw new UserMessedUpException(user, localeService.getMessageFor(
+                            LocaleService.MANY_GROUPS_FOR_RAID,
+                            localeService.getLocaleForUser(user), String.valueOf(raid)));
+                }
                 boolean groupChanged = false;
                 for (Object o : botService.getBot().getRegisteredListeners()) {
                     if (o instanceof EmoticonSignUpMessageListener) {

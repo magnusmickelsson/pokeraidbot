@@ -426,4 +426,13 @@ public class RaidRepository {
             return false;
         }
     }
+
+    public boolean hasManyGroupsForRaid(User user, Raid raid) {
+        RaidEntity entity = findEntityByRaidId(raid.getId());
+        if (entity.hasManyGroupsBy(user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

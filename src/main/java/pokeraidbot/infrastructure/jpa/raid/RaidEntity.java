@@ -233,4 +233,14 @@ public class RaidEntity implements Serializable {
         }
         return false;
     }
+
+    public boolean hasManyGroupsBy(User user) {
+        int count = 0;
+        for (RaidGroup group : groups) {
+            if (group.getCreatorId().equals(user.getId())) {
+                count++;
+            }
+        }
+        return count > 1;
+    }
 }

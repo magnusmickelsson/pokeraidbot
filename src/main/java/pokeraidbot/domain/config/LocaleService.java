@@ -90,6 +90,7 @@ public class LocaleService {
     public static final String NO_GROUP_BEFORE_RAID = "NO_GROUP_BEFORE_RAID";
     public static final String NEW_RAID_START_HELP = "NEW_RAID_START_HELP";
     public static final String GROUP_NOT_ADDED = "GROUP_NOT_ADDED";
+    public static final String MANY_GROUPS_FOR_RAID = "MANY_GROUPS_FOR_RAID";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -160,6 +161,15 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, Locale.ENGLISH),
+                "There are several groups by this user for raid %1 - so right now you can't change the time of them. " +
+                        "To be fixed in future releases."
+        );
+        i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, SWEDISH),
+                "Det finns flera grupper av användaren till raiden %1 - " +
+                        "just nu kan du bara ändra tid om det finns en av dem. " +
+                        "Kommer fixas i framtida release."
+        );
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, Locale.ENGLISH),
                 "Group for this user and at this time already existed for raid %1"
         );
