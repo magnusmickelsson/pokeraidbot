@@ -51,6 +51,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
         this.raidId = raidId;
         this.startAt = startAt;
         this.userId = user.getId();
+        botService.addEmoticonEventListener(this);
     }
 
     public EmoticonSignUpMessageListener(BotService botService, LocaleService localeService,
@@ -67,6 +68,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
         this.raidId = raidId;
         this.startAt = startAt;
         this.userId = userId;
+        botService.addEmoticonEventListener(this);
     }
 
     public void setEmoteMessageId(String emoteMessageId) {
@@ -256,5 +258,18 @@ public class EmoticonSignUpMessageListener implements EventListener {
 
     public String getUserId() {
         return userId;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "EmoticonSignUpMessageListener{" +
+                "emoteMessageId='" + emoteMessageId + '\'' +
+                ", raidId='" + raidId + '\'' +
+                ", infoMessageId='" + infoMessageId + '\'' +
+                ", startAt=" + startAt +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }

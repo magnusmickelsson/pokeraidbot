@@ -24,6 +24,7 @@ public interface ServerConfigRepository extends JpaRepository<Config, String> {
         return configs;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     default void setOverviewMessageIdForServer(String server, String overviewMessageId) {
         final Config config = findByServer(server);
         config.setOverviewMessageId(overviewMessageId);

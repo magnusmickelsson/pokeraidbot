@@ -9,6 +9,7 @@ import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.hooks.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -34,11 +36,13 @@ import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 
 public class BotService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
-
+    private final Set<EventListener> extraListeners = new CopyOnWriteArraySet<>();
     private String ownerId;
     private String token;
     private JDA botInstance;
@@ -153,6 +157,10 @@ public class BotService {
 
                     // start it up!
                     .buildBlocking();
+            for (EventListener extraListener : extraListeners) {
+                botInstance.addEventListener(extraListener);
+                LOGGER.info("Added extra event listener after initialization: " + extraListener);
+            }
         } catch (LoginException | RateLimitedException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -182,6 +190,9 @@ public class BotService {
     }
 
     public JDA getBot() {
+        if (botInstance == null) {
+            throw new IllegalStateException("Bot instance has not yet been initialized!");
+        }
         return botInstance;
     }
 
@@ -191,5 +202,17 @@ public class BotService {
 
     public TrackingCommandListener getTrackingCommandListener() {
         return trackingCommandListener;
+    }
+
+    public void addExtraListenerToBeAddedAfterStartUp(EventListener listener) {
+        extraListeners.add(listener);
+    }
+
+    public void addEmoticonEventListener(EmoticonSignUpMessageListener emoticonSignUpMessageListener) {
+        if (botInstance == null) {
+            addExtraListenerToBeAddedAfterStartUp(emoticonSignUpMessageListener);
+        } else {
+            botInstance.addEventListener(emoticonSignUpMessageListener);
+        }
     }
 }

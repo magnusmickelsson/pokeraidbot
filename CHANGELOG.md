@@ -2,6 +2,13 @@ FUTURE (?)
 =====
 TBD
 
+1.3.0 (2017-11-07)
+=====
+* Members of server mods group can now change group time
+* Moved raid time from group message title to description to avoid no linebreaks on Android
+* !raid overview and !raid list - only the first date is shown, to save space.
+* Fixed so not lots of stacktrace in the log regarding !raid overview if someone has removed the message
+
 1.2.0 (2017-11-06)
 =====
 * Bugfix: no duplicate raids

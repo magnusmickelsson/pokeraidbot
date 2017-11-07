@@ -96,6 +96,8 @@ public class StartUpEventListener implements EventListener {
                         new EmoticonSignUpMessageListener(botService, localeService, serverConfigRepository,
                                 raidRepository, pokemonRepository, gymRepository, raid.getId(), raidGroup.getStartsAt(),
                                 raidGroup.getCreatorId());
+                emoticonSignUpMessageListener.setEmoteMessageId(raidGroup.getEmoteMessageId());
+                emoticonSignUpMessageListener.setInfoMessageId(raidGroup.getInfoMessageId());
                 final int delayTime = raid.isExRaid() ? 1 : 15;
                 final TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
                 final Callable<Boolean> overviewTask =
@@ -115,8 +117,10 @@ public class StartUpEventListener implements EventListener {
                 channel.sendMessage(e.getMessage()).queue();
         } catch (ErrorResponseException e) {
             // We couldn't find the message in this channel or had permission issues, ignore
+            LOGGER.debug("Caught exception: " + e.getMessage());
         } catch (Throwable e) {
             // Ignore any other error and try the other server channels
+            LOGGER.debug("Caught exception: " + e.getMessage());
         }
         return false;
     }
@@ -143,7 +147,7 @@ public class StartUpEventListener implements EventListener {
                 return true;
             }
         } catch (UserMessedUpException e) {
-            channel.sendMessage(e.getMessage()).queue();
+            LOGGER.warn("Could not attach to message due to an error: " + e.getMessage());
         } catch (ErrorResponseException e) {
             // We couldn't find the message in this channel or had permission issues, ignore
         } catch (Throwable e) {

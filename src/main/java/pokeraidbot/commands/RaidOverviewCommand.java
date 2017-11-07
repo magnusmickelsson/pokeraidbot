@@ -61,11 +61,9 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         }
         String msgId = config.getOverviewMessageId();
         if (!StringUtils.isEmpty(msgId)) {
-            final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(user, config.getServer(), msgId, localeService,
-                            locale, serverConfigRepository, raidRepository, clockService, commandEvent.getChannel(),
-                            executorService);
-            executorService.submit(refreshEditThreadTask);
+            LOGGER.info("Server overview message ID not empty. Overview already exists for this server.");
+            replyBasedOnConfig(config, commandEvent,
+                    localeService.getMessageFor(LocaleService.OVERVIEW_EXISTS, locale));
         } else {
             final String messageString = getOverviewMessage(config,
                     localeService, raidRepository, clockService, locale);
@@ -90,7 +88,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                                                                        ClockService clockService,
                                                                        MessageChannel messageChannel,
                                                                        final ExecutorService executorService) {
-        Callable<Boolean> refreshEditThreadTask = () -> {
+        final Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute
                 Config config = serverConfigRepository.getConfigForServer(server);
@@ -104,8 +102,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         messageString)
                         .queue(m -> {}, m -> {
                             LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
-                            serverConfigRepository.save(config);
-                            cleanUp(config, user, messageId, serverConfigRepository, localeService,
+                            Config savedConfig = serverConfigRepository.save(config);
+                            cleanUp(savedConfig, user, messageId, serverConfigRepository, localeService,
                                     messageChannel, locale);
                         });
                 return true;
@@ -114,7 +112,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 try {
                     executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                    LOGGER.warn("Exception when running edit task: " + e.getMessage() + " - shutting it down.");
+                    return false;
                 }
             } while (true);
         };
@@ -126,21 +125,26 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                                 MessageChannel messageChannel, Locale locale) {
         try {
             if (!StringUtils.isEmpty(messageId)) {
-                messageChannel.deleteMessageById(messageId).queue();
+                messageChannel.deleteMessageById(messageId).queue(m -> {
+                    LOGGER.info("Deleted overview message with ID " + messageId);
+                }, m -> {
+                    LOGGER.warn("Could not delete overview message with ID " + messageId);
+                });
             }
         } catch (Throwable t) {
             // Do nothing
+            LOGGER.warn("Exception when cleaning up overview: " + t.getMessage());
         } finally {
             try {
+                LOGGER.debug("Trying to reset overview message for server: " + config.getServer());
                 serverConfigRepository.setOverviewMessageIdForServer(config.getServer(), null);
             } catch (Throwable t) {
-                LOGGER.warn(t.getClass().getSimpleName() + " while getting overview message: " + t.getMessage());
+                LOGGER.warn(t.getClass().getSimpleName() + " while resetting overview message for server " +
+                        config.getServer() + ": " + t.getMessage());
             }
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Cleaned up message related to this overview.");
             }
-            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.OVERVIEW_DELETED,
-                    locale));
         }
     }
 
@@ -172,7 +176,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append("  ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append(" - ")
-                            .append(printTimeIfSameDay(raid.getEndOfRaid()))
+                            .append(printTime(raid.getEndOfRaid().toLocalTime()))
                             .append(". ").append(numberOfPeople)
                             .append(" ")
                             .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
@@ -185,7 +189,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             .append(raidBoss.getName()).append(") - ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
-                                    printTimeIfSameDay(raid.getEndOfRaid())))
+                                    printTime(raid.getEndOfRaid().toLocalTime())))
                             .append(". ").append(numberOfPeople)
                             .append(" ")
                             .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))

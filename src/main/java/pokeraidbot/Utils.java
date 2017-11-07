@@ -321,4 +321,15 @@ public class Utils {
                             printTimeIfSameDay(raidStart)));
         }
     }
+
+    public static void assertTimeInRaidTimespan(User user, LocalDateTime dateTimeToCheck, Raid raid,
+                                                LocaleService localeService) {
+        final LocalDateTime startOfRaid = getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid());
+        if (!(dateTimeToCheck.isBefore(raid.getEndOfRaid()) &&
+                dateTimeToCheck.isAfter(startOfRaid))) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TIME_NOT_IN_RAID_TIMESPAN,
+                    localeService.getLocaleForUser(user), printDateTime(dateTimeToCheck),
+                    printDateTime(startOfRaid), printTimeIfSameDay(raid.getEndOfRaid())));
+        }
+    }
 }

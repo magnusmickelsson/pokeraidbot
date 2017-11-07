@@ -435,4 +435,21 @@ public class RaidRepository {
             return false;
         }
     }
+
+    public RaidGroup changeGroup(User user, String raidId, String groupCreatorId, LocalDateTime currentStartAt,
+                                 LocalDateTime newDateTime) {
+        final RaidEntity entityByRaidId = findEntityByRaidId(raidId);
+        if (entityByRaidId == null) {
+                throw new UserMessedUpException(user,
+                        localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+        }
+        RaidGroup group = entityByRaidId.getGroupByCreatorAndStart(groupCreatorId, currentStartAt);
+        if (group == null) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_SUCH_GROUP,
+                    localeService.getLocaleForUser(user)));
+        }
+        group.setStartsAt(newDateTime);
+        raidEntityRepository.save(entityByRaidId);
+        return group;
+    }
 }

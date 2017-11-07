@@ -22,23 +22,14 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- Kommando för att rapportera raid utifrån starttid och inte sluttid - *!raid start*\n" +
-                    "- Nya bossarna har nu full counterdata så *!raid vs (pokemon)* " +
-                    "ger ok resultat för alla tier 3+ bossar\n" +
-                    "- Kan konfigurera mod roll per server som har rätt att göra det server admin har\n" +
-                    "- *!raid vs* listar inte längre alla moves för att minska textmängden\n" +
-                    "- *!raid overview* endast tillgänglig för server admin eller mods\n" +
-                    "- Persistenta raidgrupper, överlever nu en server restart\n" +
-                    "- EX-raidhantering finns nu i hjälpmanualen via *!raid man raid*";
+                    "- Medlemmar i mods gruppen kan nu ändra grupptider för andra användare (så länge det inte blir konflikter)\n" +
+                    "- Flyttade raidtid för grupper från titeln till beskrivningen i embed message för att undvika konstig layout på Android\n" +
+                    "- !raid overview och !raid list - bara första datumet visas, för att spara plats";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- Command to report raid based on start time and not end - *!raid start*\n" +
-                    "- New bosses now have full counter data for tier 3+\n" +
-                    "- Possible to configure a mod role per server, so mods can do what the server admin can\n" +
-                    "- *!raid vs* no longer lists explicit moves to reduce amount of text\n" +
-                    "- *!raid overview* only available to server admin or mods\n" +
-                    "- Persistent raid groups, which survive a server restart\n" +
-                    "- EX raid handling added to help manual *!raid man raid*";
+                    "- Members of server mods group can now change group time\n" +
+                    "- Moved raid time from group message title to description to avoid no linebreaks on Android\n" +
+                    "- !raid overview and !raid list - only the first date is shown, to save space";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }

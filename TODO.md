@@ -4,10 +4,9 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* Remove raid group entity when group is cleaned up
 
 Being developed:
-* Mods can't change group time still
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -23,19 +22,12 @@ Experiment with:
 
 Fix issue:
 
-* Lots of stacktrace in the log regarding !raid overview if someone has removed the message and messed things up.
-Check the problem and fix so logs don't get spammed. (Things still work, just annoying in the log)
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 
 Fix, misc:
-* Remove raid group entity when group is cleaned up
-* Max number of chars for a gym name in !raid list and !raid overview?
-* On Android, the raidgroup title is bad if long, doesn't linebreak properly. Put date/time on separate row.
-* !raid overview and !raid list - Gamla Officers Massen (Mewtwo) - mellan 2017-11-11 14:00 och 2017-11-11 14:45. 4 Anmäld(a). Change so that
-only the first date is shown, to save space.
 * Fix release tag for 1.0.0
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
@@ -49,6 +41,7 @@ Do, features:
 * Handle changing raid group when user has many raid groups for a raid
 * Handle changing raid group as mod when there are many raid groups for a raid
 * -1 syntax to remove signups from a raid
+* Max number of chars for a gym name in !raid list and !raid overview?
 * Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
@@ -57,8 +50,10 @@ time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
-
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
+
+Maybe, features:
+
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:
     * Raid functions like create, list can be set to be admin only
@@ -76,9 +71,6 @@ wrong time
 * Credit Iconninja for icons
 * Check permissions during config - need to have MANAGE_MESSAGE and access to send messages, among other things
 * Embeddedlänkar vid sökning som möjliggör att köra kommandot igen för bara det resultatet via klick
-
-Maybe, features:
-
 * Config should have a note if a server is TEST or PROD and a env property which type of server,
 so we can't get test config on a prod server running by mistake
 * Add counters/counter moves to all pokemon, based on "good dps pokemons" for each type?

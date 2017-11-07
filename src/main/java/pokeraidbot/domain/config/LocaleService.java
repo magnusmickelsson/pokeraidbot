@@ -91,6 +91,10 @@ public class LocaleService {
     public static final String NEW_RAID_START_HELP = "NEW_RAID_START_HELP";
     public static final String GROUP_NOT_ADDED = "GROUP_NOT_ADDED";
     public static final String MANY_GROUPS_FOR_RAID = "MANY_GROUPS_FOR_RAID";
+    public static final String NO_SUCH_GROUP = "NO_SUCH_GROUP";
+    public static final String OVERVIEW_EXISTS = "OVERVIEW_EXISTS";
+    public static final String TIME_NOT_IN_RAID_TIMESPAN = "TIME_NOT_IN_RAID_TIMESPAN";
+    public static final String TOO_MANY_GROUPS = "TOO_MANY_GROUPS";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -161,6 +165,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(NO_SUCH_GROUP, Locale.ENGLISH),
+                "No such group exists."        );
+        i18nMessages.put(new I18nLookup(NO_SUCH_GROUP, SWEDISH),
+                "Det fanns ingen sådan grupp."
+        );
+
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, Locale.ENGLISH),
                 "There are several groups by this user for raid %1 - so right now you can't change the time of them. " +
                         "To be fixed in future releases."
@@ -169,6 +179,28 @@ public class LocaleService {
                 "Det finns flera grupper av användaren till raiden %1 - " +
                         "just nu kan du bara ändra tid om det finns en av dem. " +
                         "Kommer fixas i framtida release."
+        );
+        i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, Locale.ENGLISH),
+                "There were several possible groups to change, so couldn't perform this change. " +
+                        "Workaround: remove the group's discord messages and create a new group with the correct time."
+        );
+        i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, SWEDISH),
+                "Det fanns flera möjliga grupper att ändra på, så kan inte göra detta. " +
+                        "Workaround: ta bort gruppens meddelanden och skapa en ny grupp med rätt tid."
+        );
+        i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, Locale.ENGLISH),
+                "Time %1 is not within the timespan of the raid (%2 - %3)"
+        );
+        i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, SWEDISH),
+                "Tiden %1 är inte inom raidens giltiga tid (%2 - %3)"
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_EXISTS, Locale.ENGLISH),
+                "Server already has an overview command. Don't run this command again," +
+                        " except if the overview message stops updating (may require manual deletion of message)."
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_EXISTS, SWEDISH),
+                "Servern har redan en översikt. Kör inte detta kommando igen, om inte översikten slutar uppdateras" +
+                        " (kan kräva manuell rensning av meddelande i så fall)."
         );
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, Locale.ENGLISH),
                 "Group for this user and at this time already existed for raid %1"
@@ -473,10 +505,10 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, Locale.ENGLISH),
-                "%1 @ %2, starts at %3"
+                "%1 @ %2" //, starts at %3"
         );
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, SWEDISH),
-                "%1 @ %2, startar %3"
+                "%1 @ %2" //, startar %3"
         );
 
 //        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),

@@ -243,4 +243,13 @@ public class RaidEntity implements Serializable {
         }
         return count > 1;
     }
+
+    public RaidGroup getGroupByCreatorAndStart(String groupCreatorId, LocalDateTime currentStartAt) {
+        for (RaidGroup group : groups) {
+            if (group.getCreatorId().equals(groupCreatorId) && group.getStartsAt().equals(currentStartAt)) {
+                return group;
+            }
+        }
+        return null;
+    }
 }

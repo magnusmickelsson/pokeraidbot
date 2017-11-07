@@ -133,7 +133,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         if (LOGGER.isDebugEnabled()) {
                             LOGGER.debug("Created group for emote message with ID: " + messageId + " - " + group);
                         }
-                        botService.getBot().addEventListener(emoticonSignUpMessageListener);
+//                        botService.getBot().addEventListener(emoticonSignUpMessageListener);
                         // Add number icons for pleb signups
                         msg.getChannel().addReactionById(msg.getId(), Emotes.ONE).queue();
                         msg.getChannel().addReactionById(msg.getId(), Emotes.TWO).queue();
@@ -288,8 +288,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                locale, raid.getPokemon().getName(), gym.getName(),
-                Utils.printTimeIfSameDay(startAt));
+                locale, raid.getPokemon().getName(), gym.getName()); //,
+//                Utils.printTimeIfSameDay(startAt));
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 locale);
         embedBuilder.setTitle(getHereText, Utils.getNonStaticMapUrl(gym));
@@ -304,6 +304,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
                 locale) + ":";
         embedBuilder.clearFields();
+        // todo: i18n
+        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt));
         embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
         final String footerMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                 locale, LocaleService.asString(delayTimeUnit, locale),
