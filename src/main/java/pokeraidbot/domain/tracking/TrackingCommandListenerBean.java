@@ -45,7 +45,8 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
             final String serverName = event.getGuild().getName().toLowerCase();
             final Config configForServer = serverConfigRepository.getConfigForServer(serverName);
             final Locale localeForUser = localeService.getLocaleForUser(event.getAuthor());
-            for (TrackingTarget t : getTrackingTargets(configForServer.getRegion())) {
+            final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets(configForServer.getRegion());
+            for (TrackingTarget t : trackingTargets) {
                 if (t.canHandle(event, command)) {
                     t.handle(event, command, localeService, localeForUser, configForServer);
                 }

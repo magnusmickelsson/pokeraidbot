@@ -2,6 +2,10 @@ FUTURE (?)
 =====
 TBD
 
+1.3.1 (2017-11-08)
+=====
+* Pokemon tracking now also catches commands run via !raid start
+
 1.3.0 (2017-11-07)
 =====
 * Members of server mods group can now change group time

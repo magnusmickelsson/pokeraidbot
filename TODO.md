@@ -7,6 +7,7 @@ Needs testing:
 * Remove raid group entity when group is cleaned up
 
 Being developed:
+
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -33,6 +34,9 @@ Fix, misc:
 
 Do, features:
 
+* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
+* Umeå request: If people do similar map commands after one other, skip following commands
+* Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid change groupbyid (id) (time)
 * !raid remove group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
@@ -51,6 +55,7 @@ time (equalling no time to "now", if raid is active) to signup using that?
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
+* REST API with passtoken and acqquiring tickets
 
 Maybe, features:
 

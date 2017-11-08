@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.commands.NewRaidCommand;
 import pokeraidbot.commands.NewRaidExCommand;
+import pokeraidbot.commands.NewRaidStartsAtCommand;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -44,7 +45,8 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         if (commandEvent.getAuthor().getId().equals(userId)) {
             return false; // Skip raids user created
         }
-        if (command instanceof NewRaidCommand || command instanceof NewRaidExCommand) {
+        if (command instanceof NewRaidCommand || command instanceof NewRaidExCommand ||
+                command instanceof NewRaidStartsAtCommand) {
             boolean rawContentContainsPokemonName =
                     StringUtils.containsIgnoreCase(commandEvent.getEvent().getMessage().getRawContent(),
                             pokemon.getName());

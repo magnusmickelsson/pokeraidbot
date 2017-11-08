@@ -22,11 +22,13 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+                    "- !raid track-hantering plockar nu också upp raider rapporterade via !raid start\n" +
                     "- Medlemmar i mods gruppen kan nu ändra grupptider för andra användare (så länge det inte blir konflikter)\n" +
                     "- Flyttade raidtid för grupper från titeln till beskrivningen i embed message för att undvika konstig layout på Android\n" +
                     "- !raid overview och !raid list - bara första datumet visas, för att spara plats";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
+                    "- !raid track handling now also picks up raids reported via !raid start\n" +
                     "- Members of server mods group can now change group time\n" +
                     "- Moved raid time from group message title to description to avoid no linebreaks on Android\n" +
                     "- !raid overview and !raid list - only the first date is shown, to save space";
