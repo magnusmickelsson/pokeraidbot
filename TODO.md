@@ -8,6 +8,7 @@ Needs testing:
 
 Being developed:
 
+* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
 * Regexp to remove all duplicate or more spaces in between arguments
 
 Discussion:
@@ -16,6 +17,7 @@ Discussion:
 
 Experiment with:
 
+* Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Present !raid overview as a table
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Ability to create channels on the fly to put certain raids in
@@ -34,7 +36,6 @@ Fix, misc:
 
 Do, features:
 
-* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
 * Umeå request: If people do similar map commands after one other, skip following commands
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
@@ -54,7 +55,6 @@ time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
-* Gymhuntr integration via GymhuntrMessageListener (isBot())
 * REST API with passtoken and acqquiring tickets
 
 Maybe, features:
