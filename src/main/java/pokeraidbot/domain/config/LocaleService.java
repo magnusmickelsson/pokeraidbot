@@ -95,6 +95,7 @@ public class LocaleService {
     public static final String OVERVIEW_EXISTS = "OVERVIEW_EXISTS";
     public static final String TIME_NOT_IN_RAID_TIMESPAN = "TIME_NOT_IN_RAID_TIMESPAN";
     public static final String TOO_MANY_GROUPS = "TOO_MANY_GROUPS";
+    public static final String NO_GROUP_BEFORE_NOW = "NO_GROUP_BEFORE_NOW";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -212,7 +213,12 @@ public class LocaleService {
                 "Create new raid starting at time - !raid start [Name of Pokemon] [Start (HH:MM)] [Gym name]");
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, SWEDISH),
                 "Skapa ny raid som startar vid viss tid - !raid start [Pokemon] [Start klockan (HH:MM)] [Gym]");
-
+        i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_NOW, Locale.ENGLISH),
+                "Can't set a raid group to start at %1, which is before current time %2."
+        );
+        i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_NOW, SWEDISH),
+                "Kan inte sätta en raidgrupp att börja vid %1, eftersom klockan är %2."
+        );
         i18nMessages.put(new I18nLookup(NO_GROUP_BEFORE_RAID, Locale.ENGLISH),
                 "Can't set a raid group to start at %1, which is before raid start at %2."
         );

@@ -95,7 +95,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         if (!raid.isExRaid()) {
             assertTimeNotMoreThanXHoursFromNow(user, startAtTime, localeService, 2);
         }
-        assertCreateRaidTimeNotBeforeNow(user, startAt, localeService);
+        assertGroupTimeNotBeforeNow(user, startAt, localeService);
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
                     locale);

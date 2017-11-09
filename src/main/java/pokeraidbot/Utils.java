@@ -144,6 +144,16 @@ public class Utils {
         }
     }
 
+    public static void assertGroupTimeNotBeforeNow(User user, LocalDateTime dateAndTime,
+                                                        LocaleService localeService) {
+        final LocalDateTime now = clockService.getCurrentDateTime();
+        if (dateAndTime.isBefore(now)) {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_GROUP_BEFORE_NOW, localeService.getLocaleForUser(user),
+                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
+        }
+    }
+
     public static void assertCreateRaidTimeNotBeforeNow(User user, LocalDateTime dateAndTime,
                                                         LocaleService localeService) {
         final LocalDateTime now = clockService.getCurrentDateTime();

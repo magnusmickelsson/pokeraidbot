@@ -103,6 +103,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
 
         assertTimeInRaidTimespan(user, newDateTime, raid, localeService);
+        assertGroupTimeNotBeforeNow(user, newDateTime, localeService);
         if (raidRepository.hasGroupForRaid(user, raid, newDateTime)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));

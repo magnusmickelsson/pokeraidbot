@@ -20,11 +20,12 @@ Experiment with:
 * Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Present !raid overview as a table
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
-* Ability to create channels on the fly to put certain raids in
 * Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
+* Ability to create channels on the fly to put certain raids in
 
 Fix issue:
 
+* !raid change group can be before current time, fix.
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
