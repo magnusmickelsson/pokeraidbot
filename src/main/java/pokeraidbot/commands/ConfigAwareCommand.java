@@ -14,12 +14,15 @@ import org.apache.commons.lang3.Validate;
 import org.thymeleaf.util.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.feedback.DefaultFeedbackStrategy;
+import pokeraidbot.domain.feedback.FeedbackStrategy;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 
 public abstract class ConfigAwareCommand extends Command {
+    private static final DefaultFeedbackStrategy defaultFeedbackStrategy = new DefaultFeedbackStrategy();
     protected final ServerConfigRepository serverConfigRepository;
     protected final CommandListener commandListener;
     protected final LocaleService localeService;
@@ -33,48 +36,20 @@ public abstract class ConfigAwareCommand extends Command {
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, String message) {
-        if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
-            commandEvent.reactSuccess();
-        } else {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor(null, null, null);
-            embedBuilder.setTitle(null);
-            embedBuilder.setDescription(message);
-            commandEvent.reply(embedBuilder.build());
-        }
+        getFeedbackStrategy(config).reply(config, commandEvent, message);
+    }
+
+    private static FeedbackStrategy getFeedbackStrategy(Config config) {
+        // todo: get feedback strategy based on value in config.feedbackStrategy
+        return defaultFeedbackStrategy;
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
-        if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
-            commandEvent.reactSuccess();
-        } else {
-            commandEvent.reply(message);
-        }
+        getFeedbackStrategy(config).reply(config, commandEvent, message);
     }
 
     public void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {
-        if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(t.getMessage());
-            commandEvent.reactError();
-        } else {
-            commandEvent.reactError();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor(null, null, null);
-            embedBuilder.setTitle(null);
-            embedBuilder.setDescription(t.getMessage());
-            final String msgRemoveText = localeService.getMessageFor(LocaleService.ERROR_KEEP_CHAT_CLEAN,
-                    localeService.getLocaleForUser(commandEvent.getAuthor()),
-                    String.valueOf(BotServerMain.timeToRemoveFeedbackInSeconds));
-            embedBuilder.setFooter(msgRemoveText, null);
-            commandEvent.reply(embedBuilder.build(), msg -> {
-                commandEvent.getMessage().delete()
-                        .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS); // Clean up bad message
-                msg.delete()
-                        .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
-            });
-        }
+        getFeedbackStrategy(config).replyError(config, commandEvent, t, localeService);
     }
 
     @Override
@@ -101,10 +76,10 @@ public abstract class ConfigAwareCommand extends Command {
             }
         } catch (Throwable t) {
             if (t instanceof IllegalArgumentException) {
-                replyErrorBasedOnConfig(configForServer, commandEvent,
-                        new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()));
+                getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent,
+                        new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()), localeService);
             } else {
-                replyErrorBasedOnConfig(configForServer, commandEvent, t);
+                getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent, t, localeService);
             }
             if (commandListener != null) {
                 commandListener.onTerminatedCommand(commandEvent, this);
@@ -116,25 +91,7 @@ public abstract class ConfigAwareCommand extends Command {
 
     public void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
                                                         String message, int numberOfSeconds) {
-        // Give the caller some slack but not much
-        Validate.isTrue(numberOfSeconds > 5 && numberOfSeconds < 60);
-        if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
-            commandEvent.reactSuccess();
-        } else {
-            commandEvent.reactSuccess();
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.setAuthor(null, null, null);
-            embedBuilder.setTitle(null);
-            embedBuilder.setDescription(message);
-            final String msgRemoveText = localeService.getMessageFor(LocaleService.KEEP_CHAT_CLEAN,
-                    localeService.getLocaleForUser(commandEvent.getAuthor()), "" + numberOfSeconds);
-
-            embedBuilder.setFooter(msgRemoveText, null);
-            commandEvent.reply(embedBuilder.build(), msg -> {
-                msg.delete().queueAfter(numberOfSeconds, TimeUnit.SECONDS); // Clean up feedback after x seconds
-            });
-        }
+        getFeedbackStrategy(config).reply(config, commandEvent, message, numberOfSeconds, localeService);
     }
 
     protected boolean isUserServerMod(CommandEvent commandEvent, Config config) {

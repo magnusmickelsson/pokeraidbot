@@ -3,9 +3,7 @@ package pokeraidbot.infrastructure.jpa.config;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -13,7 +11,7 @@ import java.util.UUID;
  * Server configuration entity
  */
 @Entity
-//@Table(indexes = @Index(columnList = "default,server,region"), name="config")
+@Table(indexes = @Index(columnList = "server"), name="config")
 public class Config {
     @Id
     @Column(nullable = false, unique = true)
@@ -34,6 +32,8 @@ public class Config {
     private String overviewMessageId;
     @Column
     private String modPermissionGroup;
+    @Column
+    private FeedbackStrategy feedbackStrategy = FeedbackStrategy.DEFAULT;
 
     // For JPA
     protected Config() {
@@ -130,6 +130,14 @@ public class Config {
         this.modPermissionGroup = modPermissionGroup;
     }
 
+    public FeedbackStrategy getFeedbackStrategy() {
+        return feedbackStrategy;
+    }
+
+    public void setFeedbackStrategy(FeedbackStrategy feedbackStrategy) {
+        this.feedbackStrategy = feedbackStrategy;
+    }
+
     @Override
     public String toString() {
         return "Config{" +
@@ -140,6 +148,11 @@ public class Config {
                 ", giveHelp=" + giveHelp +
                 ", pinGroups=" + pinGroups +
                 ", modGroup=" + modPermissionGroup +
+                ", feedbackStrategy=" + feedbackStrategy +
                 '}';
+    }
+
+    public enum FeedbackStrategy {
+        DEFAULT, KEEP_ALL, REMOVE_ALL, REMOVE_ALL_EXCEPT_MAP
     }
 }
