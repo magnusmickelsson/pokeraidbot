@@ -4,6 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
+* !raid change group can be before current time, fix.
 * Remove raid group entity when group is cleaned up
 
 Being developed:
@@ -25,7 +26,6 @@ Experiment with:
 
 Fix issue:
 
-* !raid change group can be before current time, fix.
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -37,6 +37,8 @@ Fix, misc:
 
 Do, features:
 
+* We should only ever have ONE emoticon eventlistener, that instead checks the groups in DB
+if it's a message to react to
 * Umeå request: If people do similar map commands after one other, skip following commands
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group

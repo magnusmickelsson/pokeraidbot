@@ -153,7 +153,7 @@ public class BotService {
 //                    .addEventListener(eventLoggingListener)
                     .addEventListener(startUpEventListener)
                     .addEventListener(plusCommandEventListener)
-//                    .addEventListener(gymHuntrRaidEventListener)
+                    .addEventListener(gymHuntrRaidEventListener)
 
                     // start it up!
                     .buildBlocking();
