@@ -128,7 +128,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 messageChannel.deleteMessageById(messageId).queue(m -> {
                     LOGGER.info("Deleted overview message with ID " + messageId);
                 }, m -> {
-                    LOGGER.warn("Could not delete overview message with ID " + messageId);
+                    LOGGER.info("Could not delete overview message with ID " + messageId);
                 });
             }
         } catch (Throwable t) {
