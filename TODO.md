@@ -9,8 +9,10 @@ Needs testing:
 
 Being developed:
 
+* Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
 * Regexp to remove all duplicate or more spaces in between arguments
+* Only use a single Emoticon listener for signups to reduce memory and complexity
 
 Discussion:
 
@@ -18,7 +20,6 @@ Discussion:
 
 Experiment with:
 
-* Gymhuntr integration via GymhuntrMessageListener (isBot())
 * Present !raid overview as a table
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
@@ -39,6 +40,8 @@ Do, features:
 
 * We should only ever have ONE emoticon eventlistener, that instead checks the groups in DB
 if it's a message to react to
+* Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
+(or with a delay, configurable - like +10 minutes)
 * Umeå request: If people do similar map commands after one other, skip following commands
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group

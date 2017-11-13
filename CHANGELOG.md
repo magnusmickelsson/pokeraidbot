@@ -1,6 +1,13 @@
 FUTURE (?)
 =====
-TBD
+
+1.4.0 (TBD)
+=====
+* Gymhuntrbot integration (reported raids get created in pokeraidbot if > 10 minutes remaining)
+* Feedback strategies, configurable for each server
+* Bugfix: !raid change group can no longer set time before current time, even if it is within raid duration
+* Only use a single Emoticon listener for signups to reduce memory and complexity
+* Regexp that removes unnecessary spaces for most commands
 
 1.3.1 (2017-11-08)
 =====

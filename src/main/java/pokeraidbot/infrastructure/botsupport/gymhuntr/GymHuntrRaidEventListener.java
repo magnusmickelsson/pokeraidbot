@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
+import main.BotServerMain;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -22,10 +24,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 public class GymHuntrRaidEventListener implements EventListener {
@@ -63,9 +62,11 @@ public class GymHuntrRaidEventListener implements EventListener {
                 final List<MessageEmbed> embeds = guildEvent.getMessage().getEmbeds();
                 if (embeds != null && embeds.size() > 0) {
                     for (MessageEmbed embed : embeds) {
-                        LocalDateTime now = clockService.getCurrentDateTime();
+                        final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
                         final String description = embed.getDescription();
                         final String title = embed.getTitle();
+                        // todo: detect "starting soon" for tier 5 bosses, and have mapping of what legendary boss
+                        // is active for the current zone
                         if (StringUtils.containsIgnoreCase(title, "has started!")) {
                             List<String> newRaidArguments = argumentsToCreateRaid(description, clockService);
 //                            guildEvent.getMessage().getChannel().sendMessage().queue();
@@ -77,11 +78,28 @@ public class GymHuntrRaidEventListener implements EventListener {
                             final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
                             config = serverConfigRepository.getConfigForServer(serverName);
                             final Gym raidGym = gymRepository.findByName(gym, config.getRegion());
-                            final Raid raidToCreate = new Raid(raidBoss,
-                                    LocalDateTime.of(LocalDate.now(), LocalTime.parse(time, Utils.timeParseFormatter)),
-                                    raidGym,
-                                    localeService, config.getRegion());
-                            raidRepository.newRaid(guildEvent.getAuthor(), raidToCreate);
+                            final LocalDate currentDate = currentDateTime.toLocalDate();
+                            final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
+                                    LocalTime.parse(time, Utils.timeParseFormatter));
+                            final boolean moreThan10MinutesLeftOnRaid = endOfRaid.isAfter(currentDateTime.plusMinutes(10));
+                            if (moreThan10MinutesLeftOnRaid) {
+                                // todo: check if raid already exists
+                                final Raid raidToCreate = new Raid(raidBoss,
+                                        endOfRaid,
+                                        raidGym,
+                                        localeService, config.getRegion());
+                                final Raid createdRaid = raidRepository.newRaid(guildEvent.getAuthor(), raidToCreate);
+                                final Locale locale = config.getLocale();
+                                final MessageEmbed messageEmbed = new EmbedBuilder().setTitle(null, null)
+                                        .setDescription(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
+                                                locale, createdRaid.toString(locale))).build();
+                                guildEvent.getMessage().getChannel().sendMessage(messageEmbed).queue(m -> {
+                                    LOGGER.info("Raid created via Gymhuntr integration: " + createdRaid);
+                                });
+                            } else {
+                                LOGGER.debug("Skipped creating raid at " + gym +
+                                        ", less than 10 minutes remaining on it.");
+                            }
                         }
                     }
                 }
