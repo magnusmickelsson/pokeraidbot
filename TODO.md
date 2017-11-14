@@ -27,6 +27,8 @@ Experiment with:
 
 Fix issue:
 
+* Gymhuntr integration should create raids which also notify users who have done 
+!raid track certain pokemons
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -38,6 +40,8 @@ Fix, misc:
 
 Do, features:
 
+* Data for all gen 3 pokemons!!
+* Raid groups should be just ONE message for both info and emotes, to avoid risk of someone posting a message in between
 * We should only ever have ONE emoticon eventlistener, that instead checks the groups in DB
 if it's a message to react to
 * Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 

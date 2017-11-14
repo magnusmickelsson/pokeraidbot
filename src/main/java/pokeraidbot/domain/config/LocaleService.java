@@ -774,7 +774,7 @@ public class LocaleService {
                 "Se information om en pokemon, dess typ, svagheter etc. - !raid vs [Pokemon]");
 
         i18nMessages.put(new I18nLookup(RAID_TOSTRING, Locale.ENGLISH), "Raid for %1 at gym %2, from %3 to %4");
-        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 raid vid %2, från %3 till %4");
+        i18nMessages.put(new I18nLookup(RAID_TOSTRING, SWEDISH), "%1 vid %2, från %3 till %4");
 
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, Locale.ENGLISH), "Raid created: %1");
         i18nMessages.put(new I18nLookup(NEW_RAID_CREATED, SWEDISH), "Raid skapad: %1");
