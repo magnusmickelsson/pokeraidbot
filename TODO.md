@@ -9,7 +9,9 @@ Needs testing:
 
 Being developed:
 
-* Gymhuntr integration via GymhuntrMessageListener (isBot())
+* Gymhuntr and Pokealarm integration via GymhuntrMessageListener (isBot()) (rename this class)
+* Gymhuntr integration should create raids which also notify users who have done 
+!raid track certain pokemons
 * Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
 * Regexp to remove all duplicate or more spaces in between arguments
 * Only use a single Emoticon listener for signups to reduce memory and complexity
@@ -27,8 +29,6 @@ Experiment with:
 
 Fix issue:
 
-* Gymhuntr integration should create raids which also notify users who have done 
-!raid track certain pokemons
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -42,6 +42,7 @@ Do, features:
 
 * Data for all gen 3 pokemons!!
 * Raid groups should be just ONE message for both info and emotes, to avoid risk of someone posting a message in between
+* Raid group messages could be sent to a specific channel, if so configured. Ex raid groups to their own channel.
 * We should only ever have ONE emoticon eventlistener, that instead checks the groups in DB
 if it's a message to react to
 * Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 

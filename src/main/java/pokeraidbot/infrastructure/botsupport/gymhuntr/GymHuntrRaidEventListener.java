@@ -75,7 +75,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                         } else {
                             newRaidArguments = new ArrayList<>();
                         }
-                        if (newRaidArguments.size() > 0) {
+                        if (newRaidArguments != null && newRaidArguments.size() > 0) {
                             // todo: arguments checking
                             final Iterator<String> iterator = newRaidArguments.iterator();
                             final String gym = iterator.next();
@@ -127,7 +127,8 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     public static boolean isUserPokeAlarmBot(User user) {
-        return user.isBot() && user.getName().equalsIgnoreCase("umu_raids");
+        return user.isBot() && (user.getName().equalsIgnoreCase("raid") ||
+                user.getName().equalsIgnoreCase("egg"));
     }
 
     public static boolean isUserGymhuntrBot(User user) {
@@ -145,14 +146,16 @@ public class GymHuntrRaidEventListener implements EventListener {
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3]));
             final String[] descSplit = description.split("has a raid and is available until");
             gym = descSplit[0].trim();
-        } else if (title.contains("Raid is incoming!") && description.contains("level 5 raid will hatch")){
-            pokemon = "Raikou";
-            final String[] descriptionSplit = description.split(" ");
-            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
-                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
-            gym = description.split("has a level 5 raid")[0].trim();
+            // todo: reactivate if gym name comes back to the egg announce message
+//        }
+//        else if (title.contains("Raid is incoming!") && description.contains("level 5 raid will hatch")){
+//            pokemon = "Raikou";
+//            final String[] descriptionSplit = description.split(" ");
+//            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
+//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+//            gym = description.split("has a level 5 raid")[0].trim();
         } else {
-            return new ArrayList<>(); // We shouldn't create a raid for this case
+            return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
         return Arrays.asList(new String[]{gym, pokemon, timeString});
     }
