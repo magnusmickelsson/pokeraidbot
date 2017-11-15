@@ -3,11 +3,12 @@ FUTURE (?)
 
 1.4.0 (TBD)
 =====
-* Gymhuntrbot integration (reported raids get created in pokeraidbot if > 10 minutes remaining)
-* Feedback strategies, configurable for each server
 * Bugfix: !raid change group can no longer set time before current time, even if it is within raid duration
-* Only use a single Emoticon listener for signups to reduce memory and complexity
+* Gymhuntrbot and PokeAlarm integration (reported raids get created in pokeraidbot if > 10 minutes remaining)
 * Regexp that removes unnecessary spaces for most commands
+* Raid group is now one message instead of two, reduces risk that a message comes in between info and emotes
+* Feedback strategies, configurable for each server
+* Only use a single Emoticon listener for signups to reduce memory and complexity
 
 1.3.1 (2017-11-08)
 =====

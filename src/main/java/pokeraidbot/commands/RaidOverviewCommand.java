@@ -18,6 +18,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+import java.net.SocketTimeoutException;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
@@ -102,9 +103,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         messageString)
                         .queue(m -> {}, m -> {
                             LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
-                            Config savedConfig = serverConfigRepository.save(config);
-                            cleanUp(savedConfig, user, messageId, serverConfigRepository, localeService,
-                                    messageChannel, locale);
+                            if (!(m instanceof SocketTimeoutException)) {
+                                Config savedConfig = serverConfigRepository.save(config);
+                                cleanUp(savedConfig, user, messageId, serverConfigRepository, localeService,
+                                        messageChannel, locale);
+                            } else {
+                                LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
+                                        "down. Let's not clean up things before we know if it works or not.");
+                            }
                         });
                 return true;
             };

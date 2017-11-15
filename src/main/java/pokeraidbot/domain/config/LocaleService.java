@@ -531,9 +531,9 @@ public class LocaleService {
 //                        "skriv \"!raid group {tid}\" och ange en senare tid.");
 
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-                "Press emotes for number of people to sign up:");
+                "To sign up, press emotes below for number of people to sign up.");
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-                "Tryck emotes motsvarande antal som kommer:");
+                "För anmälan, tryck emotes nedan motsvarande antal som kommer.");
 
         i18nMessages.put(new I18nLookup(CANT_CREATE_GROUP_LATE, Locale.ENGLISH),
                 "Can't create a group to raid after raid has ended. :("

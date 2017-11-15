@@ -116,46 +116,40 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(startAt, raid, localeService,
                 clockService, locale, delayTimeUnit, delay);
         commandEvent.reply(messageEmbed, embed -> {
-            emoticonSignUpMessageListener.setInfoMessageId(embed.getId());
-            final String handleSignUpText =
-                    localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, locale);
-            embed.getChannel().sendMessage(handleSignUpText).queue(
-                    msg -> {
-                        final String messageId = msg.getId();
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("Thread: " + Thread.currentThread().getId() +
-                                    " - Adding event listener and emotes for emote message with ID: " + messageId);
-                        }
-                        emoticonSignUpMessageListener.setEmoteMessageId(messageId);
-                        RaidGroup group = new RaidGroup(config.getServer(), msg.getChannel().getName(),
-                                embed.getId(), messageId, user.getId(), startAt);
-                        group = raidRepository.newGroupForRaid(user, group, raid);
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("Created group for emote message with ID: " + messageId + " - " + group);
-                        }
-//                        botService.getBot().addEventListener(emoticonSignUpMessageListener);
-                        // Add number icons for pleb signups
-                        msg.getChannel().addReactionById(msg.getId(), Emotes.ONE).queue();
-                        msg.getChannel().addReactionById(msg.getId(), Emotes.TWO).queue();
-                        msg.getChannel().addReactionById(msg.getId(), Emotes.THREE).queue();
-                        msg.getChannel().addReactionById(msg.getId(), Emotes.FOUR).queue();
-                        msg.getChannel().addReactionById(msg.getId(), Emotes.FIVE).queue();
-//                        msg.getChannel().addReactionById(msg.getId(), Emotes.SIX).queue();
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("Eventlistener and emotes added for emote message with ID: " + messageId);
-                        }
-                        msg.getChannel().pinMessageById(embed.getId()).queueAfter(50, TimeUnit.MILLISECONDS);
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug("Pinning info message for raid group. ID is: " + embed.getId());
-                        }
-                    });
+            final String messageId = embed.getId();
+            emoticonSignUpMessageListener.setInfoMessageId(messageId);
+            emoticonSignUpMessageListener.setEmoteMessageId(messageId);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Thread: " + Thread.currentThread().getId() +
+                        " - Adding event listener and emotes for emote message with ID: " + messageId);
+            }
+            final MessageChannel embedChannel = embed.getChannel();
+            RaidGroup group = new RaidGroup(config.getServer(), embedChannel.getName(),
+                    messageId, messageId, user.getId(), startAt);
+            group = raidRepository.newGroupForRaid(user, group, raid);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Created group for emote message with ID: " + messageId + " - " + group);
+            }
+            // Add number icons for pleb signups
+            embedChannel.addReactionById(messageId, Emotes.ONE).queue();
+            embedChannel.addReactionById(messageId, Emotes.TWO).queue();
+            embedChannel.addReactionById(messageId, Emotes.THREE).queue();
+            embedChannel.addReactionById(messageId, Emotes.FOUR).queue();
+            embedChannel.addReactionById(messageId, Emotes.FIVE).queue();
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Eventlistener and emotes added for emote message with ID: " + messageId);
+            }
+            embedChannel.pinMessageById(embed.getId()).queueAfter(50, TimeUnit.MILLISECONDS);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Pinning info message for raid group. ID is: " + embed.getId());
+            }
             final Callable<Boolean> refreshEditThreadTask =
-                    getMessageRefreshingTaskToSchedule(commandEvent.getChannel(),
-                            raid, emoticonSignUpMessageListener, embed.getId(),
-                            locale,
-                            raidRepository, localeService, clockService, executorService, botService,
-                            delayTimeUnit, delay);
-            executorService.submit(refreshEditThreadTask);
+                        getMessageRefreshingTaskToSchedule(commandEvent.getChannel(),
+                                raid, emoticonSignUpMessageListener, messageId,
+                                locale,
+                                raidRepository, localeService, clockService, executorService, botService,
+                                delayTimeUnit, delay);
+                executorService.submit(refreshEditThreadTask);
         });
 
     }
@@ -202,17 +196,6 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                     ", creator: " + emoticonSignUpMessageListener.getUserId());
             cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(), raid != null ? raid.getId() : null,
                     emoticonSignUpMessageListener, raidRepository, botService);
-
-            // todo: Have a "removed message" message?
-//            final LocalDateTime startAt = emoticonSignUpMessageListener.getStartAt();
-//            final String removedGroupText = localeService.getMessageFor(LocaleService.REMOVED_GROUP,
-//                    localeService.getLocaleForUser(user),
-//                    startAt == null ? "N/A" : printTimeIfSameDay(startAt), gymName);
-//            channel.sendMessage(user.getAsMention() + ": " + removedGroupText).queue(
-//                    msg -> {
-//                        msg.delete().queueAfter(20, TimeUnit.SECONDS);
-//                    }
-//            );
             return true;
         };
         return refreshEditThreadTask;
@@ -248,19 +231,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             }
         } finally {
             // Clean up after raid expires
-            final String emoteMessageId = emoticonSignUpMessageListener.getEmoteMessageId();
-            if (!StringUtils.isEmpty(emoteMessageId)) {
-                try {
-                    messageChannel.deleteMessageById(emoteMessageId).queue();
-                } catch (Throwable t) {
-                    LOGGER.warn("Exception occurred when removing emote message: " + t.getMessage());
-                }
-            } else {
-                LOGGER.warn("Emote message Id was null for raid group for raid: " +
-                        emoticonSignUpMessageListener.getRaidId());
-            }
             final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
-            if (!StringUtils.isEmpty(emoteMessageId)) {
+            if (!StringUtils.isEmpty(infoMessageId)) {
                 try {
                     messageChannel.deleteMessageById(infoMessageId).queue();
                 } catch (Throwable t) {
@@ -272,7 +244,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             }
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Cleaned up listener and messages related to this group - raid: " + (raid == null ?
+                LOGGER.info("Cleaned up listener and message related to this group - raid: " + (raid == null ?
                         "not cleaned up :( - had ID: " + raidId : raid) +
                         " , start time: " + startAt);
             }
@@ -288,8 +260,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                locale, raid.getPokemon().getName(), gym.getName()); //,
-//                Utils.printTimeIfSameDay(startAt));
+                locale, raid.getPokemon().getName(), gym.getName());
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 locale);
         embedBuilder.setTitle(getHereText, Utils.getNonStaticMapUrl(gym));
@@ -304,15 +275,18 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final String thoseWhoAreComingText = localeService.getMessageFor(LocaleService.WHO_ARE_COMING,
                 locale) + ":";
         embedBuilder.clearFields();
+        final String handleSignUpText =
+                localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, locale);
         // todo: i18n
-        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt));
+        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt) + " - " + handleSignUpText);
         embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
-        final String footerMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
+        final String updatedMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                 locale, LocaleService.asString(delayTimeUnit, locale),
                 String.valueOf(delay)) + " " + localeService.getMessageFor(LocaleService.LAST_UPDATE,
                 locale,
-                printTime(clockService.getCurrentTime()));
-        embedBuilder.setFooter(footerMessage, null);
+                printTime(clockService.getCurrentTime())) + ".";
+
+        embedBuilder.setFooter(updatedMessage, null);
         messageEmbed = embedBuilder.build();
         return messageEmbed;
     }
