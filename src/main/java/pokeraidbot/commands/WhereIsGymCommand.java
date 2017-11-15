@@ -30,7 +30,7 @@ public class WhereIsGymCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(commandEvent.getAuthor(), gymName, config.getRegion());
         String staticUrl = Utils.getStaticMapUrl(gym);
         String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
-        replyBasedOnConfig(config, commandEvent,
+        replyMapBasedOnConfig(config, commandEvent,
                 new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
     }
 }

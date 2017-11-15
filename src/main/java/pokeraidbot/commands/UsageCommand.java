@@ -28,6 +28,6 @@ public class UsageCommand extends ConfigAwareCommand {
         } else {
             locale = localeService.getLocaleForUser(commandEvent.getAuthor());
         }
-        replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.USAGE, locale));
+        replyBasedOnConfigButKeep(config, commandEvent, localeService.getMessageFor(LocaleService.USAGE, locale));
     }
 }

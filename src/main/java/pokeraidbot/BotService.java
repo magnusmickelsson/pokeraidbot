@@ -31,7 +31,6 @@ import pokeraidbot.jda.EventLoggingListener;
 import pokeraidbot.jda.SignupWithPlusCommandListener;
 import pokeraidbot.jda.StartUpEventListener;
 
-import javax.annotation.PostConstruct;
 import javax.security.auth.login.LoginException;
 import java.awt.*;
 import java.util.Arrays;
@@ -76,7 +75,7 @@ public class BotService {
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
                 serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
                 executorService,
-                clockService);
+                clockService, this);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
                 raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,

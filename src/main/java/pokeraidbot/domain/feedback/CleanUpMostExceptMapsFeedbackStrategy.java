@@ -10,8 +10,8 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.concurrent.TimeUnit;
 
-public class DefaultFeedbackStrategy implements FeedbackStrategy {
-    public DefaultFeedbackStrategy() {
+public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
+    public CleanUpMostExceptMapsFeedbackStrategy() {
     }
 
     @Override
@@ -24,13 +24,25 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(message);
-            commandEvent.reply(embedBuilder.build());
+            final MessageEmbed messageEmbed = embedBuilder.build();
+            replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent, messageEmbed,
+                    BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
         }
     }
 
     @Override
     public void replyAndKeep(Config config, CommandEvent commandEvent, String message) {
-        reply(config, commandEvent, message);
+        if (config != null && config.getReplyInDmWhenPossible()) {
+            commandEvent.replyInDM(message);
+            commandEvent.reactSuccess();
+        } else {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setAuthor(null, null, null);
+            embedBuilder.setTitle(null);
+            embedBuilder.setDescription(message);
+            final MessageEmbed messageEmbed = embedBuilder.build();
+            commandEvent.reply(messageEmbed);
+        }
     }
 
     @Override
@@ -39,17 +51,28 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
-            commandEvent.reply(message);
+            replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent, message,
+                    BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
         }
     }
 
     @Override
     public void replyMap(Config config, CommandEvent commandEvent, MessageEmbed message) {
-        reply(config, commandEvent, message);
+        if (config != null && config.getReplyInDmWhenPossible()) {
+            commandEvent.replyInDM(message);
+            commandEvent.reactSuccess();
+        } else {
+            commandEvent.reply(message);
+            commandEvent.getChannel().deleteMessageById(commandEvent.getMessage().getId()).queueAfter(
+                    BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS
+            );
+        }
     }
 
     @Override
     public void handleOriginMessage(CommandEvent commandEvent) {
+        commandEvent.getMessage().delete()
+                .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
     }
 
     @Override
@@ -92,8 +115,10 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
                             numberOfSecondsBeforeRemove);
 
             embedBuilder.setFooter(msgRemoveText, null);
-            sendMessageThenDeleteAfterXSeconds(commandEvent, embedBuilder.build(),
-                    numberOfSecondsBeforeRemove, TimeUnit.SECONDS);
+            final MessageEmbed messageEmbed = embedBuilder.build();
+            replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent, messageEmbed, numberOfSecondsBeforeRemove,
+                    TimeUnit.SECONDS);
         }
     }
+
 }

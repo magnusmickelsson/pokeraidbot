@@ -3,8 +3,6 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import main.BotServerMain;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -14,12 +12,12 @@ import org.apache.commons.lang3.Validate;
 import org.thymeleaf.util.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.feedback.CleanUpMostExceptMapsFeedbackStrategy;
 import pokeraidbot.domain.feedback.DefaultFeedbackStrategy;
 import pokeraidbot.domain.feedback.FeedbackStrategy;
+import pokeraidbot.domain.feedback.KeepAllFeedbackStrategy;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
-
-import java.util.concurrent.TimeUnit;
 
 public abstract class ConfigAwareCommand extends Command {
     private static final DefaultFeedbackStrategy defaultFeedbackStrategy = new DefaultFeedbackStrategy();
@@ -39,13 +37,36 @@ public abstract class ConfigAwareCommand extends Command {
         getFeedbackStrategy(config).reply(config, commandEvent, message);
     }
 
+    public static void replyBasedOnConfigButKeep(Config config, CommandEvent commandEvent, String message) {
+        getFeedbackStrategy(config).replyAndKeep(config, commandEvent, message);
+    }
+
     private static FeedbackStrategy getFeedbackStrategy(Config config) {
-        // todo: get feedback strategy based on value in config.feedbackStrategy
-        return defaultFeedbackStrategy;
+        if (config != null && config.getFeedbackStrategy() != null) {
+            switch (config.getFeedbackStrategy()) {
+                case REMOVE_ALL_EXCEPT_MAP:
+                    return new CleanUpMostExceptMapsFeedbackStrategy();
+                case KEEP_ALL:
+                    return new KeepAllFeedbackStrategy();
+                case DEFAULT:
+                default:
+                    return defaultFeedbackStrategy;
+            }
+        } else {
+            return defaultFeedbackStrategy;
+        }
+    }
+
+    public static void removeOriginMessageIfConfigSaysSo(Config config, CommandEvent commandEvent) {
+        getFeedbackStrategy(config).handleOriginMessage(commandEvent);
     }
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
         getFeedbackStrategy(config).reply(config, commandEvent, message);
+    }
+
+    public static void replyMapBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
+        getFeedbackStrategy(config).replyMap(config, commandEvent, message);
     }
 
     public void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {

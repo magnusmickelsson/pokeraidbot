@@ -153,6 +153,6 @@ public class Config {
     }
 
     public enum FeedbackStrategy {
-        DEFAULT, KEEP_ALL, REMOVE_ALL, REMOVE_ALL_EXCEPT_MAP
+        DEFAULT, KEEP_ALL, REMOVE_ALL_EXCEPT_MAP
     }
 }

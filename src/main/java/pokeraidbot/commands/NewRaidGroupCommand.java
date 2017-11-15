@@ -88,6 +88,18 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
+        createRaidGroup(commandEvent.getChannel(), config, user, locale, startAtTime, raid,
+                localeService, raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
+                clockService, executorService);
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
+    }
+
+    public static void createRaidGroup(MessageChannel channel, Config config, User user,
+                                       Locale locale, LocalTime startAtTime, Raid raid, LocaleService localeService,
+                                       RaidRepository raidRepository, BotService botService,
+                                       ServerConfigRepository serverConfigRepository,
+                                       PokemonRepository pokemonRepository, GymRepository gymRepository,
+                                       ClockService clockService, ExecutorService executorService) {
         final LocalDate raidDate = raid.getEndOfRaid().toLocalDate();
         final LocalDateTime raidStart = Utils.getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid());
         LocalDateTime startAt = LocalDateTime.of(raidDate, startAtTime);
@@ -99,7 +111,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         if (!startAt.isBefore(raid.getEndOfRaid())) {
             final String errorText = localeService.getMessageFor(LocaleService.CANT_CREATE_GROUP_LATE,
                     locale);
-            throw new UserMessedUpException(userName, errorText);
+            throw new UserMessedUpException(user, errorText);
         }
 
         if (raidRepository.hasGroupForRaid(user, raid, startAt)) {
@@ -115,7 +127,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         int delay = raid.isExRaid() ? 1 : 15;
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(startAt, raid, localeService,
                 clockService, locale, delayTimeUnit, delay);
-        commandEvent.reply(messageEmbed, embed -> {
+        channel.sendMessage(messageEmbed).queue(embed -> {
             final String messageId = embed.getId();
             emoticonSignUpMessageListener.setInfoMessageId(messageId);
             emoticonSignUpMessageListener.setEmoteMessageId(messageId);
@@ -144,14 +156,13 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 LOGGER.debug("Pinning info message for raid group. ID is: " + embed.getId());
             }
             final Callable<Boolean> refreshEditThreadTask =
-                        getMessageRefreshingTaskToSchedule(commandEvent.getChannel(),
+                        getMessageRefreshingTaskToSchedule(channel,
                                 raid, emoticonSignUpMessageListener, messageId,
                                 locale,
                                 raidRepository, localeService, clockService, executorService, botService,
                                 delayTimeUnit, delay);
-                executorService.submit(refreshEditThreadTask);
+            executorService.submit(refreshEditThreadTask);
         });
-
     }
 
     public static Callable<Boolean> getMessageRefreshingTaskToSchedule(MessageChannel messageChannel,

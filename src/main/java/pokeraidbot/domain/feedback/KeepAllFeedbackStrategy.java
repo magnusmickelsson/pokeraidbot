@@ -10,8 +10,8 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.concurrent.TimeUnit;
 
-public class DefaultFeedbackStrategy implements FeedbackStrategy {
-    public DefaultFeedbackStrategy() {
+public class KeepAllFeedbackStrategy implements FeedbackStrategy {
+    public KeepAllFeedbackStrategy() {
     }
 
     @Override
@@ -29,11 +29,6 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
     }
 
     @Override
-    public void replyAndKeep(Config config, CommandEvent commandEvent, String message) {
-        reply(config, commandEvent, message);
-    }
-
-    @Override
     public void reply(Config config, CommandEvent commandEvent, MessageEmbed message) {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
@@ -41,6 +36,11 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
         } else {
             commandEvent.reply(message);
         }
+    }
+
+    @Override
+    public void replyAndKeep(Config config, CommandEvent commandEvent, String message) {
+        reply(config, commandEvent, message);
     }
 
     @Override
@@ -63,13 +63,8 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(throwable.getMessage());
-            final String msgRemoveText = localeService.getMessageFor(LocaleService.ERROR_KEEP_CHAT_CLEAN,
-                    localeService.getLocaleForUser(commandEvent.getAuthor()),
-                    String.valueOf(BotServerMain.timeToRemoveFeedbackInSeconds));
-            embedBuilder.setFooter(msgRemoveText, null);
             final MessageEmbed messageEmbed = embedBuilder.build();
-            replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent, messageEmbed,
-                    BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
+            commandEvent.reply(messageEmbed);
         }
     }
 
@@ -87,13 +82,7 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
             embedBuilder.setAuthor(null, null, null);
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(message);
-            final String msgRemoveText = localeService.getMessageFor(LocaleService.KEEP_CHAT_CLEAN,
-                    localeService.getLocaleForUser(commandEvent.getAuthor()), "" +
-                            numberOfSecondsBeforeRemove);
-
-            embedBuilder.setFooter(msgRemoveText, null);
-            sendMessageThenDeleteAfterXSeconds(commandEvent, embedBuilder.build(),
-                    numberOfSecondsBeforeRemove, TimeUnit.SECONDS);
+            commandEvent.reply(embedBuilder.build());
         }
     }
 }

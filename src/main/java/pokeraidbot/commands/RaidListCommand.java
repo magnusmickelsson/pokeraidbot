@@ -107,7 +107,7 @@ public class RaidListCommand extends ConfigAwareCommand {
 //                embedBuilder = new EmbedBuilder();
                 stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
             }
-            commandEvent.reply(stringBuilder.toString());
+            replyBasedOnConfig(config, commandEvent, stringBuilder.toString());
         }
     }
 }

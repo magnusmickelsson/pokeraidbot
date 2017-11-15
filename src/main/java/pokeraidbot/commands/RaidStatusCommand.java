@@ -94,5 +94,6 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final MessageEmbed messageEmbed = embedBuilder.build();
 
         commandEvent.reply(messageEmbed);
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 }

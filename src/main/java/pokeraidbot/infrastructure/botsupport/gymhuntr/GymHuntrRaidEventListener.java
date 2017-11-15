@@ -1,6 +1,7 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
@@ -9,7 +10,9 @@ import net.dv8tion.jda.core.hooks.EventListener;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pokeraidbot.BotService;
 import pokeraidbot.Utils;
+import pokeraidbot.commands.NewRaidGroupCommand;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -27,6 +30,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 
+import static pokeraidbot.Utils.getStartOfRaid;
 import static pokeraidbot.Utils.printTime;
 
 public class GymHuntrRaidEventListener implements EventListener {
@@ -39,11 +43,12 @@ public class GymHuntrRaidEventListener implements EventListener {
     private LocaleService localeService;
     private ExecutorService executorService;
     private final ClockService clockService;
+    private final BotService botService;
 
     public GymHuntrRaidEventListener(ServerConfigRepository serverConfigRepository, RaidRepository raidRepository,
                                      GymRepository gymRepository, PokemonRepository pokemonRepository,
                                      LocaleService localeService, ExecutorService executorService,
-                                     ClockService clockService) {
+                                     ClockService clockService, BotService botService) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.gymRepository = gymRepository;
@@ -51,6 +56,7 @@ public class GymHuntrRaidEventListener implements EventListener {
         this.localeService = localeService;
         this.executorService = executorService;
         this.clockService = clockService;
+        this.botService = botService;
     }
 
     @Override
@@ -97,7 +103,8 @@ public class GymHuntrRaidEventListener implements EventListener {
     public void handleRaidFromIntegration(GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
                                           LocalDateTime endOfRaid, Config config, ClockService clockService) {
         User messageAuthor = guildEvent.getAuthor();
-        LocalDateTime currentDateTime = clockService.getCurrentDateTime();
+        final LocalDateTime now = clockService.getCurrentDateTime();
+        LocalDateTime currentDateTime = now;
         final boolean moreThan10MinutesLeftOnRaid = endOfRaid.isAfter(currentDateTime.plusMinutes(10));
         if (moreThan10MinutesLeftOnRaid) {
             final Raid raidToCreate = new Raid(raidBoss,
@@ -112,9 +119,26 @@ public class GymHuntrRaidEventListener implements EventListener {
                         .setDescription(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                                 locale, createdRaid.toString(locale))).build();
                 // todo: fetch from config what channel to post this message in
-                guildEvent.getMessage().getChannel().sendMessage(messageEmbed).queue(m -> {
+                final MessageChannel channel = guildEvent.getMessage().getChannel();
+                channel.sendMessage(messageEmbed).queue(m -> {
                     LOGGER.info("Raid created via Bot integration: " + createdRaid);
                 });
+
+                LocalTime groupStart = null;
+                // todo: fetch setting 10 minutes from server config?
+                final LocalDateTime startOfRaid = getStartOfRaid(createdRaid.getEndOfRaid(), createdRaid.isExRaid());
+                if (now.isBefore(startOfRaid)) {
+                    groupStart = startOfRaid.toLocalTime().plusMinutes(10);
+                } else if (now.isAfter(startOfRaid) && now.plusMinutes(15).isBefore(createdRaid.getEndOfRaid())) {
+                    groupStart = now.toLocalTime().plusMinutes(10);
+                }
+
+                if (groupStart != null) {
+                    NewRaidGroupCommand.createRaidGroup(channel, config, botService.getBot().getSelfUser(),
+                            config.getLocale(), groupStart, createdRaid, localeService, raidRepository,
+                            botService, serverConfigRepository, pokemonRepository, gymRepository,
+                            clockService, executorService);
+                }
             } catch (Throwable t) {
                 LOGGER.warn("Exception when trying to create raid via botintegration: " +
                         t.getMessage());
@@ -145,14 +169,13 @@ public class GymHuntrRaidEventListener implements EventListener {
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3]));
             final String[] descSplit = description.split("has a raid and is available until");
             gym = descSplit[0].trim();
-            // todo: reactivate if gym name comes back to the egg announce message
-//        }
-//        else if (title.contains("Raid is incoming!") && description.contains("level 5 raid will hatch")){
-//            pokemon = "Raikou";
-//            final String[] descriptionSplit = description.split(" ");
-//            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
-//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
-//            gym = description.split("has a level 5 raid")[0].trim();
+        } else if (title.contains("Raid is incoming!") && description.contains("level 5 raid will hatch")){
+            // todo: fetch seasonal pokemon for region from some repo?
+            pokemon = "Raikou";
+            final String[] descriptionSplit = description.split(" ");
+            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
+                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            gym = description.split("has a level 5 raid")[0].trim();
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }

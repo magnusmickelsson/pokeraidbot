@@ -32,15 +32,16 @@ public class InstallCommand extends Command {
             // Answer with how-to
             event.replyInDM("Re-run the command !raid install, but with the following syntax:");
             event.replyInDM("!raid install server=[server name];region=[region dataset reference];" +
-                    "replyInDm=[true or false];locale=[2 char language code];mods=[group for mods]");
+                    "replyInDm=[true or false];locale=[2 char language code];mods=[group for mods (optional)]" +
+                    ";feedback=[feedback strategy (optional)]");
             event.replyInDM("Example: !raid install server=My test server;region=stockholm;" +
-                    "replyInDm=false;locale=sv;mods=mods");
+                    "replyInDm=false;locale=sv;mods=mods;feedback=REMOVE_ALL_EXCEPT_MAP");
             event.reactSuccess();
             return;
         } else {
             Map<String, String> settingsToSet = new HashMap<>();
             final String[] arguments = args.split(";");
-            if (arguments.length != 5) {
+            if (arguments.length < 4 || arguments.length > 6) {
                 event.replyInDM("Wrong syntax of install command. Do this again, and this time " +
                         "follow instructions, please: !raid install");
                 event.reactError();
@@ -64,6 +65,7 @@ public class InstallCommand extends Command {
                 final String region = settingsToSet.get("region");
                 final String modGroup = settingsToSet.get("mods");
                 final Boolean replyInDmWhenPossible = Boolean.valueOf(settingsToSet.get("replyindm"));
+                final String feedbackStrategyValue = settingsToSet.get("feedback");
                 if (config == null) {
                     config = new Config(region,
                             replyInDmWhenPossible,
@@ -74,6 +76,18 @@ public class InstallCommand extends Command {
                     config.setRegion(region);
                     config.setReplyInDmWhenPossible(replyInDmWhenPossible);
                     config.setModPermissionGroup(modGroup);
+                    if (feedbackStrategyValue != null) {
+                        Config.FeedbackStrategy feedbackStrategy;
+                        try {
+                            feedbackStrategy = Config.FeedbackStrategy.valueOf(feedbackStrategyValue.toUpperCase());
+                        } catch (Throwable t) {
+                            event.replyInDM("Bad value of feedback strategy. Available values: " +
+                                    StringUtils.join(Config.FeedbackStrategy.values(), ", "));
+                            event.reactError();
+                            return;
+                        }
+                        config.setFeedbackStrategy(feedbackStrategy);
+                    }
                 }
                 event.replyInDM("Configuration complete. Saved configuration: " + serverConfigRepository.save(config));
                 event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
