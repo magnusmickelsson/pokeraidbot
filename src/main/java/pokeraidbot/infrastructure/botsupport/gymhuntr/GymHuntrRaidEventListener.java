@@ -1,6 +1,5 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
-import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
