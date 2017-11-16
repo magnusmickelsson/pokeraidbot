@@ -93,7 +93,8 @@ public class GymHuntrRaidEventListener implements EventListener {
                             final LocalDate currentDate = currentDateTime.toLocalDate();
                             final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
                                     LocalTime.parse(time, Utils.timeParseFormatter));
-                            handleRaidFromIntegration(guildEvent, raidBoss, raidGym, endOfRaid, config, clockService);
+                            handleRaidFromIntegration(botService.getBot().getSelfUser(),
+                                    guildEvent, raidBoss, raidGym, endOfRaid, config, clockService);
                         }
                     }
                 }
@@ -101,9 +102,8 @@ public class GymHuntrRaidEventListener implements EventListener {
         }
     }
 
-    public void handleRaidFromIntegration(GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
+    public void handleRaidFromIntegration(User user, GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
                                           LocalDateTime endOfRaid, Config config, ClockService clockService) {
-        User messageAuthor = guildEvent.getAuthor();
         final LocalDateTime now = clockService.getCurrentDateTime();
         LocalDateTime currentDateTime = now;
         final boolean moreThan10MinutesLeftOnRaid = endOfRaid.isAfter(currentDateTime.plusMinutes(10));
@@ -114,7 +114,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     localeService, config.getRegion());
             final Raid createdRaid;
             try {
-                createdRaid = raidRepository.newRaid(messageAuthor, raidToCreate);
+                createdRaid = raidRepository.newRaid(user, raidToCreate);
                 final Locale locale = config.getLocale();
                 final MessageEmbed messageEmbed = new EmbedBuilder().setTitle(null, null)
                         .setDescription(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
@@ -135,7 +135,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                 }
 
                 if (groupStart != null) {
-                    NewRaidGroupCommand.createRaidGroup(channel, config, botService.getBot().getSelfUser(),
+                    NewRaidGroupCommand.createRaidGroup(channel, config, user,
                             config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
                             botService, serverConfigRepository, pokemonRepository, gymRepository,
                             clockService, executorService);
