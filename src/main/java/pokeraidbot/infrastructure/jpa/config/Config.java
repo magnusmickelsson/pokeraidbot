@@ -34,6 +34,8 @@ public class Config {
     private String modPermissionGroup;
     @Column
     private FeedbackStrategy feedbackStrategy = FeedbackStrategy.DEFAULT;
+    @Column
+    private RaidGroupCreationStrategy groupCreationStrategy = RaidGroupCreationStrategy.SAME_CHANNEL;
 
     // For JPA
     protected Config() {
@@ -89,7 +91,7 @@ public class Config {
         this.giveHelp = giveHelp;
     }
 
-    public Boolean getPinGroups() {
+    public Boolean isPinGroups() {
         return pinGroups;
     }
 
@@ -154,5 +156,9 @@ public class Config {
 
     public enum FeedbackStrategy {
         DEFAULT, KEEP_ALL, REMOVE_ALL_EXCEPT_MAP
+    }
+
+    public enum RaidGroupCreationStrategy {
+        SAME_CHANNEL, PER_LEVEL, NAMED_CHANNEL
     }
 }

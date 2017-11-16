@@ -12,8 +12,8 @@ and trying to determine who is coming where, and at what time?
 Well, I got annoyed with it. While trying to get a Gym map working, I started thinking about how to
 create raid management features in Discord, and this is where we're at right now.
 
-The bot still needs polish and some more nifty features, but it's usable and used in atleast 3 Swedish
-discord servers.
+The bot still needs polish and some more nifty features, but it's usable and used in atleast 5 Swedish
+discord servers (Uppsala, Norrköping, Umeå, Vännäs, Luleå).
 
 Best to show some screenshots I guess. These are in Swedish, but there is also English locale.
 
@@ -38,16 +38,20 @@ Raid commands:
 ![Raid group signup](img/groupmuk.png)
 
 Other features worth mentioning:
-* Users can configure tracked pokemons, meaning if a raid is created, the user gets a DM about it
+* Users can configure tracked pokemons, meaning if a raid is created, the user gets a direct message (DM) about it
 * Admins can configure a mods group, so mods can help administrating things
-* Admins can configure a raid overview message which is automatically updated with all registered raids
-* User errors get automatically removed, along with any feedback (after user gets a chance to read it)
+* Admins can configure a raid overview message which is automatically updated with all registered raids every 60 seconds
+* User errors can get automatically removed, along with any feedback (after user gets a chance to read it)
+    * Server admins can choose a feedback and error message handling strategy via configuration
+* Automatic integration with [Gymhuntr bot](https://www.gymhuntr.com) and 
+[PokeAlarm](https://github.com/PokeAlarm/PokeAlarm), for automatic raid registration (if so desired)
 
 Future development will most likely include:
-* Automatic integration with for example Gymhuntr bot, for automatic raid registration
 * OCR scanning of screenshots, possible to create raids from them
 * Webhooks API
 * What the users may be interested in.. wink, wink.
+
+Check the [TODO-list](TODO.md) for current status of development.
 
 ## Getting started as a user
 
@@ -217,9 +221,10 @@ Bot created by Magnus Mickelsson - done mostly during evenings after the kids we
 
 Valuable contributions also by Johan Millert.
 
-Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Pettri.
+Thanks for the support from the people of the Pokemon Go Uppsala Discord server, primarily s1lence and Pettri,
+and Zinnas and Dragonknight from Umeå and Vännäs, respectively.
 
-Thanks to our donors for supporting this project <3 - biggest donor so far is Zinnas with 10$
+Thanks to our donors for supporting this project <3 - biggest donors so far is Zinnas and Dragonknight. THANKS! :)
 
 ## Notes
 

@@ -6,14 +6,20 @@ Needs testing:
 
 * !raid change group can be before current time, fix.
 * Remove raid group entity when group is cleaned up
+* Raid groups should be just ONE message for both info and emotes, to avoid risk of someone posting a message in between
+* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok - 
+implemented as feedback strategy handling, configurable per server
+* Regexp to remove all duplicate or more spaces in between arguments
 
 Being developed:
 
 * Gymhuntr and Pokealarm integration via GymhuntrMessageListener (isBot()) (rename this class)
 * Gymhuntr integration should create raids which also notify users who have done 
 !raid track certain pokemons
-* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok
-* Regexp to remove all duplicate or more spaces in between arguments
+* Increase default time that feedback messages remain? Let Umeå feedback strategy keep messages longer (server setting).
+* Raid group messages could be sent to a specific channel, if so configured. Ex raid groups to their own channel.
+* Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
+(or with a delay, configurable - like +10 minutes)
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 
 Discussion:
@@ -29,6 +35,8 @@ Experiment with:
 
 Fix issue:
 
+* Raid groups created by bot integration work for tier 5 eggs, but not for ordinary raids, message 
+doesn't update. If server is restarted, the groups start working.
 * !raid change group can be before current time, fix.
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
@@ -41,14 +49,14 @@ Fix, misc:
 
 Do, features:
 
-* Data for all gen 3 pokemons!!
-* Raid groups should be just ONE message for both info and emotes, to avoid risk of someone posting a message in between
-* Raid group messages could be sent to a specific channel, if so configured. Ex raid groups to their own channel.
-* We should only ever have ONE emoticon eventlistener, that instead checks the groups in DB
-if it's a message to react to
-* Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
-(or with a delay, configurable - like +10 minutes)
+* -1 syntax to remove signups from a raid
+* Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
+
+-- 1.4.0
+
 * Umeå request: If people do similar map commands after one other, skip following commands
+* !raid change remove-group (gym) so admins can clean up user mess when for example setting
+wrong time
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid change groupbyid (id) (time)
@@ -57,7 +65,6 @@ if it's a message to react to
 * Use nickname instead of user name in raid list etc (s1lence)
 * Handle changing raid group when user has many raid groups for a raid
 * Handle changing raid group as mod when there are many raid groups for a raid
-* -1 syntax to remove signups from a raid
 * Max number of chars for a gym name in !raid list and !raid overview?
 * Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
@@ -65,8 +72,6 @@ if it's a message to react to
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
 * Snooze button for raid group
-* !raid change remove-group (gym) so admins can clean up user mess when for example setting
-wrong time
 * REST API with passtoken and acqquiring tickets
 
 Maybe, features:

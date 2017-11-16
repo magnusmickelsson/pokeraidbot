@@ -55,8 +55,8 @@ public class GymHuntrRaidEventListenerTest {
     public void testParsePokeAlarmBossMessageIntoArguments() throws Exception {
         clockService.setMockTime(LocalTime.of(19, 0, 0));
         final List<String> arguments = GymHuntrRaidEventListener.pokeAlarmArgumentsToCreateRaid(
-                "Level 5 Raid is available against Raikou!",
-                "T3 Center has a raid and is available until 19:16:10 (46m 2s).", clockService);
+                "T3 Center raid is available against Raikou!",
+                "Level 5 is available until 19:16:10 (46m 2s).", clockService);
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("T3 Center"));
@@ -69,7 +69,7 @@ public class GymHuntrRaidEventListenerTest {
     public void testParsePokeAlarmTier5EggMessageIntoArguments() throws Exception {
         clockService.setMockTime(LocalTime.of(18, 0, 0));
         final List<String> arguments = GymHuntrRaidEventListener.pokeAlarmArgumentsToCreateRaid(
-                "Raid is incoming!", "T3 Center has a level 5 raid will hatch 18:31:10 (54m 32s).", clockService);
+                "T3 Center has a level 5", "Raid will hatch 18:31:10 (54m 32s).", clockService);
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("T3 Center"));

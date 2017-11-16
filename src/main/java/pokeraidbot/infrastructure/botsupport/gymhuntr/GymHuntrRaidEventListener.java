@@ -88,7 +88,8 @@ public class GymHuntrRaidEventListener implements EventListener {
                             final String time = iterator.next();
                             final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
                             final Config config = serverConfigRepository.getConfigForServer(serverName);
-                            final Gym raidGym = gymRepository.findByName(gym, config.getRegion());
+                            final String region = config.getRegion();
+                            final Gym raidGym = gymRepository.findByName(gym, region);
                             final LocalDate currentDate = currentDateTime.toLocalDate();
                             final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
                                     LocalTime.parse(time, Utils.timeParseFormatter));
@@ -135,7 +136,7 @@ public class GymHuntrRaidEventListener implements EventListener {
 
                 if (groupStart != null) {
                     NewRaidGroupCommand.createRaidGroup(channel, config, botService.getBot().getSelfUser(),
-                            config.getLocale(), groupStart, createdRaid, localeService, raidRepository,
+                            config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
                             botService, serverConfigRepository, pokemonRepository, gymRepository,
                             clockService, executorService);
                 }
@@ -162,20 +163,20 @@ public class GymHuntrRaidEventListener implements EventListener {
     public static List<String> pokeAlarmArgumentsToCreateRaid(String title, String description,
                                                               ClockService clockService) {
         String gym, pokemon, timeString;
-        if (title.contains("Raid is available")) {
+        if (title.contains("raid is available against")) {
             final String[] titleSplit = title.replaceAll("!", "").split(" ");
             pokemon = titleSplit[titleSplit.length - 1];
             final String[] descriptionSplit = description.split(" ");
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3]));
-            final String[] descSplit = description.split("has a raid and is available until");
-            gym = descSplit[0].trim();
-        } else if (title.contains("Raid is incoming!") && description.contains("level 5 raid will hatch")){
+            final String[] gymSplit = title.split("raid is available against");
+            gym = gymSplit[0].trim();
+        } else if (title.contains("has a level 5") && description.contains("will hatch")){
             // todo: fetch seasonal pokemon for region from some repo?
             pokemon = "Raikou";
             final String[] descriptionSplit = description.split(" ");
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
                     .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
-            gym = description.split("has a level 5 raid")[0].trim();
+            gym = title.split("has a level 5")[0].trim();
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
