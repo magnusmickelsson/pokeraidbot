@@ -95,7 +95,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 Config config = serverConfigRepository.getConfigForServer(server);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
-                            " - Updating message with ID " + messageId);
+                            " - Updating for server " + config.getServer() + " with ID " + messageId);
                 }
                 final String messageString = getOverviewMessage(config,
                         localeService, raidRepository, clockService, locale);

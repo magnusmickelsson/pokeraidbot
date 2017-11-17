@@ -133,7 +133,7 @@ public class Config {
     }
 
     public FeedbackStrategy getFeedbackStrategy() {
-        return feedbackStrategy;
+        return feedbackStrategy == null ? FeedbackStrategy.DEFAULT : feedbackStrategy;
     }
 
     public void setFeedbackStrategy(FeedbackStrategy feedbackStrategy) {

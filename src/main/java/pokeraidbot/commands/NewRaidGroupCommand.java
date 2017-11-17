@@ -209,7 +209,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 delayTimeUnit.sleep(delay);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
-                            " - Updating message with ID " + infoMessageId);
+                            " - Updating for group at gym " + currentStateOfRaid.getGym().getName() +
+                            ": message ID=" + infoMessageId);
                 }
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
