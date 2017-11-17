@@ -63,7 +63,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         LocalDateTime endsAt = LocalDateTime.of(endsAtDate, endsAtTime);
 
         assertTimeNotInNoRaidTimespan(user, endsAtTime, localeService);
-        if (endsAtDate.isAfter(LocalDate.now().plusDays(7))) {
+        if (endsAtDate.isAfter(LocalDate.now().plusDays(10))) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EX_DATE_LIMITS,
                     locale));
         }

@@ -116,15 +116,12 @@ public class GymHuntrRaidEventListener implements EventListener {
             try {
                 createdRaid = raidRepository.newRaid(user, raidToCreate);
                 final Locale locale = config.getLocale();
-                final MessageEmbed messageEmbed = new EmbedBuilder().setTitle(null, null)
-                        .setDescription(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                                locale, createdRaid.toString(locale))).build();
                 // todo: fetch from config what channel to post this message in
                 final MessageChannel channel = guildEvent.getMessage().getChannel();
-                channel.sendMessage(messageEmbed).queue(m -> {
-                    LOGGER.info("Raid created via Bot integration: " + createdRaid);
-                });
-
+                EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
+                StringBuilder sb = new StringBuilder();
+                sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
+                        locale, createdRaid.toString(locale)));
                 LocalTime groupStart = null;
                 // todo: fetch setting 10 minutes from server config?
                 final LocalDateTime startOfRaid = getStartOfRaid(createdRaid.getEndOfRaid(), createdRaid.isExRaid());
@@ -140,6 +137,11 @@ public class GymHuntrRaidEventListener implements EventListener {
                             botService, serverConfigRepository, pokemonRepository, gymRepository,
                             clockService, executorService);
                 }
+                embedBuilder.setDescription(sb.toString());
+                final MessageEmbed messageEmbed = embedBuilder.build();
+                channel.sendMessage(messageEmbed).queue(m -> {
+                    LOGGER.info("Raid created via Bot integration: " + createdRaid);
+                });
             } catch (Throwable t) {
                 LOGGER.warn("Exception when trying to create raid via botintegration: " +
                         t.getMessage());
@@ -170,7 +172,7 @@ public class GymHuntrRaidEventListener implements EventListener {
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3]));
             final String[] gymSplit = title.split("raid is available against");
             gym = gymSplit[0].trim();
-        } else if (title.contains("has a level 5") && description.contains("will hatch")){
+        } else if (title.contains("has a level 5") && description.contains("will hatch")) {
             // todo: fetch seasonal pokemon for region from some repo?
             pokemon = "Raikou";
             final String[] descriptionSplit = description.split(" ");
@@ -197,7 +199,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     .plusSeconds(Long.parseLong(timeArguments[2])));
             gym = firstPass[0].trim();
             pokemon = firstPass[1].trim();
-        } else if (title.contains("Level 5 Raid is starting soon!")){
+        } else if (title.contains("Level 5 Raid is starting soon!")) {
             final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
                     .replaceAll("Raid Starting: ", "").split("\n");
             pokemon = "Raikou"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?

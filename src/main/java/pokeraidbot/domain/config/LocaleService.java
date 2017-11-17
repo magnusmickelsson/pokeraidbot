@@ -474,10 +474,10 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(EX_DATE_LIMITS, Locale.ENGLISH),
-                "You can't create an EX raid more than 7 days ahead."
+                "You can't create an EX raid more than 10 days ahead."
         );
         i18nMessages.put(new I18nLookup(EX_DATE_LIMITS, SWEDISH),
-                "Du kan inte skapa en EX raid mer än 7 dagar framåt, då är det hittepå!"
+                "Du kan inte skapa en EX raid mer än 10 dagar framåt tyvärr."
         );
 
         i18nMessages.put(new I18nLookup(NO_EMOTES, Locale.ENGLISH),
