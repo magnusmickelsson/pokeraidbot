@@ -122,13 +122,15 @@ public class StartUpEventListener implements EventListener {
                         NewRaidGroupCommand.getMessageRefreshingTaskToSchedule(channel, raid,
                                 emoticonSignUpMessageListener,
                                 raidGroup.getInfoMessageId(), locale, raidRepository, localeService,
-                                clockService, executorService, botService, delayTimeUnit, delayTime);
+                                clockService, executorService, botService, delayTimeUnit, delayTime, raidGroup.getId());
                 executorService.submit(overviewTask);
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Found group message for raid " + raid + " in channel " + channel.getName() +
                             " (server " + guild.getName() + "). Attaching to it.");
                 }
                 return true;
+            } else {
+                cleanUpRaidGroup(raidGroup);
             }
         } catch (UserMessedUpException e) {
             if (channel != null)
@@ -137,10 +139,21 @@ public class StartUpEventListener implements EventListener {
             // We couldn't find the message in this channel or had permission issues, ignore
             LOGGER.debug("Caught exception: " + e.getMessage());
         } catch (Throwable e) {
+            cleanUpRaidGroup(raidGroup);
             // Ignore any other error and try the other server channels
             LOGGER.debug("Caught exception: " + e.getMessage());
         }
         return false;
+    }
+
+    private void cleanUpRaidGroup(RaidGroup raidGroup) {
+        try {
+            raidRepository.deleteGroup(raidGroup.getRaidId(), raidGroup.getId());
+            LOGGER.debug("Cleaned up raid group: " + raidGroup);
+        } catch (Throwable t) {
+            // Ignore any other error and try the other server channels
+            LOGGER.warn("Exception when cleaning up group " + raidGroup + ": " + t.getMessage());
+        }
     }
 
     private boolean getAndAttachToOverviewMessageIfExists(Guild guild, Config config, String messageId,

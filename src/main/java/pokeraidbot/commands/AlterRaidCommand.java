@@ -23,6 +23,8 @@ import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -115,28 +117,30 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
 
+        int counter = 0;
         boolean groupChanged = false;
-        final Set<EmoticonSignUpMessageListener> listenersToCheck =
-                botService.getBot().getRegisteredListeners().stream().filter(l -> {
-                    if (l instanceof EmoticonSignUpMessageListener) {
-                        EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) l;
-                        final String raidId = raid.getId();
-                        final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
-                        final boolean isUsersGroup = user.getId().equals(listener.getUserId());
-                        if (isCorrectRaid && (isUsersGroup || isUserAdministrator(commandEvent) ||
-                                isUserServerMod(commandEvent, config))) {
-                            return true;
-                        }
-                    }
-                    return false;
-
-                }).map(l -> (EmoticonSignUpMessageListener) l).collect(Collectors.toSet());
+        final Set<EmoticonSignUpMessageListener> listenersToCheck = new HashSet<>();
+        for (Object o : botService.getBot().getRegisteredListeners()) {
+            if (o instanceof  EmoticonSignUpMessageListener) {
+                EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) o;
+                final String raidId = raid.getId();
+                final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
+                final boolean isUsersGroup = user.getId().equals(listener.getUserId());
+                if (isCorrectRaid && isUsersGroup) {
+                    listenersToCheck.add(listener);
+                    break; // If we found user's group, that's the one to change primarily
+                }
+                if (isCorrectRaid && (isUserAdministrator(commandEvent) ||
+                        isUserServerMod(commandEvent, config))) {
+                    listenersToCheck.add(listener);
+                }
+            }
+        }
 
         if (listenersToCheck.size() > 1) {
-            replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+            throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.MANY_GROUPS_FOR_RAID,
-                            localeService.getLocaleForUser(user), String.valueOf(raid)),
-                    BotServerMain.timeToRemoveFeedbackInSeconds);
+                            localeService.getLocaleForUser(user), String.valueOf(raid)));
         } else if (listenersToCheck.size() == 0) { // todo: could also be due to raid not having any groups
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_PERMISSION,

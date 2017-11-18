@@ -6,6 +6,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
@@ -409,7 +410,8 @@ public class RaidRepository {
         return raidEntityRepository.findGroupsForServer(server);
     }
 
-    public RaidGroup deleteGroup(User user, String raidId, String groupId) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public RaidGroup deleteGroup(String raidId, String groupId) {
         final RaidEntity entity = findEntityByRaidId(raidId);
         final RaidGroup removedGroup = entity.removeGroup(groupId);
         if (removedGroup == null) {

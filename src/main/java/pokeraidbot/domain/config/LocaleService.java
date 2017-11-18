@@ -181,11 +181,11 @@ public class LocaleService {
                         "tillåta att skapa flera grupper per raid per användare igen."
         );
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, Locale.ENGLISH),
-                "There are several groups by this user for raid %1 - so right now you can't change the time of them. " +
+                "There are several groups this user can change for raid %1 - so right now you can't change the time of them. " +
                         "To be fixed in future releases."
         );
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, SWEDISH),
-                "Det finns flera grupper av användaren till raiden %1 - " +
+                "Det finns flera grupper denna användare kan ändra för raiden %1 - " +
                         "just nu kan du bara ändra tid om det finns en av dem. " +
                         "Kommer fixas i framtida release."
         );

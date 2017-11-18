@@ -172,7 +172,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                 raid, emoticonSignUpMessageListener, messageId,
                                 locale,
                                 raidRepository, localeService, clockService, executorService, botService,
-                                delayTimeUnit, delay);
+                                delayTimeUnit, delay, group.getId());
             executorService.submit(refreshEditThreadTask);
         });
     }
@@ -200,16 +200,17 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     }
 
     public static Callable<Boolean> getMessageRefreshingTaskToSchedule(MessageChannel messageChannel,
-                                                                 Raid raid,
-                                                                 EmoticonSignUpMessageListener emoticonSignUpMessageListener,
-                                                                 String infoMessageId, Locale locale,
-                                                                 RaidRepository raidRepository,
-                                                                 LocaleService localeService,
-                                                                 ClockService clockService,
-                                                                 ExecutorService executorService,
-                                                                 BotService botService,
-                                                                 TimeUnit delayTimeUnit, int delay) {
+                                                                       Raid raid,
+                                                                       EmoticonSignUpMessageListener emoticonSignUpMessageListener,
+                                                                       String infoMessageId, Locale locale,
+                                                                       RaidRepository raidRepository,
+                                                                       LocaleService localeService,
+                                                                       ClockService clockService,
+                                                                       ExecutorService executorService,
+                                                                       BotService botService,
+                                                                       TimeUnit delayTimeUnit, int delay, String raidGroupId) {
         Callable<Boolean> refreshEditThreadTask = () -> {
+            final String groupId = raidGroupId;
             final Raid currentStateOfRaid = raidRepository.getById(raid.getId());
             final Callable<Boolean> editTask = () -> {
                 delayTimeUnit.sleep(delay);
@@ -242,7 +243,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
                     ", creator: " + emoticonSignUpMessageListener.getUserId());
             cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(), raid != null ? raid.getId() : null,
-                    emoticonSignUpMessageListener, raidRepository, botService);
+                    emoticonSignUpMessageListener, raidRepository, botService, groupId);
             return true;
         };
         return refreshEditThreadTask;
@@ -262,7 +263,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     private static void cleanUp(MessageChannel messageChannel, LocalDateTime startAt, String raidId,
                                 EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                 RaidRepository raidRepository,
-                                BotService botService) {
+                                BotService botService, String groupId) {
         Raid raid = null;
         try {
             if (startAt != null && raidId != null) {
@@ -290,6 +291,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         emoticonSignUpMessageListener.getRaidId());
             }
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
+            raidRepository.deleteGroup(raidId, groupId);
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Cleaned up listener and message related to this group - raid: " + (raid == null ?
                         "not cleaned up :( - had ID: " + raidId : raid) +

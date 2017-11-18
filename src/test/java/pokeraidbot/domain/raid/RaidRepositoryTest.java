@@ -93,7 +93,7 @@ public class RaidRepositoryTest {
         assertThat(groupsForServer.size(), is(1));
         assertThat(groupsForServer.iterator().next(), is(group));
 
-        RaidGroup deleted = repo.deleteGroup(user, enteiRaid.getId(), group.getId());
+        RaidGroup deleted = repo.deleteGroup(enteiRaid.getId(), group.getId());
         assertThat(deleted != null, is(true));
         groupsForServer = repo.getGroupsForServer("testserver");
         assertThat(groupsForServer.size(), is(0));

@@ -14,12 +14,11 @@ implemented as feedback strategy handling, configurable per server
 * Gymhuntr integration should create raids which also notify users who have done 
 !raid track certain pokemons
 * Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
+* Increase default time that feedback messages remain, 30 seconds
 
 Being developed:
 
-* Increase default time that feedback messages remain? Let Umeå feedback strategy keep messages longer (server setting).
-* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
-* Only use a single Emoticon listener for signups to reduce memory and complexity
+-
 
 Discussion:
 
@@ -49,10 +48,12 @@ Fix, misc:
 Do, features:
 
 * -1 syntax to remove signups from a raid
-* Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 
 -- 1.4.0
 
+* Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
+* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
+* Only use a single Emoticon listener for signups to reduce memory and complexity
 * Move gyms to the database, use CSV files just to initialize and keep in synch
 * Make it possible to change gyms in database via admin command (Zhorhn only)
 * Umeå request: If people do similar map commands after one other, skip following commands
