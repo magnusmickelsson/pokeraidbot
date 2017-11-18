@@ -1,6 +1,6 @@
-Ok, så man ska välja vägval för Pokemon Go Uppsalas discord raidhantering.
+Ok, så ni ska välja hur ni ska lösa er discordservers raidhantering?
 
-Följande huvudalternativ finns (som jag uppfattat det):
+Följande huvudalternativ kan vara värda att fundera över:
 
 * "Skånemodellen"
     * !raid map och !raid vs är botkommandon. Inga övriga botkommandon för raids.
@@ -40,7 +40,7 @@ Model 1, antingen som det varit i Uppsala med screenshot och +1-statements, elle
         * Man sparar ett kommando för raidskapande, men tappar en hel del funktioner (t.ex. tracking av pokemons, raid status, raid list, 
         få hjälp med när en raid slutar)
     * Förbättringspotential för mapbot
-        * Fuzzy search för gymnamn (kanske även pokemonnamn?)
+        * ?
 
 ![screenshot map](img/mapcmd.png)
 ![screenshot map resp](img/mapcmdresponse.png)
@@ -49,9 +49,9 @@ Model 1, antingen som det varit i Uppsala med screenshot och +1-statements, elle
 * Full pokeraidbot
     * Botkommandon för allt. Se till att kanalhantering ses över och att folk faktiskt använder funktioner
     för att registrera raids och sig själva via aktiv moderering.
-    * Raid anmäls via !raid new {pokemon} {tid (start eller slut)} {gym} eller screenshot, om vi får till automatisk
-    igenkänning av information från ett screenshot via OCR
-    * Anmälan kan göras via +1-kommando, !raid add (ev tas bort) samt !raid group?
+    * Raid anmäls via !raid new {pokemon} {tid (start eller slut)} {gym}, botintegration 
+    eller screenshot, om vi får till automatisk igenkänning av information från ett screenshot via OCR
+    * Anmälan kan göras via +1-kommando samt !raid group och emote signup
     * Överblick fås via adminmeddelande i "read-only"-kanal med en självuppdaterande lista av registrerade raider + status
     * Pros:
         * Lätt att få överblick, så länge folk använder botten
@@ -64,8 +64,7 @@ Model 1, antingen som det varit i Uppsala med screenshot och +1-statements, elle
         * Om dålig struktur och plan för kanalhantering och informationsflöde - spam av meddelanden och leta på 
         information och skriva kommandon på flera ställen
     * Förbättringspotential för pokeraidbot
-        * Ja. En hel del. Dokumentation, användarvänlighet, kanalspamreducering t.ex.
-        * Raidrapportering via screenshot från mobil
+        * Se [TODO](TODO.md)
             
 För screenshots se [Guiden för att komma igång](GETTING_STARTED_USER_sv.md)            
             
@@ -73,8 +72,10 @@ För screenshots se [Guiden för att komma igång](GETTING_STARTED_USER_sv.md)
             
 Mina tankar:
 
-Jag förstår om en del (hur många får en poll utreda) vill återgå till hur det var innan.
-Främst tror jag för raiders som har en grupp halvt redo on demand och ibland bara behöver någon extra för att få ner en raid,
+Jag förstår om en del (hur många får en poll utreda) vill köra på hur man kanske gjort i en messengerkanal
+med 10-40 personer, oftast väldigt aktiva och inte så många parallella raider så det går att få överblick.
+
+Främst tror jag det funkar för raiders som har en grupp halvt redo on demand och ibland bara behöver någon extra för att få ner en raid,
 eller folk som inte gillar IT mer än nödvändligt och tycker det är lurigt eller läskigt att skriva kommandon, t.ex. 
 
 Dock, för de som befinner sig i min situation, har åtminstone jag 
@@ -95,26 +96,11 @@ Har lagt in lite kommentarer i screenshots nedan för att illustrera vad jag har
 
 ![example 5](img/dumb/had-to-leave-planning.png)
 
-Oavsett vilken modell vi väljer, tror jag vi behöver få mer struktur och ordning och "utbilda" användarna
-att anpassa sig. 
+Oavsett vilken modell man väljer, tror jag det är en poäng med mer struktur och ordning och "utbilda" användarna
+att anpassa sig när servers växer och når flera hundra medlemmar och kommer potentiellt hantera
+ett tiotal parallella raider. Att få överblick blir då skitsvårt. :( 
 
-I modell 1 tycker jag Skånes variant ser strukturerad och tydlig ut samt kortfattad.
-Den kan jag absolut tänka mig funkar för mina behov att få överblick. 
+Så, det var lite beslutsunderlag för discordservers som ska besluta sig för att köra
+"Messenger-style" eller börja dra in bottar för att understödja sin server.
 
-Gamla Uppsala-modellen gillar jag inte alls,
-för mycket scrollning och läsa fram och tillbaka för att jag ska få reda på vart jag behöver vara när,
-och även då ofta snabba ryck som innebär att man riskerar att missa en raidgrupp.
-
-Modell 2; Korsning mellan mapbot och delibot kan absolut funka. Men jag tror den kommer få samma problem
-med samma människor som pokeraidbot har idag, fast vi får färre features och ingen överblick.
-
-Modell 3 behöver förbättras, helt klart. Jag tror för att det ska bli enkelt och hållbart tror jag följande krävs:
-* Vi fixar till "getting-started"-guiden så den blir enklare och mer logisk. Att sprida ut vissa saker i olika kanaler tror
-jag bara förvirrar, vi får reducera meddelande-spam på annat sätt IMO
-* Vi admins går in och guidar folk som undviker botten och förklarar att om vi nu ska köra modell 3 (om det blir vårt alternativ)
-så får vi försöka hjälpas åt att gå dit.
-* Vi behöver se över kanalhanteringen, t.ex. en automatiskt uppdaterad overview som admins lägger in i en låst kanal skulle 
-vara något, tror jag (så slipper vi !raid list och !raid status i raidkanalerna)
-* Samla in idéer från användarna och sålla och fundera hur saker kan förbättras kontinuerligt över tid
-
-Phew, mycket att läsa igenom. :) Bra jobbat om du kom ända hit.
+Lycka till!
