@@ -4,17 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* !raid change group can be before current time, fix.
 * Remove raid group entity when group is cleaned up
-* Raid groups should be just ONE message for both info and emotes, to avoid risk of someone posting a message in between
-* Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok - 
-implemented as feedback strategy handling, configurable per server
-* Regexp to remove all duplicate or more spaces in between arguments
-* Gymhuntr and Pokealarm integration via GymhuntrMessageListener (isBot()) (rename this class)
-* Gymhuntr integration should create raids which also notify users who have done 
-!raid track certain pokemons
-* Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
-* Increase default time that feedback messages remain, 30 seconds
 
 Being developed:
 

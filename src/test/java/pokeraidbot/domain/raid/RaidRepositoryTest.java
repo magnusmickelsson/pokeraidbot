@@ -75,12 +75,14 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        Raid enteiRaid1 = enteiRaid;
         try {
-            enteiRaid = repo.newRaid(user, enteiRaid);
+            enteiRaid1 = repo.newRaid(user, enteiRaid1);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
+        enteiRaid = enteiRaid1;
         User user2 = mock(User.class);
         String userName = "testUser2";
         when(user2.getName()).thenReturn(userName);

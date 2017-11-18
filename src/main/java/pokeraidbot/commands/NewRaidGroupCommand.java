@@ -291,7 +291,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         emoticonSignUpMessageListener.getRaidId());
             }
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
-            raidRepository.deleteGroup(raidId, groupId);
+            raidRepository.deleteGroupInNewTransaction(raidId, groupId);
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("Cleaned up listener and message related to this group - raid: " + (raid == null ?
                         "not cleaned up :( - had ID: " + raidId : raid) +

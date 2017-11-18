@@ -148,7 +148,7 @@ public class StartUpEventListener implements EventListener {
 
     private void cleanUpRaidGroup(RaidGroup raidGroup) {
         try {
-            raidRepository.deleteGroup(raidGroup.getRaidId(), raidGroup.getId());
+            raidRepository.deleteGroupInNewTransaction(raidGroup.getRaidId(), raidGroup.getId());
             LOGGER.debug("Cleaned up raid group: " + raidGroup);
         } catch (Throwable t) {
             // Ignore any other error and try the other server channels

@@ -1,7 +1,7 @@
 FUTURE (?)
 =====
 
-1.4.0 (TBD)
+1.4.0 (2017-11-18)
 =====
 * Bugfix: !raid change group can no longer set time before current time, even if it is within raid duration
 * Gymhuntrbot and PokeAlarm integration (reported raids get created in pokeraidbot if > 10 minutes remaining)
@@ -9,6 +9,8 @@ FUTURE (?)
 * Raid group is now one message instead of two, reduces risk that a message comes in between info and emotes
 * Feedback strategies, configurable for each server
 * Only use a single Emoticon listener for signups to reduce memory and complexity
+* Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
+* Increase default time that feedback messages remain, 30 seconds
 
 1.3.1 (2017-11-08)
 =====
