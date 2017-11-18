@@ -96,6 +96,7 @@ public class LocaleService {
     public static final String TIME_NOT_IN_RAID_TIMESPAN = "TIME_NOT_IN_RAID_TIMESPAN";
     public static final String TOO_MANY_GROUPS = "TOO_MANY_GROUPS";
     public static final String NO_GROUP_BEFORE_NOW = "NO_GROUP_BEFORE_NOW";
+    public static final String UNSIGN = "UNSIGN";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -690,6 +691,9 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(SIGNUPS, Locale.ENGLISH), "%1 sign up added to %2. %3");
         i18nMessages.put(new I18nLookup(SIGNUPS, SWEDISH), "Anmälan från %1 registrerad till %2. %3");
 
+        i18nMessages.put(new I18nLookup(UNSIGN, Locale.ENGLISH), "%1 unsign from %2. %3");
+        i18nMessages.put(new I18nLookup(UNSIGN, SWEDISH), "%1 avanmälde från %2. %3");
+
         i18nMessages.put(new I18nLookup(CURRENT_SIGNUPS, Locale.ENGLISH), "Current signups: ");
         i18nMessages.put(new I18nLookup(CURRENT_SIGNUPS, SWEDISH), "Vilka kommer: ");
 
@@ -965,7 +969,9 @@ public class LocaleService {
                         "**You can also use an easier way:** \\+{number of people} {ETA (HH:MM)} {Gym name}\n" +
                         "*Example:* +3 09:15 Solna Platform\n\n" +
                         "**Unsign raid:**\n!raid remove *[Gym name]*\n" +
-                        "*Example:* !raid remove Solna Platform"
+                        "*Example:* !raid remove Solna Platform\n\n" +
+                        "**You can also use an easier way:** \\-{number of people} {Gym name}\n" +
+                        "*Example:* -2 Solna Platform"
         );
         i18nMessages.put(new I18nLookup(MANUAL_SIGNUP, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
@@ -974,7 +980,9 @@ public class LocaleService {
                         "**Man kan också använda:** \\+{antal} {ETA (HH:MM)} {Gym-namn}\n" +
                         "*Exempel:* +3 09:15 Solna Platform\n\n" +
                         "**Ta bort din signup för en raid:**\n!raid remove *[Gym-namn]*\n" +
-                        "*Exempel:* !raid remove Solna Platform"
+                        "*Exempel:* !raid remove Solna Platform\n\n" +
+                        "**Man kan också använda:** \\-{antal} {Gym-namn}\n" +
+                        "*Exempel:* -2 Solna Platform"
         );
 
         i18nMessages.put(new I18nLookup(MANUAL_TRACKING, Locale.ENGLISH),

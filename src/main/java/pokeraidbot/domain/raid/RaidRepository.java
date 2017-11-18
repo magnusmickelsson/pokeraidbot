@@ -97,6 +97,38 @@ public class RaidRepository {
                 gym.getName(), signUpText);
     }
 
+    public String executeUnsignCommand(Config config,
+                                       User user,
+                                       Locale localeForUser,
+                                       String[] args,
+                                       String help) {
+        String people = args[0];
+        String userName = user.getName();
+        if (args.length < 2 || args.length > 10) {
+            throw new WrongNumberOfArgumentsException(user, localeService, 2, args.length, help);
+        }
+        Integer numberOfPeople = Utils.assertNotTooManyOrNoNumber(user, localeService, people);
+
+        StringBuilder gymNameBuilder = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            gymNameBuilder.append(args[i]).append(" ");
+        }
+        String gymName = gymNameBuilder.toString().trim();
+        final Gym gym = gymRepository.search(user, gymName, config.getRegion());
+        Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
+        final RaidEntitySignUp signUp = findEntityByRaidId(raid.getId()).getSignUp(user.getName());
+
+        raid = removeFromSignUp(raid.getId(), user, 0, 0, 0, numberOfPeople, LocalDateTime.of(raid.getEndOfRaid().toLocalDate(),
+                signUp.getArrivalTime()));
+        final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
+        final Set<SignUp> signUps = raid.getSignUps();
+        Set<String> signUpNames = Utils.getNamesOfThoseWithSignUps(signUps, true);
+        final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+        final String signUpText = raid.getSignUps().size() > 1 ? currentSignupText + "\n" + allSignUpNames : "";
+        return localeService.getMessageFor(LocaleService.UNSIGN, localeForUser, userName,
+                gym.getName(), signUpText);
+    }
+
     public Raid newRaid(User raidCreator, Raid raid) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 

@@ -5,6 +5,8 @@ See [Changelog](CHANGELOG.md).
 Needs testing:
 
 * Remove raid group entity when group is cleaned up
+* -1 syntax to remove signups from a raid
+* All texts, manual and feedback are in order before release
 
 Being developed:
 
@@ -23,9 +25,6 @@ Experiment with:
 
 Fix issue:
 
-* Raid groups created by bot integration work for tier 5 eggs, but not for ordinary raids, message 
-doesn't update. If server is restarted, the groups start working.
-* !raid change group can be before current time, fix.
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -36,10 +35,6 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-
-* -1 syntax to remove signups from a raid
-
--- 1.4.0
 
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.

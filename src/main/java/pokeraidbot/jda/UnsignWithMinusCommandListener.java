@@ -20,8 +20,8 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.concurrent.TimeUnit;
 
-public class SignupWithPlusCommandListener implements EventListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SignupWithPlusCommandListener.class);
+public class UnsignWithMinusCommandListener implements EventListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnsignWithMinusCommandListener.class);
 
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
@@ -29,8 +29,9 @@ public class SignupWithPlusCommandListener implements EventListener {
     private final BotService botService;
     private final LocaleService localeService;
 
-    public SignupWithPlusCommandListener(RaidRepository raidRepository, PokemonRepository pokemonRepository,
-                                         ServerConfigRepository serverConfigRepository, BotService botService, LocaleService localeService) {
+    public UnsignWithMinusCommandListener(RaidRepository raidRepository, PokemonRepository pokemonRepository,
+                                          ServerConfigRepository serverConfigRepository, BotService botService,
+                                          LocaleService localeService) {
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.serverConfigRepository = serverConfigRepository;
@@ -38,7 +39,7 @@ public class SignupWithPlusCommandListener implements EventListener {
         this.localeService = localeService;
     }
 
-    public static final String plusXRegExp = "^[+]\\d{1,2}\\s{1,2}\\d{1,2}[:.]?\\d{2}\\s{1,2}.*";
+    public static final String minusXRegExp = "^[-]\\d{1,2}\\s{1,2}.*";
     @Override
     public void onEvent(Event event) {
         if (event instanceof GuildMessageReceivedEvent) {
@@ -48,24 +49,23 @@ public class SignupWithPlusCommandListener implements EventListener {
             }
 
             final String rawContent = guildMessageReceivedEvent.getMessage().getRawContent();
-            if (rawContent.matches(plusXRegExp)) {
+            if (rawContent.matches(minusXRegExp)) {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("It would seem this is a + command to add signups: " + rawContent);
+                    LOGGER.debug("It would seem this is a - command to remove signups: " + rawContent);
                 }
                 String strippedContent = rawContent.replaceAll("\\s{2,4}", " ")
-                        .replaceAll("[+]", "");
+                        .replaceFirst("[-]", "");
                 String[] splitArguments = strippedContent.split("\\s{1}");
-                attemptSignUpFromPlusCommand(guildMessageReceivedEvent, splitArguments);
+                attemptUnsignFromMinusCommand(guildMessageReceivedEvent, splitArguments);
             }
         }
     }
 
-    private void attemptSignUpFromPlusCommand(GuildMessageReceivedEvent guildMessageReceivedEvent, String[] splitArguments) {
+    private void attemptUnsignFromMinusCommand(GuildMessageReceivedEvent guildMessageReceivedEvent, String[] splitArguments) {
         final String numberOfPeopleArgument = splitArguments[0];
-        final String etaArgument = splitArguments[1];
-        final String[] gymArgument = ArrayUtils.removeAll(splitArguments, 0, 1);
+        final String[] gymArgument = ArrayUtils.removeAll(splitArguments, 0);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Trying to add " + numberOfPeopleArgument + " to raid, ETA " + etaArgument + " to gym " +
+            LOGGER.debug("Trying to remove " + numberOfPeopleArgument + " from raid, gym " +
                     StringUtils.join(gymArgument, " "));
         }
         final String guild = guildMessageReceivedEvent.getGuild().getName().trim().toLowerCase();
@@ -73,14 +73,14 @@ public class SignupWithPlusCommandListener implements EventListener {
         final User user = guildMessageReceivedEvent.getAuthor();
         String message;
         try {
-            message = raidRepository.executeSignUpCommand(configForServer, user,
+            message = raidRepository.executeUnsignCommand(configForServer, user,
                     localeService.getLocaleForUser(user),
                     splitArguments, "signup");
             guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
         } catch (Throwable t) {
-            LOGGER.debug("Signup plus command failed: " + t.getMessage());
+            LOGGER.debug("Unsign command failed: " + t.getMessage());
             message = t.getMessage() + "\n\n" +
-            "Syntax: *+1 09:45 Solna Platform*";
+            "Syntax: *-1 Solna Platform*";
             guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
         }
         if (!StringUtils.isEmpty(message)) {
@@ -97,7 +97,7 @@ public class SignupWithPlusCommandListener implements EventListener {
                         msg.delete().queueAfter(15, TimeUnit.SECONDS); // Clean up feedback after x seconds
                     }
             );
-            LOGGER.debug("Added signup.");
+            LOGGER.debug("Removed signup.");
         }
     }
 }

@@ -26,14 +26,18 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Integration med Gymhuntr och PokeAlarm - raider kan nu automatiskt skapas. " +
                     "Se <https://gymhuntr.com> och <https://github.com/PokeAlarm/PokeAlarm>\n" +
                     "- Bugfix: Raidgrupper kan inte starta innan aktuell tid inom raidtiden\n" +
-                    "- Nytt utseende för !raid overview";
+                    "- Man kan bara skapa en raidgrupp per användare och raid\n" +
+                    "- Man kan inte skapa flera raidgrupper för samma tid och raid\n" +
+                    "- Man kan nu avanmäla sig från en raid via *-2 {gym}*, t.ex. *-2 Solna Platform*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
                     "- Feedback handling strategies possible (see *!raid install*)\n" +
                     "- Integration with Gymhuntr and PokeAlarm - raids can now be automatically created. See " +
                     "<https://gymhuntr.com> and <https://github.com/PokeAlarm/PokeAlarm>\n" +
                     "- Bugfix: Raid groups can no longer be set before current time (within raid duration)\n" +
-                    "- New appearance for !raid overview";
+                    "- You can no longer create more than one raidgroup per user and raid\n" +
+                    "- You can no longer create more than one raidgroup for the same time and raid\n" +
+                    "- You can now unsign from a raid via *-2 {gym}*, for example *-2 Solna Platform*";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }

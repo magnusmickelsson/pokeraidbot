@@ -26,10 +26,7 @@ import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
-import pokeraidbot.jda.AggregateCommandListener;
-import pokeraidbot.jda.EventLoggingListener;
-import pokeraidbot.jda.SignupWithPlusCommandListener;
-import pokeraidbot.jda.StartUpEventListener;
+import pokeraidbot.jda.*;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -79,6 +76,8 @@ public class BotService {
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
                 raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
+                pokemonRepository, serverConfigRepository, this, localeService);
+        UnsignWithMinusCommandListener minusCommandEventListener = new UnsignWithMinusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
 
@@ -152,6 +151,7 @@ public class BotService {
 //                    .addEventListener(eventLoggingListener)
                     .addEventListener(startUpEventListener)
                     .addEventListener(plusCommandEventListener)
+                    .addEventListener(minusCommandEventListener)
                     .addEventListener(gymHuntrRaidEventListener)
 
                     // start it up!
