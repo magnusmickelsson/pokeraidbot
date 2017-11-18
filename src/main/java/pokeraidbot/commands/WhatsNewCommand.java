@@ -23,6 +23,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
                     "- Feedbackhanteringsstrategier möjligt (se *!raid install*)\n" +
+                    "- Standardtid innan feedbackmeddelanden tas bort ökad från 20 till 30 sekunder\n" +
                     "- Integration med Gymhuntr och PokeAlarm - raider kan nu automatiskt skapas. " +
                     "Se <https://gymhuntr.com> och <https://github.com/PokeAlarm/PokeAlarm>\n" +
                     "- Bugfix: Raidgrupper kan inte starta innan aktuell tid inom raidtiden\n" +
@@ -32,6 +33,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
                     "- Feedback handling strategies possible (see *!raid install*)\n" +
+                    "- Default time for feedback messages to be removed increased from 20 to 30 seconds\n" +
                     "- Integration with Gymhuntr and PokeAlarm - raids can now be automatically created. See " +
                     "<https://gymhuntr.com> and <https://github.com/PokeAlarm/PokeAlarm>\n" +
                     "- Bugfix: Raid groups can no longer be set before current time (within raid duration)\n" +
