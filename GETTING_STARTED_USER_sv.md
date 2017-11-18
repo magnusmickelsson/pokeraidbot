@@ -1,3 +1,25 @@
+Är du raidsugen, och ny medlem i en Discord-server som använder pokeraidbot? 
+Vad kan vara värt att lära sig för att få ut det mesta utan att lära sig allt?
+
+Till att börja med, din server borde ha en kanal med en *raidöversikt*.
+
+Det är en kanal som är skrivskyddad och innehåller bara ett kommando och ett meddelande
+med en lista över alla pågående raider och vilka anmälningar som är gjorda,
+för att snabbt visa dig vilka raider som troligen kommer bli av och kan vara värda att satsa på. :)
+
+Exempel här:
+
+![Overview](img/overview.png)
+
+Hur gör man då för att bidra till det botten visar upp här?
+
+Jo, man kan:
+* Rapportera raider man ser i spelet (eller låta en bot anmäla raider automatiskt via integration med t.ex. Gymhuntr eller PokeAlarm)
+* Anmäla sig till raider, antingen via grupper eller direkt
+* Hjälpas åt :)
+
+Nedan kommer lite instruktioner för hur man kan göra det.
+
 Så du har upptäckt en raid i din närhet som du vill dela med dig av? Raiden är för en Suicune, som **slutar** kl 09:45 vid gymmet Hästen.
 
 Skriv då följande i kanalen som är till för botmeddelandespam (#bot i Uppsala):
