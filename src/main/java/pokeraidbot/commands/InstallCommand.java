@@ -70,9 +70,9 @@ public class InstallCommand extends Command {
                 final String replyindmValue = settingsToSet.get("replyindm");
                 final Boolean replyInDmWhenPossible = replyindmValue == null ? false : Boolean.valueOf(replyindmValue);
                 final String feedbackStrategyValue = settingsToSet.get("feedback");
-                final String groupCreationStrategyValue = settingsToSet.get("groupCreation");
-                final String groupChannel = settingsToSet.get("groupChannel");
-                final String botIntegrationValue = settingsToSet.get("botIntegration");
+                final String groupCreationStrategyValue = settingsToSet.get("groupcreation");
+                final String groupChannel = settingsToSet.get("groupchannel");
+                final String botIntegrationValue = settingsToSet.get("botintegration");
                 final Boolean botIntegration =
                         botIntegrationValue == null ? false : Boolean.valueOf(botIntegrationValue);
                 final String pinGroupsValue = settingsToSet.get("pinGroups");

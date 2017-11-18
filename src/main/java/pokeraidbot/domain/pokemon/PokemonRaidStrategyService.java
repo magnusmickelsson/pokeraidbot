@@ -176,7 +176,7 @@ public class PokemonRaidStrategyService {
             LOGGER.warn("Exception when getting pokemon by name " + pokemonName + " - needs to be added to repo data file.");
             return;
         }
-        pokemonRaidInfo.put(pokemonName, new PokemonRaidInfo(pokemon, maxCp, bossTier));
+        pokemonRaidInfo.put(pokemonName.toUpperCase(), new PokemonRaidInfo(pokemon, maxCp, bossTier));
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {
@@ -199,6 +199,7 @@ public class PokemonRaidStrategyService {
     }
 
     public PokemonRaidInfo getRaidInfo(Pokemon pokemon) {
-        return pokemonRaidInfo.get(pokemon.getName().toUpperCase());
+        final String pokemonName = pokemon.getName().toUpperCase();
+        return pokemonRaidInfo.get(pokemonName);
     }
 }

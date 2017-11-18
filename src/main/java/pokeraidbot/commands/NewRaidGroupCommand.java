@@ -118,7 +118,12 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             throw new UserMessedUpException(user, errorText);
         }
 
-        if (raidRepository.hasGroupForRaid(user, raid, startAt)) {
+        if (raidRepository.userHasGroupForRaid(user, raid)) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TOO_MANY_GROUPS,
+                    localeService.getLocaleForUser(user)));
+        }
+
+        if (raidRepository.existsGroupForRaidAt(raid, startAt)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }

@@ -225,9 +225,25 @@ public class RaidEntity implements Serializable {
         return null;
     }
 
-    public boolean hasGroup(User user, LocalDateTime startAt) {
+    public boolean userHasGroup(User user) {
+        Validate.notNull(user, "User");
         for (RaidGroup group : groups) {
-            if (group.getCreatorId().equals(user.getId()) && group.getStartsAt().equals(startAt)) {
+            final boolean isUsersGroup = group.getCreatorId().equals(user.getId());
+            if (isUsersGroup) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasGroupAt(User user, LocalDateTime startAt) {
+        Validate.notNull(user, "User");
+        Validate.notNull(startAt, "StartAt");
+        for (RaidGroup group : groups) {
+            final boolean isUsersGroup = group.getCreatorId().equals(user.getId());
+            final boolean isMatchingStartTime = group.getStartsAt().equals(startAt);
+            if (isUsersGroup
+                    && isMatchingStartTime) {
                 return true;
             }
         }
@@ -251,5 +267,16 @@ public class RaidEntity implements Serializable {
             }
         }
         return null;
+    }
+
+    public boolean existsGroupAt(LocalDateTime startAt) {
+        Validate.notNull(startAt, "StartAt");
+        for (RaidGroup group : groups) {
+            final boolean isMatchingStartTimeIfProvided = group.getStartsAt().equals(startAt);
+            if (isMatchingStartTimeIfProvided) {
+                return true;
+            }
+        }
+        return false;
     }
 }

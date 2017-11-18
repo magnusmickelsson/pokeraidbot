@@ -98,13 +98,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         gymName = gymNameBuilder.toString().trim();
         gym = gymRepository.search(user, gymName, config.getRegion());
         raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        verifyPermission(commandEvent, user, raid, config);
+        verifyGroupPermission(commandEvent, user, raid, config);
         LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
         LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
 
         assertTimeInRaidTimespan(user, newDateTime, raid, localeService);
         assertGroupTimeNotBeforeNow(user, newDateTime, localeService);
-        if (raidRepository.hasGroupForRaid(user, raid, newDateTime)) {
+        if (raidRepository.existsGroupForRaidAt(raid, newDateTime)) { // Check for any user
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
@@ -114,6 +114,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     LocaleService.MANY_GROUPS_FOR_RAID,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
+
         boolean groupChanged = false;
         final Set<EmoticonSignUpMessageListener> listenersToCheck =
                 botService.getBot().getRegisteredListeners().stream().filter(l -> {
@@ -133,8 +134,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
 
         if (listenersToCheck.size() > 1) {
             replyBasedOnConfigAndRemoveAfter(config, commandEvent,
-                    localeService.getMessageFor(LocaleService.TOO_MANY_GROUPS,
-                            localeService.getLocaleForUser(user)),
+                    localeService.getMessageFor(LocaleService.MANY_GROUPS_FOR_RAID,
+                            localeService.getLocaleForUser(user), String.valueOf(raid)),
                     BotServerMain.timeToRemoveFeedbackInSeconds);
         } else if (listenersToCheck.size() == 0) { // todo: could also be due to raid not having any groups
             throw new UserMessedUpException(user,
@@ -262,6 +263,16 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
         assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
         raid = raidRepository.changeEndOfRaid(tempRaid.getId(), endsAt);
+    }
+
+    private void verifyGroupPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {
+        final boolean isServerMod = isUserServerMod(commandEvent, config);
+        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent) && !isServerMod;
+        final boolean userHasNoGroupForRaid = !raidRepository.userHasGroupForRaid(user, raid);
+        if (userIsNotAdministrator && userHasNoGroupForRaid) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                    localeService.getLocaleForUser(user)));
+        }
     }
 
     private void verifyPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {

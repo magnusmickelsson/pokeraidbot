@@ -172,6 +172,14 @@ public class LocaleService {
                 "Det fanns ingen sådan grupp."
         );
 
+        i18nMessages.put(new I18nLookup(TOO_MANY_GROUPS, Locale.ENGLISH),
+                "There is already a group created for this raid by this user. In later releases, we may allow " +
+                        "creating many groups per raid per user again."
+        );
+        i18nMessages.put(new I18nLookup(TOO_MANY_GROUPS, SWEDISH),
+                "Det finns redan en grupp för denna raid av denna användare. I framtida releaser, kan vi komma att " +
+                        "tillåta att skapa flera grupper per raid per användare igen."
+        );
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, Locale.ENGLISH),
                 "There are several groups by this user for raid %1 - so right now you can't change the time of them. " +
                         "To be fixed in future releases."
@@ -204,10 +212,10 @@ public class LocaleService {
                         " (kan kräva manuell rensning av meddelande i så fall)."
         );
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, Locale.ENGLISH),
-                "Group for this user and at this time already existed for raid %1"
+                "There is already a raidgroup at this time for %1"
         );
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, SWEDISH),
-                "Gruppen för denna användare och tid finns redan för raiden %1"
+                "Det finns redan en grupp för denna tid för %1"
         );
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, Locale.ENGLISH),
                 "Create new raid starting at time - !raid start [Name of Pokemon] [Start (HH:MM)] [Gym name]");

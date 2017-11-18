@@ -53,6 +53,8 @@ Do, features:
 
 -- 1.4.0
 
+* Move gyms to the database, use CSV files just to initialize and keep in synch
+* Make it possible to change gyms in database via admin command (Zhorhn only)
 * Umeå request: If people do similar map commands after one other, skip following commands
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time

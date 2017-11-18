@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidInfo;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidBossCounters;
@@ -16,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -78,5 +80,12 @@ public class RaidPokemonsTest {
             }
             throw e;
         }
+    }
+
+    @Test
+    public void verifyAllLegendaryPokemonsAreTier5() {
+        final PokemonRaidInfo raikou = strategyService.getRaidInfo(pokemonRepository.search("raikou", null));
+        assertNotNull(raikou);
+        assertThat(raikou.getBossTier(), is(5));
     }
 }

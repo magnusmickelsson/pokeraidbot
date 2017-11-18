@@ -418,9 +418,27 @@ public class RaidRepository {
         return removedGroup;
     }
 
+    public boolean userHasGroupForRaid(User user, Raid raid) {
+        RaidEntity entity = findEntityByRaidId(raid.getId());
+        if (entity.userHasGroup(user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean hasGroupForRaid(User user, Raid raid, LocalDateTime startAt) {
         RaidEntity entity = findEntityByRaidId(raid.getId());
-        if (entity.hasGroup(user, startAt)) {
+        if (entity.hasGroupAt(user, startAt)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean existsGroupForRaidAt(Raid raid, LocalDateTime startAt) {
+        RaidEntity entity = findEntityByRaidId(raid.getId());
+        if (entity.existsGroupAt(startAt)) {
             return true;
         } else {
             return false;
