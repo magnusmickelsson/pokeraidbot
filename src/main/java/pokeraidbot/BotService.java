@@ -75,7 +75,7 @@ public class BotService {
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
                 serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
                 executorService,
-                clockService, this);
+                clockService, this, raidInfoService, trackingCommandListener);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
                 raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,

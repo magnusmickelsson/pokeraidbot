@@ -13,7 +13,7 @@ public class PokemonRaidStrategyService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PokemonRaidStrategyService.class);
 
     private Map<String, RaidBossCounters> counters = new HashMap<>();
-    private Map<String, String> maxCp = new HashMap<>();
+    private Map<String, PokemonRaidInfo> pokemonRaidInfo = new HashMap<>();
     private static String[] raidBosses = {
             "BAYLEEF",
             "CROCONAW",
@@ -80,98 +80,103 @@ public class PokemonRaidStrategyService {
         }
         LOGGER.info("Parsed " + counters.size() + " raid boss counters.");
 
-        maxCp.put("BAYLEEF", "740");
+        populateRaidInfoForBoss(pokemonRepository, "BAYLEEF", "740", 1);
 
-        maxCp.put("CROCONAW", "913");
+        populateRaidInfoForBoss(pokemonRepository, "CROCONAW", "913", 1);
 
-        maxCp.put("MAGIKARP", "125");
+        populateRaidInfoForBoss(pokemonRepository, "MAGIKARP", "125", 1);
 
-        maxCp.put("QUILAVA", "847");
+        populateRaidInfoForBoss(pokemonRepository, "QUILAVA", "847", 1);
 
-        maxCp.put("ELECTABUZZ", "1255");
+        populateRaidInfoForBoss(pokemonRepository, "ELECTABUZZ", "1255", 2);
 
-        maxCp.put("EXEGGUTOR", "1666");
+        populateRaidInfoForBoss(pokemonRepository, "EXEGGUTOR", "1666", 2);
 
-        maxCp.put("MAGMAR", "1288");
+        populateRaidInfoForBoss(pokemonRepository, "MAGMAR", "1288", 2);
 
-        maxCp.put("MUK", "1548");
+        populateRaidInfoForBoss(pokemonRepository, "MUK", "1548", 2);
 
-        maxCp.put("WEEZING", "1247");
+        populateRaidInfoForBoss(pokemonRepository, "WEEZING", "1247", 2);
 
-        maxCp.put("ALAKAZAM", "1649");
+        populateRaidInfoForBoss(pokemonRepository, "ALAKAZAM", "1649", 3);
 
-        maxCp.put("ARCANINE", "1622");
+        populateRaidInfoForBoss(pokemonRepository, "ARCANINE", "1622", 3);
 
-        maxCp.put("FLAREON", "1659");
+        populateRaidInfoForBoss(pokemonRepository, "FLAREON", "1659", 3);
 
-        maxCp.put("GENGAR", "1496");
+        populateRaidInfoForBoss(pokemonRepository, "GENGAR", "1496", 3);
 
-        maxCp.put("JOLTEON", "1560");
+        populateRaidInfoForBoss(pokemonRepository, "JOLTEON", "1560", 3);
 
-        maxCp.put("MACHAMP", "1650");
+        populateRaidInfoForBoss(pokemonRepository, "MACHAMP", "1650", 3);
 
-        maxCp.put("VAPOREON", "1804");
+        populateRaidInfoForBoss(pokemonRepository, "VAPOREON", "1804", 3);
 
-        addMaxCp("Blastoise", "1309");
+        populateRaidInfoForBoss(pokemonRepository, "Blastoise", "1309", 4);
 
-        addMaxCp("Charizard", "1535");
+        populateRaidInfoForBoss(pokemonRepository, "Charizard", "1535", 4);
 
-        addMaxCp("Lapras", "1487");
+        populateRaidInfoForBoss(pokemonRepository, "Lapras", "1487", 4);
 
-        addMaxCp("Rhydon", "1886");
+        populateRaidInfoForBoss(pokemonRepository, "Rhydon", "1886", 4);
 
-        addMaxCp("Snorlax", "1917");
+        populateRaidInfoForBoss(pokemonRepository, "Snorlax", "1917", 4);
 
-        addMaxCp("Tyranitar", "2097");
+        populateRaidInfoForBoss(pokemonRepository, "Tyranitar", "2097", 4);
 
-        addMaxCp("Venusaur", "1467");
+        populateRaidInfoForBoss(pokemonRepository, "Venusaur", "1467", 4);
 
-        addMaxCp("Entei", "1930");
+        populateRaidInfoForBoss(pokemonRepository, "Entei", "1930", 5);
 
-        addMaxCp("Articuno", "1676");
+        populateRaidInfoForBoss(pokemonRepository, "Articuno", "1676", 5);
 
-        addMaxCp("Moltres", "1870");
+        populateRaidInfoForBoss(pokemonRepository, "Moltres", "1870", 5);
 
-        addMaxCp("Zapdos", "1902");
+        populateRaidInfoForBoss(pokemonRepository, "Zapdos", "1902", 5);
 
-        addMaxCp("Lugia", "2056");
+        populateRaidInfoForBoss(pokemonRepository, "Lugia", "2056", 5);
 
-        addMaxCp("Raikou", "1913");
+        populateRaidInfoForBoss(pokemonRepository, "Raikou", "1913", 5);
 
-        addMaxCp("Suicune", "1613");
+        populateRaidInfoForBoss(pokemonRepository, "Suicune", "1613", 5);
 
-        addMaxCp("Mewtwo", "2275");
+        populateRaidInfoForBoss(pokemonRepository, "Mewtwo", "2275", 5);
 
         // New bosses after Niantic surprise attack :p
         // Tier 1
-        addMaxCp("Ivysaur", "886");
-        addMaxCp("Metapod", "239");
-        addMaxCp("Charmeleon", "847");
-        addMaxCp("Wartortle", "756");
+        populateRaidInfoForBoss(pokemonRepository, "Ivysaur", "886", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Metapod", "239", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Charmeleon", "847", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Wartortle", "756", 1);
         // Tier 2
-        addMaxCp("Magneton", "1278");
-        addMaxCp("Sableye", "745");
-        addMaxCp("Sandslash", "1330");
-        addMaxCp("Tentacruel", "1356");
-        addMaxCp("Marowak", "966");
-        addMaxCp("Cloyster", "1414");
+        populateRaidInfoForBoss(pokemonRepository, "Magneton", "1278", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Sableye", "745", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Sandslash", "1330", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Tentacruel", "1356", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Marowak", "966", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Cloyster", "1414", 2);
         // Tier 3
-        addMaxCp("Ninetales", "1233");
-        addMaxCp("Scyther", "1408");
-        addMaxCp("Omastar", "1534");
-        addMaxCp("Porygon", "895");
+        populateRaidInfoForBoss(pokemonRepository, "Ninetales", "1233", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Scyther", "1408", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Omastar", "1534", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Porygon", "895", 3);
         // Tier 4
-        addMaxCp("Poliwrath", "1395");
-        addMaxCp("Victreebel", "1296");
-        addMaxCp("Golem", "1666");
-        addMaxCp("Nidoking", "1363");
-        addMaxCp("Nidoqueen", "1336");
+        populateRaidInfoForBoss(pokemonRepository, "Poliwrath", "1395", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Victreebel", "1296", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Golem", "1666", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Nidoking", "1363", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Nidoqueen", "1336", 4);
 
-        LOGGER.info("Configured " + maxCp.size() + " raid boss max CP entries.");
+        LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
 
-    private void addMaxCp(String mewtwo, String cp) {
-        maxCp.put(mewtwo.toUpperCase(), cp);
+    private void populateRaidInfoForBoss(PokemonRepository pokemonRepository, String pokemonName, String maxCp, int bossTier) {
+        final Pokemon pokemon = pokemonRepository.getByName(pokemonName.toUpperCase());
+        if (pokemon == null) {
+            LOGGER.warn("Exception when getting pokemon by name " + pokemonName + " - needs to be added to repo data file.");
+            return;
+        }
+        pokemonRaidInfo.put(pokemonName, new PokemonRaidInfo(pokemon, maxCp, bossTier));
     }
 
     public RaidBossCounters getCounters(Pokemon pokemon) {
@@ -181,11 +186,19 @@ public class PokemonRaidStrategyService {
     }
 
     public String getMaxCp(Pokemon pokemon) {
-        final String maxCp = this.maxCp.get(pokemon.getName().toUpperCase());
+        final PokemonRaidInfo pokemonRaidInfo = this.pokemonRaidInfo.get(pokemon.getName().toUpperCase());
+        if (pokemonRaidInfo == null) {
+            return null;
+        }
+        final String maxCp = String.valueOf(pokemonRaidInfo.getMaxCp());
         if (maxCp != null && (!maxCp.isEmpty())) {
             return maxCp;
         } else {
             return null;
         }
+    }
+
+    public PokemonRaidInfo getRaidInfo(Pokemon pokemon) {
+        return pokemonRaidInfo.get(pokemon.getName().toUpperCase());
     }
 }

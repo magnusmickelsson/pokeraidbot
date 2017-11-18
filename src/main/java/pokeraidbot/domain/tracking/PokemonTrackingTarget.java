@@ -4,12 +4,14 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.commands.NewRaidCommand;
 import pokeraidbot.commands.NewRaidExCommand;
 import pokeraidbot.commands.NewRaidStartsAtCommand;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.Locale;
@@ -58,13 +60,32 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
     @Override
     public void handle(CommandEvent commandEvent, Command command, LocaleService localeService, Locale locale, Config config) {
         final Member memberById = commandEvent.getGuild().getMemberById(Long.parseLong(userId));
-        final User user = memberById.getUser();
-        final String userName = commandEvent.getEvent().getAuthor().getName();
+        final User userToMessage = memberById.getUser();
+        final String raidCreator = commandEvent.getEvent().getAuthor().getName();
         final String rawContent = commandEvent.getEvent().getMessage().getRawContent();
 
         final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
-                userName, rawContent);
-        sendPrivateMessage(user, message);
+                raidCreator, rawContent);
+        sendPrivateMessage(userToMessage, message);
+    }
+
+    @Override
+    public boolean canHandle(GuildMessageReceivedEvent event, Raid raid) {
+        if (event.getAuthor().getId().equals(userId)) {
+            return false; // Skip events user created
+        }
+        return raid.getPokemon().equals(pokemon);
+    }
+
+    @Override
+    public void handle(GuildMessageReceivedEvent event, Raid raid, LocaleService localeService, Locale locale, Config config) {
+        final Member memberById = event.getGuild().getMemberById(Long.parseLong(userId));
+        final User userToMessage = memberById.getUser();
+        final String raidCreator = event.getAuthor().getName();
+
+        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
+                raidCreator, raid.toString(locale));
+        sendPrivateMessage(userToMessage, message);
     }
 
     private void sendPrivateMessage(User user, String content)

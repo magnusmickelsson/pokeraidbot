@@ -1,5 +1,6 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
+import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -18,9 +19,14 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidInfo;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.tracking.PokemonTrackingTarget;
+import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.domain.tracking.TrackingTarget;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
@@ -29,6 +35,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static pokeraidbot.Utils.getStartOfRaid;
 import static pokeraidbot.Utils.printTime;
@@ -44,11 +51,15 @@ public class GymHuntrRaidEventListener implements EventListener {
     private ExecutorService executorService;
     private final ClockService clockService;
     private final BotService botService;
+    private final PokemonRaidStrategyService strategyService;
+    private final TrackingCommandListener trackingCommandListener;
 
     public GymHuntrRaidEventListener(ServerConfigRepository serverConfigRepository, RaidRepository raidRepository,
                                      GymRepository gymRepository, PokemonRepository pokemonRepository,
                                      LocaleService localeService, ExecutorService executorService,
-                                     ClockService clockService, BotService botService) {
+                                     ClockService clockService, BotService botService,
+                                     PokemonRaidStrategyService strategyService,
+                                     TrackingCommandListener trackingCommandListener) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.gymRepository = gymRepository;
@@ -57,6 +68,8 @@ public class GymHuntrRaidEventListener implements EventListener {
         this.executorService = executorService;
         this.clockService = clockService;
         this.botService = botService;
+        this.strategyService = strategyService;
+        this.trackingCommandListener = trackingCommandListener;
     }
 
     @Override
@@ -66,6 +79,10 @@ public class GymHuntrRaidEventListener implements EventListener {
             final User messageAuthor = guildEvent.getAuthor();
             if (isUserGymhuntrBot(messageAuthor) || isUserPokeAlarmBot(messageAuthor)) {
                 final String serverName = guildEvent.getGuild().getName().toLowerCase();
+                final Config config = serverConfigRepository.getConfigForServer(serverName);
+                if (!config.getUseBotIntegration()) {
+                    return;
+                }
                 final List<MessageEmbed> embeds = guildEvent.getMessage().getEmbeds();
                 if (embeds != null && embeds.size() > 0) {
                     for (MessageEmbed embed : embeds) {
@@ -87,14 +104,14 @@ public class GymHuntrRaidEventListener implements EventListener {
                             final String pokemon = iterator.next();
                             final String time = iterator.next();
                             final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
-                            final Config config = serverConfigRepository.getConfigForServer(serverName);
                             final String region = config.getRegion();
                             final Gym raidGym = gymRepository.findByName(gym, region);
                             final LocalDate currentDate = currentDateTime.toLocalDate();
                             final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
                                     LocalTime.parse(time, Utils.timeParseFormatter));
                             handleRaidFromIntegration(botService.getBot().getSelfUser(),
-                                    guildEvent, raidBoss, raidGym, endOfRaid, config, clockService);
+                                    guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
+                                    strategyService.getRaidInfo(raidBoss));
                         }
                     }
                 }
@@ -103,7 +120,8 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     public void handleRaidFromIntegration(User user, GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
-                                          LocalDateTime endOfRaid, Config config, ClockService clockService) {
+                                          LocalDateTime endOfRaid, Config config, ClockService clockService,
+                                          PokemonRaidInfo pokemonRaidInfo) {
         final LocalDateTime now = clockService.getCurrentDateTime();
         LocalDateTime currentDateTime = now;
         final boolean moreThan10MinutesLeftOnRaid = endOfRaid.isAfter(currentDateTime.plusMinutes(10));
@@ -116,32 +134,18 @@ public class GymHuntrRaidEventListener implements EventListener {
             try {
                 createdRaid = raidRepository.newRaid(user, raidToCreate);
                 final Locale locale = config.getLocale();
-                // todo: fetch from config what channel to post this message in
                 final MessageChannel channel = guildEvent.getMessage().getChannel();
                 EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
                 StringBuilder sb = new StringBuilder();
                 sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                         locale, createdRaid.toString(locale)));
-                LocalTime groupStart = null;
-                // todo: fetch setting 10 minutes from server config?
-                final LocalDateTime startOfRaid = getStartOfRaid(createdRaid.getEndOfRaid(), createdRaid.isExRaid());
-                if (now.isBefore(startOfRaid)) {
-                    groupStart = startOfRaid.toLocalTime().plusMinutes(10);
-                } else if (now.isAfter(startOfRaid) && now.plusMinutes(15).isBefore(createdRaid.getEndOfRaid())) {
-                    groupStart = now.toLocalTime().plusMinutes(10);
-                }
+                notifyTrackingUsers(guildEvent, config, createdRaid, locale);
+                createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
+                        pokemonRaidInfo, now, createdRaid, channel);
 
-                if (groupStart != null) {
-                    NewRaidGroupCommand.createRaidGroup(channel, config, user,
-                            config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
-                            botService, serverConfigRepository, pokemonRepository, gymRepository,
-                            clockService, executorService);
-                }
                 embedBuilder.setDescription(sb.toString());
                 final MessageEmbed messageEmbed = embedBuilder.build();
-                channel.sendMessage(messageEmbed).queue(m -> {
-                    LOGGER.info("Raid created via Bot integration: " + createdRaid);
-                });
+                sendFeedbackThenCleanUp(createdRaid, channel, messageEmbed);
             } catch (Throwable t) {
                 LOGGER.warn("Exception when trying to create raid via botintegration: " +
                         t.getMessage());
@@ -149,6 +153,55 @@ public class GymHuntrRaidEventListener implements EventListener {
         } else {
             LOGGER.debug("Skipped creating raid at " + raidGym +
                     ", less than 10 minutes remaining on it.");
+        }
+    }
+
+    private void sendFeedbackThenCleanUp(Raid createdRaid, MessageChannel channel, MessageEmbed messageEmbed) {
+        channel.sendMessage(messageEmbed).queue(m -> {
+            LOGGER.info("Raid created via Bot integration: " + createdRaid);
+            // Clean up message
+            channel.deleteMessageById(m.getId())
+                    .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
+        });
+    }
+
+    private void createGroupIfConfigSaysSo(User user, GuildMessageReceivedEvent guildEvent, Config config,
+                                           ClockService clockService, PokemonRaidInfo pokemonRaidInfo,
+                                           LocalDateTime now, Raid createdRaid, MessageChannel channel) {
+        // Auto create group for tier 5 bosses, if server config says to do so
+        if (pokemonRaidInfo != null && pokemonRaidInfo.getBossTier() == 5) {
+            LocalTime groupStart = null;
+            // todo: fetch setting 10 minutes from server config?
+            final LocalDateTime startOfRaid = getStartOfRaid(createdRaid.getEndOfRaid(), createdRaid.isExRaid());
+            if (now.isBefore(startOfRaid)) {
+                groupStart = startOfRaid.toLocalTime().plusMinutes(10);
+            } else if (now.isAfter(startOfRaid) && now.plusMinutes(15).isBefore(createdRaid.getEndOfRaid())) {
+                groupStart = now.toLocalTime().plusMinutes(10);
+            }
+
+            if (groupStart != null) {
+                MessageChannel chn = config.getGroupCreationChannel(guildEvent.getGuild());
+                MessageChannel channelToCreateGroupIn = channel;
+                if (chn != null &&
+                        config.getGroupCreationStrategy() == Config.RaidGroupCreationStrategy.NAMED_CHANNEL) {
+                    channelToCreateGroupIn = chn;
+                }
+                NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, config, user,
+                        config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
+                        botService, serverConfigRepository, pokemonRepository, gymRepository,
+                        clockService, executorService);
+            }
+        }
+    }
+
+    private void notifyTrackingUsers(GuildMessageReceivedEvent guildEvent, Config config, Raid createdRaid,
+                                     Locale locale) {
+        final Set<PokemonTrackingTarget> trackingTargets =
+                trackingCommandListener.getTrackingTargets(config.getRegion());
+        for (TrackingTarget t : trackingTargets) {
+            if (t.canHandle(guildEvent, createdRaid)) {
+                t.handle(guildEvent, createdRaid, localeService, locale, config);
+            }
         }
     }
 

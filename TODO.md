@@ -10,16 +10,15 @@ Needs testing:
 * Umeå request: setting to remove ALL bot commands after X time, even the ones that go ok - 
 implemented as feedback strategy handling, configurable per server
 * Regexp to remove all duplicate or more spaces in between arguments
-
-Being developed:
-
 * Gymhuntr and Pokealarm integration via GymhuntrMessageListener (isBot()) (rename this class)
 * Gymhuntr integration should create raids which also notify users who have done 
 !raid track certain pokemons
-* Increase default time that feedback messages remain? Let Umeå feedback strategy keep messages longer (server setting).
-* Raid group messages could be sent to a specific channel, if so configured. Ex raid groups to their own channel.
 * Settings to automatically create raidgroup for raids, for tier 5 at the time of hatching 
-(or with a delay, configurable - like +10 minutes)
+
+Being developed:
+
+* Increase default time that feedback messages remain? Let Umeå feedback strategy keep messages longer (server setting).
+* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 
 Discussion:

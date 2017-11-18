@@ -54,7 +54,8 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
         }
     }
 
-    private Set<PokemonTrackingTarget> getTrackingTargets(String region) {
+    @Override
+    public Set<PokemonTrackingTarget> getTrackingTargets(String region) {
         if (trackingTargets.size() == 0) {
             // We most likely had a server restart, load saved tracking from database
             for (UserConfig config : userConfigRepository.findAll()) {

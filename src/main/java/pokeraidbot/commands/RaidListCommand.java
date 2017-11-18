@@ -104,7 +104,6 @@ public class RaidListCommand extends ConfigAwareCommand {
             }
             final String exRaidList = exRaids.toString();
             if (exRaidList.length() > 1) {
-//                embedBuilder = new EmbedBuilder();
                 stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
             }
             replyBasedOnConfig(config, commandEvent, stringBuilder.toString());

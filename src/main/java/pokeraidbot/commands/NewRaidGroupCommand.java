@@ -144,7 +144,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                     messageId, messageId, user.getId(), startAt);
             group = raidRepository.newGroupForRaid(user, group, raid);
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Created group for emote message with ID: " + messageId + " - " + group);
+                LOGGER.debug("Created group in channel " + channel.getName() +
+                        " for emote message with ID: " + messageId + " - " + group);
             }
             // Add number icons for pleb signups
             embedChannel.addReactionById(messageId, Emotes.ONE).queue();

@@ -33,15 +33,18 @@ public class InstallCommand extends Command {
             event.replyInDM("Re-run the command !raid install, but with the following syntax:");
             event.replyInDM("!raid install server=[server name];region=[region dataset reference];" +
                     "replyInDm=[true or false];locale=[2 char language code];mods=[group for mods (optional)]" +
-                    ";feedback=[feedback strategy (optional)]");
+                    ";feedback=[feedback strategy (optional)];groupCreation=[group creation strategy (optional)];" +
+                    "groupChannel=[if using named channel strategy, channel name (optional)];botIntegration=[true or false " +
+                    "(optional)];pinGroups=[true or false (optional)]");
             event.replyInDM("Example: !raid install server=My test server;region=stockholm;" +
-                    "replyInDm=false;locale=sv;mods=mods;feedback=REMOVE_ALL_EXCEPT_MAP");
+                    "replyInDm=false;locale=sv;mods=mods;feedback=REMOVE_ALL_EXCEPT_MAP;groupCreation=NAMED_CHANNEL;" +
+                    "groupChannel=raidgroups;botIntegration=true;pinGroups=true");
             event.reactSuccess();
             return;
         } else {
             Map<String, String> settingsToSet = new HashMap<>();
             final String[] arguments = args.split(";");
-            if (arguments.length < 4 || arguments.length > 6) {
+            if (arguments.length < 4 || arguments.length > 10) {
                 event.replyInDM("Wrong syntax of install command. Do this again, and this time " +
                         "follow instructions, please: !raid install");
                 event.reactError();
@@ -64,31 +67,38 @@ public class InstallCommand extends Command {
                 final Locale locale = new Locale(settingsToSet.get("locale"));
                 final String region = settingsToSet.get("region");
                 final String modGroup = settingsToSet.get("mods");
-                final Boolean replyInDmWhenPossible = Boolean.valueOf(settingsToSet.get("replyindm"));
+                final String replyindmValue = settingsToSet.get("replyindm");
+                final Boolean replyInDmWhenPossible = replyindmValue == null ? false : Boolean.valueOf(replyindmValue);
                 final String feedbackStrategyValue = settingsToSet.get("feedback");
+                final String groupCreationStrategyValue = settingsToSet.get("groupCreation");
+                final String groupChannel = settingsToSet.get("groupChannel");
+                final String botIntegrationValue = settingsToSet.get("botIntegration");
+                final Boolean botIntegration =
+                        botIntegrationValue == null ? false : Boolean.valueOf(botIntegrationValue);
+                final String pinGroupsValue = settingsToSet.get("pinGroups");
+                final Boolean pinGroups = pinGroupsValue == null ? false : Boolean.valueOf(pinGroupsValue);
                 if (config == null) {
                     config = new Config(region,
                             replyInDmWhenPossible,
                             locale, server);
-                    config.setModPermissionGroup(modGroup);
                 } else {
                     config.setLocale(locale);
                     config.setRegion(region);
                     config.setReplyInDmWhenPossible(replyInDmWhenPossible);
-                    config.setModPermissionGroup(modGroup);
-                    if (feedbackStrategyValue != null) {
-                        Config.FeedbackStrategy feedbackStrategy;
-                        try {
-                            feedbackStrategy = Config.FeedbackStrategy.valueOf(feedbackStrategyValue.toUpperCase());
-                        } catch (Throwable t) {
-                            event.replyInDM("Bad value of feedback strategy. Available values: " +
-                                    StringUtils.join(Config.FeedbackStrategy.values(), ", "));
-                            event.reactError();
-                            return;
-                        }
-                        config.setFeedbackStrategy(feedbackStrategy);
-                    }
                 }
+                config.setModPermissionGroup(modGroup);
+                Config.RaidGroupCreationStrategy groupCreationStrategy =
+                        getGroupCreationStrategyIfPossible(event, groupCreationStrategyValue);
+                if (groupCreationStrategy != null) {
+                    config.setGroupCreationStrategy(groupCreationStrategy);
+                }
+                Config.FeedbackStrategy feedbackStrategy = getFeedbackStrategyIfPossible(event, feedbackStrategyValue);
+                if (feedbackStrategy != null) {
+                    config.setFeedbackStrategy(feedbackStrategy);
+                }
+                config.setGroupCreationChannel(groupChannel);
+                config.setUseBotIntegration(botIntegration);
+                config.setPinGroups(pinGroups);
                 event.replyInDM("Configuration complete. Saved configuration: " + serverConfigRepository.save(config));
                 event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
                         "emotes the bot needs.");
@@ -102,5 +112,36 @@ public class InstallCommand extends Command {
                 event.reactError();
             }
         }
+    }
+
+    private Config.FeedbackStrategy getFeedbackStrategyIfPossible(CommandEvent event, String enumValue) {
+        Config.FeedbackStrategy valueToSet = null;
+        if (enumValue != null) {
+            try {
+                valueToSet = Config.FeedbackStrategy.valueOf(enumValue.toUpperCase());
+            } catch (Throwable t) {
+                event.replyInDM("Bad value of " + Config.FeedbackStrategy.class.getSimpleName() + ". Available values: " +
+                        StringUtils.join(Config.FeedbackStrategy.values(), ", "));
+                event.reactError();
+                return null;
+            }
+        }
+        return valueToSet;
+    }
+
+    private Config.RaidGroupCreationStrategy getGroupCreationStrategyIfPossible(CommandEvent event, String enumValue) {
+        Config.RaidGroupCreationStrategy valueToSet = null;
+        if (enumValue != null) {
+            try {
+                valueToSet = Config.RaidGroupCreationStrategy.valueOf(enumValue.toUpperCase());
+            } catch (Throwable t) {
+                event.replyInDM("Bad value of " + Config.RaidGroupCreationStrategy.class.getSimpleName() +
+                        ". Available values: " +
+                        StringUtils.join(Config.RaidGroupCreationStrategy.values(), ", "));
+                event.reactError();
+                return null;
+            }
+        }
+        return valueToSet;
     }
 }

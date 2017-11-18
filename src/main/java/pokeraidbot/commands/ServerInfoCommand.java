@@ -23,7 +23,7 @@ public class ServerInfoCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        replyBasedOnConfig(config, commandEvent, Utils.printDateTime(clockService.getCurrentDateTime()) +
+        replyBasedOnConfigButKeep(config, commandEvent, Utils.printDateTime(clockService.getCurrentDateTime()) +
                 ": " + String.valueOf(config));
     }
 }

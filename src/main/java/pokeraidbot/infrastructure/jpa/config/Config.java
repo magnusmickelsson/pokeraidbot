@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure.jpa.config;
 
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 
@@ -36,6 +38,10 @@ public class Config {
     private FeedbackStrategy feedbackStrategy = FeedbackStrategy.DEFAULT;
     @Column
     private RaidGroupCreationStrategy groupCreationStrategy = RaidGroupCreationStrategy.SAME_CHANNEL;
+    @Column
+    private String groupCreationChannel;
+    @Column
+    private Boolean useBotIntegration = false;
 
     // For JPA
     protected Config() {
@@ -99,6 +105,14 @@ public class Config {
         this.pinGroups = pinGroups;
     }
 
+    public Boolean getUseBotIntegration() {
+        return useBotIntegration;
+    }
+
+    public void setUseBotIntegration(Boolean useBotIntegration) {
+        this.useBotIntegration = useBotIntegration;
+    }
+
     public Locale getLocale() {
         if (locale != null) {
             return new Locale(locale);
@@ -140,18 +154,32 @@ public class Config {
         this.feedbackStrategy = feedbackStrategy;
     }
 
-    @Override
-    public String toString() {
-        return "Config{" +
-                "server='" + server + '\'' +
-                ", region='" + region + '\'' +
-                ", replyInDmWhenPossible=" + replyInDmWhenPossible +
-                ", locale='" + locale + '\'' +
-                ", giveHelp=" + giveHelp +
-                ", pinGroups=" + pinGroups +
-                ", modGroup=" + modPermissionGroup +
-                ", feedbackStrategy=" + feedbackStrategy +
-                '}';
+    public RaidGroupCreationStrategy getGroupCreationStrategy() {
+        return groupCreationStrategy;
+    }
+
+    public void setGroupCreationStrategy(RaidGroupCreationStrategy groupCreationStrategy) {
+        this.groupCreationStrategy = groupCreationStrategy;
+    }
+
+    public String getGroupCreationChannel() {
+        return groupCreationChannel;
+    }
+
+    public void setGroupCreationChannel(String groupCreationChannel) {
+        this.groupCreationChannel = groupCreationChannel;
+    }
+
+    public MessageChannel getGroupCreationChannel(Guild guild) {
+        if (guild == null) {
+            return null;
+        }
+        for (MessageChannel c : guild.getTextChannels()) {
+            if (c.getName().equalsIgnoreCase(groupCreationChannel)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     public enum FeedbackStrategy {
@@ -159,6 +187,68 @@ public class Config {
     }
 
     public enum RaidGroupCreationStrategy {
-        SAME_CHANNEL, PER_LEVEL, NAMED_CHANNEL
+        SAME_CHANNEL, NAMED_CHANNEL // , PER_LEVEL
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Config)) return false;
+
+        Config config = (Config) o;
+
+        if (id != null ? !id.equals(config.id) : config.id != null) return false;
+        if (server != null ? !server.equals(config.server) : config.server != null) return false;
+        if (region != null ? !region.equals(config.region) : config.region != null) return false;
+        if (replyInDmWhenPossible != null ? !replyInDmWhenPossible.equals(config.replyInDmWhenPossible) : config.replyInDmWhenPossible != null)
+            return false;
+        if (locale != null ? !locale.equals(config.locale) : config.locale != null) return false;
+        if (giveHelp != null ? !giveHelp.equals(config.giveHelp) : config.giveHelp != null) return false;
+        if (pinGroups != null ? !pinGroups.equals(config.pinGroups) : config.pinGroups != null) return false;
+        if (overviewMessageId != null ? !overviewMessageId.equals(config.overviewMessageId) : config.overviewMessageId != null)
+            return false;
+        if (modPermissionGroup != null ? !modPermissionGroup.equals(config.modPermissionGroup) : config.modPermissionGroup != null)
+            return false;
+        if (feedbackStrategy != config.feedbackStrategy) return false;
+        if (groupCreationStrategy != config.groupCreationStrategy) return false;
+        if (groupCreationChannel != null ? !groupCreationChannel.equals(config.groupCreationChannel) : config.groupCreationChannel != null)
+            return false;
+        return useBotIntegration != null ? useBotIntegration.equals(config.useBotIntegration) : config.useBotIntegration == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (server != null ? server.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (replyInDmWhenPossible != null ? replyInDmWhenPossible.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (giveHelp != null ? giveHelp.hashCode() : 0);
+        result = 31 * result + (pinGroups != null ? pinGroups.hashCode() : 0);
+        result = 31 * result + (overviewMessageId != null ? overviewMessageId.hashCode() : 0);
+        result = 31 * result + (modPermissionGroup != null ? modPermissionGroup.hashCode() : 0);
+        result = 31 * result + (feedbackStrategy != null ? feedbackStrategy.hashCode() : 0);
+        result = 31 * result + (groupCreationStrategy != null ? groupCreationStrategy.hashCode() : 0);
+        result = 31 * result + (groupCreationChannel != null ? groupCreationChannel.hashCode() : 0);
+        result = 31 * result + (useBotIntegration != null ? useBotIntegration.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "server='" + server + '\'' +
+                ", region='" + region + '\'' +
+                ", replyInDm=" + replyInDmWhenPossible +
+                ", locale='" + locale + '\'' +
+                ", giveHelp=" + giveHelp +
+                ", pinGroups=" + pinGroups +
+                ", overview='" + overviewMessageId + '\'' +
+                ", modGroup='" + modPermissionGroup + '\'' +
+                ", feedback=" + feedbackStrategy +
+                ", groupCreationStrategy=" + groupCreationStrategy +
+                ", groupCreationChannel='" + groupCreationChannel + '\'' +
+                ", useBotIntegration=" + useBotIntegration +
+                '}';
     }
 }
