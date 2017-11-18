@@ -11,6 +11,12 @@ Exempel här:
 
 ![Overview](img/overview.png)
 
+Närmaste ETA betyder närmaste tid från nu då det kommer anlända raiders som anmält sig, så
+det kan vara lämpligt att se till att vara på plats då och en bra tid att anmäla sig till.
+
+Om det inte står närmaste ETA men det finns anmälda, är det troligt att de som är på plats håller på och kör raiden,
+eller har precis kört.
+
 Hur gör man då för att bidra till det botten visar upp här?
 
 Jo, man kan:
