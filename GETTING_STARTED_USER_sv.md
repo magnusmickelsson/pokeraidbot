@@ -1,7 +1,7 @@
 Är du raidsugen, och ny medlem i en Discord-server som använder pokeraidbot? 
 Vad kan vara värt att lära sig för att få ut det mesta utan att lära sig allt?
 
-Till att börja med, din server borde ha en kanal med en *raidöversikt*.
+Till att börja med, din server borde ha en kanal med en *raidöversikt*. I Uppsala heter den #raidlista.
 
 Det är en kanal som är skrivskyddad och innehåller bara ett kommando och ett meddelande
 med en lista över alla pågående raider och vilka anmälningar som är gjorda,
@@ -22,11 +22,14 @@ Nedan kommer lite instruktioner för hur man kan göra det.
 
 Så du har upptäckt en raid i din närhet som du vill dela med dig av? Raiden är för en Suicune, som **slutar** kl 09:45 vid gymmet Hästen.
 
-Skriv då följande i kanalen som är till för botmeddelandespam (#bot i Uppsala):
+Skriv då följande i kanalen som är till för att skapa den typen av raid (#suicune_raid i Uppsala):
 
 *!raid new Suicune 09:45 hästen*
 
 ![Create](img/started1.png)
+
+(Vill du rapportera utifrån starttid för en raid för det är jobbigt att räkna ut sluttid?
+Använd *!raid start Suicune 09:00 hästen* istället)
 
 Du vill sedan skapa en grupp som kör raiden 09:30.
 
@@ -50,7 +53,8 @@ Gruppens anmälningar kommer automatiskt uppdateras var 15:e sekund, och när di
 
 Vill du se vilka raids som är på gång just nu?
 
-Skriv då följande i kanalen för botspam för att se alla möjliga raider:
+Bäst är ju att kolla på översikten som vi nämnde tidigare, men du kan också skriva följande i kanalen för 
+botspam för att se alla möjliga raider:
 
 *!raid list*
 
