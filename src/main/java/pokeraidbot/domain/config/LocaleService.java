@@ -306,7 +306,7 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(MOVED_GROUP, SWEDISH),
                 "Flyttade grupp från %1 till %2 för raid vid %3.\n" +
                         "**OBS: Alla gjorda anmälningar för denna tid flyttas med.** " +
-                        "Vill du inte det - ändra sin anmälning, t.ex. via *!raid remove %3* och lägg till dig igen."
+                        "Vill du inte det - ändra din anmälning, t.ex. via *!raid remove %3* och lägg till dig igen."
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_DELETED, Locale.ENGLISH),
                 "Overview message has been removed by someone. " +
