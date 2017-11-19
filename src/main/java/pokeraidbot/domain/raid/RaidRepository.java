@@ -117,8 +117,13 @@ public class RaidRepository {
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         Raid raid = getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final RaidEntitySignUp signUp = findEntityByRaidId(raid.getId()).getSignUp(user.getName());
+        if (signUp == null) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_SIGNUP_AT_GYM,
+                    localeForUser, user.getName(), gym.getName()));
+        }
 
-        raid = removeFromSignUp(raid.getId(), user, 0, 0, 0, numberOfPeople, LocalDateTime.of(raid.getEndOfRaid().toLocalDate(),
+        raid = removeFromSignUp(raid.getId(), user, 0, 0, 0, numberOfPeople,
+                LocalDateTime.of(raid.getEndOfRaid().toLocalDate(),
                 signUp.getArrivalTime()));
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
         final Set<SignUp> signUps = raid.getSignUps();

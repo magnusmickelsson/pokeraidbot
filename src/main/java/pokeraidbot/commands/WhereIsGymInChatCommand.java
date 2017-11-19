@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -29,7 +30,8 @@ public class WhereIsGymInChatCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(commandEvent.getAuthor(), gymName, config.getRegion());
         String staticUrl = Utils.getStaticMapUrl(gym);
         String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
-        commandEvent.reply(new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl).build());
-        removeOriginMessageIfConfigSaysSo(config, commandEvent);
+        final MessageEmbed messageEmbed = new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl)
+                .build();
+        replyMapBasedOnConfig(config, commandEvent, messageEmbed);
     }
 }

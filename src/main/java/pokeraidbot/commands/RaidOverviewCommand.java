@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.OverviewException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -105,8 +106,9 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
                             if (!(m instanceof SocketTimeoutException)) {
                                 Config savedConfig = serverConfigRepository.save(config);
-                                cleanUp(savedConfig, user, messageId, serverConfigRepository, localeService,
-                                        messageChannel, locale);
+                                cleanUp(savedConfig, messageId, serverConfigRepository,
+                                        messageChannel);
+                                throw new OverviewException(m.getMessage());
                             } else {
                                 LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
                                         "down. Let's not clean up things before we know if it works or not.");
@@ -117,7 +119,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             do {
                 try {
                     executorService.submit(editTask).get();
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException | ExecutionException | OverviewException e) {
                     LOGGER.warn("Exception when running edit task: " + e.getMessage() + " - shutting it down.");
                     return false;
                 }
@@ -126,9 +128,9 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         return refreshEditThreadTask;
     }
 
-    private static void cleanUp(Config config, User user, String messageId,
-                                ServerConfigRepository serverConfigRepository, LocaleService localeService,
-                                MessageChannel messageChannel, Locale locale) {
+    private static void cleanUp(Config config, String messageId,
+                                ServerConfigRepository serverConfigRepository,
+                                MessageChannel messageChannel) {
         try {
             if (!StringUtils.isEmpty(messageId)) {
                 messageChannel.deleteMessageById(messageId).queue(m -> {
@@ -159,7 +161,6 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                                              RaidRepository raidRepository,
                                              ClockService clockService, Locale locale) {
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
-        final String messageString;
         StringBuilder stringBuilder = new StringBuilder();
         if (raids.size() == 0) {
             stringBuilder.append(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));

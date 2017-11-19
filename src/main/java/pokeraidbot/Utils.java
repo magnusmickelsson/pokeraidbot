@@ -335,8 +335,11 @@ public class Utils {
     public static void assertTimeInRaidTimespan(User user, LocalDateTime dateTimeToCheck, Raid raid,
                                                 LocaleService localeService) {
         final LocalDateTime startOfRaid = getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid());
-        if (!(dateTimeToCheck.isBefore(raid.getEndOfRaid()) &&
-                dateTimeToCheck.isAfter(startOfRaid))) {
+        final boolean timeIsSameOrBeforeEnd =
+                raid.getEndOfRaid().isAfter(dateTimeToCheck) || raid.getEndOfRaid().equals(dateTimeToCheck);
+        final boolean timeIsSameOrAfterStart =
+                startOfRaid.isBefore(dateTimeToCheck) || startOfRaid.equals(dateTimeToCheck);
+        if (!(timeIsSameOrBeforeEnd && timeIsSameOrAfterStart)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TIME_NOT_IN_RAID_TIMESPAN,
                     localeService.getLocaleForUser(user), printDateTime(dateTimeToCheck),
                     printDateTime(startOfRaid), printTimeIfSameDay(raid.getEndOfRaid())));

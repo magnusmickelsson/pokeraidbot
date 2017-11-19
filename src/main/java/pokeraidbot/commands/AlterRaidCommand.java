@@ -117,7 +117,6 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
 
-        int counter = 0;
         boolean groupChanged = false;
         final Set<EmoticonSignUpMessageListener> listenersToCheck = new HashSet<>();
         for (Object o : botService.getBot().getRegisteredListeners()) {
@@ -130,9 +129,21 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     listenersToCheck.add(listener);
                     break; // If we found user's group, that's the one to change primarily
                 }
-                if (isCorrectRaid && (isUserAdministrator(commandEvent) ||
-                        isUserServerMod(commandEvent, config))) {
-                    listenersToCheck.add(listener);
+            }
+        }
+
+        // If admin doesn't have his/her own group, they can change group for others, as long as it's just one
+        // to choose from. Will be fixed later on
+        if (listenersToCheck.size() == 0) {
+            for (Object o : botService.getBot().getRegisteredListeners()) {
+                if (o instanceof EmoticonSignUpMessageListener) {
+                    EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) o;
+                    final String raidId = raid.getId();
+                    final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
+                    if (isCorrectRaid && (isUserAdministrator(commandEvent) ||
+                            isUserServerMod(commandEvent, config))) {
+                        listenersToCheck.add(listener);
+                    }
                 }
             }
         }

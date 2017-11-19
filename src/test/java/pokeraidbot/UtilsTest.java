@@ -1,14 +1,19 @@
 package pokeraidbot;
 
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.pokemon.PokemonTypes;
+import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.time.LocalDateTime;
@@ -45,12 +50,19 @@ public class UtilsTest {
     ));
     private static UserConfigRepository userConfigRepository;
     private static LocaleService localeService;
+    private PokemonRepository pokemonRepository;
 
     @BeforeClass
     public static void before() {
         userConfigRepository = mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
         localeService = new LocaleService("sv", userConfigRepository);
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        pokemonRepository = new PokemonRepository("/mons.json",
+                new LocaleService("sv", userConfigRepository));
     }
 
     @Test
@@ -147,8 +159,6 @@ public class UtilsTest {
 
     @Test
     public void testDoubleWeaknesses() throws Exception {
-        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json",
-                new LocaleService("sv", userConfigRepository));
         Pokemon pokemon;
         String typeToCheck;
         pokemon = pokemonRepository.search("Tyranitar", null);
@@ -213,6 +223,45 @@ public class UtilsTest {
         assertErrorWhenParsing("2545", user);
         assertErrorWhenParsing("999", user);
         assertErrorWhenParsing("969", user);
+    }
+
+    @Test
+    public void timeInRaidspan() throws Exception {
+        User user = mock(User.class);
+        when(user.getName()).thenReturn("User");
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime same = localDateTime;
+        LocalDateTime before = localDateTime.minusMinutes(1);
+        LocalDateTime after = localDateTime.plusMinutes(1);
+        LocalDateTime end = localDateTime.plusMinutes(Utils.RAID_DURATION_IN_MINUTES);
+        LocalDateTime sameAsEnd = end;
+        LocalDateTime beforeEnd = end.minusMinutes(1);
+        LocalDateTime afterEnd = end.plusMinutes(1);
+        final LocaleService localeService = mock(LocaleService.class);
+        when(localeService.getMessageFor(any(), any(), any())).thenReturn("Mupp");
+        Raid raid = new Raid(pokemonRepository.getByName("Tyranitar"), end,
+                new Gym("Test", "id", "10", "10", null),
+                localeService, "Test");
+        checkWhetherAssertFails(user, same, localeService, raid, false);
+        checkWhetherAssertFails(user, after, localeService, raid, false);
+        checkWhetherAssertFails(user, before, localeService, raid, true);
+        checkWhetherAssertFails(user, sameAsEnd, localeService, raid, false);
+        checkWhetherAssertFails(user, afterEnd, localeService, raid, true);
+        checkWhetherAssertFails(user, beforeEnd, localeService, raid, false);
+    }
+
+    protected void checkWhetherAssertFails(User user, LocalDateTime when, LocaleService localeService,
+                                           Raid raid, boolean shouldFail) {
+        try {
+            Utils.assertTimeInRaidTimespan(user, when, raid, localeService);
+            if (shouldFail) {
+                fail("Should give exception!");
+            }
+        } catch (Throwable t) {
+            if (!shouldFail) {
+                fail("Should not give exception!");
+            }
+        }
     }
 
     private void assertErrorWhenParsing(String timeString, User user) {
