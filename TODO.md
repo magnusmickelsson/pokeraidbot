@@ -36,6 +36,7 @@ Fix, misc:
 
 Do, features:
 
+* Command to explicitly reset a server's overview
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Only use a single Emoticon listener for signups to reduce memory and complexity

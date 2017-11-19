@@ -1,3 +1,33 @@
+Are you interested in Pokemon Go raiding? Are you a new member of a Discord-server that uses pokeraidbot? 
+Maybe you'd like to know how to get a hang of it, without spending a lot of time reading documentation and manuals?
+
+This getting started guide might be of assistance.
+
+For starters, your server should have a channel with a *raid overview*.
+
+It's a read-only channel that only contains a single command and a message with
+all current raids and signups, to give you a quick overview of what raids are available, and which ones
+would most likely happen since there are enough signups.
+
+Here is an example:
+
+![Overview](img/overview_en.png)
+
+"Next ETA" means the next time from now where there will be raiders arriving to the raid, who signed up.
+It means, that time might be a good time to arrive at the raid so you can join up with those who signed up.
+
+If there is no "next ETA" but there are people signed up, it's likely that they are either in the process of
+doing the raid, or they've just done it.
+
+So, how can you contribute to what the bot shows in the overview?
+
+You can:
+* Report raids you see in-game, or let a bot like Gymhuntr or PokeAlarm report raids automatically (pokeraidbot can integrate with them)
+* Sign up for raids via the bot, either using groups or directly via +2-syntax (see below)
+* Help each other out :)
+
+Here are some instructions on how to do this in practice.
+
 So you have discovered a raid nearby that you want to share with your friends?
 The raid is for a Suicune at the gym Café Lalo, and it **expires** at 09:45.
 
@@ -6,6 +36,9 @@ Type the following in your server's text channel where pokeraidbot is active:
 *!raid new Suicune 09:45 cafe lalo*
 
 ![Create](img/en/started1.png)
+
+(If you think it's too much of a pain to figure out the end time of a raid, you can report the raid via start 
+time/hatch time - use *!raid start Suicune 09:00 cafe lalo* instead)
 
 Then, you want to create a group that raids at 09:30.
 
