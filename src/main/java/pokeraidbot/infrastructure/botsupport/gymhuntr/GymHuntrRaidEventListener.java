@@ -98,7 +98,6 @@ public class GymHuntrRaidEventListener implements EventListener {
                             newRaidArguments = new ArrayList<>();
                         }
                         if (newRaidArguments != null && newRaidArguments.size() > 0) {
-                            // todo: arguments checking
                             final Iterator<String> iterator = newRaidArguments.iterator();
                             final String gym = iterator.next();
                             final String pokemon = iterator.next();
