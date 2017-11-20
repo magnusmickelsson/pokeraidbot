@@ -1,6 +1,13 @@
 FUTURE (?)
 =====
 
+1.4.1 (2017-11-21)
+=====
+* Bugfix: !raid overview fixes that hopefully sort out the problem where it stops working and ends up in a state that
+needs manual cleanup and lots of exceptions in logs
+* !raid overview is no longer a reply but its own message, so the original command can be removed without 
+removing overview
+
 1.4.0 (2017-11-18)
 =====
 * Bugfix: !raid change group can no longer set time before current time, even if it is within raid duration

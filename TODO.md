@@ -5,12 +5,10 @@ See [Changelog](CHANGELOG.md).
 Needs testing:
 
 * Remove raid group entity when group is cleaned up
-* -1 syntax to remove signups from a raid
-* All texts, manual and feedback are in order before release
 
 Being developed:
 
--
+* !raid overview can crash and dump a lot of stuff in logs in message doesn't exist. Do a check if the message exists.
 
 Discussion:
 
@@ -35,6 +33,8 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
+
+--- 1.4.1
 
 * Command to explicitly reset a server's overview
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)

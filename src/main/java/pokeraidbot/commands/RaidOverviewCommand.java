@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         } else {
             final String messageString = getOverviewMessage(config,
                     localeService, raidRepository, clockService, locale);
-            commandEvent.reply(messageString, msg -> {
+            commandEvent.getChannel().sendMessage(messageString).queue(msg -> {
                 final String messageId = msg.getId();
                 final String server = config.getServer();
                 serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
@@ -93,37 +94,46 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         final Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute
-                Config config = serverConfigRepository.getConfigForServer(server);
+                final Config config = serverConfigRepository.getConfigForServer(server);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
                             " - Updating for server " + config.getServer() + " with ID " + messageId);
                 }
-                final String messageString = getOverviewMessage(config,
-                        localeService, raidRepository, clockService, locale);
-                messageChannel.editMessageById(messageId,
-                        messageString)
-                        .queue(m -> {}, m -> {
-                            LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
-                            if (!(m instanceof SocketTimeoutException)) {
-                                Config savedConfig = serverConfigRepository.save(config);
-                                cleanUp(savedConfig, messageId, serverConfigRepository,
-                                        messageChannel);
-                                throw new OverviewException(m.getMessage());
-                            } else {
-                                LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
-                                        "down. Let's not clean up things before we know if it works or not.");
-                            }
-                        });
-                return true;
+                final Message message = messageChannel.getMessageById(messageId).complete();
+                if (config.getOverviewMessageId() != null &&
+                        message != null) {
+                    final String messageString = getOverviewMessage(config,
+                            localeService, raidRepository, clockService, locale);
+                    messageChannel.editMessageById(messageId,
+                            messageString)
+                            .queue(m -> {
+                            }, m -> {
+                                LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
+                                if (m instanceof SocketTimeoutException) {
+                                    LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
+                                            "down. Let's not clean up things before we know if it works or not.");
+                                }
+                            });
+                    return true;
+                } else {
+                    LOGGER.warn("Could not find message for overview - config ID: " +
+                            config.getOverviewMessageId() + ", message: " +
+                            (message == null ? "null" : message.getId()) + ". Cleaning up...");
+                    cleanUp(config, messageId, serverConfigRepository,
+                            messageChannel);
+                   return false;
+                }
             };
+            boolean overviewOk = true;
             do {
                 try {
-                    executorService.submit(editTask).get();
+                    overviewOk = executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException | OverviewException e) {
                     LOGGER.warn("Exception when running edit task: " + e.getMessage() + " - shutting it down.");
-                    return false;
+                    overviewOk = false;
                 }
-            } while (true);
+            } while (overviewOk);
+            return false;
         };
         return refreshEditThreadTask;
     }
