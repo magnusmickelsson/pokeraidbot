@@ -60,11 +60,12 @@ It adds all the emotes you can see on the picture above, and listens for if a us
 ![Signup](img/en/started3.png)
 
 The group's signups will automatically be updated every 15 seconds, and when it's time for your group to 
-start the raid, the group message will be automatically removed.
+start the raid, the group message will be automatically removed (5 minutes after raid start, so you have time to
+do a ready-check with the people you know should be there).
 
-Do you want to see the current active raids, which have been reported?
+Do you want to see the current active raids, which have been reported? 
 
-Type the following:
+The best way is of course to use the overview mentioned above, but you can also type the following:
 
 *!raid list*
 
