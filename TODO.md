@@ -40,6 +40,9 @@ Do, features:
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Only use a single Emoticon listener for signups to reduce memory and complexity
+
+--- 1.5.0
+
 * Move gyms to the database, use CSV files just to initialize and keep in synch
 * Make it possible to change gyms in database via admin command (Zhorhn only)
 * Umeå request: If people do similar map commands after one other, skip following commands
