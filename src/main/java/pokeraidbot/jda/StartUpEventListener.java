@@ -1,5 +1,6 @@
 package pokeraidbot.jda;
 
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -134,7 +135,9 @@ public class StartUpEventListener implements EventListener {
             }
         } catch (UserMessedUpException e) {
             if (channel != null)
-                channel.sendMessage(e.getMessage()).queue();
+                channel.sendMessage(e.getMessage()).queue(m -> {
+                    m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
+                });
         } catch (ErrorResponseException e) {
             // We couldn't find the message in this channel or had permission issues, ignore
             LOGGER.debug("Caught exception: " + e.getMessage());
@@ -173,7 +176,10 @@ public class StartUpEventListener implements EventListener {
                     guild.getDefaultChannel().sendMessage(
                             localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
                                     locale,
-                                    channel.getName())).queue();
+                                    channel.getName())).queue(m -> {
+                                        m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds,
+                                                TimeUnit.SECONDS);
+                    });
                 }
                 return true;
             }
