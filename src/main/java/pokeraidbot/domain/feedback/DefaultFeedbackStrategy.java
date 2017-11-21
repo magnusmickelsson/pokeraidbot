@@ -83,7 +83,7 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
     public void reply(Config config, CommandEvent commandEvent, String message, int numberOfSecondsBeforeRemove,
                       LocaleService localeService) {
         // Give the caller some slack but not much
-        Validate.isTrue(numberOfSecondsBeforeRemove > 5 && numberOfSecondsBeforeRemove < 60);
+        Validate.isTrue(numberOfSecondsBeforeRemove > 5);
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
