@@ -64,7 +64,9 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
         } else {
-            commandEvent.getChannel().sendMessage(message).queue();
+            commandEvent.getChannel().sendMessage(message).queue(m -> {
+                m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds * 4, TimeUnit.SECONDS);
+            });
             commandEvent.getChannel().deleteMessageById(commandEvent.getMessage().getId()).queueAfter(
                     BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS
             );
