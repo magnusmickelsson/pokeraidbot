@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -50,6 +51,11 @@ public class KeepAllFeedbackStrategy implements FeedbackStrategy {
 
     @Override
     public void handleOriginMessage(CommandEvent commandEvent) {
+    }
+
+    @Override
+    public void handleOriginMessage(GuildMessageReceivedEvent event) {
+
     }
 
     @Override

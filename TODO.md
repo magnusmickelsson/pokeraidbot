@@ -5,10 +5,13 @@ See [Changelog](CHANGELOG.md).
 Needs testing:
 
 * Remove raid group entity when group is cleaned up
+* Green ok and red X for emotes from bot instead of smileys
+* Remove all except map harder feedback strategy - also remove +1/-1 commands, !raid track, !raid untrack, !raid status
+* !raid overview can crash and dump a lot of stuff in logs in message doesn't exist. Do a check if the message exists.
 
 Being developed:
 
-* !raid overview can crash and dump a lot of stuff in logs in message doesn't exist. Do a check if the message exists.
+-
 
 Discussion:
 
@@ -33,9 +36,6 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-
---- 1.4.1
-
 * Command to explicitly reset a server's overview
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.

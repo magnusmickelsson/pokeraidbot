@@ -35,5 +35,6 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         commandListener.add(new PokemonTrackingTarget(config.getRegion(), userId, pokemon), user, config);
         commandEvent.reactSuccess();
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 }

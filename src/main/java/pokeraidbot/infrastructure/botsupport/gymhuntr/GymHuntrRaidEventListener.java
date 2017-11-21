@@ -4,11 +4,13 @@ import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -108,7 +110,8 @@ public class GymHuntrRaidEventListener implements EventListener {
                             final LocalDate currentDate = currentDateTime.toLocalDate();
                             final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
                                     LocalTime.parse(time, Utils.timeParseFormatter));
-                            handleRaidFromIntegration(botService.getBot().getSelfUser(),
+                            final SelfUser botUser = botService.getBot().getSelfUser();
+                            handleRaidFromIntegration(botUser,
                                     guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
                                     strategyService.getRaidInfo(raidBoss));
                         }
@@ -121,6 +124,13 @@ public class GymHuntrRaidEventListener implements EventListener {
     public void handleRaidFromIntegration(User user, GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
                                           LocalDateTime endOfRaid, Config config, ClockService clockService,
                                           PokemonRaidInfo pokemonRaidInfo) {
+        Validate.notNull(user, "User");
+        Validate.notNull(guildEvent, "Guild event");
+        Validate.notNull(config, "Config");
+        Validate.notNull(raidBoss, "Raid boss");
+        Validate.notNull(raidGym, "Gym");
+        Validate.notNull(user, "User");
+
         final LocalDateTime now = clockService.getCurrentDateTime();
         LocalDateTime currentDateTime = now;
         final boolean moreThan10MinutesLeftOnRaid = endOfRaid.isAfter(currentDateTime.plusMinutes(10));
@@ -132,8 +142,16 @@ public class GymHuntrRaidEventListener implements EventListener {
             final Raid createdRaid;
             try {
                 createdRaid = raidRepository.newRaid(user, raidToCreate);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Raid created via Bot Integration: " + createdRaid);
+                }
                 final Locale locale = config.getLocale();
-                final MessageChannel channel = guildEvent.getMessage().getChannel();
+                final MessageChannel channel = guildEvent.getChannel();
+                if (LOGGER.isDebugEnabled()) {
+                    if (channel != null) {
+                        LOGGER.debug("Channel to use: " + channel.getName());
+                    }
+                }
                 EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
                 StringBuilder sb = new StringBuilder();
                 sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
@@ -190,17 +208,29 @@ public class GymHuntrRaidEventListener implements EventListener {
                         botService, serverConfigRepository, pokemonRepository, gymRepository,
                         clockService, executorService);
             }
+        } else {
+            LOGGER.debug("PokeRaidInfo was null for pokemon " + createdRaid.getPokemon().getName());
         }
     }
 
     private void notifyTrackingUsers(GuildMessageReceivedEvent guildEvent, Config config, Raid createdRaid,
                                      Locale locale) {
-        final Set<PokemonTrackingTarget> trackingTargets =
-                trackingCommandListener.getTrackingTargets(config.getRegion());
-        for (TrackingTarget t : trackingTargets) {
-            if (t.canHandle(guildEvent, createdRaid)) {
-                t.handle(guildEvent, createdRaid, localeService, locale, config);
+        try {
+            Validate.notNull(guildEvent, "Guild event");
+            Validate.notNull(config, "Config");
+            Validate.notNull(createdRaid, "Raid");
+            Validate.notNull(locale, "Locale");
+            Validate.notNull(trackingCommandListener, "Command listener");
+            final String region = config.getRegion();
+            final Set<PokemonTrackingTarget> trackingTargets =
+                    trackingCommandListener.getTrackingTargets(region);
+            for (TrackingTarget t : trackingTargets) {
+                if (t.canHandle(guildEvent, createdRaid)) {
+                    t.handle(guildEvent, createdRaid, localeService, locale, config);
+                }
             }
+        } catch (Exception e) {
+            LOGGER.warn("Could not notify tracking listeners due to an error: " + e.getMessage());
         }
     }
 

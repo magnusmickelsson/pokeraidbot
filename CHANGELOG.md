@@ -7,6 +7,7 @@ FUTURE (?)
 needs manual cleanup and lots of exceptions in logs
 * !raid overview is no longer a reply but its own message, so the original command can be removed without 
 removing overview
+* Remove all but map feedback strategy now cleans up even harder
 
 1.4.0 (2017-11-18)
 =====

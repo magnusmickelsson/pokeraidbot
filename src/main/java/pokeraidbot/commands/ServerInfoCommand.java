@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
@@ -23,7 +24,7 @@ public class ServerInfoCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        replyBasedOnConfigButKeep(config, commandEvent, Utils.printDateTime(clockService.getCurrentDateTime()) +
-                ": " + String.valueOf(config));
+        replyBasedOnConfigAndRemoveAfter(config, commandEvent, Utils.printDateTime(clockService.getCurrentDateTime()) +
+                ": " + String.valueOf(config), BotServerMain.timeToRemoveFeedbackInSeconds * 2);
     }
 }

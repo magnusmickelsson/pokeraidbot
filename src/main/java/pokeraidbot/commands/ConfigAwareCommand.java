@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.commons.lang3.Validate;
 import org.thymeleaf.util.StringUtils;
@@ -25,7 +26,8 @@ public abstract class ConfigAwareCommand extends Command {
     protected final CommandListener commandListener;
     protected final LocaleService localeService;
 
-    public ConfigAwareCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
+    public ConfigAwareCommand(ServerConfigRepository serverConfigRepository,
+                              CommandListener commandListener,
                               LocaleService localeService) {
         Validate.notNull(serverConfigRepository);
         this.localeService = localeService;
@@ -60,6 +62,11 @@ public abstract class ConfigAwareCommand extends Command {
     public static void removeOriginMessageIfConfigSaysSo(Config config, CommandEvent commandEvent) {
         getFeedbackStrategy(config).handleOriginMessage(commandEvent);
     }
+
+    public static void removeOriginMessageIfConfigSaysSo(Config config, GuildMessageReceivedEvent event) {
+        getFeedbackStrategy(config).handleOriginMessage(event);
+    }
+
 
     public static void replyBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
         getFeedbackStrategy(config).reply(config, commandEvent, message);

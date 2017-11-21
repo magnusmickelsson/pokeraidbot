@@ -2,6 +2,7 @@ package pokeraidbot.domain.feedback;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 
@@ -34,5 +35,6 @@ public interface FeedbackStrategy {
                LocaleService localeService);
     void replyMap(Config config, CommandEvent commandEvent, MessageEmbed message);
     void handleOriginMessage(CommandEvent commandEvent);
+    void handleOriginMessage(GuildMessageReceivedEvent event);
     void replyAndKeep(Config config, CommandEvent commandEvent, String message);
 }

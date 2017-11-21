@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.commands.*;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
@@ -83,7 +84,7 @@ public class BotService {
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
-        client.setEmojis("\uD83D\uDE03", "\uD83D\uDE2E", "\uD83D\uDE26");
+        client.setEmojis(Emotes.OK, "\uD83D\uDE2E", Emotes.ERROR);
         client.setPrefix("!raid ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
@@ -95,7 +96,7 @@ public class BotService {
                 ),
                 new PingCommand(),
                 new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener),
-                new GettingStartedCommand(localeService),
+                new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener),
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),

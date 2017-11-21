@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -70,16 +71,19 @@ public class HelpManualCommand extends ConfigAwareCommand {
             final String replyIn = args.length > 1 ? args[1] : null;
             if ("ALL".equalsIgnoreCase(args[0])) {
                 for (String key : helpTopicsMap.keySet()) {
-                    replyWithHelpManualEntryIfAvailable(commandEvent, language, replyIn, helpTopicsMap.get(key));
+                    replyWithHelpManualEntryIfAvailable(commandEvent, config, language, replyIn, helpTopicsMap.get(key));
                 }
             } else { // Reply with user's requested help topic
                 final Map<String, String> helpTopicTexts = helpTopicsMap.get(args[0]);
-                replyWithHelpManualEntryIfAvailable(commandEvent, language, replyIn, helpTopicTexts);
+                replyWithHelpManualEntryIfAvailable(commandEvent, config, language, replyIn, helpTopicTexts);
             }
         }
+
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
-    private void replyWithHelpManualEntryIfAvailable(CommandEvent commandEvent, String language, String replyIn,
+    private void replyWithHelpManualEntryIfAvailable(CommandEvent commandEvent, Config config, String language,
+                                                     String replyIn,
                                                      Map<String, String> helpTopicTexts) {
         if (helpTopicTexts == null) {
             commandEvent.replyInDM(helpText);
@@ -91,7 +95,8 @@ public class HelpManualCommand extends ConfigAwareCommand {
                 if (!StringUtils.isEmpty(replyIn) && (replyIn.equalsIgnoreCase("dm"))) {
                     commandEvent.replyInDM(text);
                 } else {
-                    commandEvent.reply(text);
+                    replyBasedOnConfigAndRemoveAfter(config, commandEvent, text,
+                            BotServerMain.timeToRemoveFeedbackInSeconds * 3);
                 }
             }
         }

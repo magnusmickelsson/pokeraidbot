@@ -1,5 +1,6 @@
 package pokeraidbot.jda;
 
+import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
@@ -10,9 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
+import pokeraidbot.commands.ConfigAwareCommand;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
-import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -76,12 +77,14 @@ public class SignupWithPlusCommandListener implements EventListener {
             message = raidRepository.executeSignUpCommand(configForServer, user,
                     localeService.getLocaleForUser(user),
                     splitArguments, "signup");
-            guildMessageReceivedEvent.getMessage().addReaction(Emotes.HAPPY).queue();
+            guildMessageReceivedEvent.getMessage().addReaction(Emotes.OK).queue();
+            ConfigAwareCommand.removeOriginMessageIfConfigSaysSo(configForServer, guildMessageReceivedEvent);
         } catch (Throwable t) {
             LOGGER.debug("Signup plus command failed: " + t.getMessage());
             message = t.getMessage() + "\n\n" +
             "Syntax: *+1 09:45 Solna Platform*";
-            guildMessageReceivedEvent.getMessage().addReaction(Emotes.SAD).queue();
+            guildMessageReceivedEvent.getMessage().addReaction(Emotes.ERROR).queue();
+            ConfigAwareCommand.removeOriginMessageIfConfigSaysSo(configForServer, guildMessageReceivedEvent);
         }
         if (!StringUtils.isEmpty(message)) {
             EmbedBuilder embedBuilder = new EmbedBuilder();

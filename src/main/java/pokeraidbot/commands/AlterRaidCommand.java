@@ -77,16 +77,15 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 deleteRaid(commandEvent, config, user, userName, args);
                 break;
             case "group":
-                if (changeGroup(commandEvent, config, user, userName, args)) return;
+                changeGroup(commandEvent, config, user, userName, args);
                 break;
             default:
                 throw new UserMessedUpException(userName,
                         localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
         }
-        commandEvent.reactSuccess();
     }
 
-    private boolean changeGroup(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
+    private void changeGroup(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
         String whatToChangeTo;
         StringBuilder gymNameBuilder;
         String gymName;
@@ -164,6 +163,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 if (currentStartAt != null && currentStartAt.equals(newDateTime)) {
                     // This group is already at the time to change to
                     // todo: message back?
+                    commandEvent.reactError();
                 } else if (currentStartAt != null) {
                     LOGGER.info("Changing group time from " + currentStartAt + " to " + newDateTime);
                     RaidGroup raidGroup = raidRepository.changeGroup(user, raidId, listener.getUserId(),
@@ -176,23 +176,24 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                                     localeService.getLocaleForUser(user),
                                     printTimeIfSameDay(currentStartAt),
                                     printTimeIfSameDay(newDateTime), raid.getGym().getName()),
-                            30);
+                            BotServerMain.timeToRemoveFeedbackInSeconds);
                     LOGGER.info("Group time changed. Group: " + raidGroup);
+                    commandEvent.reactSuccess();
                 } else {
+                    commandEvent.reactError();
                     // This group is about to get cleaned up since its start time is null
                     replyBasedOnConfigAndRemoveAfter(config, commandEvent,
                             localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
                                     localeService.getLocaleForUser(user)),
                             BotServerMain.timeToRemoveFeedbackInSeconds);
-                    commandEvent.getMessage().delete().queueAfter(50, TimeUnit.MILLISECONDS);
-                    return true;
+                    return;
                 }
         }
         if (!groupChanged) {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
         }
-        return false;
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
     private void deleteRaid(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
@@ -217,6 +218,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
         if (raidRepository.delete(deleteRaid)) {
             raid = null;
+            commandEvent.reactSuccess();
         } else {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,
@@ -250,6 +252,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
         }
         raid = raidRepository.changePokemon(pokemonRaid, pokemon);
+        commandEvent.reactSuccess();
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
     private void changeWhen(CommandEvent commandEvent, Config config, User user, String[] args) {
@@ -278,6 +282,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
         assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
         raid = raidRepository.changeEndOfRaid(tempRaid.getId(), endsAt);
+        commandEvent.reactSuccess();
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
     private void verifyGroupPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {

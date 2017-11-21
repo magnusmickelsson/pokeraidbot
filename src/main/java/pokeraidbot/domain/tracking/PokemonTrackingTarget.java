@@ -6,6 +6,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pokeraidbot.commands.NewRaidCommand;
 import pokeraidbot.commands.NewRaidExCommand;
 import pokeraidbot.commands.NewRaidStartsAtCommand;
@@ -17,6 +20,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import java.util.Locale;
 
 public class PokemonTrackingTarget implements TrackingTarget, Comparable<PokemonTrackingTarget> {
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(PokemonTrackingTarget.class);
     private String region;
     private String userId;
     private Pokemon pokemon;
@@ -71,20 +75,33 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
     @Override
     public boolean canHandle(GuildMessageReceivedEvent event, Raid raid) {
-        if (event.getAuthor().getId().equals(userId)) {
+        if (event == null || event.getAuthor() == null || raid == null || event.getAuthor().getId().equals(userId)) {
             return false; // Skip events user created
         }
         return raid.getPokemon().equals(pokemon);
     }
 
     @Override
-    public void handle(GuildMessageReceivedEvent event, Raid raid, LocaleService localeService, Locale locale, Config config) {
+    public void handle(GuildMessageReceivedEvent event, Raid raid, LocaleService localeService, Locale locale,
+                       Config config) {
+        Validate.notNull(event, "Guild event is null");
+        Validate.notNull(config, "Config is null");
+        Validate.notNull(raid, "Raid is null");
+        Validate.notNull(locale, "Locale is null");
+
         final Member memberById = event.getGuild().getMemberById(Long.parseLong(userId));
+        if (memberById == null) {
+            LOGGER.warn("Member with user ID " + userId + " could not be found!");
+            return;
+        }
         final User userToMessage = memberById.getUser();
         final String raidCreator = event.getAuthor().getName();
 
         final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
                 raidCreator, raid.toString(locale));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Sending DM to user with ID " + userId + " for tracked pokemon " + pokemon.getName());
+        }
         sendPrivateMessage(userToMessage, message);
     }
 

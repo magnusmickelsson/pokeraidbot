@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -41,7 +42,8 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
             embedBuilder.setTitle(null);
             embedBuilder.setDescription(message);
             final MessageEmbed messageEmbed = embedBuilder.build();
-            commandEvent.reply(messageEmbed);
+            replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent,
+                    messageEmbed, BotServerMain.timeToRemoveFeedbackInSeconds * 3, TimeUnit.SECONDS);
         }
     }
 
@@ -76,6 +78,12 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
     }
 
     @Override
+    public void handleOriginMessage(GuildMessageReceivedEvent event) {
+        event.getMessage().delete()
+                .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
+    }
+
+    @Override
     public void replyError(Config config, CommandEvent commandEvent, Throwable throwable, LocaleService localeService) {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(throwable.getMessage());
@@ -99,8 +107,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
     @Override
     public void reply(Config config, CommandEvent commandEvent, String message, int numberOfSecondsBeforeRemove,
                       LocaleService localeService) {
-        // Give the caller some slack but not much
-        Validate.isTrue(numberOfSecondsBeforeRemove > 5 && numberOfSecondsBeforeRemove < 60);
+        Validate.isTrue(numberOfSecondsBeforeRemove > 5);
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
