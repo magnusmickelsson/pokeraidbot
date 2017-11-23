@@ -22,6 +22,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+                    "- Notiser för raidgrupp i mobil device ser bättre ut (visar gymnamn tydligare)\n\n" +
+                    "**Nytt i 1.4.1:**\n\n" +
                     "* Bugfix: !raid overview borde funka bättre nu, inte kräva manuell uppstädning och få fel i " +
                     "loggen\n" +
                     "* !raid overview är inte längre ett svar utan ett eget meddelande, så originalkommandot " +
@@ -37,10 +39,12 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Man kan nu avanmäla sig från en raid via *-2 {gym}*, t.ex. *-2 Solna Platform*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "* Bugfix: !raid overview fixes that hopefully sort out the problem where it stops " +
+                    "- Raid group looks better in mobile notices (shows gym name clearer)\n\n" +
+                    "**New in 1.4.1:**\n\n" +
+                    "- Bugfix: !raid overview fixes that hopefully sort out the problem where it stops " +
                     "working and ends up in a state that " +
                     "needs manual cleanup and lots of exceptions in logs\n" +
-                    "* !raid overview is no longer a reply but its own message, so the original command can be " +
+                    "- !raid overview is no longer a reply but its own message, so the original command can be " +
                     "removed without removing overview\n\n" +
                     "**New in 1.4.0:**\n\n" +
                     "- Feedback handling strategies possible (see *!raid install*)\n" +

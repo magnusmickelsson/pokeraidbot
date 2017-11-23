@@ -75,7 +75,7 @@ public class BotService {
                 executorService,
                 clockService, this, raidInfoService, trackingCommandListener);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
-                raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository);
+                raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository, raidInfoService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         UnsignWithMinusCommandListener minusCommandEventListener = new UnsignWithMinusCommandListener(raidRepository,
@@ -131,7 +131,8 @@ public class BotService {
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
                         aggregateCommandListener, this),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener, this, clockService, executorService),
+                        serverConfigRepository, aggregateCommandListener, this, clockService,
+                        executorService, raidInfoService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
                         aggregateCommandListener, clockService, executorService)
         );

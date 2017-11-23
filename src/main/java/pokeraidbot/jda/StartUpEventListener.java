@@ -18,6 +18,7 @@ import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
@@ -40,11 +41,13 @@ public class StartUpEventListener implements EventListener {
     private final BotService botService;
     private final GymRepository gymRepository;
     private final PokemonRepository pokemonRepository;
+    private final PokemonRaidStrategyService pokemonRaidStrategyService;
 
     public StartUpEventListener(ServerConfigRepository serverConfigRepository,
                                 RaidRepository raidRepository, LocaleService localeService,
                                 ClockService clockService, ExecutorService executorService, BotService botService,
-                                GymRepository gymRepository, PokemonRepository pokemonRepository) {
+                                GymRepository gymRepository, PokemonRepository pokemonRepository,
+                                PokemonRaidStrategyService pokemonRaidStrategyService) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;
@@ -53,6 +56,7 @@ public class StartUpEventListener implements EventListener {
         this.botService = botService;
         this.gymRepository = gymRepository;
         this.pokemonRepository = pokemonRepository;
+        this.pokemonRaidStrategyService = pokemonRaidStrategyService;
     }
 
     @Override
@@ -122,7 +126,8 @@ public class StartUpEventListener implements EventListener {
                 final Callable<Boolean> overviewTask =
                         NewRaidGroupCommand.getMessageRefreshingTaskToSchedule(channel, raid,
                                 emoticonSignUpMessageListener,
-                                raidGroup.getInfoMessageId(), locale, raidRepository, localeService,
+                                raidGroup.getInfoMessageId(), locale, raidRepository, pokemonRaidStrategyService,
+                                localeService,
                                 clockService, executorService, botService, delayTimeUnit, delayTime, raidGroup.getId());
                 executorService.submit(overviewTask);
                 if (LOGGER.isDebugEnabled()) {

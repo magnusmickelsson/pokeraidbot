@@ -442,10 +442,10 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(GETTING_HERE, Locale.ENGLISH),
-                "Getting here: Google Maps"
+                "Getting here:"
         );
         i18nMessages.put(new I18nLookup(GETTING_HERE, SWEDISH),
-                "Hitta hit: Google Maps"
+                "Hitta hit:"
         );
         i18nMessages.put(new I18nLookup(EMOTE_INSTALLED_ALREADY, Locale.ENGLISH),
                 "You already have an icon with the name \"%1\"."

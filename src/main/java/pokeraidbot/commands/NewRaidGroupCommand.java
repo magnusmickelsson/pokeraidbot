@@ -19,6 +19,8 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidInfo;
+import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
@@ -53,17 +55,20 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     private final LocaleService localeService;
     private final BotService botService;
     private final ClockService clockService;
+    private final PokemonRaidStrategyService pokemonRaidStrategyService;
 
     public NewRaidGroupCommand(GymRepository gymRepository, RaidRepository raidRepository,
                                PokemonRepository pokemonRepository, LocaleService localeService,
                                ServerConfigRepository serverConfigRepository,
                                CommandListener commandListener, BotService botService,
-                               ClockService clockService, ExecutorService executorService) {
+                               ClockService clockService, ExecutorService executorService,
+                               PokemonRaidStrategyService pokemonRaidStrategyService) {
         super(serverConfigRepository, commandListener, localeService, executorService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
         this.clockService = clockService;
+        this.pokemonRaidStrategyService = pokemonRaidStrategyService;
         this.name = "group";
         this.help = localeService.getMessageFor(LocaleService.RAID_GROUP_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
@@ -89,7 +94,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         createRaidGroup(commandEvent.getChannel(), config, user, locale, startAtTime, raid.getId(),
                 localeService, raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
-                clockService, executorService);
+                clockService, executorService, pokemonRaidStrategyService);
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
@@ -98,7 +103,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                        RaidRepository raidRepository, BotService botService,
                                        ServerConfigRepository serverConfigRepository,
                                        PokemonRepository pokemonRepository, GymRepository gymRepository,
-                                       ClockService clockService, ExecutorService executorService) {
+                                       ClockService clockService, ExecutorService executorService,
+                                       PokemonRaidStrategyService pokemonRaidStrategyService) {
         assertAllParametersOk(channel, config, user, locale, startAtTime, raidId, localeService,
                 raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
                 clockService, executorService);
@@ -135,7 +141,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
         int delay = raid.isExRaid() ? 1 : 15;
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(startAt, raid.getId(), localeService,
-                clockService, locale, delayTimeUnit, delay, raidRepository);
+                clockService, locale, delayTimeUnit, delay, raidRepository, pokemonRaidStrategyService);
         channel.sendMessage(messageEmbed).queue(embed -> {
             final String messageId = embed.getId();
             emoticonSignUpMessageListener.setInfoMessageId(messageId);
@@ -171,7 +177,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         getMessageRefreshingTaskToSchedule(channel,
                                 raid, emoticonSignUpMessageListener, messageId,
                                 locale,
-                                raidRepository, localeService, clockService, executorService, botService,
+                                raidRepository, pokemonRaidStrategyService, localeService, clockService, executorService, botService,
                                 delayTimeUnit, delay, group.getId());
             executorService.submit(refreshEditThreadTask);
         });
@@ -204,11 +210,13 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                                                        EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                                        String infoMessageId, Locale locale,
                                                                        RaidRepository raidRepository,
+                                                                       PokemonRaidStrategyService pokemonRaidStrategyService,
                                                                        LocaleService localeService,
                                                                        ClockService clockService,
                                                                        ExecutorService executorService,
                                                                        BotService botService,
-                                                                       TimeUnit delayTimeUnit, int delay, String raidGroupId) {
+                                                                       TimeUnit delayTimeUnit, int delay,
+                                                                       String raidGroupId) {
         Callable<Boolean> refreshEditThreadTask = () -> {
             final String groupId = raidGroupId;
             final Raid currentStateOfRaid = raidRepository.getById(raid.getId());
@@ -222,7 +230,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 LocalDateTime start = emoticonSignUpMessageListener.getStartAt();
                 final MessageEmbed newContent =
                         getRaidGroupMessageEmbed(start, raid.getId(),
-                                localeService, clockService, locale, delayTimeUnit, delay, raidRepository);
+                                localeService, clockService, locale, delayTimeUnit, delay, raidRepository,
+                                pokemonRaidStrategyService);
                 messageChannel.editMessageById(infoMessageId,
                         newContent)
                         .queue(m -> {
@@ -303,17 +312,23 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     public static MessageEmbed getRaidGroupMessageEmbed(LocalDateTime startAt, String raidId,
                                                         LocaleService localeService, ClockService clockService,
                                                         Locale locale, TimeUnit delayTimeUnit,
-                                                        int delay, RaidRepository raidRepository) {
+                                                        int delay, RaidRepository raidRepository,
+                                                        PokemonRaidStrategyService pokemonRaidStrategyService) {
         Raid currentStateOfRaid = raidRepository.getById(raidId);
         final Gym gym = currentStateOfRaid.getGym();
         final Pokemon pokemon = currentStateOfRaid.getPokemon();
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
+//        PokemonRaidInfo raidInfo = pokemonRaidStrategyService.getRaidInfo(pokemon);
+//        String extraInfo = "";
+//        if (raidInfo != null) {
+//            extraInfo = " - Max CP " + raidInfo.getMaxCp();
+//        }
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                locale, currentStateOfRaid.getPokemon().getName(), gym.getName());
+                locale, currentStateOfRaid.getPokemon().toString(), gym.getName());
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 locale);
-        embedBuilder.setTitle(getHereText, Utils.getNonStaticMapUrl(gym));
+        embedBuilder.setTitle(getHereText + " " + gym.getName(), Utils.getNonStaticMapUrl(gym));
         embedBuilder.setAuthor(headline, null, Utils.getPokemonIcon(pokemon));
         final Set<SignUp> signUpsAt = currentStateOfRaid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);

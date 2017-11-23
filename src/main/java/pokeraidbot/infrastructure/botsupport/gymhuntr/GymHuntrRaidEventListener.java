@@ -116,7 +116,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                                 raidInfo = strategyService.getRaidInfo(raidBoss);
                                 handleRaidFromIntegration(botUser,
                                         guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
-                                        raidInfo);
+                                        raidInfo, strategyService);
                             }
                         } catch (Throwable t) {
                             LOGGER.warn("Exception when trying to get arguments for raid creation: " + t.getMessage());
@@ -129,7 +129,7 @@ public class GymHuntrRaidEventListener implements EventListener {
 
     public void handleRaidFromIntegration(User user, GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
                                           LocalDateTime endOfRaid, Config config, ClockService clockService,
-                                          PokemonRaidInfo pokemonRaidInfo) {
+                                          PokemonRaidInfo pokemonRaidInfo, PokemonRaidStrategyService pokemonRaidStrategyService) {
         Validate.notNull(user, "User");
         Validate.notNull(guildEvent, "Guild event");
         Validate.notNull(config, "Config");
@@ -213,7 +213,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                 NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, config, user,
                         config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
                         botService, serverConfigRepository, pokemonRepository, gymRepository,
-                        clockService, executorService);
+                        clockService, executorService, strategyService);
             }
         } else {
             if (pokemonRaidInfo == null) {

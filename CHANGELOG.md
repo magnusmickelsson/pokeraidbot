@@ -1,6 +1,11 @@
 FUTURE (?)
 =====
 
+1.4.2
+=====
+* Better logging
+* Changed headline text and title for group messages from Umeå feedback, better notice on mobile device
+
 1.4.1 (2017-11-21)
 =====
 * Bugfix: !raid overview fixes that hopefully sort out the problem where it stops working and ends up in a state that
