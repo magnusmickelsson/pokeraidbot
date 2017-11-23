@@ -5,9 +5,6 @@ See [Changelog](CHANGELOG.md).
 Needs testing:
 
 * Remove raid group entity when group is cleaned up
-* Green ok and red X for emotes from bot instead of smileys
-* Remove all except map harder feedback strategy - also remove +1/-1 commands, !raid track, !raid untrack, !raid status
-* !raid overview can crash and dump a lot of stuff in logs in message doesn't exist. Do a check if the message exists.
 
 Being developed:
 
