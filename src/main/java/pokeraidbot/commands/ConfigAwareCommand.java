@@ -10,6 +10,8 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -21,6 +23,8 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public abstract class ConfigAwareCommand extends Command {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAwareCommand.class);
+
     private static final DefaultFeedbackStrategy defaultFeedbackStrategy = new DefaultFeedbackStrategy();
     protected final ServerConfigRepository serverConfigRepository;
     protected final CommandListener commandListener;
@@ -103,6 +107,12 @@ public abstract class ConfigAwareCommand extends Command {
                 commandListener.onCompletedCommand(commandEvent, this);
             }
         } catch (Throwable t) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Exception thrown from command " + this.getClass().getSimpleName()
+                        + " with input message " + commandEvent.getMessage().getRawContent() +
+                        (configForServer != null ? " for server " +
+                        configForServer.getServer() : "") + ": " + t.getMessage());
+            }
             if (t instanceof IllegalArgumentException) {
                 getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent,
                         new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()), localeService);

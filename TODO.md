@@ -26,6 +26,7 @@ Experiment with:
 
 Fix issue:
 
+* Raid tracking for a user that left the server, handle that situation
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -38,25 +39,27 @@ Fix, misc:
 Do, features:
 * Command to explicitly reset a server's overview
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
-* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Only use a single Emoticon listener for signups to reduce memory and complexity
+* REST API with open operations (read-only)
+* Web page with raid list for a certain region (using REST API)
 
 --- 1.5.0
 
 * Move gyms to the database, use CSV files just to initialize and keep in synch
-* Make it possible to change gyms in database via admin command (Zhorhn only)
-* Umeå request: If people do similar map commands after one other, skip following commands
-* !raid change remove-group (gym) so admins can clean up user mess when for example setting
-wrong time
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid change groupbyid (id) (time)
 * !raid remove group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid remove groupbyid (id)
-* Use nickname instead of user name in raid list etc (s1lence)
 * Handle changing raid group when user has many raid groups for a raid
 * Handle changing raid group as mod when there are many raid groups for a raid
 * Max number of chars for a gym name in !raid list and !raid overview?
+* Make it possible to change gyms in database via admin command (Zhorhn only)
+* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
+* Umeå request: If people do similar map commands after one other, skip following commands
+* !raid change remove-group (gym) so admins can clean up user mess when for example setting
+wrong time
+* Use nickname instead of user name in raid list etc (s1lence)
 * Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.

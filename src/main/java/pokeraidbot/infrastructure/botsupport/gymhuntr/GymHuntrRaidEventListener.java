@@ -99,21 +99,27 @@ public class GymHuntrRaidEventListener implements EventListener {
                         } else {
                             newRaidArguments = new ArrayList<>();
                         }
-                        if (newRaidArguments != null && newRaidArguments.size() > 0) {
-                            final Iterator<String> iterator = newRaidArguments.iterator();
-                            final String gym = iterator.next();
-                            final String pokemon = iterator.next();
-                            final String time = iterator.next();
-                            final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
-                            final String region = config.getRegion();
-                            final Gym raidGym = gymRepository.findByName(gym, region);
-                            final LocalDate currentDate = currentDateTime.toLocalDate();
-                            final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
-                                    LocalTime.parse(time, Utils.timeParseFormatter));
-                            final SelfUser botUser = botService.getBot().getSelfUser();
-                            handleRaidFromIntegration(botUser,
-                                    guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
-                                    strategyService.getRaidInfo(raidBoss));
+                        try {
+                            if (newRaidArguments != null && newRaidArguments.size() > 0) {
+                                final Iterator<String> iterator = newRaidArguments.iterator();
+                                final String gym = iterator.next();
+                                final String pokemon = iterator.next();
+                                final String time = iterator.next();
+                                final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
+                                final String region = config.getRegion();
+                                final Gym raidGym = gymRepository.findByName(gym, region);
+                                final LocalDate currentDate = currentDateTime.toLocalDate();
+                                final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
+                                        LocalTime.parse(time, Utils.timeParseFormatter));
+                                final SelfUser botUser = botService.getBot().getSelfUser();
+                                final PokemonRaidInfo raidInfo;
+                                raidInfo = strategyService.getRaidInfo(raidBoss);
+                                handleRaidFromIntegration(botUser,
+                                        guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
+                                        raidInfo);
+                            }
+                        } catch (Throwable t) {
+                            LOGGER.warn("Exception when trying to get arguments for raid creation: " + t.getMessage());
                         }
                     }
                 }
@@ -140,13 +146,13 @@ public class GymHuntrRaidEventListener implements EventListener {
                     raidGym,
                     localeService, config.getRegion());
             final Raid createdRaid;
+            final MessageChannel channel = guildEvent.getChannel();
             try {
                 createdRaid = raidRepository.newRaid(user, raidToCreate);
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Raid created via Bot Integration: " + createdRaid);
                 }
                 final Locale locale = config.getLocale();
-                final MessageChannel channel = guildEvent.getChannel();
                 if (LOGGER.isDebugEnabled()) {
                     if (channel != null) {
                         LOGGER.debug("Channel to use: " + channel.getName());
@@ -164,7 +170,8 @@ public class GymHuntrRaidEventListener implements EventListener {
                 final MessageEmbed messageEmbed = embedBuilder.build();
                 sendFeedbackThenCleanUp(createdRaid, channel, messageEmbed);
             } catch (Throwable t) {
-                LOGGER.warn("Exception when trying to create raid via botintegration: " +
+                LOGGER.warn("Exception when trying to create raid via botintegration for server " +
+                        config.getServer() + ", channel " + (channel != null ? channel.getName() : "NULL") + ": " +
                         t.getMessage());
             }
         } else {
@@ -209,7 +216,9 @@ public class GymHuntrRaidEventListener implements EventListener {
                         clockService, executorService);
             }
         } else {
-            LOGGER.debug("PokeRaidInfo was null for pokemon " + createdRaid.getPokemon().getName());
+            if (pokemonRaidInfo == null) {
+                LOGGER.debug("PokeRaidInfo was null for pokemon " + createdRaid.getPokemon().getName());
+            }
         }
     }
 

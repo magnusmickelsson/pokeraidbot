@@ -88,4 +88,14 @@ public class RaidPokemonsTest {
         assertNotNull(raikou);
         assertThat(raikou.getBossTier(), is(5));
     }
+
+    @Test
+    public void verifyRaidbosses() {
+        final PokemonRaidInfo machamp = strategyService.getRaidInfo(pokemonRepository.search("machamp", null));
+        assertNotNull(machamp);
+        assertThat(machamp.getBossTier(), is(3));
+
+        // todo: add more bosses and verify
+    }
+
 }
