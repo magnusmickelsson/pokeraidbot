@@ -18,6 +18,8 @@ Experiment with:
 
 * Present !raid overview as a table
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
+* Geofence possibility to define areas
+* Be able to subscribe via !raid track to any raid in a certain area
 * Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
 * Ability to create channels on the fly to put certain raids in
 
@@ -39,6 +41,8 @@ Do, features:
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * REST API with open operations (read-only)
 * Web page with raid list for a certain region (using REST API)
+* !raid track for gym, if a user wants to see when there is a raid at their "home gym"
+so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
 
 --- 1.5.0
 
@@ -89,3 +93,18 @@ so we can't get test config on a prod server running by mistake
 * Add counters/counter moves to all pokemon, based on "good dps pokemons" for each type?
 * Checking error codes?
 ...
+
+
+Geofence coordinates for Uppsala:
+(Using https://codepen.io/jennerpalacios/full/mWWVeJ)
+
+59.915873050901915,17.60284423828125
+59.84920437021957,17.522850036621094
+59.78896721916371,17.589111328125
+59.77704497190381,17.66155242919922
+59.85110119255739,17.806777954101562
+59.90606202929295,17.716140747070312
+
+Use this Java API to experiment with map areas for 
+raid subscription
+https://github.com/davidmoten/rtree
