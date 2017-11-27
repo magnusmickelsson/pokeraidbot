@@ -4,6 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
+* Command to explicitly reset a server's overview
 * Remove raid group entity when group is cleaned up
 
 Being developed:
@@ -16,10 +17,10 @@ Discussion:
 
 Experiment with:
 
-* Present !raid overview as a table
-* Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Geofence possibility to define areas
 * Be able to subscribe via !raid track to any raid in a certain area
+* Improve !raid overview
+* Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
 * Ability to create channels on the fly to put certain raids in
 
@@ -36,7 +37,6 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-* Command to explicitly reset a server's overview
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * REST API with open operations (read-only)
@@ -46,7 +46,7 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 
 --- 1.5.0
 
-* Move gyms to the database, use CSV files just to initialize and keep in synch
+* Move gyms to the database, use CSV files just to initialize and keep in synch?
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid change groupbyid (id) (time)

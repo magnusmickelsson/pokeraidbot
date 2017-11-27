@@ -97,6 +97,7 @@ public class LocaleService {
     public static final String TOO_MANY_GROUPS = "TOO_MANY_GROUPS";
     public static final String NO_GROUP_BEFORE_NOW = "NO_GROUP_BEFORE_NOW";
     public static final String UNSIGN = "UNSIGN";
+    public static final String OVERVIEW_CLEARED = "OVERVIEW_CLEARED";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -204,13 +205,20 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, SWEDISH),
                 "Tiden %1 är inte inom raidens giltiga tid (%2 - %3)"
         );
+
+        i18nMessages.put(new I18nLookup(OVERVIEW_CLEARED, Locale.ENGLISH),
+                "Server overview message ID cleared."
+        );
+        i18nMessages.put(new I18nLookup(OVERVIEW_CLEARED, SWEDISH),
+                "Serverns översiktmeddelande rensat från konfigurationen."
+        );
         i18nMessages.put(new I18nLookup(OVERVIEW_EXISTS, Locale.ENGLISH),
                 "Server already has an overview command. Don't run this command again," +
-                        " except if the overview message stops updating (may require manual deletion of message)."
+                        " except if the overview message stops updating (saved ID can be cleared via *!raid overview reset*)."
         );
         i18nMessages.put(new I18nLookup(OVERVIEW_EXISTS, SWEDISH),
                 "Servern har redan en översikt. Kör inte detta kommando igen, om inte översikten slutar uppdateras" +
-                        " (kan kräva manuell rensning av meddelande i så fall)."
+                        " (sparad ID kan rensas via *!raid overview reset*)."
         );
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, Locale.ENGLISH),
                 "There is already a raidgroup at this time for %1"

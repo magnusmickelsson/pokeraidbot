@@ -4,6 +4,8 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -19,6 +21,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @Transactional
 public class TrackingCommandListenerBean implements TrackingCommandListener {
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(TrackingCommandListenerBean.class);
     private final ServerConfigRepository serverConfigRepository;
     private final LocaleService localeService;
     private final UserConfigRepository userConfigRepository;
@@ -48,7 +51,12 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
             final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets(configForServer.getRegion());
             for (TrackingTarget t : trackingTargets) {
                 if (t.canHandle(event, command)) {
-                    t.handle(event, command, localeService, localeForUser, configForServer);
+                    try {
+                        t.handle(event, command, localeService, localeForUser, configForServer);
+                    } catch (Throwable e) {
+                        LOGGER.debug("Could not handle tracking message for server " + serverName + " and target " +
+                                "" + t + " due to an exception: " + e.getMessage());
+                    }
                 }
             }
         }

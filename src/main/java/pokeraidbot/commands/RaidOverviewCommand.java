@@ -63,16 +63,30 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     localeService.getLocaleForUser(user)));
         }
         String msgId = config.getOverviewMessageId();
+        final String server = config.getServer();
         if (!StringUtils.isEmpty(msgId)) {
-            LOGGER.info("Server overview message ID not empty. Overview already exists for this server.");
-            replyBasedOnConfig(config, commandEvent,
-                    localeService.getMessageFor(LocaleService.OVERVIEW_EXISTS, locale));
+            final String args = commandEvent.getArgs();
+            if (!StringUtils.isEmpty(args) && args.equalsIgnoreCase("reset")) {
+                try {
+                    commandEvent.getChannel().getMessageById(msgId).complete().delete().queue();
+                } catch (Throwable t) {
+                    // Ignore, just means the message couldn't be cleared/deleted and have to be manually purged
+                    LOGGER.debug("We couldn't find and delete overview for server " + server + ": " + t.getMessage());
+                }
+                serverConfigRepository.setOverviewMessageIdForServer(server, null);
+                LOGGER.info("Cleared overview message for server " + server + ".");
+                replyBasedOnConfig(config, commandEvent,
+                        localeService.getMessageFor(LocaleService.OVERVIEW_CLEARED, locale));
+            } else {
+                LOGGER.info("Server overview message ID not empty. Overview already exists for this server.");
+                replyBasedOnConfig(config, commandEvent,
+                        localeService.getMessageFor(LocaleService.OVERVIEW_EXISTS, locale));
+            }
         } else {
             final String messageString = getOverviewMessage(config,
                     localeService, raidRepository, clockService, locale);
             commandEvent.getChannel().sendMessage(messageString).queue(msg -> {
                 final String messageId = msg.getId();
-                final String server = config.getServer();
                 serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
                 final Callable<Boolean> refreshEditThreadTask =
                         getMessageRefreshingTaskToSchedule(user, server, messageId,

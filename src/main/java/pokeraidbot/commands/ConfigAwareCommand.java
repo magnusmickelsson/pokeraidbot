@@ -112,6 +112,9 @@ public abstract class ConfigAwareCommand extends Command {
                         + " with input message " + commandEvent.getMessage().getRawContent() +
                         (configForServer != null ? " for server " +
                         configForServer.getServer() : "") + ": " + t.getMessage());
+                if (t.getMessage() == null) {
+                    LOGGER.debug("Dumping stacktrace, since exception was null.", t);
+                }
             }
             if (t instanceof IllegalArgumentException) {
                 getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent,

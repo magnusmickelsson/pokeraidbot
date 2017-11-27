@@ -82,7 +82,16 @@ public class GymHuntrRaidEventListener implements EventListener {
             if (isUserGymhuntrBot(messageAuthor) || isUserPokeAlarmBot(messageAuthor)) {
                 final String serverName = guildEvent.getGuild().getName().toLowerCase();
                 final Config config = serverConfigRepository.getConfigForServer(serverName);
+                if (config == null) {
+                    LOGGER.warn("Server configuration is null for this guild: " + guildEvent.getGuild().getName());
+                    return;
+                }
+
                 if (!config.getUseBotIntegration()) {
+                    if (LOGGER.isTraceEnabled()) {
+                        LOGGER.trace("Skipping trigger, since bot integration setting is false for server " +
+                                guildEvent.getGuild().getName());
+                    }
                     return;
                 }
                 final List<MessageEmbed> embeds = guildEvent.getMessage().getEmbeds();
