@@ -60,7 +60,9 @@ public class PokemonRaidStrategyService {
     "Victreebel".toUpperCase(),
     "Golem".toUpperCase(),
     "Nidoking".toUpperCase(),
-    "Nidoqueen".toUpperCase()
+    "Nidoqueen".toUpperCase(),
+    // Tier 5 /EX
+    "Ho-oh".toUpperCase()
 };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {
@@ -166,6 +168,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Golem", "1666", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoking", "1363", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoqueen", "1336", 4);
+        // Tier 5 / EX
+        populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

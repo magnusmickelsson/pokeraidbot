@@ -1,11 +1,11 @@
 Supreme Counters
-Zapdos
+Golem
 
-Zapdos
+Golem
 Quick Move	Charge Move
-Charge Beam
-Thunderbolt
-Zap Cannon
+Rock Throw
+Stone Edge
+Rock Blast
 Omastar
 
 Omastar
@@ -15,23 +15,7 @@ Water Gun
 Rock Slide
 Rock Blast
 Hydro Pump
-Golem
-
-Golem
-Quick Move	Charge Move
-Rock Throw
-Stone Edge
-Rock Blast
 Good Counters
-Dragonite
-
-Dragonite
-Quick Move	Charge Move
-Dragon Tail
-Dragon Breath
-Outrage
-Dragon Claw
-Hurricane
 Tyranitar
 
 Tyranitar
@@ -45,6 +29,21 @@ Quick Move	Charge Move
 Water Gun
 Hydro Pump
 Aqua Tail
+Dragonite
+
+Dragonite
+Quick Move	Charge Move
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage
+Hurricane
+Kingdra
+
+Kingdra
+Quick Move	Charge Move
+Water Gun
+Hydro Pump
 Gyarados
 
 Gyarados
@@ -53,3 +52,11 @@ Bite
 Dragon Breath
 Dragon Tail
 Hydro Pump
+Kabutops
+
+Kabutops
+Quick Move	Charge Move
+Mud Shot
+Fury Cutter
+Stone Edge
+Ancient Power

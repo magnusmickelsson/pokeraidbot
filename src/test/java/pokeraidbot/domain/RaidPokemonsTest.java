@@ -87,6 +87,9 @@ public class RaidPokemonsTest {
         final PokemonRaidInfo raikou = strategyService.getRaidInfo(pokemonRepository.search("raikou", null));
         assertNotNull(raikou);
         assertThat(raikou.getBossTier(), is(5));
+        final PokemonRaidInfo hooh = strategyService.getRaidInfo(pokemonRepository.search("ho-oh", null));
+        assertNotNull(hooh);
+        assertThat(hooh.getBossTier(), is(5));
     }
 
     @Test

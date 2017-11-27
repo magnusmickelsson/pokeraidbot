@@ -39,6 +39,11 @@ public class CounterTextFileParserText {
     }
 
     @Test
+    public void checkHoOhFile() throws Exception {
+        assertPokemonHasCorrectNumberOfCounters("Ho-oh", 6, 2);
+    }
+
+    @Test
     public void checkTyranitarFile() throws Exception {
         assertPokemonHasCorrectNumberOfCounters("Tyranitar", 5, 2);
     }
