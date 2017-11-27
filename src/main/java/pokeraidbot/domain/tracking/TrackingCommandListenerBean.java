@@ -26,7 +26,7 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
     private final LocaleService localeService;
     private final UserConfigRepository userConfigRepository;
     private final PokemonRepository pokemonRepository;
-    private final Set<PokemonTrackingTarget> trackingTargets = new ConcurrentSkipListSet<>();
+    private Set<PokemonTrackingTarget> trackingTargets = new ConcurrentSkipListSet<>();
 
     public TrackingCommandListenerBean(ServerConfigRepository serverConfigRepository,
                                        LocaleService localeService,
@@ -92,6 +92,11 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
     @Override
     public void onNonCommandMessage(MessageReceivedEvent event) {
 
+    }
+
+    @Override
+    public void clearCache() {
+        trackingTargets = new ConcurrentSkipListSet<>();
     }
 
     @Override

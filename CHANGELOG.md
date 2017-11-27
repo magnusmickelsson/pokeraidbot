@@ -1,7 +1,14 @@
 FUTURE (?)
 =====
 
-1.4.2
+1.4.3 (2017-11-27)
+=====
+* Command to explicitly reset a server's overview
+* Remove raid group entity when group is cleaned up
+* Admin command for Zhorhn only - push message to the default channel of all servers (and some other stuff)
+* Raid tracking for a user that left the server, handle that situation
+
+1.4.2 (2017-11-23)
 =====
 * Better logging
 * Changed headline text and title for group messages from Umeå feedback, better notice on mobile device

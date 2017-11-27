@@ -97,6 +97,8 @@ public class BotService {
                 new PingCommand(),
                 new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener),
+                new AdminCommands(userConfigRepository, serverConfigRepository, gymRepository,
+                        this, trackingCommandListener),
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),

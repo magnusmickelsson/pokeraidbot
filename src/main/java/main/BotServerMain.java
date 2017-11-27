@@ -38,6 +38,7 @@ import java.util.concurrent.*;
 @ComponentScan(basePackages = {"pokeraidbot"})
 @EnableTransactionManagement
 public class BotServerMain {
+    public static String BOT_CREATOR_USERID = "199969842021793792";
     @Value("${ownerId}")
     private String ownerId;
     @Value("${token}")

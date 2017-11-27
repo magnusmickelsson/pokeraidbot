@@ -4,8 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
-* Command to explicitly reset a server's overview
-* Remove raid group entity when group is cleaned up
+-
 
 Being developed:
 
@@ -26,7 +25,6 @@ Experiment with:
 
 Fix issue:
 
-* Raid tracking for a user that left the server, handle that situation
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -61,7 +59,6 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 * !raid change remove-group (gym) so admins can clean up user mess when for example setting
 wrong time
 * Use nickname instead of user name in raid list etc (s1lence)
-* Admin command for Zhorhn only - push message to the default channel of all servers
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
