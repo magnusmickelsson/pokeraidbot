@@ -46,6 +46,8 @@ to check server, and that raid entity, group etc also need to include server
 when niantic comes up with new tricks
 * Be able to auto create groups via botintegration for several tiers and to different channels
 * !raid install needs to be made easier
+* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
+* add egg handling to getting started documentation
 
 --- 1.6.0
 
