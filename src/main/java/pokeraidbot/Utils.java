@@ -241,7 +241,7 @@ public class Utils {
     }
 
     public static boolean isRaidExPokemon(String pokemonName) {
-        return pokemonName.equalsIgnoreCase("mewtwo") || pokemonName.equalsIgnoreCase("ho-oh");
+        return pokemonName.equalsIgnoreCase("mewtwo"); // || pokemonName.equalsIgnoreCase("ho-oh");
     }
 
     public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {

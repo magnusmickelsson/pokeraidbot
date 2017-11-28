@@ -22,12 +22,12 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- Ho-oh konfigurerad som EX raid boss\n" +
+                    "- Ho-oh ny raid boss\n" +
                     "- Bättre felhantering kring skickandet av meddelanden i samband med !raid track\n" +
                     "- För att nollställa serverns raidöversikt och kunna skapa om den - *!raid overview reset*";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- Ho-oh added as EX raid boss\n" +
+                    "- Ho-oh new raid boss\n" +
                     "- Better error handling in relation to sending messages triggered via !raid track\n" +
                     "- To reset the server's raid overview to be able to recreate it - run *!raid overview reset*";
         }

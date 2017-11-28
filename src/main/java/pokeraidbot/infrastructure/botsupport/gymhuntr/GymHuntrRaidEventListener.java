@@ -273,12 +273,14 @@ public class GymHuntrRaidEventListener implements EventListener {
             final String[] gymSplit = title.split("raid is available against");
             gym = gymSplit[0].trim();
         } else if (title.contains("has a level 5") && description.contains("will hatch")) {
-            // todo: fetch seasonal pokemon for region from some repo?
-            pokemon = "Raikou";
-            final String[] descriptionSplit = description.split(" ");
-            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
-                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
-            gym = title.split("has a level 5")[0].trim();
+            return new ArrayList<>();
+            // Temporarily disabled since Niantic does weird stuff (Ho-oh and Raikou active at the same time)
+//            // todo: fetch seasonal pokemon for region from some repo?
+//            pokemon = "Raikou";
+//            final String[] descriptionSplit = description.split(" ");
+//            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
+//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+//            gym = title.split("has a level 5")[0].trim();
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
@@ -300,17 +302,18 @@ public class GymHuntrRaidEventListener implements EventListener {
             gym = firstPass[0].trim();
             pokemon = firstPass[1].trim();
         } else if (title.contains("Level 5 Raid is starting soon!")) {
-            final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
-                    .replaceAll("Raid Starting: ", "").split("\n");
-            pokemon = "Raikou"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?
-            gym = firstPass[0].trim();
-            final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
-                    .replaceAll("min ", "").replaceAll("sec", "").split(" ");
-            timeString = printTime(clockService.getCurrentTime()
-                    .plusHours(Long.parseLong(timeArguments[0]))
-                    .plusMinutes(Long.parseLong(timeArguments[1]))
-                    .plusSeconds(Long.parseLong(timeArguments[2]))
-                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            return new ArrayList<>();
+//            final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
+//                    .replaceAll("Raid Starting: ", "").split("\n");
+//            pokemon = "Raikou"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?
+//            gym = firstPass[0].trim();
+//            final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
+//                    .replaceAll("min ", "").replaceAll("sec", "").split(" ");
+//            timeString = printTime(clockService.getCurrentTime()
+//                    .plusHours(Long.parseLong(timeArguments[0]))
+//                    .plusMinutes(Long.parseLong(timeArguments[1]))
+//                    .plusSeconds(Long.parseLong(timeArguments[2]))
+//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
         } else {
             return new ArrayList<>(); // = We shouldn't create this raid, since it is a non-tier 5 egg
         }
