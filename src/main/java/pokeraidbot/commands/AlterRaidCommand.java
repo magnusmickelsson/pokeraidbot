@@ -224,6 +224,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         if (raidRepository.delete(deleteRaid)) {
             raid = null;
             commandEvent.reactSuccess();
+            removeOriginMessageIfConfigSaysSo(config, commandEvent);
         } else {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,
