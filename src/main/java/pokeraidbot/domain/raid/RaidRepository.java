@@ -521,4 +521,21 @@ public class RaidRepository {
         raidEntityRepository.save(entityByRaidId);
         return group;
     }
+
+    // todo: do a select count(*) instead of actually getting the list
+    public boolean isActiveRaidAt(Gym raidGym, String region) {
+        List<RaidEntity> entities =
+                raidEntityRepository.findByGymAndRegionOrderByEndOfRaidAsc(raidGym.getName(), region);
+
+        if (entities.size() == 0) {
+            return false;
+        }
+
+        for (RaidEntity entity : entities) {
+            if (!entity.isExRaid()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

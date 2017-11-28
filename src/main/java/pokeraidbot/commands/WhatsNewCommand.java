@@ -25,12 +25,16 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Kunna rapportera raidägg (Egg1-5 funkar som pokemons för alla raidkommandon)," +
                     " och rapportera kläckning när man vet vad det blir, " +
                     "via *!raid hatch {pokemon} {gym}\n" +
+                    "- Botintegrationen kan nu rapportera ägg enligt ovan, och automatiskt göra !raid hatch " +
+                    "när PokeAlarm eller Gymhuntr rapporterar vad det blev\n" +
                     "- Admins och mods ska kunna ta bort raider även om de har anmälningar (om något blir riktigt fel)";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
                     "- Report and create raids and groups for eggs (Egg1-5 works as pokemons for all raid commands)" +
                     ", and be able to hatch them when we know what " +
                     "they are, via *!raid hatch {pokemon} {gym}\n" +
+                    "- Bot integration can now report eggs, and automatically report what " +
+                    "hatched as soon as the bot reports it\n" +
                     "- Admins and mods should be able to remove raids even if they have signups";
         }
         replyBasedOnConfig(config, commandEvent, message);

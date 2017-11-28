@@ -105,7 +105,7 @@ public class Config {
         this.pinGroups = pinGroups;
     }
 
-    public Boolean getUseBotIntegration() {
+    public Boolean useBotIntegration() {
         return useBotIntegration;
     }
 

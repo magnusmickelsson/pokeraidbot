@@ -31,7 +31,6 @@ Fix issue:
 to set
 
 Fix, misc:
-* Fix release tag for 1.0.0
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
@@ -45,6 +44,8 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 to check server, and that raid entity, group etc also need to include server
 * Get seasonal boss from database settings for server, and allow admin command to change on the fly 
 when niantic comes up with new tricks
+* Be able to auto create groups via botintegration for several tiers and to different channels
+* !raid install needs to be made easier
 
 --- 1.6.0
 

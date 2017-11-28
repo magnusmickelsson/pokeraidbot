@@ -90,7 +90,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     return;
                 }
 
-                if (!config.getUseBotIntegration()) {
+                if (!config.useBotIntegration()) {
                     if (LOGGER.isTraceEnabled()) {
                         LOGGER.trace("Skipping trigger, since bot integration setting is false for server " +
                                 guildEvent.getGuild().getName());
@@ -141,7 +141,8 @@ public class GymHuntrRaidEventListener implements EventListener {
 
     public void handleRaidFromIntegration(User user, GuildMessageReceivedEvent guildEvent, Pokemon raidBoss, Gym raidGym,
                                           LocalDateTime endOfRaid, Config config, ClockService clockService,
-                                          PokemonRaidInfo pokemonRaidInfo, PokemonRaidStrategyService pokemonRaidStrategyService) {
+                                          PokemonRaidInfo pokemonRaidInfo,
+                                          PokemonRaidStrategyService pokemonRaidStrategyService) {
         Validate.notNull(user, "User");
         Validate.notNull(guildEvent, "Guild event");
         Validate.notNull(config, "Config");
@@ -157,30 +158,18 @@ public class GymHuntrRaidEventListener implements EventListener {
                     endOfRaid,
                     raidGym,
                     localeService, config.getRegion());
-            final Raid createdRaid;
             final MessageChannel channel = guildEvent.getChannel();
             try {
-                createdRaid = raidRepository.newRaid(user, raidToCreate);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Raid created via Bot Integration: " + createdRaid);
-                }
-                final Locale locale = config.getLocale();
-                if (LOGGER.isDebugEnabled()) {
-                    if (channel != null) {
-                        LOGGER.debug("Channel to use: " + channel.getName());
+                if (raidRepository.isActiveRaidAt(raidGym, config.getRegion())) {
+                    Raid existingRaid =
+                            raidRepository.getActiveRaidOrFallbackToExRaid(raidGym, config.getRegion(), user);
+                    if (existingRaid.getPokemon().isEgg()) {
+                        existingRaid = raidRepository.changePokemon(existingRaid, raidBoss);
+                        LOGGER.info("Hatched raid: " + existingRaid);
                     }
+                } else {
+                    createRaid(user, guildEvent, config, clockService, pokemonRaidInfo, now, raidToCreate, channel);
                 }
-                EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
-                StringBuilder sb = new StringBuilder();
-                sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                        locale, createdRaid.toString(locale)));
-                notifyTrackingUsers(localeService, trackingCommandListener, guildEvent, config, createdRaid, locale);
-                createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
-                        pokemonRaidInfo, now, createdRaid, channel);
-
-                embedBuilder.setDescription(sb.toString());
-                final MessageEmbed messageEmbed = embedBuilder.build();
-                sendFeedbackThenCleanUp(createdRaid, channel, messageEmbed);
             } catch (Throwable t) {
                 LOGGER.warn("Exception when trying to create raid via botintegration for server " +
                         config.getServer() + ", channel " + (channel != null ? channel.getName() : "NULL") + ": " +
@@ -190,6 +179,31 @@ public class GymHuntrRaidEventListener implements EventListener {
             LOGGER.debug("Skipped creating raid at " + raidGym +
                     ", less than 10 minutes remaining on it.");
         }
+    }
+
+    protected void createRaid(User user, GuildMessageReceivedEvent guildEvent, Config config, ClockService clockService, PokemonRaidInfo pokemonRaidInfo, LocalDateTime now, Raid raidToCreate, MessageChannel channel) {
+        Raid createdRaid;
+        createdRaid = raidRepository.newRaid(user, raidToCreate);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Raid created via Bot Integration: " + createdRaid);
+        }
+        final Locale locale = config.getLocale();
+        if (LOGGER.isDebugEnabled()) {
+            if (channel != null) {
+                LOGGER.debug("Channel to use: " + channel.getName());
+            }
+        }
+        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
+        StringBuilder sb = new StringBuilder();
+        sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
+                locale, createdRaid.toString(locale)));
+        notifyTrackingUsers(localeService, trackingCommandListener, guildEvent, config, createdRaid, locale);
+        createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
+                pokemonRaidInfo, now, createdRaid, channel);
+
+        embedBuilder.setDescription(sb.toString());
+        final MessageEmbed messageEmbed = embedBuilder.build();
+        sendFeedbackThenCleanUp(createdRaid, channel, messageEmbed);
     }
 
     private void sendFeedbackThenCleanUp(Raid createdRaid, MessageChannel channel, MessageEmbed messageEmbed) {

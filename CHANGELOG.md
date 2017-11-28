@@ -5,6 +5,7 @@ FUTURE (?)
 =====
 * Report and create raids and groups for eggs, and be able to hatch them when we know what they are
 * Admins and mods should be able to remove raids even if they have signups
+* Bot integration can now report eggs, and automatically report what hatched as soon as the bot reports it
 
 1.4.4 (2017-11-28)
 =====
