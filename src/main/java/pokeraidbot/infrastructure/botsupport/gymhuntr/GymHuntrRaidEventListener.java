@@ -37,6 +37,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -298,16 +299,30 @@ public class GymHuntrRaidEventListener implements EventListener {
             final String[] gymSplit = title.split("raid is available against");
             gym = gymSplit[0].trim();
         } else if (title.contains("has a level 5") && description.contains("will hatch")) {
-//            // todo: fetch seasonal pokemon for region from some repo?
-            pokemon = "Egg5";
             final String[] descriptionSplit = description.split(" ");
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
                     .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
             gym = title.split("has a level 5")[0].trim();
+            pokemon = getTier5RaidBossBasedOnSeason(clockService);
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
         return Arrays.asList(new String[]{gym, pokemon, timeString});
+    }
+
+    protected static String getTier5RaidBossBasedOnSeason(ClockService clockService) {
+        String pokemon;
+        final LocalDateTime raikouEndOfSpawn =
+                LocalDateTime.of(LocalDate.of(2017, Month.NOVEMBER, 30),
+                        LocalTime.of(23, 0));
+        // todo: get seasonal boss from database settings for server, and allow admin command to change on the fly
+        // when niantic comes up with new tricks
+        if (clockService.getCurrentDateTime().isAfter(raikouEndOfSpawn)) {
+            pokemon = "Ho-Oh";
+        } else {
+            pokemon = "Egg5";
+        }
+        return pokemon;
     }
 
     public static List<String> gymhuntrArgumentsToCreateRaid(String title, String description,
@@ -327,7 +342,6 @@ public class GymHuntrRaidEventListener implements EventListener {
         } else if (title.contains("Level 5 Raid is starting soon!")) {
             final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
                     .replaceAll("Raid Starting: ", "").split("\n");
-            pokemon = "Egg5"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?
             gym = firstPass[0].trim();
             final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
                     .replaceAll("min ", "").replaceAll("sec", "").split(" ");
@@ -336,6 +350,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     .plusMinutes(Long.parseLong(timeArguments[1]))
                     .plusSeconds(Long.parseLong(timeArguments[2]))
                     .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            pokemon = getTier5RaidBossBasedOnSeason(clockService);
         } else {
             return new ArrayList<>(); // = We shouldn't create this raid, since it is a non-tier 5 egg
         }

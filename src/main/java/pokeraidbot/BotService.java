@@ -137,7 +137,7 @@ public class BotService {
                         executorService, raidInfoService),
                 new EggHatchedCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository,
-                        aggregateCommandListener, this),
+                        aggregateCommandListener, this, raidInfoService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
                         aggregateCommandListener, clockService, executorService)
         );

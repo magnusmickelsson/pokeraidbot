@@ -22,14 +22,16 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- Ho-oh ny raid boss\n" +
-                    "- Bättre felhantering kring skickandet av meddelanden i samband med !raid track\n" +
-                    "- För att nollställa serverns raidöversikt och kunna skapa om den - *!raid overview reset*";
+                    "- Kunna rapportera raidägg (Egg1-5 funkar som pokemons för alla raidkommandon)," +
+                    " och rapportera kläckning när man vet vad det blir, " +
+                    "via *!raid hatch {pokemon} {gym}\n" +
+                    "- Admins och mods ska kunna ta bort raider även om de har anmälningar (om något blir riktigt fel)";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- Ho-oh new raid boss\n" +
-                    "- Better error handling in relation to sending messages triggered via !raid track\n" +
-                    "- To reset the server's raid overview to be able to recreate it - run *!raid overview reset*";
+                    "- Report and create raids and groups for eggs (Egg1-5 works as pokemons for all raid commands)" +
+                    ", and be able to hatch them when we know what " +
+                    "they are, via *!raid hatch {pokemon} {gym}\n" +
+                    "- Admins and mods should be able to remove raids even if they have signups";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }

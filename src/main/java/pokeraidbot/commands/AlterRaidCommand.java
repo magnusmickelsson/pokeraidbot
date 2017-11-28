@@ -214,7 +214,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         Raid deleteRaid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         verifyPermission(localeService, commandEvent, user, deleteRaid, config);
         final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
-        if (userIsNotAdministrator && deleteRaid.getSignUps().size() > 0) {
+        final boolean userIsNotMod = !isUserServerMod(commandEvent, config);
+        if ((userIsNotAdministrator && userIsNotMod) && deleteRaid.getSignUps().size() > 0) {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.ONLY_ADMINS_REMOVE_RAID,
                             localeService.getLocaleForUser(user))

@@ -1,5 +1,7 @@
 package pokeraidbot.domain.pokemon;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Set;
 
 public class Pokemon {
@@ -76,11 +78,15 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        return name + " (" + types + ")";
+        return name + (types.getTypeSet().size() > 0 ? " (" + types + ")" : "");
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean isEgg() {
+        return StringUtils.containsIgnoreCase(name, "egg") && name.matches("[Ee][Gg][Gg][1-5]");
     }
 
     // todo: getWeaknesses(Pokemon)

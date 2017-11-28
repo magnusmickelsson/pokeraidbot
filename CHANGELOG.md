@@ -1,6 +1,11 @@
 FUTURE (?)
 =====
 
+1.5.0 (2017-11-28)
+=====
+* Report and create raids and groups for eggs, and be able to hatch them when we know what they are
+* Admins and mods should be able to remove raids even if they have signups
+
 1.4.4 (2017-11-28)
 =====
 * Ho-oh added as raid boss (not EX)

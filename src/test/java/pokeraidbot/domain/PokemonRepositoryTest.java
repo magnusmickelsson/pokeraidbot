@@ -51,6 +51,7 @@ public class PokemonRepositoryTest {
         assertThat(pokemon.getTypes(), is(new PokemonTypes("Electric")));
         Pokemon search = pokemonRepository.search("Raik", null);
         assertThat(search, is(pokemon));
+        assertThat(pokemon.isEgg(), is(false));
     }
 
     @Test
@@ -70,5 +71,6 @@ public class PokemonRepositoryTest {
         assertThat(pokemon.getTypes(), is(new PokemonTypes()));
         Pokemon search = pokemonRepository.search(eggSearchName + eggTier, null);
         assertThat(search, is(pokemon));
+        assertThat(pokemon.isEgg(), is(true));
     }
 }

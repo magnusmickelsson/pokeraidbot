@@ -98,6 +98,9 @@ public class LocaleService {
     public static final String NO_GROUP_BEFORE_NOW = "NO_GROUP_BEFORE_NOW";
     public static final String UNSIGN = "UNSIGN";
     public static final String OVERVIEW_CLEARED = "OVERVIEW_CLEARED";
+    public static final String EGG_HATCH_HELP = "EGG_HATCH_HELP";
+    public static final String EGG_ALREADY_HATCHED = "EGG_ALREADY_HATCHED";
+    public static final String EGG_WRONG_TIER = "EGG_WRONG_TIER";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -226,6 +229,23 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GROUP_NOT_ADDED, SWEDISH),
                 "Det finns redan en grupp för denna tid för %1"
         );
+        i18nMessages.put(new I18nLookup(EGG_ALREADY_HATCHED, Locale.ENGLISH),
+                "This raid has already been reported as hatched, the pokemon is %1. " +
+                        "If it's wrong, change via *!raid change pokemon {pokemon name} {gym}*.");
+        i18nMessages.put(new I18nLookup(EGG_ALREADY_HATCHED, SWEDISH),
+                "Den här raiden har redan rapporterats som kläckt, bossen är %1. " +
+                        "Om det inte stämmer, ändra via *!raid change pokemon {pokemon name} {gym}* " +
+                        "(admins eller raidskapare).");
+        i18nMessages.put(new I18nLookup(EGG_WRONG_TIER, Locale.ENGLISH),
+                "Attempt to hatch a raid boss of a different tier than the reported egg!");
+        i18nMessages.put(new I18nLookup(EGG_WRONG_TIER, SWEDISH),
+                "Försök att kläcka en raidboss av annan nivå än det rapporterade ägget! Om det är fel typ av ägg, " +
+        "ändra via *!raid change pokemon Egg{rätt nivå} {gym}* ..");
+
+        i18nMessages.put(new I18nLookup(EGG_HATCH_HELP, Locale.ENGLISH),
+                "Report the hatch of a reported egg - !raid hatch [Name of Pokemon] [Gym name]");
+        i18nMessages.put(new I18nLookup(EGG_HATCH_HELP, SWEDISH),
+                "Rapportera att ett rapporterat ägg kläckts - !raid hatch [Pokemon] [Gym]");
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, Locale.ENGLISH),
                 "Create new raid starting at time - !raid start [Name of Pokemon] [Start (HH:MM)] [Gym name]");
         i18nMessages.put(new I18nLookup(NEW_RAID_START_HELP, SWEDISH),
@@ -859,8 +879,15 @@ public class LocaleService {
                         "*Example:* !raid new entei 09:25 Solna Platform\n\n" +
                         "**To register a new EX raid:**\n!raid ex *[Pokemon]* *[Ends at (yyyy-mm-dd HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid ex mewtwo 2017-10-10 09:25 Solna Platform\n\n" +
-                        "**To register a new raid via start time:**\n!raid start *[Pokemon]* *[Starts at (HH:MM)]* *[Gym name]*\n" +
+                        "**To register a new raid via start time:**\n!raid start *[Pokemon]* " +
+                        "*[Starts at (HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid start entei 08:40 Solna Platform\n\n" +
+                        "**To report a egg being hatched at some point:**\n!raid start *[Egg1-5 depending on raid tier]* " +
+                        "*[Starts at (HH:MM)]* *[Gym name]*\n" +
+                        "*Example:* !raid start Egg5 08:40 Solna Platform\n\n" +
+                        "**To report a reported egg having hatched:**\n!raid hatch *[Pokemon]* " +
+                        "*[Gym name]*\n" +
+                        "*Example:* !raid hatch entei Solna Platform\n\n" +
                         "**Check status for a raid in a gym:**\n!raid status *[Gym name]*\n" +
                         "*Example:* !raid status Solna Platform\n\n" +
                         "**Get a list of all active raids:**\n!raid list\n" +
@@ -880,6 +907,13 @@ public class LocaleService {
                         "**För att registrera en raid via starttid:**\n!raid start *[Pokemon]* " +
                         "*[Startar klockan (HH:MM)]* *[Gym-namn]*\n" +
                         "*Exempel:* !raid start entei 08:40 Solna Platform\n\n" +
+                        "**För att rapportera att ett raidägg kommer kläckas:**\n!raid start " +
+                        "*[Egg1-5 beroende på nivå]* " +
+                        "*[Startar klockan (HH:MM)]* *[Gym-namn]*\n" +
+                        "*Exempel:* !raid start Egg5 08:40 Solna Platform\n\n" +
+                        "**För att rapportera att ett rapporterat ägg kläckts:**\n!raid hatch *[Pokemon]* " +
+                        "*[Gym-namn]*\n" +
+                        "*Exempel:* !raid hatch entei Solna Platform\n\n" +
                         "**Kolla status för en raid:**\n!raid status *[Gym-namn]*\n" +
                         "*Exempel:* !raid status Solna Platform\n\n" +
                         "**Visa alla registrerade raider:**\n!raid list\n" +

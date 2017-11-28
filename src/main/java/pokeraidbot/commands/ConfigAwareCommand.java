@@ -124,7 +124,7 @@ public abstract class ConfigAwareCommand extends Command {
                 LOGGER.debug("Exception thrown from command " + this.getClass().getSimpleName()
                         + " with input message " + commandEvent.getMessage().getRawContent() +
                         (configForServer != null ? " for server " +
-                        configForServer.getServer() : "") + ": " + t.getMessage());
+                        configForServer.getServer() : "") + ":\n" + t.getMessage());
                 if (t.getMessage() == null) {
                     LOGGER.debug("Dumping stacktrace, since exception was null.", t);
                 }

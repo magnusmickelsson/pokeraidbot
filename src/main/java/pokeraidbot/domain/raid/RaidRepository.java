@@ -298,6 +298,9 @@ public class RaidRepository {
         }
         raidEntity.setPokemon(pokemon.getName());
         raidEntity = raidEntityRepository.save(raidEntity);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Changed pokemon for raid " + raid + " to " + pokemon + ".");
+        }
         return getRaidInstance(raidEntity);
     }
 
