@@ -54,6 +54,7 @@ public class AdminCommands extends Command {
                 } else {
                     userConfigRepository.delete(userConfig);
                     event.replyInDM("Removed user configuration for user with ID " + userId);
+                    return;
                 }
             } else if (event.getArgs().startsWith("permissions")) {
                 final JDA bot = botService.getBot();

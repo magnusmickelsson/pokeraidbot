@@ -247,7 +247,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getLocaleForUser(user)));
         }
         verifyPermission(commandEvent, user, pokemonRaid, config);
-        if (Utils.isRaidExPokemon("mewtwo")) {
+        if (Utils.isRaidExPokemon(whatToChangeTo)) {
             throw new UserMessedUpException(userName, localeService.getMessageFor(
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
         }

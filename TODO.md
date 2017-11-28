@@ -41,6 +41,8 @@ Do, features:
 * Web page with raid list for a certain region (using REST API)
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
+* Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
+to check server, and that raid entity, group etc also need to include server
 
 --- 1.5.0
 
