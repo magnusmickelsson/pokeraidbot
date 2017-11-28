@@ -40,30 +40,36 @@ public class PokemonRaidStrategyService {
             "Raikou".toUpperCase(), "Suicune".toUpperCase(),
             "Mewtwo".toUpperCase(),
             "Ivysaur".toUpperCase(),
-    "Metapod".toUpperCase(),
-    "Charmeleon".toUpperCase(),
-    "Wartortle".toUpperCase(),
-    // Tier 2
-    "Magneton".toUpperCase(),
-    "Sableye".toUpperCase(),
-    "Sandslash".toUpperCase(),
-    "Tentacruel".toUpperCase(),
-    "Marowak".toUpperCase(),
-    "Cloyster".toUpperCase(),
-    // Tier 3
-    "Ninetales".toUpperCase(),
-    "Scyther".toUpperCase(),
-    "Omastar".toUpperCase(),
-    "Porygon".toUpperCase(),
-    // Tier 4
-    "Poliwrath".toUpperCase(),
-    "Victreebel".toUpperCase(),
-    "Golem".toUpperCase(),
-    "Nidoking".toUpperCase(),
-    "Nidoqueen".toUpperCase(),
-    // Tier 5 /EX
-    "Ho-oh".toUpperCase()
-};
+            "Metapod".toUpperCase(),
+            "Charmeleon".toUpperCase(),
+            "Wartortle".toUpperCase(),
+            "egg1".toUpperCase(),
+            // Tier 2
+            "Magneton".toUpperCase(),
+            "Sableye".toUpperCase(),
+            "Sandslash".toUpperCase(),
+            "Tentacruel".toUpperCase(),
+            "Marowak".toUpperCase(),
+            "Cloyster".toUpperCase(),
+            "egg2".toUpperCase(),
+            // Tier 3
+            "Ninetales".toUpperCase(),
+            "Scyther".toUpperCase(),
+            "Omastar".toUpperCase(),
+            "Porygon".toUpperCase(),
+            "egg3".toUpperCase(),
+            // Tier 4
+            "Poliwrath".toUpperCase(),
+            "Victreebel".toUpperCase(),
+            "Golem".toUpperCase(),
+            "Nidoking".toUpperCase(),
+            "Nidoqueen".toUpperCase(),
+            "egg4".toUpperCase(),
+            // Tier 5 /EX
+            "egg5".toUpperCase(),
+            "Ho-oh".toUpperCase()
+
+    };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {
         for (String raidBossName : raidBosses) {
@@ -150,6 +156,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Metapod", "239", 1);
         populateRaidInfoForBoss(pokemonRepository, "Charmeleon", "847", 1);
         populateRaidInfoForBoss(pokemonRepository, "Wartortle", "756", 1);
+        populateRaidInfoForBoss(pokemonRepository, "egg1", "1", 1);
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Magneton", "1278", 2);
         populateRaidInfoForBoss(pokemonRepository, "Sableye", "745", 2);
@@ -157,18 +164,24 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Tentacruel", "1356", 2);
         populateRaidInfoForBoss(pokemonRepository, "Marowak", "966", 2);
         populateRaidInfoForBoss(pokemonRepository, "Cloyster", "1414", 2);
+        populateRaidInfoForBoss(pokemonRepository, "egg2", "1", 2);
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Ninetales", "1233", 3);
         populateRaidInfoForBoss(pokemonRepository, "Scyther", "1408", 3);
         populateRaidInfoForBoss(pokemonRepository, "Omastar", "1534", 3);
         populateRaidInfoForBoss(pokemonRepository, "Porygon", "895", 3);
+        populateRaidInfoForBoss(pokemonRepository, "egg3", "1", 3);
+
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Poliwrath", "1395", 4);
         populateRaidInfoForBoss(pokemonRepository, "Victreebel", "1296", 4);
         populateRaidInfoForBoss(pokemonRepository, "Golem", "1666", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoking", "1363", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoqueen", "1336", 4);
+        populateRaidInfoForBoss(pokemonRepository, "egg4", "1", 4);
+
         // Tier 5 / EX
+        populateRaidInfoForBoss(pokemonRepository, "egg5", "1", 5);
         populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");

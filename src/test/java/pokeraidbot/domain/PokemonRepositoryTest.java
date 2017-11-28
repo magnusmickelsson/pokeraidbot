@@ -52,4 +52,23 @@ public class PokemonRepositoryTest {
         Pokemon search = pokemonRepository.search("Raik", null);
         assertThat(search, is(pokemon));
     }
+
+    @Test
+    public void testGetEggs() throws Exception {
+        final String eggName = "Egg";
+        final String eggSearchName = "eGg";
+        assertEggExistsForTier(eggName, eggSearchName, 1);
+        assertEggExistsForTier(eggName, eggSearchName, 2);
+        assertEggExistsForTier(eggName, eggSearchName, 3);
+        assertEggExistsForTier(eggName, eggSearchName, 4);
+        assertEggExistsForTier(eggName, eggSearchName, 5);
+    }
+
+    private void assertEggExistsForTier(String eggName, String eggSearchName, int eggTier) {
+        Pokemon pokemon = pokemonRepository.search(eggName + eggTier, null);
+        assertThat(pokemon != null, is(true));
+        assertThat(pokemon.getTypes(), is(new PokemonTypes()));
+        Pokemon search = pokemonRepository.search(eggSearchName + eggTier, null);
+        assertThat(search, is(pokemon));
+    }
 }

@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.commons.lang3.Validate;
@@ -19,6 +20,7 @@ import pokeraidbot.domain.feedback.CleanUpMostExceptMapsFeedbackStrategy;
 import pokeraidbot.domain.feedback.DefaultFeedbackStrategy;
 import pokeraidbot.domain.feedback.FeedbackStrategy;
 import pokeraidbot.domain.feedback.KeepAllFeedbackStrategy;
+import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
@@ -80,6 +82,17 @@ public abstract class ConfigAwareCommand extends Command {
         getFeedbackStrategy(config).replyMap(config, commandEvent, message);
     }
 
+    public static void verifyPermission(LocaleService localeService, CommandEvent commandEvent, User user,
+                                        Raid raid, Config config) {
+        final boolean isServerMod = isUserServerMod(commandEvent, config);
+        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent) && !isServerMod;
+        final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
+        if (userIsNotAdministrator && userIsNotRaidCreator) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                    localeService.getLocaleForUser(user)));
+        }
+    }
+
     public void replyErrorBasedOnConfig(Config config, final CommandEvent commandEvent, Throwable t) {
         getFeedbackStrategy(config).replyError(config, commandEvent, t, localeService);
     }
@@ -135,7 +148,7 @@ public abstract class ConfigAwareCommand extends Command {
         getFeedbackStrategy(config).reply(config, commandEvent, message, numberOfSeconds, localeService);
     }
 
-    protected boolean isUserServerMod(CommandEvent commandEvent, Config config) {
+    protected static boolean isUserServerMod(CommandEvent commandEvent, Config config) {
         boolean isServerMod = false;
         final String modPermissionGroup = config.getModPermissionGroup();
         if (!StringUtils.isEmpty(modPermissionGroup)) {
@@ -149,7 +162,7 @@ public abstract class ConfigAwareCommand extends Command {
         return isServerMod;
     }
 
-    protected boolean isUserAdministrator(CommandEvent commandEvent) {
+    protected static boolean isUserAdministrator(CommandEvent commandEvent) {
         return PermissionUtil.checkPermission(commandEvent.getTextChannel(),
                 commandEvent.getMember(), Permission.ADMINISTRATOR);
     }

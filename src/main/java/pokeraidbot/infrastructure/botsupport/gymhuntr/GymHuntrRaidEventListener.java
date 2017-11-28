@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
+import com.jagrosh.jdautilities.commandclient.Command;
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -171,7 +173,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                 StringBuilder sb = new StringBuilder();
                 sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                         locale, createdRaid.toString(locale)));
-                notifyTrackingUsers(guildEvent, config, createdRaid, locale);
+                notifyTrackingUsers(localeService, trackingCommandListener, guildEvent, config, createdRaid, locale);
                 createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
                         pokemonRaidInfo, now, createdRaid, channel);
 
@@ -231,8 +233,9 @@ public class GymHuntrRaidEventListener implements EventListener {
         }
     }
 
-    private void notifyTrackingUsers(GuildMessageReceivedEvent guildEvent, Config config, Raid createdRaid,
-                                     Locale locale) {
+    public static void notifyTrackingUsers(LocaleService localeService, TrackingCommandListener trackingCommandListener,
+                                            GuildMessageReceivedEvent guildEvent, Config config, Raid createdRaid,
+                                            Locale locale) {
         try {
             Validate.notNull(guildEvent, "Guild event");
             Validate.notNull(config, "Config");
@@ -245,6 +248,28 @@ public class GymHuntrRaidEventListener implements EventListener {
             for (TrackingTarget t : trackingTargets) {
                 if (t.canHandle(guildEvent, createdRaid)) {
                     t.handle(guildEvent, createdRaid, localeService, locale, config);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Could not notify tracking listeners due to an error: " + e.getMessage());
+        }
+    }
+
+    public static void notifyTrackingUsers(LocaleService localeService, TrackingCommandListener trackingCommandListener,
+                                           CommandEvent event, Config config, Command command,
+                                           Locale locale) {
+        try {
+            Validate.notNull(event, "Guild event");
+            Validate.notNull(config, "Config");
+            Validate.notNull(command, "Command");
+            Validate.notNull(locale, "Locale");
+            Validate.notNull(trackingCommandListener, "Command listener");
+            final String region = config.getRegion();
+            final Set<PokemonTrackingTarget> trackingTargets =
+                    trackingCommandListener.getTrackingTargets(region);
+            for (TrackingTarget t : trackingTargets) {
+                if (t.canHandle(event, command)) {
+                    t.handle(event, command, localeService, locale, config);
                 }
             }
         } catch (Exception e) {
@@ -273,14 +298,12 @@ public class GymHuntrRaidEventListener implements EventListener {
             final String[] gymSplit = title.split("raid is available against");
             gym = gymSplit[0].trim();
         } else if (title.contains("has a level 5") && description.contains("will hatch")) {
-            return new ArrayList<>();
-            // Temporarily disabled since Niantic does weird stuff (Ho-oh and Raikou active at the same time)
 //            // todo: fetch seasonal pokemon for region from some repo?
-//            pokemon = "Raikou";
-//            final String[] descriptionSplit = description.split(" ");
-//            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
-//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
-//            gym = title.split("has a level 5")[0].trim();
+            pokemon = "Egg5";
+            final String[] descriptionSplit = description.split(" ");
+            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
+                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            gym = title.split("has a level 5")[0].trim();
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
@@ -302,18 +325,17 @@ public class GymHuntrRaidEventListener implements EventListener {
             gym = firstPass[0].trim();
             pokemon = firstPass[1].trim();
         } else if (title.contains("Level 5 Raid is starting soon!")) {
-            return new ArrayList<>();
-//            final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
-//                    .replaceAll("Raid Starting: ", "").split("\n");
-//            pokemon = "Raikou"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?
-//            gym = firstPass[0].trim();
-//            final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
-//                    .replaceAll("min ", "").replaceAll("sec", "").split(" ");
-//            timeString = printTime(clockService.getCurrentTime()
-//                    .plusHours(Long.parseLong(timeArguments[0]))
-//                    .plusMinutes(Long.parseLong(timeArguments[1]))
-//                    .plusSeconds(Long.parseLong(timeArguments[2]))
-//                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            final String[] firstPass = description.replaceAll("[*]", "").replaceAll("[.]", "")
+                    .replaceAll("Raid Starting: ", "").split("\n");
+            pokemon = "Egg5"; // todo: fetch from some repo keeping track of what tier 5 boss is active for the region?
+            gym = firstPass[0].trim();
+            final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
+                    .replaceAll("min ", "").replaceAll("sec", "").split(" ");
+            timeString = printTime(clockService.getCurrentTime()
+                    .plusHours(Long.parseLong(timeArguments[0]))
+                    .plusMinutes(Long.parseLong(timeArguments[1]))
+                    .plusSeconds(Long.parseLong(timeArguments[2]))
+                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
         } else {
             return new ArrayList<>(); // = We shouldn't create this raid, since it is a non-tier 5 egg
         }

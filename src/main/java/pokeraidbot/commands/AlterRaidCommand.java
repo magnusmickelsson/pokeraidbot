@@ -1,9 +1,11 @@
 package pokeraidbot.commands;
 
+import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -17,6 +19,8 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
+import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
@@ -24,10 +28,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.*;
 
@@ -66,12 +67,15 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();
 
+        final TrackingCommandListener trackingCommandListener = botService.getTrackingCommandListener();
         switch (whatToChange) {
             case "when":
                 changeWhen(commandEvent, config, user, args);
                 break;
             case "pokemon":
-                changePokemon(commandEvent, config, user, userName, args);
+                changePokemon(this, gymRepository, localeService, pokemonRepository, raidRepository,
+                        trackingCommandListener, commandEvent, config, user, userName, args[1].trim().toLowerCase(),
+                        ArrayUtils.removeAll(args, 0, 1));
                 break;
             case "remove":
                 deleteRaid(commandEvent, config, user, userName, args);
@@ -208,7 +212,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         gymName = gymNameBuilder.toString().trim();
         gym = gymRepository.search(user, gymName, config.getRegion());
         Raid deleteRaid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        verifyPermission(commandEvent, user, deleteRaid, config);
+        verifyPermission(localeService, commandEvent, user, deleteRaid, config);
         final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent);
         if (userIsNotAdministrator && deleteRaid.getSignUps().size() > 0) {
             throw new UserMessedUpException(userName,
@@ -226,16 +230,20 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void changePokemon(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
+    public static void changePokemon(Command command, GymRepository gymRepository, LocaleService localeService,
+                                     PokemonRepository pokemonRepository, RaidRepository raidRepository,
+                                     TrackingCommandListener trackingCommandListener, CommandEvent commandEvent,
+                                     Config config, User user, String userName,
+                                     String newPokemonName, String... gymArguments) {
         String whatToChangeTo;
         StringBuilder gymNameBuilder;
         String gymName;
         Gym gym;
         Raid raid;
-        whatToChangeTo = args[1].trim().toLowerCase();
+        whatToChangeTo = newPokemonName;
         gymNameBuilder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
-            gymNameBuilder.append(args[i]).append(" ");
+        for (String arg : gymArguments) {
+            gymNameBuilder.append(arg).append(" ");
         }
         gymName = gymNameBuilder.toString().trim();
         gym = gymRepository.search(user, gymName, config.getRegion());
@@ -246,7 +254,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     LocaleService.EX_NO_CHANGE_POKEMON,
                     localeService.getLocaleForUser(user)));
         }
-        verifyPermission(commandEvent, user, pokemonRaid, config);
+        verifyPermission(localeService, commandEvent, user, pokemonRaid, config);
         if (Utils.isRaidExPokemon(whatToChangeTo)) {
             throw new UserMessedUpException(userName, localeService.getMessageFor(
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
@@ -254,6 +262,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         raid = raidRepository.changePokemon(pokemonRaid, pokemon);
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
+        GymHuntrRaidEventListener.notifyTrackingUsers(localeService, trackingCommandListener, commandEvent,
+                config, command, localeService.getLocaleForUser(user));
     }
 
     private void changeWhen(CommandEvent commandEvent, Config config, User user, String[] args) {
@@ -272,7 +282,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         gymName = gymNameBuilder.toString().trim();
         gym = gymRepository.search(user, gymName, config.getRegion());
         Raid tempRaid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        verifyPermission(commandEvent, user, tempRaid, config);
+        verifyPermission(localeService, commandEvent, user, tempRaid, config);
         endsAtTime = parseTime(user, whatToChangeTo, localeService);
         endsAt = LocalDateTime.of(tempRaid.getEndOfRaid().toLocalDate(), endsAtTime);
 
@@ -296,13 +306,4 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void verifyPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {
-        final boolean isServerMod = isUserServerMod(commandEvent, config);
-        final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent) && !isServerMod;
-        final boolean userIsNotRaidCreator = !user.getName().equalsIgnoreCase(raid.getCreator());
-        if (userIsNotAdministrator && userIsNotRaidCreator) {
-            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
-                    localeService.getLocaleForUser(user)));
-        }
-    }
 }

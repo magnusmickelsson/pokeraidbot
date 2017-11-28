@@ -1,6 +1,11 @@
 FUTURE (?)
 =====
 
+1.4.4 (2017-11-28)
+=====
+* Ho-oh added as raid boss (not EX)
+* Better error handling for some situations
+
 1.4.3 (2017-11-27)
 =====
 * Command to explicitly reset a server's overview

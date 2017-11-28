@@ -35,6 +35,12 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
+* Ser att raidbotten visar kontonamn i deltagarlistan. Går 
+det att ändra till smeknamnet man har på servern?
+* Har tänkt kika på att man ska kunna rapportera och skapa 
+grupper för ägg, oavsett vad det är för boss, sedan när man 
+vet vad det blir kan grupper/raid uppdateras till vilken boss det blev och om folk 
+då inte vill köra den gruppen på grund av vad det blev kan man avanmäla sig via emote-tryck som vanligt
 * Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * REST API with open operations (read-only)

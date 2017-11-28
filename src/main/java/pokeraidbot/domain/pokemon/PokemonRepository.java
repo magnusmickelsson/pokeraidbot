@@ -19,6 +19,11 @@ public class PokemonRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(PokemonRepository.class);
 
     private final LocaleService localeService;
+    public static final String EGG_1 = "Egg1";
+    public static final String EGG_2 = "Egg2";
+    public static final String EGG_3 = "Egg3";
+    public static final String EGG_4 = "Egg4";
+    public static final String EGG_5 = "Egg5";
     private Map<String, Pokemon> pokemons = new LinkedHashMap<>();
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
@@ -37,6 +42,16 @@ public class PokemonRepository {
                 }
             }
             LOGGER.info("Parsed " + jsonPokemons.getPokemons().size() + " pokemons.");
+            pokemons.put("EGG1", new Pokemon(99999, EGG_1, "Tier 1 egg", new PokemonTypes(), "", new HashSet<>(),
+                    new HashSet<>()));
+            pokemons.put("EGG2", new Pokemon(99998, EGG_2, "Tier 2 egg", new PokemonTypes(), "", new HashSet<>(),
+                    new HashSet<>()));
+            pokemons.put("EGG3", new Pokemon(99997, EGG_3, "Tier 3 egg", new PokemonTypes(), "", new HashSet<>(),
+                    new HashSet<>()));
+            pokemons.put("EGG4", new Pokemon(99996, EGG_4, "Tier 4 egg", new PokemonTypes(), "", new HashSet<>(),
+                    new HashSet<>()));
+            pokemons.put("EGG5", new Pokemon(99995, EGG_5, "Tier 5 egg", new PokemonTypes(), "", new HashSet<>(),
+                    new HashSet<>()));
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
