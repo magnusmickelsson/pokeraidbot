@@ -124,27 +124,34 @@ public abstract class ConfigAwareCommand extends Command {
                 LOGGER.debug("Exception thrown from command " + this.getClass().getSimpleName()
                         + " with input message " + commandEvent.getMessage().getRawContent() +
                         (configForServer != null ? " for server " +
-                        configForServer.getServer() : "") + ":\n" + t.getMessage());
+                                configForServer.getServer() : "") + ":\n" + t.getMessage());
                 if (t.getMessage() == null) {
                     LOGGER.debug("Dumping stacktrace, since exception was null.", t);
                 }
             }
-            if (t instanceof IllegalArgumentException) {
-                getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent,
-                        new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()), localeService);
-            } else {
-                getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent, t, localeService);
-            }
-            if (commandListener != null) {
-                commandListener.onTerminatedCommand(commandEvent, this);
+            try {
+                if (t instanceof IllegalArgumentException) {
+                    getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent,
+                            new UserMessedUpException(commandEvent.getAuthor().getName(), t.getMessage()), localeService);
+                } else {
+                    getFeedbackStrategy(configForServer).replyError(configForServer, commandEvent, t, localeService);
+                }
+                if (commandListener != null) {
+                    commandListener.onTerminatedCommand(commandEvent, this);
+                }
+            } catch (Throwable tt) {
+                LOGGER.warn("Exception when trying to give feedback about an error for server " + configForServer +
+                        ": " + tt.getMessage());
             }
         }
-    };
+    }
+
+    ;
 
     protected abstract void executeWithConfig(CommandEvent commandEvent, Config config);
 
     public void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
-                                                        String message, int numberOfSeconds) {
+                                                 String message, int numberOfSeconds) {
         getFeedbackStrategy(config).reply(config, commandEvent, message, numberOfSeconds, localeService);
     }
 
