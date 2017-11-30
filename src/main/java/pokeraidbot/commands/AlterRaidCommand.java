@@ -256,7 +256,10 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     LocaleService.EX_NO_CHANGE_POKEMON,
                     localeService.getLocaleForUser(user)));
         }
-        verifyPermission(localeService, commandEvent, user, pokemonRaid, config);
+        // Anybody should be able to report hatched eggs
+        if (!pokemonRaid.getPokemon().isEgg()) {
+            verifyPermission(localeService, commandEvent, user, pokemonRaid, config);
+        }
         if (Utils.isRaidExPokemon(whatToChangeTo)) {
             throw new UserMessedUpException(userName, localeService.getMessageFor(
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));

@@ -1,6 +1,10 @@
 FUTURE (?)
 =====
 
+1.5.1 (2017-11-30)
+=====
+* Bugfix: any user should be able to hatch eggs
+
 1.5.0 (2017-11-28)
 =====
 * Report and create raids and groups for eggs, and be able to hatch them when we know what they are

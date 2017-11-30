@@ -22,6 +22,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+                    "- Bugfix rörande rättighetskontroller för rapportering av kläckta ägg\n" +
                     "- Kunna rapportera raidägg (Egg1-5 funkar som pokemons för alla raidkommandon)," +
                     " och rapportera kläckning när man vet vad det blir, " +
                     "via *!raid hatch {pokemon} {gym}\n" +
@@ -30,6 +31,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Admins och mods ska kunna ta bort raider även om de har anmälningar (om något blir riktigt fel)";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
+                    "- Bugfix related to access rights for egg hatching\n" +
                     "- Report and create raids and groups for eggs (Egg1-5 works as pokemons for all raid commands)" +
                     ", and be able to hatch them when we know what " +
                     "they are, via *!raid hatch {pokemon} {gym}\n" +
