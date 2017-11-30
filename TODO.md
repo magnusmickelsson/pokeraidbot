@@ -48,6 +48,7 @@ when niantic comes up with new tricks
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
+* !raid overview should list times for next two groups instead of ETA. Try to make text for a line shorter.
 
 --- 1.6.0
 
