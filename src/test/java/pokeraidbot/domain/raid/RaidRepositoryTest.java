@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
+import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
@@ -75,9 +77,11 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        Guild guild = mock(Guild.class);
+        Config config = mock(Config.class);
         Raid enteiRaid1 = enteiRaid;
         try {
-            enteiRaid1 = repo.newRaid(user, enteiRaid1);
+            enteiRaid1 = repo.newRaid(user, enteiRaid1, guild, config);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
@@ -89,7 +93,7 @@ public class RaidRepositoryTest {
         LocalTime arrivalTime = nowTime.plusMinutes(30);
         RaidGroup group = new RaidGroup("testserver", "channel", "infoId", "emoteId", "userId",
                 LocalDateTime.of(LocalDate.now(), arrivalTime));
-        group = repo.newGroupForRaid(user2, group, enteiRaid);
+        group = repo.newGroupForRaid(user2, group, enteiRaid, guild, config);
         List<RaidGroup> groupsForServer = repo.getGroupsForServer("testserver");
         assertThat(group != null, is(true));
         assertThat(groupsForServer.size(), is(1));
@@ -112,8 +116,11 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        Guild guild = mock(Guild.class);
+        Config config = mock(Config.class);
+
         try {
-            repo.newRaid(user, enteiRaid);
+            repo.newRaid(user, enteiRaid, guild, config);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
@@ -146,16 +153,19 @@ public class RaidRepositoryTest {
         Raid enteiRaid = new Raid(pokemonRepository.search("Entei", null), endOfRaid, gym, localeService, uppsalaRegion);
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
+        Guild guild = mock(Guild.class);
+        Config config = mock(Config.class);
+
         when(user.getName()).thenReturn(raidCreatorName);
         try {
-            repo.newRaid(user, enteiRaid);
+            repo.newRaid(user, enteiRaid, guild, config);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
 
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
-        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.search("Mewtwo", user));
+        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.search("Mewtwo", user), guild, config, user);
         assertThat(raid.getEndOfRaid(), is(changedRaid.getEndOfRaid()));
         assertThat(raid.getGym(), is(changedRaid.getGym()));
         assertThat(raid.getSignUps(), is(changedRaid.getSignUps()));
@@ -175,8 +185,11 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        Guild guild = mock(Guild.class);
+        Config config = mock(Config.class);
+
         try {
-            repo.newRaid(user, enteiRaid);
+            repo.newRaid(user, enteiRaid, guild, config);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
@@ -204,8 +217,11 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        Guild guild = mock(Guild.class);
+        Config config = mock(Config.class);
+
         try {
-            repo.newRaid(user, enteiRaid);
+            repo.newRaid(user, enteiRaid, guild, config);
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());

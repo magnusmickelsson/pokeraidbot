@@ -19,8 +19,6 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
-import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
@@ -67,14 +65,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();
 
-        final TrackingCommandListener trackingCommandListener = botService.getTrackingCommandListener();
         switch (whatToChange) {
             case "when":
                 changeWhen(commandEvent, config, user, args);
                 break;
             case "pokemon":
                 changePokemon(this, gymRepository, localeService, pokemonRepository, raidRepository,
-                        trackingCommandListener, commandEvent, config, user, userName, args[1].trim().toLowerCase(),
+                        commandEvent, config, user, userName, args[1].trim().toLowerCase(),
                         ArrayUtils.removeAll(args, 0, 1));
                 break;
             case "remove":
@@ -234,7 +231,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
 
     public static void changePokemon(Command command, GymRepository gymRepository, LocaleService localeService,
                                      PokemonRepository pokemonRepository, RaidRepository raidRepository,
-                                     TrackingCommandListener trackingCommandListener, CommandEvent commandEvent,
+                                     CommandEvent commandEvent,
                                      Config config, User user, String userName,
                                      String newPokemonName, String... gymArguments) {
         String whatToChangeTo;
@@ -264,11 +261,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(userName, localeService.getMessageFor(
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
         }
-        raid = raidRepository.changePokemon(pokemonRaid, pokemon);
+        raid = raidRepository.changePokemon(pokemonRaid, pokemon, commandEvent.getGuild(), config, user);
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
-        GymHuntrRaidEventListener.notifyTrackingUsers(localeService, trackingCommandListener, commandEvent,
-                config, command, localeService.getLocaleForUser(user));
     }
 
     private void changeWhen(CommandEvent commandEvent, Config config, User user, String[] args) {

@@ -22,7 +22,7 @@ import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
@@ -40,12 +40,12 @@ import java.util.concurrent.ExecutorService;
 public class BotService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotService.class);
     private final Set<EventListener> extraListeners = new CopyOnWriteArraySet<>();
+    private TrackingService trackingService;
     private String ownerId;
     private String token;
     private JDA botInstance;
     private CommandClient commandClient;
     private CommandListener aggregateCommandListener;
-    private TrackingCommandListener trackingCommandListener;
     private GymRepository gymRepository;
     private ServerConfigRepository serverConfigRepository;
     private UserConfigRepository userConfigRepository;
@@ -53,14 +53,14 @@ public class BotService {
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                       ServerConfigRepository serverConfigRepository, UserConfigRepository userConfigRepository,
-                      ExecutorService executorService, ClockService clockService, String ownerId, String token,
-                      TrackingCommandListener trackingCommandListener) {
+                      ExecutorService executorService, ClockService clockService, TrackingService trackingService,
+                      String ownerId, String token) {
         this.gymRepository = gymRepository;
         this.serverConfigRepository = serverConfigRepository;
         this.userConfigRepository = userConfigRepository;
+        this.trackingService = trackingService;
         this.ownerId = ownerId;
         this.token = token;
-        this.trackingCommandListener = trackingCommandListener;
         if (!System.getProperty("file.encoding").equals("UTF-8")) {
             System.err.println("ERROR: Not using UTF-8 encoding");
             System.exit(-1);
@@ -73,14 +73,15 @@ public class BotService {
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
                 serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
                 executorService,
-                clockService, this, raidInfoService, trackingCommandListener);
+                clockService, this, raidInfoService);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
-                raidRepository, localeService, clockService, executorService, this, gymRepository, pokemonRepository, raidInfoService);
+                raidRepository, localeService, clockService, executorService, this, gymRepository,
+                pokemonRepository, raidInfoService);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
         UnsignWithMinusCommandListener minusCommandEventListener = new UnsignWithMinusCommandListener(raidRepository,
                 pokemonRepository, serverConfigRepository, this, localeService);
-        aggregateCommandListener = new AggregateCommandListener(Arrays.asList(this.trackingCommandListener));
+        aggregateCommandListener = new AggregateCommandListener(Arrays.asList());
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.setOwnerId(this.ownerId);
@@ -98,7 +99,7 @@ public class BotService {
                 new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new AdminCommands(userConfigRepository, serverConfigRepository, gymRepository,
-                        this, trackingCommandListener),
+                        this, trackingService),
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
@@ -106,7 +107,7 @@ public class BotService {
                         serverConfigRepository, aggregateCommandListener),
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
-                new UserConfigCommand(serverConfigRepository, trackingCommandListener, localeService,
+                new UserConfigCommand(serverConfigRepository, aggregateCommandListener, localeService,
                         userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
                         serverConfigRepository, this, aggregateCommandListener, pokemonRepository),
@@ -124,10 +125,10 @@ public class BotService {
                         aggregateCommandListener),
                 new ServerInfoCommand(serverConfigRepository, localeService, aggregateCommandListener, clockService),
                 new DonateCommand(localeService, serverConfigRepository, aggregateCommandListener),
-                new TrackPokemonCommand(this, serverConfigRepository, localeService, pokemonRepository,
-                        aggregateCommandListener),
-                new UnTrackPokemonCommand(this, serverConfigRepository, localeService, pokemonRepository,
-                        aggregateCommandListener),
+                new TrackPokemonCommand(serverConfigRepository, localeService, pokemonRepository,
+                        trackingService, aggregateCommandListener),
+                new UnTrackPokemonCommand(serverConfigRepository, localeService, pokemonRepository,
+                        aggregateCommandListener, trackingService),
                 new InstallCommand(serverConfigRepository, gymRepository),
                 new InstallEmotesCommand(localeService),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
@@ -175,9 +176,11 @@ public class BotService {
     @Transactional
     public void initializeConfig() {
         if (serverConfigRepository.findAll().size() == 0) {
-            LOGGER.warn("Could not find any configuration in database, assuming fresh install. Creating basic server configurations..");
+            LOGGER.warn("Could not find any configuration in database, assuming fresh install. " +
+                    "Creating basic server configurations..");
             // My test servers
-            serverConfigRepository.save(new Config("manhattan_new_york", false, Locale.ENGLISH, "pokeraidbot_us_test"));
+            serverConfigRepository.save(new Config("manhattan_new_york", false,
+                    Locale.ENGLISH, "pokeraidbot_us_test"));
             serverConfigRepository.save(new Config("uppsala", "zhorhn tests stuff"));
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_lab2"));
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_stage"));
@@ -188,9 +191,12 @@ public class BotService {
             serverConfigRepository.save(new Config("umeå", "pokémon go sverige admin"));
             serverConfigRepository.save(new Config("luleå", "pokémon luleå"));
             serverConfigRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
-            serverConfigRepository.save(new Config("norrköping", true, "raid-test-nkpg"));
-            serverConfigRepository.save(new Config("norrköping", true, "raid - pokemon go norrköping"));
-            LOGGER.info("Server configurations created. Add more via the command for an administrator in a server where pokeraidbot has been added: !raid install");
+            serverConfigRepository.save(new Config("norrköping", true,
+                    "raid-test-nkpg"));
+            serverConfigRepository.save(new Config("norrköping", true,
+                    "raid - pokemon go norrköping"));
+            LOGGER.info("Server configurations created. Add more via the command for an administrator " +
+                    "in a server where pokeraidbot has been added: !raid install");
         }
         gymRepository.reloadGymData();
     }
@@ -204,10 +210,6 @@ public class BotService {
 
     public CommandClient getCommandClient() {
         return commandClient;
-    }
-
-    public TrackingCommandListener getTrackingCommandListener() {
-        return trackingCommandListener;
     }
 
     public void addExtraListenerToBeAddedAfterStartUp(EventListener listener) {

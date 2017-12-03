@@ -25,6 +25,7 @@ Experiment with:
 
 Fix issue:
 
+* !raid track can trigger for wrong server if you are a member of different servers
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights

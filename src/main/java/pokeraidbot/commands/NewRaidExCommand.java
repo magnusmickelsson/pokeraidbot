@@ -80,7 +80,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NOT_EX_RAID,
                     locale, pokemonName));
         }
-        raidRepository.newRaid(user, raid);
+        raidRepository.newRaid(user, raid, commandEvent.getGuild(), config);
         replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                 locale, raid.toString(locale)));
     }

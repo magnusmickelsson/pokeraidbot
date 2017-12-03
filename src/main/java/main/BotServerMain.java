@@ -19,15 +19,13 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
-import pokeraidbot.domain.tracking.TrackingCommandListenerBean;
+import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.concurrent.*;
 
 @SpringBootApplication
@@ -65,11 +63,10 @@ public class BotServerMain {
     }
 
     @Bean
-    public TrackingCommandListener getTrackingCommandListener(ServerConfigRepository serverConfigRepository,
-                                                              LocaleService localeService,
-                                                              UserConfigRepository userConfigRepository,
-                                                              PokemonRepository pokemonRepository) {
-        return new TrackingCommandListenerBean(serverConfigRepository, localeService, userConfigRepository,
+    public TrackingService getTrackingService(LocaleService localeService,
+                                              UserConfigRepository userConfigRepository,
+                                              PokemonRepository pokemonRepository) {
+        return new TrackingService(localeService, userConfigRepository,
                 pokemonRepository);
     }
 
@@ -78,10 +75,9 @@ public class BotServerMain {
                                     PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,
                                     ServerConfigRepository serverConfigRepository,
                                     UserConfigRepository userConfigRepository, ClockService clockService,
-                                    TrackingCommandListener trackingCommandListener, ExecutorService executorService) {
+                                    ExecutorService executorService, TrackingService trackingService) {
         return new BotService(localeService, gymRepository, raidRepository, pokemonRepository, raidInfoService,
-                serverConfigRepository, userConfigRepository, executorService, clockService, ownerId, token,
-                trackingCommandListener);
+                serverConfigRepository, userConfigRepository, executorService, clockService, trackingService, ownerId, token);
     }
 
     @Bean
@@ -99,8 +95,9 @@ public class BotServerMain {
     @Bean
     public RaidRepository getRaidRepository(LocaleService localeService, RaidEntityRepository entityRepository,
                                             PokemonRepository pokemonRepository, GymRepository gymRepository,
-                                            ClockService clockService) {
-        return new RaidRepository(clockService, localeService, entityRepository, pokemonRepository, gymRepository);
+                                            ClockService clockService, TrackingService trackingService) {
+        return new RaidRepository(clockService, localeService, entityRepository, pokemonRepository, gymRepository,
+                trackingService);
     }
 
     @Bean

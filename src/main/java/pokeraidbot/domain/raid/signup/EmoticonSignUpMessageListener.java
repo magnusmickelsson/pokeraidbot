@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReacti
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
@@ -19,7 +21,9 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+import java.net.SocketException;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class EmoticonSignUpMessageListener implements EventListener {
@@ -208,10 +212,28 @@ public class EmoticonSignUpMessageListener implements EventListener {
                     messageBuilder.append(t.getMessage());
                     guildMessageReactionEvent.getChannel().sendMessage(messageBuilder.build()).queue();
                 } else {
-                    LOGGER.warn("We have a situation where user or exception message is null! Event: " + event);
+                    LOGGER.warn("We have a situation where user or exception message is null! Event: " +
+                            printInfoAbout(event));
                 }
             }
         }
+    }
+
+    private String printInfoAbout(Event event) {
+        StringBuilder sb = new StringBuilder();
+        if (event == null) {
+            return "null";
+        }
+        String className = event.getClass().getSimpleName();
+        sb.append(className);
+        String reflectionToString;
+        try {
+            reflectionToString = ReflectionToStringBuilder.toString(event);
+        } catch (Throwable t) {
+            reflectionToString = "N/A";
+        }
+        sb.append(":").append(reflectionToString);
+        return sb.toString();
     }
 
     private Raid addToSignUp(User user, int mystic, int instinct, int valor, int plebs) {

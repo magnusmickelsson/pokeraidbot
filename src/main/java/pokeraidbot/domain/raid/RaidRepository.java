@@ -1,5 +1,6 @@
 package pokeraidbot.domain.raid;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -20,6 +21,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
+import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntity;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
@@ -42,6 +44,7 @@ public class RaidRepository {
     private RaidEntityRepository raidEntityRepository;
     private PokemonRepository pokemonRepository;
     private GymRepository gymRepository;
+    private TrackingService trackingService;
 
     // Byte code instrumentation
     protected RaidRepository() {
@@ -50,12 +53,13 @@ public class RaidRepository {
     @Autowired
     public RaidRepository(ClockService clockService, LocaleService localeService,
                           RaidEntityRepository raidEntityRepository, PokemonRepository pokemonRepository,
-                          GymRepository gymRepository) {
+                          GymRepository gymRepository, TrackingService trackingService) {
         this.clockService = clockService;
         this.localeService = localeService;
         this.raidEntityRepository = raidEntityRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
+        this.trackingService = trackingService;
         removeAllExpiredRaids();
     }
 
@@ -134,7 +138,7 @@ public class RaidRepository {
                 gym.getName(), signUpText);
     }
 
-    public Raid newRaid(User raidCreator, Raid raid) {
+    public Raid newRaid(User raidCreator, Raid raid, Guild guild, Config config) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         if (raidEntity != null) {
@@ -146,7 +150,9 @@ public class RaidRepository {
             }
         }
 
-        return getRaidInstance(saveRaid(raidCreator, raid));
+        final Raid raidInstance = getRaidInstance(saveRaid(raidCreator, raid));
+        trackingService.notifyTrackers(guild, raidInstance, config, raidCreator);
+        return raidInstance;
     }
 
     private RaidEntity findEntityByRaidId(String raidId) {
@@ -291,17 +297,20 @@ public class RaidRepository {
         return activeRaids;
     }
 
-    public Raid changePokemon(Raid raid, Pokemon pokemon) {
+    public Raid changePokemon(Raid raid, Pokemon pokemon, Guild guild, Config config, User user) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
         if (!raidEntity.getPokemon().equalsIgnoreCase(raid.getPokemon().getName())) {
-            throw new IllegalStateException("Database issues. Please notify the developer: magnus.mickelsson@gmail.com and describe what happened.");
+            throw new IllegalStateException("Database issues. Please notify the developer: " +
+                    "magnus.mickelsson@gmail.com and describe what happened.");
         }
         raidEntity.setPokemon(pokemon.getName());
         raidEntity = raidEntityRepository.save(raidEntity);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Changed pokemon for raid " + raid + " to " + pokemon + ".");
         }
-        return getRaidInstance(raidEntity);
+        final Raid raidInstance = getRaidInstance(raidEntity);
+        trackingService.notifyTrackers(guild, raidInstance, config, user);
+        return raidInstance;
     }
 
     public Raid changeEndOfRaid(String raidId, LocalDateTime newEndOfRaid) {
@@ -431,7 +440,7 @@ public class RaidRepository {
         // todo: throw error if problem?
     }
 
-    public RaidGroup newGroupForRaid(User user, RaidGroup group, Raid raid) {
+    public RaidGroup newGroupForRaid(User user, RaidGroup group, Raid raid, Guild guild, Config config) {
         Validate.notNull(user, "User");
         Validate.notNull(group, "Group");
         Validate.notNull(raid, "Raid");
@@ -442,6 +451,9 @@ public class RaidRepository {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
+        // todo: special message for new group
+//        trackingService.notifyTrackers(guild, raid, config, user);
+
         return group;
     }
 
@@ -519,6 +531,8 @@ public class RaidRepository {
         }
         group.setStartsAt(newDateTime);
         raidEntityRepository.save(entityByRaidId);
+        // todo: notify !raid track listeners
+
         return group;
     }
 

@@ -16,6 +16,7 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
+import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
@@ -93,6 +94,14 @@ public class TestServerMain {
     }
 
     @Bean
+    public TrackingService getTrackingService(LocaleService localeService,
+                                              UserConfigRepository userConfigRepository,
+                                              PokemonRepository pokemonRepository) {
+        return new TrackingService(localeService, userConfigRepository,
+                pokemonRepository);
+    }
+
+    @Bean
     public PokemonRepository getPokemonRepository(LocaleService localeService) {
         return new PokemonRepository("/mons.json", localeService);
     }
@@ -110,7 +119,8 @@ public class TestServerMain {
     @Bean
     public RaidRepository getRaidRepository(LocaleService localeService, RaidEntityRepository entityRepository,
                                             PokemonRepository pokemonRepository, GymRepository gymRepository,
-                                            ClockService clockService) {
-        return new RaidRepository(clockService, localeService, entityRepository, pokemonRepository, gymRepository);
+                                            ClockService clockService, TrackingService trackingService) {
+        return new RaidRepository(clockService, localeService, entityRepository, pokemonRepository, gymRepository,
+                trackingService);
     }
 }

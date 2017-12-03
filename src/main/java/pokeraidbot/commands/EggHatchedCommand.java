@@ -82,7 +82,7 @@ public class EggHatchedCommand extends ConfigAwareCommand {
             LOGGER.debug("Trying to hatch raid " + raid + " into " + pokemonName);
         }
         AlterRaidCommand.changePokemon(this, gymRepository, localeService, pokemonRepository, raidRepository,
-                botService.getTrackingCommandListener(), commandEvent, config, user, userName, pokemonName,
+                commandEvent, config, user, userName, pokemonName,
                 gymArguments);
     }
 }

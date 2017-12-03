@@ -2,16 +2,17 @@ package pokeraidbot.domain.pokemon;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class PokemonTypes {
     private Set<String> types;
 
     public PokemonTypes(String... types) {
         this.types = new LinkedHashSet<>(Arrays.asList(types));
+    }
+
+    public PokemonTypes(List<String> types) {
+        this.types = new LinkedHashSet<>(types);
     }
 
     public boolean isOfType(String type) {

@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.gym.GymRepository;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
+import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfig;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
@@ -22,11 +22,11 @@ public class AdminCommands extends Command {
     private final ServerConfigRepository serverConfigRepository;
     private final GymRepository gymRepository;
     private final BotService botService;
-    private final TrackingCommandListener trackingCommandListener;
+    private final TrackingService trackingCommandListener;
 
     public AdminCommands(UserConfigRepository userConfigRepository, ServerConfigRepository serverConfigRepository,
                          GymRepository gymRepository, BotService botService,
-                         TrackingCommandListener trackingCommandListener) {
+                         TrackingService trackingCommandListener) {
         this.userConfigRepository = userConfigRepository;
         this.serverConfigRepository = serverConfigRepository;
         this.gymRepository = gymRepository;

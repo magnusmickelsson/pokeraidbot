@@ -3,6 +3,7 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
@@ -19,7 +20,6 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
-import pokeraidbot.domain.pokemon.PokemonRaidInfo;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
@@ -92,13 +92,14 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        createRaidGroup(commandEvent.getChannel(), config, user, locale, startAtTime, raid.getId(),
+        createRaidGroup(commandEvent.getChannel(), commandEvent.getGuild(),
+                config, user, locale, startAtTime, raid.getId(),
                 localeService, raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
                 clockService, executorService, pokemonRaidStrategyService);
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
-    public static void createRaidGroup(MessageChannel channel, Config config, User user,
+    public static void createRaidGroup(MessageChannel channel, Guild guild, Config config, User user,
                                        Locale locale, LocalTime startAtTime, String raidId, LocaleService localeService,
                                        RaidRepository raidRepository, BotService botService,
                                        ServerConfigRepository serverConfigRepository,
@@ -153,7 +154,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             final MessageChannel embedChannel = embed.getChannel();
             RaidGroup group = new RaidGroup(config.getServer(), embedChannel.getName(),
                     messageId, messageId, user.getId(), startAt);
-            group = raidRepository.newGroupForRaid(user, group, raid);
+            group = raidRepository.newGroupForRaid(user, group, raid, guild, config);
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Created group in channel " + channel.getName() +
                         " for emote message with ID: " + messageId + " - " + group);

@@ -1,68 +1,59 @@
 package pokeraidbot.domain.tracking;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
+import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.infrastructure.jpa.config.Config;
-import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfig;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-@Transactional
-public class TrackingCommandListenerBean implements TrackingCommandListener {
-    private static final transient Logger LOGGER = LoggerFactory.getLogger(TrackingCommandListenerBean.class);
-    private final ServerConfigRepository serverConfigRepository;
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+public class TrackingService {
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(TrackingService.class);
     private final LocaleService localeService;
     private final UserConfigRepository userConfigRepository;
     private final PokemonRepository pokemonRepository;
     private Set<PokemonTrackingTarget> trackingTargets = new ConcurrentSkipListSet<>();
 
-    public TrackingCommandListenerBean(ServerConfigRepository serverConfigRepository,
-                                       LocaleService localeService,
-                                       UserConfigRepository userConfigRepository, PokemonRepository pokemonRepository) {
-        this.serverConfigRepository = serverConfigRepository;
+    public TrackingService(LocaleService localeService,
+                           UserConfigRepository userConfigRepository,
+                           PokemonRepository pokemonRepository) {
         this.localeService = localeService;
         this.userConfigRepository = userConfigRepository;
         this.pokemonRepository = pokemonRepository;
     }
 
-    @Override
-    public void onCommand(CommandEvent event, Command command) {
-
-    }
-
-    @Override
-    public void onCompletedCommand(CommandEvent event, Command command) {
-        if (event != null && command != null && event.getGuild() != null) {
-            final String serverName = event.getGuild().getName().toLowerCase();
-            final Config configForServer = serverConfigRepository.getConfigForServer(serverName);
-            final Locale localeForUser = localeService.getLocaleForUser(event.getAuthor());
-            final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets(configForServer.getRegion());
-            for (TrackingTarget t : trackingTargets) {
-                if (t.canHandle(event, command)) {
-                    try {
-                        t.handle(event, command, localeService, localeForUser, configForServer);
-                    } catch (Throwable e) {
-                        LOGGER.debug("Could not handle tracking message for server " + serverName + " and target " +
-                                "" + t + " due to an exception: " + e.getMessage());
-                    }
+    public void notifyTrackers(Guild guild, Raid raid, Config configForServer, User user) {
+        Validate.notNull(guild, "Guild is null");
+        Validate.notNull(raid, "Raid is null");
+        Validate.notNull(configForServer, "Config is null");
+        Validate.notNull(user, "User is null");
+        final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets(configForServer.getRegion());
+        for (TrackingTarget t : trackingTargets) {
+            if (t.canHandle(configForServer, user, raid)) {
+                try {
+                    t.handle(guild, localeService, configForServer, user, raid);
+                } catch (Throwable e) {
+                    LOGGER.debug("Could not handle tracking message for server " + configForServer.getServer() +
+                            " and target " +
+                            "" + t + " due to an exception: " + e.getMessage());
                 }
             }
         }
     }
 
-    @Override
     public Set<PokemonTrackingTarget> getTrackingTargets(String region) {
         if (trackingTargets.size() == 0) {
             // We most likely had a server restart, load saved tracking from database
@@ -84,26 +75,19 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
         return trackingTargets;
     }
 
-    @Override
-    public void onTerminatedCommand(CommandEvent event, Command command) {
-
-    }
-
-    @Override
-    public void onNonCommandMessage(MessageReceivedEvent event) {
-
-    }
-
-    @Override
     public void clearCache() {
         trackingTargets = new ConcurrentSkipListSet<>();
     }
 
-    @Override
-    public void add(PokemonTrackingTarget trackingTarget, User user, Config config) {
-        if (getTrackingTargets(trackingTarget.getRegion()).contains(trackingTarget)) {
+    public void add(Pokemon pokemon, User user, Config config) {
+        Validate.notNull(pokemon, "Pokemon");
+        Validate.notNull(user, "User");
+        Validate.notNull(config, "Config");
+        final String region = config.getRegion();
+        PokemonTrackingTarget trackingTarget = new PokemonTrackingTarget(region, user.getId(), pokemon);
+        if (getTrackingTargets(region).contains(trackingTarget)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_EXISTS,
-                    localeService.getLocaleForUser(user)));//, trackingTarget.toString()));
+                    localeService.getLocaleForUser(user)));
         }
         addToDbAndCollection(trackingTarget, user, config);
     }
@@ -119,17 +103,17 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
             }
         } else {
             // Per default, let user have the same locale as the server
-            userConfig = new UserConfig(user.getId(), trackingTarget.getPokemon(), null, null, config.getLocale());
+            userConfig = new UserConfig(user.getId(), trackingTarget.getPokemon(), null, null,
+                    config.getLocale());
         }
         userConfigRepository.save(userConfig);
         trackingTargets.add(trackingTarget);
     }
 
-    @Override
-    public void remove(PokemonTrackingTarget trackingTarget, User user) {
+    public void removeForUser(PokemonTrackingTarget trackingTarget, User user) {
         if (!getTrackingTargets(trackingTarget.getRegion()).contains(trackingTarget)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
-                    localeService.getLocaleForUser(user)));//, trackingTarget.toString()));
+                    localeService.getLocaleForUser(user)));
         }
         removeFromDbAndCollection(trackingTarget, user);
     }
@@ -143,11 +127,10 @@ public class TrackingCommandListenerBean implements TrackingCommandListener {
         trackingTargets.remove(trackingTarget);
     }
 
-    @Override
-    public void removeAll(User user) {
+    public void removeAllForUser(User user) {
         trackingTargets.forEach(t -> {
             if (t.getUserId().equals(user.getId())) {
-                remove(t, user);
+                removeForUser(t, user);
             }
         });
     }

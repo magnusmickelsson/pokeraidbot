@@ -46,7 +46,7 @@ public class GymHuntrRaidEventListenerTest {
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("Staty utanför Svedbergs Laboratoriet"));
-        assertThat(iterator.next(), is("Egg5"));
+        assertThat(iterator.next(), is("Ho-Oh"));
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(15).plusSeconds(59).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }
@@ -73,7 +73,7 @@ public class GymHuntrRaidEventListenerTest {
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("T3 Center"));
-        assertThat(iterator.next(), is("Egg5"));
+        assertThat(iterator.next(), is("Ho-Oh"));
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(31).plusSeconds(10).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }
