@@ -261,7 +261,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             throw new UserMessedUpException(userName, localeService.getMessageFor(
                     LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
         }
-        raid = raidRepository.changePokemon(pokemonRaid, pokemon, commandEvent.getGuild(), config, user);
+        raid = raidRepository.changePokemon(pokemonRaid, pokemon, commandEvent.getGuild(), config, user,
+                "!raid change pokemon " + pokemon.getName() + " " + gymName);
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
@@ -291,7 +292,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             assertTimeNotMoreThanXHoursFromNow(user, endsAtTime, localeService, 2);
         }
         assertCreateRaidTimeNotBeforeNow(user, endsAt, localeService);
-        raid = raidRepository.changeEndOfRaid(tempRaid.getId(), endsAt);
+        raid = raidRepository.changeEndOfRaid(tempRaid.getId(), endsAt, commandEvent.getGuild(), config, user,
+                "!raid change when " + printTimeIfSameDay(endsAt) + " " + gym.getName());
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }

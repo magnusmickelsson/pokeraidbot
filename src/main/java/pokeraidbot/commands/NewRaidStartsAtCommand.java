@@ -67,7 +67,9 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
-        raidRepository.newRaid(user, raid, commandEvent.getGuild(), config);
+        raidRepository.newRaid(user, raid, commandEvent.getGuild(), config, "!raid start " +
+        raid.getPokemon().getName() + " " + getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid()) + " " +
+        raid.getGym().getName());
         final Locale locale = localeService.getLocaleForUser(user);
         final String message = localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                 locale, raid.toString(locale));

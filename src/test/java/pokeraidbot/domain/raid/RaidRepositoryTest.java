@@ -81,7 +81,7 @@ public class RaidRepositoryTest {
         Config config = mock(Config.class);
         Raid enteiRaid1 = enteiRaid;
         try {
-            enteiRaid1 = repo.newRaid(user, enteiRaid1, guild, config);
+            enteiRaid1 = repo.newRaid(user, enteiRaid1, guild, config, "test");
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
@@ -120,7 +120,7 @@ public class RaidRepositoryTest {
         Config config = mock(Config.class);
 
         try {
-            repo.newRaid(user, enteiRaid, guild, config);
+            repo.newRaid(user, enteiRaid, guild, config, "test");
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
@@ -158,14 +158,15 @@ public class RaidRepositoryTest {
 
         when(user.getName()).thenReturn(raidCreatorName);
         try {
-            repo.newRaid(user, enteiRaid, guild, config);
+            repo.newRaid(user, enteiRaid, guild, config, "test");
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
 
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
-        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.search("Mewtwo", user), guild, config, user);
+        Raid changedRaid = repo.changePokemon(raid, pokemonRepository.search("Mewtwo", user), guild,
+                config, user, "test");
         assertThat(raid.getEndOfRaid(), is(changedRaid.getEndOfRaid()));
         assertThat(raid.getGym(), is(changedRaid.getGym()));
         assertThat(raid.getSignUps(), is(changedRaid.getSignUps()));
@@ -189,14 +190,14 @@ public class RaidRepositoryTest {
         Config config = mock(Config.class);
 
         try {
-            repo.newRaid(user, enteiRaid, guild, config);
+            repo.newRaid(user, enteiRaid, guild, config, "test");
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());
         }
 
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
-        Raid changedRaid = repo.changeEndOfRaid(raid.getId(), endOfRaid.plusMinutes(5));
+        Raid changedRaid = repo.changeEndOfRaid(raid.getId(), endOfRaid.plusMinutes(5), guild, config, user, "test");
         assertThat(raid.getEndOfRaid(), not(changedRaid.getEndOfRaid()));
         assertThat(changedRaid.getEndOfRaid(), is(raid.getEndOfRaid().plusMinutes(5)));
         assertThat(raid.getGym(), is(changedRaid.getGym()));
@@ -221,7 +222,7 @@ public class RaidRepositoryTest {
         Config config = mock(Config.class);
 
         try {
-            repo.newRaid(user, enteiRaid, guild, config);
+            repo.newRaid(user, enteiRaid, guild, config, "test");
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
             fail("Could not save raid: " + e.getMessage());

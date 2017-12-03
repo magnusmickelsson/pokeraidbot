@@ -1,6 +1,12 @@
 FUTURE (?)
 =====
 
+1.6.0 (?)
+=====
+* !raid track notification handling refactored
+* Gen3 pokemons added to repository
+* EX raids will no longer be created via bot integration
+
 1.5.1 (2017-11-30)
 =====
 * Bugfix: any user should be able to hatch eggs

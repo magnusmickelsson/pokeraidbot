@@ -35,7 +35,7 @@ public class TrackingService {
         this.pokemonRepository = pokemonRepository;
     }
 
-    public void notifyTrackers(Guild guild, Raid raid, Config configForServer, User user) {
+    public void notifyTrackers(Guild guild, Raid raid, Config configForServer, User user, String rawMessage) {
         Validate.notNull(guild, "Guild is null");
         Validate.notNull(raid, "Raid is null");
         Validate.notNull(configForServer, "Config is null");
@@ -44,7 +44,7 @@ public class TrackingService {
         for (TrackingTarget t : trackingTargets) {
             if (t.canHandle(configForServer, user, raid)) {
                 try {
-                    t.handle(guild, localeService, configForServer, user, raid);
+                    t.handle(guild, localeService, configForServer, user, raid, rawMessage);
                 } catch (Throwable e) {
                     LOGGER.debug("Could not handle tracking message for server " + configForServer.getServer() +
                             " and target " +

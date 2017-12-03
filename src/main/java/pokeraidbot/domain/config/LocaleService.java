@@ -628,11 +628,11 @@ public class LocaleService {
                 "Tog bort övervakning av %1 för %2.");
 
         i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
-                "Raid was created for %1 by %2 - %3");
+                "Raid track notification: \"%1\" by %2 - %3");
         i18nMessages.put(new I18nLookup(TRACKED_RAID, SWEDISH),
-                "Raid skapades för raidboss %1 av %2 - %3");
+                "Notifikation: \"%1\" av %2 - %3");
 
-        i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
+       i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
                 "There was no such tracking set for you.");
         i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, SWEDISH),
                 "Det fanns ingen sådan övervakning för dig.");

@@ -26,6 +26,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.concurrent.*;
 
 @SpringBootApplication
@@ -41,7 +42,7 @@ public class BotServerMain {
     private String ownerId;
     @Value("${token}")
     private String token;
-    public static final String version = "1.5.1"; // todo: should be filter copied from pom.xml
+    public static final String version = "1.6.0-SNAPSHOT"; // todo: should be filter copied from pom.xml
     public static final int timeToRemoveFeedbackInSeconds = 30; // todo: should be setting?
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
@@ -57,7 +58,7 @@ public class BotServerMain {
     public ClockService getClockService() {
         final ClockService clockService = new ClockService();
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-        //clockService.setMockTime(LocalTime.of(9, 0));
+//        clockService.setMockTime(LocalTime.of(9, 0));
         Utils.setClockService(clockService);
         return clockService;
     }

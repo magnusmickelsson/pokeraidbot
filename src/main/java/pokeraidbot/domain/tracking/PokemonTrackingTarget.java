@@ -165,7 +165,8 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
     }
 
     @Override
-    public void handle(Guild guild, LocaleService localeService, Config config, User user, Raid raid) {
+    public void handle(Guild guild, LocaleService localeService, Config config, User user, Raid raid,
+                       String inputMessage) {
         Validate.notNull(guild, "Guild is null");
         Validate.notNull(config, "Config is null");
         Validate.notNull(raid, "Raid is null");
@@ -181,7 +182,7 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         final String commandInitiator = user.getName();
         final Locale locale = localeService.getLocaleForUser(user);
 
-        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
+        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, inputMessage,
                 commandInitiator, raid.toString(locale));
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Sending DM to user with ID " + userId + " for tracked pokemon " + pokemon.getName());

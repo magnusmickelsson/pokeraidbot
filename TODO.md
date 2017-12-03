@@ -4,11 +4,12 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing:
 
--
+* !raid track refactored
+* EX raids can no longer be created via bot integration
 
 Being developed:
 
--
+* Data for all gen 3 pokemons
 
 Discussion:
 
@@ -35,17 +36,9 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-* Data for all gen 3 pokemons!! (https://pokeapi.co/ ?)
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * REST API with open operations (read-only)
 * Web page with raid list for a certain region (using REST API)
-* !raid track for gym, if a user wants to see when there is a raid at their "home gym"
-so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
-* Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
-to check server, and that raid entity, group etc also need to include server
-* Get seasonal boss from database settings for server, and allow admin command to change on the fly 
-when niantic comes up with new tricks
-* Be able to auto create groups via botintegration for several tiers and to different channels
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
@@ -53,7 +46,17 @@ when niantic comes up with new tricks
 
 --- 1.6.0
 
+* !raid track for gym, if a user wants to see when there is a raid at their "home gym"
+so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
+* Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
+to check server, and that raid entity, group etc also need to include server
+* Get seasonal boss from database settings for server, and allow admin command to change on the fly 
+when niantic comes up with new tricks
+* Be able to auto create groups via botintegration for several tiers and to different channels
 * Use nickname instead of username when displaying user
+
+--- 1.7.0
+
 * Move gyms to the database, use CSV files just to initialize and keep in synch?
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group

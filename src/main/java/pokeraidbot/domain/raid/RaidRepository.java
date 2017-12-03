@@ -138,7 +138,7 @@ public class RaidRepository {
                 gym.getName(), signUpText);
     }
 
-    public Raid newRaid(User raidCreator, Raid raid, Guild guild, Config config) {
+    public Raid newRaid(User raidCreator, Raid raid, Guild guild, Config config, String rawMessage) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
 
         if (raidEntity != null) {
@@ -151,7 +151,7 @@ public class RaidRepository {
         }
 
         final Raid raidInstance = getRaidInstance(saveRaid(raidCreator, raid));
-        trackingService.notifyTrackers(guild, raidInstance, config, raidCreator);
+        trackingService.notifyTrackers(guild, raidInstance, config, raidCreator, rawMessage);
         return raidInstance;
     }
 
@@ -297,7 +297,7 @@ public class RaidRepository {
         return activeRaids;
     }
 
-    public Raid changePokemon(Raid raid, Pokemon pokemon, Guild guild, Config config, User user) {
+    public Raid changePokemon(Raid raid, Pokemon pokemon, Guild guild, Config config, User user, String rawMessage) {
         RaidEntity raidEntity = getActiveOrFallbackToExRaidEntity(raid.getGym(), raid.getRegion());
         if (!raidEntity.getPokemon().equalsIgnoreCase(raid.getPokemon().getName())) {
             throw new IllegalStateException("Database issues. Please notify the developer: " +
@@ -309,15 +309,18 @@ public class RaidRepository {
             LOGGER.debug("Changed pokemon for raid " + raid + " to " + pokemon + ".");
         }
         final Raid raidInstance = getRaidInstance(raidEntity);
-        trackingService.notifyTrackers(guild, raidInstance, config, user);
+        trackingService.notifyTrackers(guild, raidInstance, config, user, rawMessage);
         return raidInstance;
     }
 
-    public Raid changeEndOfRaid(String raidId, LocalDateTime newEndOfRaid) {
+    public Raid changeEndOfRaid(String raidId, LocalDateTime newEndOfRaid, Guild guild, Config config,
+                                User user, String rawMessage) {
         RaidEntity raidEntity = findEntityByRaidId(raidId);
         raidEntity.setEndOfRaid(newEndOfRaid);
         raidEntity = raidEntityRepository.save(raidEntity);
-        return getRaidInstance(raidEntity);
+        final Raid raidInstance = getRaidInstance(raidEntity);
+        trackingService.notifyTrackers(guild, raidInstance, config, user, rawMessage);
+        return raidInstance;
     }
 
     public boolean delete(Raid raid) {

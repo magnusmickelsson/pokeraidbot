@@ -13,5 +13,5 @@ public interface TrackingTarget {
 //    boolean canHandle(GuildMessageReceivedEvent event, Raid raid);
 //    void handle(GuildMessageReceivedEvent event, Raid raid, LocaleService localeService, Locale locale, Config config);
     boolean canHandle(Config config, User user, Raid raid);
-    void handle(Guild guild, LocaleService localeService, Config config, User user, Raid raid);
+    void handle(Guild guild, LocaleService localeService, Config config, User user, Raid raid, String inputMessage);
 }
