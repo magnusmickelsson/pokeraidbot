@@ -26,6 +26,8 @@ Experiment with:
 
 Fix issue:
 
+* !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
+bot integration. Check (and possibly fix).
 * !raid track can trigger for wrong server if you are a member of different servers
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
@@ -33,9 +35,13 @@ Fix issue:
 to set
 
 Fix, misc:
+* Green checkmark on !raid group as bot confirmation
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
+* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}
+* Admin tool - get information if a user by ID is member of a server
+* Admin tool - reset tracking for a user by ID
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * REST API with open operations (read-only)
 * Web page with raid list for a certain region (using REST API)

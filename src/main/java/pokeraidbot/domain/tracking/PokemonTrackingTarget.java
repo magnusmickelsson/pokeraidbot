@@ -140,7 +140,7 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         return "PokemonTrackingTarget{" +
                 "region='" + region + '\'' +
                 ", userId='" + userId + '\'' +
-                ", pokemon='" + pokemon + '\'' +
+                ", pokemon='" + pokemon.getName() + '\'' +
                 '}';
     }
 
@@ -175,10 +175,15 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
         final Member memberById = guild.getMemberById(Long.parseLong(userId));
         if (memberById == null) {
-            LOGGER.warn("Member with user ID " + userId + " could not be found!");
+            LOGGER.warn("Member with ID " + userId + " doesn't exist for server " + guild.getName() + "!");
             return;
         }
         final User userToMessage = memberById.getUser();
+        if (userToMessage == null) {
+            LOGGER.warn("User instance for member with ID " + userId +
+                    " doesn't exist for server " + guild.getName() + "!");
+            return;
+        }
         final String commandInitiator = user.getName();
         final Locale locale = localeService.getLocaleForUser(user);
 
