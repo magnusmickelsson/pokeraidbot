@@ -101,6 +101,7 @@ public class LocaleService {
     public static final String EGG_HATCH_HELP = "EGG_HATCH_HELP";
     public static final String EGG_ALREADY_HATCHED = "EGG_ALREADY_HATCHED";
     public static final String EGG_WRONG_TIER = "EGG_WRONG_TIER";
+    public static final String USER_NICK_INVALID = "USER_NICK_INVALID";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -302,12 +303,19 @@ public class LocaleService {
                 "Du försökte sätta en locale som inte stödjs: %1. Tillgängliga locales är: " +
                         StringUtils.join(LocaleService.SUPPORTED_LOCALES, ", ")
         );
+
+        i18nMessages.put(new I18nLookup(USER_NICK_INVALID, Locale.ENGLISH),
+                "Invalid nickname, needs to be between 2 and 11 chars."
+        );
+        i18nMessages.put(new I18nLookup(USER_NICK_INVALID, SWEDISH),
+                "Ogiltigt smeknamn, ska vara mellan 2 och 11 tecken."
+        );
         i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_PARAM, Locale.ENGLISH),
-                "The only parameter that can be changed right now via this command is locale. " +
+                "The only parameters that can be changed right now via this command is locale and nick. " +
                         "You tried to set %1."
         );
         i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_PARAM, SWEDISH),
-                "Den enda parametern som kan ändras just nu via detta kommando är språk (locale). " +
+                "De enda parametrarna som kan ändras just nu via detta kommando är språk (locale) och smeknamn. " +
                         "Du försökte sätta parametern %1."
         );
         i18nMessages.put(new I18nLookup(USER_CONFIG_BAD_SYNTAX, Locale.ENGLISH),
@@ -865,13 +873,15 @@ public class LocaleService {
                 "**Note: This command must be executed in a server text channel, not in DM!**\n\n" +
                         "**To find out your configuration:**\n!raid config show\n\n" +
                         "**To change language:**\n!raid config *[param=value]*\n" +
-                        "*Example (setting Swedish locale):* !raid config locale=sv"
+                        "*Example setting Swedish locale:* !raid config locale=sv\n" +
+                "*Example setting nickname:* !raid config nick=HelloWorld"
         );
         i18nMessages.put(new I18nLookup(MANUAL_CONFIG, SWEDISH),
                 "**OBS: Detta kommando måste köras i en servers textkanal, inte i DM!**\n\n" +
                         "**För att få reda på din konfiguration:**\n!raid config show\n\n" +
                         "**För att ändra språk:**\n!raid config *[param=value]*\n" +
-                        "*Exempel (set English as language):* !raid config locale=en"
+                        "*Exempel (set English as language):* !raid config locale=en\n" +
+                "*Exempel att sätta smeknamn:* !raid config nick=HelloWorld"
         );
         i18nMessages.put(new I18nLookup(MANUAL_RAID, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +

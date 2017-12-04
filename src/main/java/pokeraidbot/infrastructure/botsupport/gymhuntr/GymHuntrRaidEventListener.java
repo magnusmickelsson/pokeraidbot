@@ -188,9 +188,6 @@ public class GymHuntrRaidEventListener implements EventListener {
         createdRaid = raidRepository.newRaid(user, raidToCreate, guildEvent.getGuild(), config,
                 "(bot) !raid new " + raidToCreate.getPokemon().getName() + " " +
                         printTimeIfSameDay(raidToCreate.getEndOfRaid()) + " " + raidToCreate.getGym().getName());
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Raid created via Bot Integration: " + createdRaid);
-        }
         final Locale locale = config.getLocale();
         if (LOGGER.isDebugEnabled()) {
             if (channel != null) {
@@ -201,8 +198,12 @@ public class GymHuntrRaidEventListener implements EventListener {
         StringBuilder sb = new StringBuilder();
         sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                 locale, createdRaid.toString(locale)));
-        createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
-                pokemonRaidInfo, now, createdRaid, channel);
+        if (user != null && channel != null) {
+            createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
+                    pokemonRaidInfo, now, createdRaid, channel);
+        } else {
+            LOGGER.warn("Could not create group, as some input values were null!");
+        }
 
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();

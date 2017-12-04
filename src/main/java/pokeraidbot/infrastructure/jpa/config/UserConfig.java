@@ -1,5 +1,7 @@
 package pokeraidbot.infrastructure.jpa.config;
 
+import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 
@@ -7,6 +9,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Formatter;
 import java.util.Locale;
 
 @Entity
@@ -22,6 +25,8 @@ public class UserConfig {
     private String tracking3;
     @Basic
     private String locale;
+    @Basic
+    private String nick;
 
     // For JPA
     protected UserConfig() {
@@ -77,6 +82,15 @@ public class UserConfig {
         }
     }
 
+    public String getNick(User user) {
+        return nick == null ? user.getName() : nick;
+    }
+
+    public void setNick(String nick) {
+        Validate.notEmpty(nick, "Nickname may not be empty!");
+        this.nick = nick;
+    }
+
     public void setLocale(Locale locale) {
         if (locale != null) {
             if (!LocaleService.isSupportedLocale(locale)) {
@@ -91,13 +105,14 @@ public class UserConfig {
         if (this == o) return true;
         if (!(o instanceof UserConfig)) return false;
 
-        UserConfig that = (UserConfig) o;
+        UserConfig config = (UserConfig) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (tracking1 != null ? !tracking1.equals(that.tracking1) : that.tracking1 != null) return false;
-        if (tracking2 != null ? !tracking2.equals(that.tracking2) : that.tracking2 != null) return false;
-        if (tracking3 != null ? !tracking3.equals(that.tracking3) : that.tracking3 != null) return false;
-        return locale != null ? locale.equals(that.locale) : that.locale == null;
+        if (id != null ? !id.equals(config.id) : config.id != null) return false;
+        if (tracking1 != null ? !tracking1.equals(config.tracking1) : config.tracking1 != null) return false;
+        if (tracking2 != null ? !tracking2.equals(config.tracking2) : config.tracking2 != null) return false;
+        if (tracking3 != null ? !tracking3.equals(config.tracking3) : config.tracking3 != null) return false;
+        if (locale != null ? !locale.equals(config.locale) : config.locale != null) return false;
+        return nick != null ? nick.equals(config.nick) : config.nick == null;
     }
 
     @Override
@@ -107,6 +122,7 @@ public class UserConfig {
         result = 31 * result + (tracking2 != null ? tracking2.hashCode() : 0);
         result = 31 * result + (tracking3 != null ? tracking3.hashCode() : 0);
         result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (nick != null ? nick.hashCode() : 0);
         return result;
     }
 
@@ -118,6 +134,7 @@ public class UserConfig {
                 ", tracking2='" + tracking2 + '\'' +
                 ", tracking3='" + tracking3 + '\'' +
                 ", locale='" + locale + '\'' +
+                ", nick='" + nick + '\'' +
                 '}';
     }
 

@@ -18,6 +18,7 @@ import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class TrackingService {
@@ -72,7 +73,7 @@ public class TrackingService {
                 }
             }
         }
-        return trackingTargets;
+        return trackingTargets.stream().filter(t -> t.getRegion().equalsIgnoreCase(region)).collect(Collectors.toSet());
     }
 
     public void clearCache() {

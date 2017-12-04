@@ -96,6 +96,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 config, user, locale, startAtTime, raid.getId(),
                 localeService, raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
                 clockService, executorService, pokemonRaidStrategyService);
+        commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
