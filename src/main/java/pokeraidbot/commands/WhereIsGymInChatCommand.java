@@ -20,6 +20,7 @@ public class WhereIsGymInChatCommand extends ConfigAwareCommand {
         super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
         this.name = "mapinchat";
+        this.aliases = new String[]{"m"};
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_IN_CHAT_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
     }

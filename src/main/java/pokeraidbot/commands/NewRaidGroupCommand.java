@@ -70,6 +70,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         this.clockService = clockService;
         this.pokemonRaidStrategyService = pokemonRaidStrategyService;
         this.name = "group";
+        this.aliases = new String[]{"g"};
         this.help = localeService.getMessageFor(LocaleService.RAID_GROUP_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

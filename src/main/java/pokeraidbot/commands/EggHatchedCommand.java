@@ -45,6 +45,7 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         this.botService = botService;
         this.raidStrategyService = raidStrategyService;
         this.name = "hatch";
+        this.aliases = new String[]{"h"};
         this.help = localeService.getMessageFor(LocaleService.EGG_HATCH_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

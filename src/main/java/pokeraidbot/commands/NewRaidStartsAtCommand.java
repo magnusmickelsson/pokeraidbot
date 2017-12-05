@@ -39,7 +39,7 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "start";
-        this.aliases = new String[]{"startsat"};
+        this.aliases = new String[]{"s", "startsat"};
         this.help = localeService.getMessageFor(LocaleService.NEW_RAID_START_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

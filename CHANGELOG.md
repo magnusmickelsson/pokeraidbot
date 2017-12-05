@@ -6,6 +6,7 @@ FUTURE (?)
 * !raid track notification handling refactored
 * Gen3 pokemons added to repository
 * EX raids will no longer be created via bot integration
+* Aliases for commands, to reduce typing during winter - for example !r s Tyranitar 10:00 hästen is the same as !raid start ..
 
 1.5.1 (2017-11-30)
 =====

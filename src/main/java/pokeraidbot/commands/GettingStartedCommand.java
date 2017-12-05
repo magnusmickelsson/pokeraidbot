@@ -11,6 +11,7 @@ public class GettingStartedCommand extends ConfigAwareCommand {
     public GettingStartedCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
         this.name = "getting-started";
+        this.aliases = new String[]{"get-started"};
         this.guildOnly = false;
         this.help = localeService.getMessageFor(LocaleService.GETTING_STARTED_HELP,
                 localeService.getLocaleForUser((User) null));

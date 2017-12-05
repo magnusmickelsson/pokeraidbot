@@ -28,6 +28,7 @@ public class PokemonRepository {
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
         this.localeService = localeService;
+        // todo: use csv reader instead
         try {
             final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
             ObjectMapper mapper = new ObjectMapper();

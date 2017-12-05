@@ -1,6 +1,5 @@
 package pokeraidbot;
 
-import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
@@ -28,26 +27,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UtilsTest {
-    private static Set<String> allTypes = new HashSet<>(Arrays.asList(
-            "Normal",
-            "Fire",
-            "Water",
-            "Electric",
-            "Grass",
-            "Ice",
-            "Fighting",
-            "Poison",
-            "Ground",
-            "Flying",
-            "Psychic",
-            "Bug",
-            "Rock",
-            "Ghost",
-            "Dragon",
-            "Dark",
-            "Steel",
-            "Fairy"
-    ));
     private static UserConfigRepository userConfigRepository;
     private static LocaleService localeService;
     private PokemonRepository pokemonRepository;
@@ -73,6 +52,30 @@ public class UtilsTest {
     @Test
     public void testFireWeaknesses() throws Exception {
         assertTypeIsWeakAgainstTypesAndOthersAreNot("Fire", Arrays.asList("Water", "Ground", "Rock"));
+    }
+
+    @Test
+    public void testGetFireWeaknesses() throws Exception {
+        assertThat(Utils.getWeaknessesFor(new PokemonTypes("Fire")),
+                is(new HashSet<>(Arrays.asList("Water", "Ground", "Rock"))));
+    }
+
+    @Test
+    public void testGetHoOhWeaknesses() throws Exception {
+        assertThat(Utils.getWeaknessesFor(new PokemonTypes("Fire", "Flying")),
+                is(new HashSet<>(Arrays.asList("Water", "Rock", "Electric"))));
+    }
+
+    @Test
+    public void testGetKingdraWeaknesses() throws Exception {
+        assertThat(Utils.getWeaknessesFor(new PokemonTypes("Water", "Dragon")),
+                is(new HashSet<>(Arrays.asList("Fairy", "Dragon"))));
+    }
+
+    @Test
+    public void testGetGyaradosWeaknesses() throws Exception {
+        assertThat(Utils.getWeaknessesFor(new PokemonTypes("Water", "Flying")),
+                is(new HashSet<>(Arrays.asList("Electric", "Rock"))));
     }
 
     @Test
@@ -286,7 +289,7 @@ public class UtilsTest {
                     Utils.typeIsStrongVsPokemon(pokemonType, strongType), is(true));
         }
 
-        final Collection<String> leftToCheckThatShouldBeFalse = CollectionUtils.subtract(allTypes, typesItIsWeakAgainst);
+        final Collection<String> leftToCheckThatShouldBeFalse = CollectionUtils.subtract(PokemonTypes.allTypes, typesItIsWeakAgainst);
 
         for (String leftToCheck : leftToCheckThatShouldBeFalse) {
             assertThat(leftToCheck + " should not be strong vs " + pokemonType,

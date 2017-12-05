@@ -87,6 +87,7 @@ public class BotService {
         client.setOwnerId(this.ownerId);
         client.setEmojis(Emotes.OK, "\uD83D\uDE2E", Emotes.ERROR);
         client.setPrefix("!raid ");
+        client.setAlternativePrefix("!r ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
                 new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService),

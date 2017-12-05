@@ -9,6 +9,8 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonTypes;
+import pokeraidbot.domain.pokemon.ResistanceTable;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.signup.SignUp;
 
@@ -18,10 +20,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Utils {
     public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("H[:][.]mm");
@@ -32,6 +31,7 @@ public class Utils {
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
     public static final int RAID_DURATION_IN_MINUTES = 45;
     private static ClockService clockService = new ClockService();
+    private static ResistanceTable resistanceTable = new ResistanceTable();
 
     public static ClockService getClockService() {
         return clockService;
@@ -69,49 +69,12 @@ public class Utils {
         }
     }
 
+    public static Set<String> getWeaknessesFor(PokemonTypes pokemonType) {
+        return resistanceTable.getWeaknesses(pokemonType);
+    }
+
     public static boolean typeIsStrongVsPokemon(String pokemonType, String typeToCheck) {
-        Validate.notEmpty(pokemonType);
-        Validate.notEmpty(typeToCheck);
-        String check = typeToCheck.toUpperCase().trim();
-        switch (pokemonType.toUpperCase().trim()) {
-            case "NORMAL":
-                return check.equals("FIGHTING");
-            case "FIRE":
-                return Arrays.asList("WATER", "GROUND", "ROCK").contains(check);
-            case "WATER":
-                return Arrays.asList("ELECTRIC", "GRASS").contains(check);
-            case "ELECTRIC":
-                return Arrays.asList("GROUND").contains(check);
-            case "GRASS":
-                return Arrays.asList("FIRE", "ICE", "POISON", "FLYING", "BUG").contains(check);
-            case "ICE":
-                return Arrays.asList("FIRE", "FIGHTING", "ROCK", "STEEL").contains(check);
-            case "FIGHTING":
-                return Arrays.asList("FLYING", "PSYCHIC", "FAIRY").contains(check);
-            case "POISON":
-                return Arrays.asList("PSYCHIC", "GROUND").contains(check);
-            case "GROUND":
-                return Arrays.asList("WATER", "GRASS", "ICE").contains(check);
-            case "FLYING":
-                return Arrays.asList("ELECTRIC", "ICE", "ROCK").contains(check);
-            case "PSYCHIC":
-                return Arrays.asList("BUG", "GHOST", "DARK").contains(check);
-            case "BUG":
-                return Arrays.asList("FIRE", "FLYING", "ROCK").contains(check);
-            case "ROCK":
-                return Arrays.asList("WATER", "GRASS", "FIGHTING", "GROUND", "STEEL").contains(check);
-            case "GHOST":
-                return Arrays.asList("GHOST", "DARK").contains(check);
-            case "DRAGON":
-                return Arrays.asList("ICE", "DRAGON", "FAIRY").contains(check);
-            case "DARK":
-                return Arrays.asList("BUG", "FIGHTING", "FAIRY").contains(check);
-            case "STEEL":
-                return Arrays.asList("FIRE", "FIGHTING", "GROUND").contains(check);
-            case "FAIRY":
-                return Arrays.asList("POISON", "STEEL").contains(check);
-        }
-        return false;
+        return resistanceTable.typeIsStrongVsPokemon(pokemonType, typeToCheck);
     }
 
     public static void assertSignupTimeNotBeforeRaidStartAndNow(User user, LocalDateTime dateAndTime,
@@ -344,5 +307,9 @@ public class Utils {
                     localeService.getLocaleForUser(user), printDateTime(dateTimeToCheck),
                     printDateTime(startOfRaid), printTimeIfSameDay(raid.getEndOfRaid())));
         }
+    }
+
+    public static Set<String> getResistantTo(PokemonTypes pokemonTypes) {
+        return resistanceTable.getResistantTo(pokemonTypes);
     }
 }

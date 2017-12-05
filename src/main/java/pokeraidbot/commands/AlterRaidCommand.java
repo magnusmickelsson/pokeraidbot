@@ -53,6 +53,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         this.localeService = localeService;
         this.botService = botService;
         this.name = "change";
+        this.aliases = new String[]{"c"};
         this.help = localeService.getMessageFor(LocaleService.CHANGE_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

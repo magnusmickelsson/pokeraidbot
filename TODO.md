@@ -7,12 +7,13 @@ Needs testing:
 * !raid track refactored
 * EX raids can no longer be created via bot integration
 * Green checkmark on !raid group as bot confirmation
-* !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
-bot integration. Check (and possibly fix).
 
 Being developed:
 
+* Resistances table, detailed
 * Data for all gen 3 pokemons
+* !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
+bot integration. Check (and possibly fix).
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
 signups, raid status etc.
 
