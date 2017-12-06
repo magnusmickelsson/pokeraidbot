@@ -3,10 +3,15 @@ FUTURE (?)
 
 1.6.0 (?)
 =====
-* !raid track notification handling refactored
+* !raid overview should list times for groups instead of ETA
 * Gen3 pokemons added to repository
-* EX raids will no longer be created via bot integration
-* Aliases for commands, to reduce typing during winter - for example !r s Tyranitar 10:00 hästen is the same as !raid start ..
+* Aliases for commands, to reduce typing during winter - for example 
+!r s Tyranitar 10:00 hästen is the same as !raid start ..
+* Green checkmark on !raid group as bot confirmation
+* Resistances table, detailed
+* !raid track notification handling refactored
+* Fix: Error message when doing !raid start zipit is bad, now gives a bad syntax message
+* Fix: EX raids will no longer be created via bot integration
 
 1.5.1 (2017-11-30)
 =====

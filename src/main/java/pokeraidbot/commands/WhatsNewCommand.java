@@ -22,22 +22,26 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- Bugfix rörande rättighetskontroller för rapportering av kläckta ägg\n" +
-                    "- Kunna rapportera raidägg (Egg1-5 funkar som pokemons för alla raidkommandon)," +
-                    " och rapportera kläckning när man vet vad det blir, " +
-                    "via *!raid hatch {pokemon} {gym}*\n" +
-                    "- Botintegrationen kan nu rapportera ägg enligt ovan, och automatiskt göra !raid hatch " +
-                    "när PokeAlarm eller Gymhuntr rapporterar vad det blev\n" +
-                    "- Admins och mods ska kunna ta bort raider även om de har anmälningar (om något blir riktigt fel)";
+                    "- !raid overview och !raid list listar nu grupptider i stället för ETA\n" +
+                    "- Gen3 pokemons finns nu inlagda\n" +
+                    "- Alias för vissa kommandon, så det blir mindre att skriva - t.ex. " +
+                    "*!r s Tyranitar 10:00 hästen* är nu samma som *!raid start Tyranitar 10:00 hästen*\n" +
+                    "- Bot bekräftar nu ok !raid group med check\n" +
+                    "- Resistance-tabell, mer detaljerad/korrekt !raid vs\n" +
+                    "- !raid track notifiering omgjord\n" +
+                    "- Fix: Bättre felmeddelande vid !raid start zipit ger nu ett \"dålig syntax\"-meddelande\n" +
+                    "- Fix: EX raids kommer inte längre skapas via botintegration";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- Bugfix related to access rights for egg hatching\n" +
-                    "- Report and create raids and groups for eggs (Egg1-5 works as pokemons for all raid commands)" +
-                    ", and be able to hatch them when we know what " +
-                    "they are, via *!raid hatch {pokemon} {gym}*\n" +
-                    "- Bot integration can now report eggs, and automatically report what " +
-                    "hatched as soon as the bot reports it\n" +
-                    "- Admins and mods should be able to remove raids even if they have signups";
+                    "- !raid overview and !raid list should list times for groups instead of ETA\n" +
+                    "- Gen3 pokemons added to repository\n" +
+                    "- Aliases for commands, to reduce typing during winter - for example " +
+                    "*!r s Tyranitar 10:00 hasten* is the same as *!raid start Tyranitar 10:00 hasten*\n" +
+                    "- Green checkmark on !raid group as bot confirmation\n" +
+                    "- Resistances table, detailed\n" +
+                    "- !raid track notification handling refactored\n" +
+                    "- Fix: Error message when doing !raid start zipit is bad, now gives a bad syntax message\n" +
+                    "- Fix: EX raids will no longer be created via bot integration";
         }
         replyBasedOnConfig(config, commandEvent, message);
     }
