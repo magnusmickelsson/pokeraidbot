@@ -40,7 +40,7 @@ public class UtilsTest {
 
     @Before
     public void setUp() throws Exception {
-        pokemonRepository = new PokemonRepository("/mons.json",
+        pokemonRepository = new PokemonRepository("/pokemons.csv",
                 new LocaleService("sv", userConfigRepository));
     }
 
@@ -175,11 +175,11 @@ public class UtilsTest {
 
     @Test
     public void testPrintWeaknesses() throws Exception {
-        PokemonRepository pokemonRepository = new PokemonRepository("/mons.json",
+        PokemonRepository pokemonRepository = new PokemonRepository("/pokemons.csv",
                 new LocaleService("sv", userConfigRepository));
         Pokemon pokemon = pokemonRepository.search("Tyranitar", null);
 
-        assertThat(Utils.printWeaknesses(pokemon), is("Water, **Fighting**, Bug, Ground, Steel, Fairy"));
+        assertThat(Utils.printWeaknesses(pokemon), is("Water, **Fighting**, Ground, Grass, Steel, Bug, Fairy"));
     }
 
     @Test

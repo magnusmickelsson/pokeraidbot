@@ -39,6 +39,7 @@ public class PokemonRaidStrategyService {
             "Zapdos".toUpperCase(), "Lugia".toUpperCase(),
             "Raikou".toUpperCase(), "Suicune".toUpperCase(),
             "Mewtwo".toUpperCase(),
+            // Tier 1
             "Ivysaur".toUpperCase(),
             "Metapod".toUpperCase(),
             "Charmeleon".toUpperCase(),
@@ -68,7 +69,6 @@ public class PokemonRaidStrategyService {
             // Tier 5 /EX
             "egg5".toUpperCase(),
             "Ho-oh".toUpperCase()
-
     };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {

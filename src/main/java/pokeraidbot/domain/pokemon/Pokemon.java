@@ -1,6 +1,7 @@
 package pokeraidbot.domain.pokemon;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Set;
 
@@ -14,7 +15,16 @@ public class Pokemon {
     private String about;
     private String buddyDistance;
 
-    public Pokemon(Integer number, String name, String about, PokemonTypes types, String buddyDistance, Set<String> weaknesses, Set<String> resistantTo) {
+    public Pokemon(Integer number, String name, String about, PokemonTypes types, String buddyDistance,
+                   Set<String> weaknesses, Set<String> resistantTo) {
+        Validate.notNull(number, "Number is null!");
+        Validate.notNull(types, "Types is null!");
+        Validate.notEmpty(name, "Name is empty!");
+        if (types != PokemonTypes.NONE) {
+            Validate.notEmpty(weaknesses, "Weaknesses is empty!");
+            Validate.notEmpty(resistantTo, "ResistantTo is empty!");
+        }
+
         this.number = number;
         this.name = name;
         this.about = about;

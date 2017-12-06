@@ -7,14 +7,17 @@ Needs testing:
 * !raid track refactored
 * EX raids can no longer be created via bot integration
 * Green checkmark on !raid group as bot confirmation
+* Resistances table, detailed
+* Data for all gen 3 pokemons
 
 Being developed:
 
-* Resistances table, detailed
-* Data for all gen 3 pokemons
+* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
-* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
+* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
+signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
+user name/user id for checking.
 
 Discussion:
 
@@ -31,6 +34,8 @@ Experiment with:
 
 Fix issue:
 
+* !raid track can trigger for wrong server if you are a member of different servers
+* !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set

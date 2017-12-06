@@ -71,7 +71,7 @@ public class CounterTextFileParserText {
 
     private void assertPokemonHasCorrectNumberOfCounters(String pokemonName, int goodCounters, int supremeCounters) {
         CounterTextFileParser parser = new CounterTextFileParser("/counters", pokemonName,
-                new PokemonRepository("/mons.json", localeService));
+                new PokemonRepository("/pokemons.csv", localeService));
         assertThat(parser.getBestCounters().size(), is(supremeCounters));
         assertThat(parser.getGoodCounters().size(), is(goodCounters));
     }

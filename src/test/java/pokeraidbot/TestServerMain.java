@@ -103,7 +103,7 @@ public class TestServerMain {
 
     @Bean
     public PokemonRepository getPokemonRepository(LocaleService localeService) {
-        return new PokemonRepository("/mons.json", localeService);
+        return new PokemonRepository("/pokemons.csv", localeService);
     }
 
     @Bean

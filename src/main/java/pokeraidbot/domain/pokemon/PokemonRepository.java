@@ -3,10 +3,12 @@ package pokeraidbot.domain.pokemon;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.infrastructure.CSVPokemonDataReader;
 import pokeraidbot.infrastructure.JsonPokemon;
 import pokeraidbot.infrastructure.JsonPokemons;
 
@@ -28,32 +30,28 @@ public class PokemonRepository {
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
         this.localeService = localeService;
-        // todo: use csv reader instead
         try {
-            final InputStream inputStream = PokemonRepository.class.getResourceAsStream(resourceName);
-            ObjectMapper mapper = new ObjectMapper();
-            JsonPokemons jsonPokemons = mapper.readValue(inputStream, JsonPokemons.class);
-            for (JsonPokemon p : jsonPokemons.getPokemons()) {
-                if (p != null && p.getName() != null && p.getTypes() != null) {
-                    final Pokemon pokemon = new Pokemon(p.getNumber(), p.getName(), p.getAbout(),
-                            new PokemonTypes(p.getTypes()), p.getBuddyDistance(),
-                            new HashSet<>(Arrays.asList(p.getWeaknesses())),
-                            new HashSet<>(Arrays.asList(p.getResistant())));
-                    pokemons.put(p.getName().toUpperCase(), pokemon);
-                }
+            CSVPokemonDataReader csvPokemonDataReader = new CSVPokemonDataReader(resourceName);
+            final Set<Pokemon> pokemonsRead = csvPokemonDataReader.readAll();
+            for (Pokemon p : pokemonsRead) {
+                pokemons.put(p.getName().toUpperCase(), p);
             }
-            LOGGER.info("Parsed " + jsonPokemons.getPokemons().size() + " pokemons.");
-            pokemons.put("EGG1", new Pokemon(99999, EGG_1, "Tier 1 egg", new PokemonTypes(), "", new HashSet<>(),
+            this.pokemons.put("EGG1", new Pokemon(99999, EGG_1, "Tier 1 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
                     new HashSet<>()));
-            pokemons.put("EGG2", new Pokemon(99998, EGG_2, "Tier 2 egg", new PokemonTypes(), "", new HashSet<>(),
+            this.pokemons.put("EGG2", new Pokemon(99998, EGG_2, "Tier 2 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
                     new HashSet<>()));
-            pokemons.put("EGG3", new Pokemon(99997, EGG_3, "Tier 3 egg", new PokemonTypes(), "", new HashSet<>(),
+            this.pokemons.put("EGG3", new Pokemon(99997, EGG_3, "Tier 3 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
                     new HashSet<>()));
-            pokemons.put("EGG4", new Pokemon(99996, EGG_4, "Tier 4 egg", new PokemonTypes(), "", new HashSet<>(),
+            this.pokemons.put("EGG4", new Pokemon(99996, EGG_4, "Tier 4 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
                     new HashSet<>()));
-            pokemons.put("EGG5", new Pokemon(99995, EGG_5, "Tier 5 egg", new PokemonTypes(), "", new HashSet<>(),
+            this.pokemons.put("EGG5", new Pokemon(99995, EGG_5, "Tier 5 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
                     new HashSet<>()));
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
         }
     }

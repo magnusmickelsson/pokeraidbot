@@ -23,7 +23,7 @@ public class CSVPokemonDataReader {
 
     public Set<Pokemon> readAll() {
         String line;
-        Set<Pokemon> gyms = new HashSet<>();
+        Set<Pokemon> pokemons = new HashSet<>();
         try {
             final InputStream resourceAsStream = CSVPokemonDataReader.class.getResourceAsStream(resourceName);
             if (resourceAsStream == null) {
@@ -52,15 +52,16 @@ public class CSVPokemonDataReader {
                     Pokemon pokemon = new Pokemon(Integer.parseInt(id), name, "About not used",
                             pokemonTypes, "", Utils.getWeaknessesFor(pokemonTypes),
                             Utils.getResistantTo(pokemonTypes));
+                    pokemons.add(pokemon);
                 }
             }
 
         } catch (IOException e) {
-            LOGGER.error("Error while trying to open gym file " + resourceName + ": " + e.getMessage());
+            LOGGER.error("Error while trying to open pokemon file " + resourceName + ": " + e.getMessage());
         }
 
-        LOGGER.info("Parsed " + gyms.size() + " gyms from \"" + resourceName + "\".");
+        LOGGER.info("Parsed " + pokemons.size() + " pokemons from \"" + resourceName + "\".");
 
-        return gyms;
+        return pokemons;
     }
 }

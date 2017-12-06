@@ -58,7 +58,7 @@ public class BotServerMain {
     public ClockService getClockService() {
         final ClockService clockService = new ClockService();
         // If you want to test, and it's currently in the "dead time" where raids can't be created, set time manually like this
-//        clockService.setMockTime(LocalTime.of(9, 0));
+        clockService.setMockTime(LocalTime.of(9, 0));
         Utils.setClockService(clockService);
         return clockService;
     }
@@ -103,7 +103,7 @@ public class BotServerMain {
 
     @Bean
     public PokemonRepository getPokemonRepository(LocaleService localeService) {
-        return new PokemonRepository("/mons.json", localeService);
+        return new PokemonRepository("/pokemons.csv", localeService);
     }
 
     @Bean

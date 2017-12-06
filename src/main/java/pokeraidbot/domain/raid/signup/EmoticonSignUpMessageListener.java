@@ -195,6 +195,12 @@ public class EmoticonSignUpMessageListener implements EventListener {
             if (event instanceof GenericGuildMessageReactionEvent) {
                 final GenericGuildMessageReactionEvent guildMessageReactionEvent =
                         (GenericGuildMessageReactionEvent) event;
+                reactionMessageId = guildMessageReactionEvent.getReaction().getMessageId();
+                if (!emoteMessageId.equals(reactionMessageId)) {
+                    LOGGER.warn("We got a guild reaction event throwing exception, but not one we were listening for!" +
+                            " Event: " + printInfoAbout(event));
+                    return;
+                }
                 // Since we got an error, remove last reaction
                 if (reactionMessageId != null && reactionMessageId.equals(emoteMessageId)) {
                     // Do this with a slight delay to prevent graphical glitches client side.
@@ -212,7 +218,8 @@ public class EmoticonSignUpMessageListener implements EventListener {
                     messageBuilder.append(t.getMessage());
                     guildMessageReactionEvent.getChannel().sendMessage(messageBuilder.build()).queue();
                 } else {
-                    LOGGER.warn("We have a situation where user or exception message is null! Event: " +
+                    LOGGER.warn("We have a situation where user " + user + " or exception (of type " +
+                            t.getClass().getSimpleName() + ") message is null! Event: " +
                             printInfoAbout(event));
                 }
             }

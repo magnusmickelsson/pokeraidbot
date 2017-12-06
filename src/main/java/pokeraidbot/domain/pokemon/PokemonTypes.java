@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 
 public class PokemonTypes {
+    public static final PokemonTypes NONE = new PokemonTypes();
     public static final Set<String> allTypes = new HashSet<>(Arrays.asList(
             "Normal",
             "Fire",

@@ -62,7 +62,7 @@ public class RaidRepositoryTest {
     public void setUp() throws Exception {
         Utils.setClockService(clockService);
         gymRepository = TestServerMain.getGymRepositoryForConfig(localeService, serverConfigRepository);
-        pokemonRepository = new PokemonRepository("/mons.json", localeService);
+        pokemonRepository = new PokemonRepository("/pokemons.csv", localeService);
         raidEntityRepository.deleteAllInBatch();
     }
 

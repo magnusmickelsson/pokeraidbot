@@ -32,7 +32,7 @@ public class RaidPokemonsTest {
         UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
         localeService = new LocaleService("sv", userConfigRepository);
-        pokemonRepository = new PokemonRepository("/mons.json", localeService);
+        pokemonRepository = new PokemonRepository("/pokemons.csv", localeService);
         strategyService = new PokemonRaidStrategyService(pokemonRepository);
     }
 

@@ -162,6 +162,9 @@ public class GymHuntrRaidEventListener implements EventListener {
                                 "(bot) " +
                                         "!raid hatch " + raidBoss.getName() + " " + existingRaid.getGym().getName());
                         LOGGER.info("Hatched raid: " + existingRaid);
+                    } else {
+                        LOGGER.info("Active raid already present, which is not an egg to hatch. " +
+                                "Skipping raid at: " + raidGym.getName());
                     }
                 } else {
                     createRaid(user, guildEvent, config, clockService, pokemonRaidInfo, now, raidToCreate, channel);

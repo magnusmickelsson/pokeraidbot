@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 // Todo: test cases against this class
 public class ResistanceTable {
-    private Map<String, Map<String, Effect>> resistances = new HashMap<>();
+    private Map<String, Map<String, Effect>> matchUpValues = new HashMap<>();
 
     public ResistanceTable() {
         setResistancesFor("Normal", Arrays.asList(Pair.of("Rock", Effect.MINOR),
@@ -105,7 +105,7 @@ public class ResistanceTable {
         for (Pair<String, Effect> typeEffect : resistanceValues) {
             resistancesMap.put(typeEffect.getLeft(), typeEffect.getRight());
         }
-        resistances.put(type, resistancesMap);
+        matchUpValues.put(type, resistancesMap);
     }
 
     public boolean typeIsStrongVsPokemon(String pokemonType, String typeToCheck) {
@@ -114,7 +114,7 @@ public class ResistanceTable {
     }
 
     public float typeStrengthValue(String pokemonType, String typeToCheck) {
-        final Map<String, Effect> stringEffectMap = resistances.get(pokemonType);
+        final Map<String, Effect> stringEffectMap = matchUpValues.get(pokemonType);
         if (stringEffectMap == null) {
             throw new IllegalArgumentException("No resistances for pokemon type: " + pokemonType);
         }
@@ -158,9 +158,9 @@ public class ResistanceTable {
         for (String type : PokemonTypes.allTypes) {
             float multiplier = 1f;
             for (String pokemonType : pokemonTypes.getTypeSet()) {
-                multiplier *= typeStrengthValue(pokemonType, type);
+                multiplier *= typeStrengthValue(type, pokemonType);
             }
-            if (multiplier < 1f) {
+            if (multiplier <= Effect.MINOR.effectValue) {
                 results.add(type);
             }
         }
@@ -168,7 +168,7 @@ public class ResistanceTable {
     }
 
     public enum Effect {
-        NONE(0f), MINOR(0.5f), NORMAL(1f), SUPER(2f);
+        NONE(0.51f), MINOR(0.714f), NORMAL(1f), SUPER(1.4f);
         private float effectValue;
 
         Effect(float value) {
