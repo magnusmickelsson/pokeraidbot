@@ -14,8 +14,7 @@ Being developed:
 * Data for all gen 3 pokemons
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
-* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
-signups, raid status etc.
+* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
 
 Discussion:
 
@@ -32,8 +31,6 @@ Experiment with:
 
 Fix issue:
 
-* !raid track can trigger for wrong server if you are a member of different servers
-* !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
@@ -45,14 +42,18 @@ Fix, misc:
 Do, features:
 * Admin tool - get information if a user by ID is member of a server
 * Admin tool - reset tracking for a user by ID
-* Only use a single Emoticon listener for signups to reduce memory and complexity
-* !raid install needs to be made easier
-* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
-* add egg handling to getting started documentation
 * !raid overview should list times for next two groups instead of ETA. Try to make text for a line shorter.
 
 --- 1.6.0
 
+* !raid change remove should lead to any related group messages being removed
+* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. 
+Display said nick in group
+signups, raid status etc.
+* Only use a single Emoticon listener for signups to reduce memory and complexity
+* !raid install needs to be made easier
+* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
+* add egg handling to getting started documentation
 * REST API with open operations (read-only)
 * Web page with raid list for a certain region (using REST API)
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
