@@ -14,6 +14,7 @@ Needs testing:
 
 Being developed:
 
+* Remove pokemon boss from EX list in overview and list
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
