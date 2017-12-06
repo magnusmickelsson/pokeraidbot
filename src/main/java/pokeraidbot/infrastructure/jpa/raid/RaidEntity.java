@@ -207,8 +207,13 @@ public class RaidEntity implements Serializable {
 
     public Set<RaidGroup> getGroupsAsSet() {
         return Collections.unmodifiableSet(new LinkedHashSet<>(groups).stream().sorted(
-                Comparator.comparing(RaidGroup::getStartsAt)
-        ).collect(Collectors.toSet()));
+                (o1, o2) -> {
+                    final LocalDateTime o1Start = o1.getStartsAt();
+                    final LocalDateTime o2Start = o2.getStartsAt();
+                    if (o1Start.isBefore(o2Start)) return 1;
+                    else if (o1Start.isAfter(o2Start)) return -1;
+                    return 0;
+                }).collect(Collectors.toSet()));
     }
 
     public boolean isExRaid() {

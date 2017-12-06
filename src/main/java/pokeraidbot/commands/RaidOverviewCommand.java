@@ -135,7 +135,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             (message == null ? "null" : message.getId()) + ". Cleaning up...");
                     cleanUp(config, messageId, serverConfigRepository,
                             messageChannel);
-                   return false;
+                    return false;
                 }
             };
             boolean overviewOk = true;
@@ -205,26 +205,29 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Gym raidGym = raid.getGym();
                 if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
-                    stringBuilder.append("  ")
-                            .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append(" - ")
+                    stringBuilder.append("⏱")
+                            .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append("-")
                             .append(printTime(raid.getEndOfRaid().toLocalTime()))
-                            .append(". ").append(numberOfPeople)
-                            .append(" ")
-                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(raid.getNextEta(localeService, locale, LocalTime.now()))
-                            .append("\n");
-                }
-                else {
+                            .append(" (**").append(numberOfPeople)
+                            .append("**)");
+//                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
+                    if (raid.getSignUps().size() > 0) {
+                        stringBuilder.append(raidRepository.listGroupsForRaid(raid));
+                    }
+                    stringBuilder.append("\n");
+                } else {
                     exRaids.append("\n").append(raidGym.getName())
                             .append(" (")
-                            .append(raidBoss.getName()).append(") - ")
+                            .append(raidBoss.getName()).append(")⏱")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
                                     printTime(raid.getEndOfRaid().toLocalTime())))
-                            .append(". ").append(numberOfPeople)
-                            .append(" ")
-                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                            .append(".\n");
+                            .append(". (**").append(numberOfPeople)
+                            .append("**)");
+                    if (raid.getSignUps().size() > 0) {
+                        exRaids.append(raidRepository.listGroupsForRaid(raid));
+                    }
+                    exRaids.append("\n");
                 }
             }
             final String exRaidList = exRaids.toString();
@@ -238,8 +241,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         String.valueOf(60)))
                 .append(" ")
                 .append(localeService.getMessageFor(LocaleService.LAST_UPDATE,
-                locale,
-                printTime(clockService.getCurrentTime())));
+                        locale,
+                        printTime(clockService.getCurrentTime())));
         final String message = stringBuilder.toString();
         return message;
     }

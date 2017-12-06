@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.*;
 
@@ -128,7 +129,7 @@ public class RaidRepository {
 
         raid = removeFromSignUp(raid.getId(), user, 0, 0, 0, numberOfPeople,
                 LocalDateTime.of(raid.getEndOfRaid().toLocalDate(),
-                signUp.getArrivalTime()));
+                        signUp.getArrivalTime()));
         final String currentSignupText = localeService.getMessageFor(LocaleService.CURRENT_SIGNUPS, localeForUser);
         final Set<SignUp> signUps = raid.getSignUps();
         Set<String> signUpNames = Utils.getNamesOfThoseWithSignUps(signUps, true);
@@ -520,12 +521,36 @@ public class RaidRepository {
         }
     }
 
+    public String listGroupsForRaid(Raid raid) {
+        RaidEntity entity = findEntityByRaidId(raid.getId());
+        StringBuilder sb = new StringBuilder();
+        final Set<RaidGroup> groups = entity.getGroupsAsSet();
+        if (groups.size() > 0) {
+            sb.append(" \uD83D\uDC68\u200D\uD83D\uDC68\u200D\uD83D\uDC66\u200D\uD83D\uDC66 ");
+            Set<String> times = new LinkedHashSet<>();
+            for (RaidGroup group : groups) {
+                final LocalTime groupTime = group.getStartsAt().toLocalTime();
+                times.add(printTime(groupTime) + " (**" + countSignups(raid.getSignUpsAt(groupTime)) + "**)");
+            }
+            sb.append(StringUtils.join(times, ", "));
+        }
+        return sb.toString();
+    }
+
+    private String countSignups(Set<SignUp> signUpsAt) {
+        int i = 0;
+        for (SignUp s : signUpsAt) {
+            i += s.getHowManyPeople();
+        }
+        return String.valueOf(i);
+    }
+
     public RaidGroup changeGroup(User user, String raidId, String groupCreatorId, LocalDateTime currentStartAt,
                                  LocalDateTime newDateTime) {
         final RaidEntity entityByRaidId = findEntityByRaidId(raidId);
         if (entityByRaidId == null) {
-                throw new UserMessedUpException(user,
-                        localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
         }
         RaidGroup group = entityByRaidId.getGroupByCreatorAndStart(groupCreatorId, currentStartAt);
         if (group == null) {

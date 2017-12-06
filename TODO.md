@@ -10,6 +10,7 @@ Needs testing:
 * Resistances table, detailed
 * Data for all gen 3 pokemons
 * Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
+* !raid overview should list times for groups instead of ETA. Try to make text for a line shorter to make it possible.
 
 Being developed:
 
@@ -47,7 +48,6 @@ Fix, misc:
 Do, features:
 * Admin tool - get information if a user by ID is member of a server
 * Admin tool - reset tracking for a user by ID
-* !raid overview should list times for next two groups instead of ETA. Try to make text for a line shorter.
 * (Maybe) PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 

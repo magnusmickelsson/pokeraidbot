@@ -636,9 +636,9 @@ public class LocaleService {
                 "Tog bort övervakning av %1 för %2.");
 
         i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
-                "Raid track notification: \"%1\" by %2 - %3");
+                "Raid track notification: %3 by %2");
         i18nMessages.put(new I18nLookup(TRACKED_RAID, SWEDISH),
-                "Notifikation: \"%1\" av %2 - %3");
+                "Notifikation: %3 av %2");
 
        i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
                 "There was no such tracking set for you.");
@@ -783,8 +783,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, Locale.ENGLISH), "Current raids");
         i18nMessages.put(new I18nLookup(CURRENT_RAIDS, SWEDISH), "Aktuella raids");
 
-        i18nMessages.put(new I18nLookup(RAID_BETWEEN, Locale.ENGLISH), "between %1 and %2");
-        i18nMessages.put(new I18nLookup(RAID_BETWEEN, SWEDISH), "mellan %1 och %2");
+        i18nMessages.put(new I18nLookup(RAID_BETWEEN, Locale.ENGLISH), "%1-%2");
+        i18nMessages.put(new I18nLookup(RAID_BETWEEN, SWEDISH), "%1-%2");
 
         i18nMessages.put(new I18nLookup(LIST_NO_RAIDS, Locale.ENGLISH), "There are currently no active raids. " +
                 "To register a raid, use the following command:\n!raid new {pokemon} {ends at (HH:mm)} {gym}\n" +
