@@ -83,7 +83,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 break;
             default:
                 throw new UserMessedUpException(userName,
-                        localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
+                        localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
+                                "!raid change {when/pokemon/remove/group} {params}"));
         }
     }
 
@@ -193,7 +194,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
         if (!groupChanged) {
             throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
+                    localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
+                            "!raid change group 10:00 solna platform"));
         }
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }

@@ -48,6 +48,10 @@ public class NewRaidExCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
         final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
+        if (args.length < 3) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.BAD_SYNTAX,
+                    localeService.getLocaleForUser(user), "!raid ex mewtwo 2017-11-11 10:00 solna platform"));
+        }
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final Locale locale = localeService.getLocaleForUser(user);

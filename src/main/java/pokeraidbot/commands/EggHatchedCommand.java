@@ -58,7 +58,8 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         final String[] args = commandEvent.getArgs().split(" ");
         if (args.length < 2) {
             throw new UserMessedUpException(userName,
-                    localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user)));
+                    localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
+                            "!raid hatch Ho-Oh solna platform"));
         }
         String pokemonName = args[0].trim().toLowerCase();
         final String[] gymArguments = ArrayUtils.removeAll(args, 0);

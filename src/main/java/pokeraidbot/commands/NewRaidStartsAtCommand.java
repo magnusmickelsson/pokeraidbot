@@ -6,6 +6,7 @@ import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -49,6 +50,10 @@ public class NewRaidStartsAtCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final User user = commandEvent.getAuthor();
         final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
+        if (args.length < 3) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.BAD_SYNTAX,
+                    localeService.getLocaleForUser(user), "!raid start ho-oh 10:00 solna platform"));
+        }
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         String timeString = args[1];

@@ -452,10 +452,10 @@ public class LocaleService {
         );
 
         i18nMessages.put(new I18nLookup(BAD_SYNTAX, Locale.ENGLISH),
-                "Bad syntax for command. Se !raid man"
+                "Bad syntax for command. Refer to *!raid man*. Correct command: %1"
         );
         i18nMessages.put(new I18nLookup(BAD_SYNTAX, SWEDISH),
-                "Dålig syntax för kommandot. Se !raid man"
+                "Dålig syntax för kommandot. Se *!raid man* vid behov. Korrekt kommando ser ut som: %1"
         );
 
         i18nMessages.put(new I18nLookup(RAID_NOT_EXISTS, Locale.ENGLISH),

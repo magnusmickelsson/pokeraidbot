@@ -6,6 +6,7 @@ import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -37,6 +38,12 @@ public class SignUpCommand extends ConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final Locale localeForUser = localeService.getLocaleForUser(user);
         final String[] args = Utils.prepareArguments(commandEvent);
+        if (args.length < 3) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.BAD_SYNTAX,
+                    localeService.getLocaleForUser(user), "!raid add 1 10:00 solna platform " +
+                            "(alt. *+1 10:00 solna platform*)"));
+        }
+
         final String returnMessage = raidRepository.executeSignUpCommand(config, user, localeForUser, args, help);
         replyBasedOnConfigAndRemoveAfter(config, commandEvent, returnMessage,
                 BotServerMain.timeToRemoveFeedbackInSeconds);

@@ -9,10 +9,10 @@ Needs testing:
 * Green checkmark on !raid group as bot confirmation
 * Resistances table, detailed
 * Data for all gen 3 pokemons
+* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
 
 Being developed:
 
-* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group

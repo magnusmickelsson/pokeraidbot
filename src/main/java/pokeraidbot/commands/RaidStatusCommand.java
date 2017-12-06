@@ -55,7 +55,6 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         String gymName = commandEvent.getArgs();
         final User user = commandEvent.getAuthor();
-        final String userName = user.getName();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final Set<SignUp> signUps = raid.getSignUps();

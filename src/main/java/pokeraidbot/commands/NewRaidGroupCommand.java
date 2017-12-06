@@ -81,6 +81,11 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final String[] args = commandEvent.getArgs().split(" ");
         final Locale locale = localeService.getLocaleForUser(user);
+        if (args.length < 2) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.BAD_SYNTAX,
+                    localeService.getLocaleForUser(user), "!raid group 10:00 solna platform"));
+        }
+
         String timeString = args[0];
         LocalTime startAtTime = Utils.parseTime(user, timeString, localeService);
 
