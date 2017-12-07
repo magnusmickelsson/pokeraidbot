@@ -14,12 +14,12 @@ Needs testing:
 
 Being developed:
 
+* !raid overview/list - skip total number of signups, instead go for groups + others: 
+10:00 (2), 10:30 (4), Others (2)
+* Change emote for overview/list that shows groups, to: 👥
 * Remove pokemon boss from EX list in overview and list
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
-* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
-signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
-user name/user id for checking.
 
 Discussion:
 
@@ -51,13 +51,13 @@ Do, features:
 * Admin tool - reset tracking for a user by ID
 * (Maybe) PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
+* (Maybe) Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
+signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
+user name/user id for checking.
 
 --- 1.6.0
 
 * !raid change remove should lead to any related group messages being removed
-* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. 
-Display said nick in group
-signups, raid status etc.
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
