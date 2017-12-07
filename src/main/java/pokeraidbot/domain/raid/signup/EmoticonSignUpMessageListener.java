@@ -196,6 +196,11 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final GenericGuildMessageReactionEvent guildMessageReactionEvent =
                         (GenericGuildMessageReactionEvent) event;
                 reactionMessageId = guildMessageReactionEvent.getReaction().getMessageId();
+                if (emoteMessageId == null) {
+                    LOGGER.warn("Emote message ID = null, this should get cleaned up!" +
+                            " Event: " + printInfoAbout(event));
+                    return;
+                }
                 if (!emoteMessageId.equals(reactionMessageId)) {
                     LOGGER.warn("We got a guild reaction event throwing exception, but not one we were listening for!" +
                             " Event: " + printInfoAbout(event));

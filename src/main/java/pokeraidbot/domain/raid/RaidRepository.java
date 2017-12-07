@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.errors.RaidExistsException;
 import pokeraidbot.domain.errors.RaidNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -32,7 +33,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static pokeraidbot.Utils.*;
 
@@ -521,28 +521,41 @@ public class RaidRepository {
         }
     }
 
-    public String listGroupsForRaid(Raid raid) {
+    public Set<RaidGroup> getGroups(Raid raid) {
         RaidEntity entity = findEntityByRaidId(raid.getId());
-        StringBuilder sb = new StringBuilder();
         final Set<RaidGroup> groups = entity.getGroupsAsSet();
+        return groups;
+    }
+
+    public String listGroupsForRaid(Raid raid, Set<RaidGroup> groups) {
+        StringBuilder sb = new StringBuilder();
         if (groups.size() > 0) {
-            sb.append(" \uD83D\uDC68\u200D\uD83D\uDC68\u200D\uD83D\uDC66\u200D\uD83D\uDC66 ");
+            sb.append(" " + Emotes.GROUP + " ");
             Set<String> times = new LinkedHashSet<>();
+            int signUpsInGroups = 0;
             for (RaidGroup group : groups) {
                 final LocalTime groupTime = group.getStartsAt().toLocalTime();
-                times.add(printTime(groupTime) + " (**" + countSignups(raid.getSignUpsAt(groupTime)) + "**)");
+                final int numberOfPeopleInGroup = countSignups(raid.getSignUpsAt(groupTime));
+                times.add(printTime(groupTime) + " (**" + numberOfPeopleInGroup + "**)");
+                signUpsInGroups += numberOfPeopleInGroup;
             }
             sb.append(StringUtils.join(times, ", "));
+            RaidEntity entity = findEntityByRaidId(raid.getId());
+            final Set<RaidEntitySignUp> signUpsAsSet = entity.getSignUpsAsSet();
+            final long totalSignUps = signUpsAsSet.stream().mapToInt(RaidEntitySignUp::getNumberOfPeople).sum();
+            if (totalSignUps > signUpsInGroups) {
+                sb.append(", - (**").append(totalSignUps - signUpsInGroups).append("**)");
+            }
         }
         return sb.toString();
     }
 
-    private String countSignups(Set<SignUp> signUpsAt) {
+    private int countSignups(Set<SignUp> signUpsAt) {
         int i = 0;
         for (SignUp s : signUpsAt) {
             i += s.getHowManyPeople();
         }
-        return String.valueOf(i);
+        return i;
     }
 
     public RaidGroup changeGroup(User user, String raidId, String groupCreatorId, LocalDateTime currentStartAt,

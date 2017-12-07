@@ -185,7 +185,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                         getMessageRefreshingTaskToSchedule(channel,
                                 raid, emoticonSignUpMessageListener, messageId,
                                 locale,
-                                raidRepository, pokemonRaidStrategyService, localeService, clockService, executorService, botService,
+                                raidRepository, pokemonRaidStrategyService, localeService,
+                                clockService, executorService, botService,
                                 delayTimeUnit, delay, group.getId());
             executorService.submit(refreshEditThreadTask);
         });
@@ -327,11 +328,6 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final Pokemon pokemon = currentStateOfRaid.getPokemon();
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
-//        PokemonRaidInfo raidInfo = pokemonRaidStrategyService.getRaidInfo(pokemon);
-//        String extraInfo = "";
-//        if (raidInfo != null) {
-//            extraInfo = " - Max CP " + raidInfo.getMaxCp();
-//        }
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
                 locale, currentStateOfRaid.getPokemon().toString(), gym.getName());
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
@@ -351,7 +347,14 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final String handleSignUpText =
                 localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, locale);
         // todo: i18n
-        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt) + " - " + handleSignUpText);
+        final Set<RaidGroup> groups = raidRepository.getGroups(currentStateOfRaid);
+        final String descriptionAppendixText;
+        if (groups.size() > 1) {
+            descriptionAppendixText = raidRepository.listGroupsForRaid(currentStateOfRaid, groups);
+        } else {
+            descriptionAppendixText = "- " + handleSignUpText;
+        }
+        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt) + " " + descriptionAppendixText);
         embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
         final String updatedMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                 locale, LocaleService.asString(delayTimeUnit, locale),

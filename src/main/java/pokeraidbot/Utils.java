@@ -86,7 +86,7 @@ public class Utils {
         if (dateAndTime.isBefore(now)) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.SIGN_BEFORE_NOW, localeService.getLocaleForUser(user),
-                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(startOfRaid)));
+                            printTimeIfSameDay(dateAndTime), printTimeIfSameDay(now)));
         }
     }
 

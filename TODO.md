@@ -11,12 +11,12 @@ Needs testing:
 * Data for all gen 3 pokemons
 * Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
 * !raid overview should list times for groups instead of ETA. Try to make text for a line shorter to make it possible.
+* Change emote for overview/list that shows groups, to: 👥
+* !raid overview/list - skip total number of signups, instead go for groups + others: 
+10:00 (2), 10:30 (4), Others (2)
 
 Being developed:
 
-* !raid overview/list - skip total number of signups, instead go for groups + others: 
-10:00 (2), 10:30 (4), Others (2)
-* Change emote for overview/list that shows groups, to: 👥
 * Remove pokemon boss from EX list in overview and list
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).

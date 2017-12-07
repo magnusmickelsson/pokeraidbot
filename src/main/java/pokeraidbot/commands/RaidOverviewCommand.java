@@ -205,27 +205,30 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Gym raidGym = raid.getGym();
                 if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
-                    stringBuilder.append("⏱")
+                    stringBuilder.append(" ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append("-")
-                            .append(printTime(raid.getEndOfRaid().toLocalTime()))
-                            .append(" (**").append(numberOfPeople)
-                            .append("**)");
+                            .append(printTime(raid.getEndOfRaid().toLocalTime()));
+                    if (raid.getNumberOfPeopleSignedUp() < 1) {
+                        stringBuilder.append(" (**").append(numberOfPeople)
+                                .append("**)");
+                    }
 //                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
                     if (raid.getSignUps().size() > 0) {
-                        stringBuilder.append(raidRepository.listGroupsForRaid(raid));
+                        stringBuilder.append(raidRepository.listGroupsForRaid(raid, raidRepository.getGroups(raid)));
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("\n").append(raidGym.getName())
-                            .append(" (")
-                            .append(raidBoss.getName()).append(")⏱")
+                    exRaids.append("\n").append(raidGym.getName());
+//                            .append(" (")
+//                            .append(raidBoss.getName()).append(")")
+                            exRaids.append(" ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
                                     printTime(raid.getEndOfRaid().toLocalTime())))
                             .append(". (**").append(numberOfPeople)
                             .append("**)");
                     if (raid.getSignUps().size() > 0) {
-                        exRaids.append(raidRepository.listGroupsForRaid(raid));
+                        exRaids.append(raidRepository.listGroupsForRaid(raid, raidRepository.getGroups(raid)));
                     }
                     exRaids.append("\n");
                 }
