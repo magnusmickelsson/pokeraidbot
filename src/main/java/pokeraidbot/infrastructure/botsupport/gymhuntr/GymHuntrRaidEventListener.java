@@ -122,6 +122,11 @@ public class GymHuntrRaidEventListener implements EventListener {
                                 handleRaidFromIntegration(botUser,
                                         guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
                                         raidInfo, strategyService);
+                            } else {
+                                if (LOGGER.isDebugEnabled()) {
+                                    LOGGER.debug("No arguments to create raid with for server " + config +
+                                            ", skipping. Raw command: " + guildEvent.getMessage().getRawContent());
+                                }
                             }
                         } catch (Throwable t) {
                             LOGGER.warn("Exception when trying to get arguments for raid creation: " + t.getMessage());
@@ -214,12 +219,20 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     private void sendFeedbackThenCleanUp(Raid createdRaid, MessageChannel channel, MessageEmbed messageEmbed) {
-        channel.sendMessage(messageEmbed).queue(m -> {
-            LOGGER.info("Raid created via Bot integration: " + createdRaid);
-            // Clean up message
-            channel.deleteMessageById(m.getId())
-                    .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
-        });
+        try {
+            channel.sendMessage(messageEmbed).queue(m -> {
+                LOGGER.info("Raid created via Bot integration: " + createdRaid);
+                // Clean up message
+                try {
+                    channel.deleteMessageById(m.getId())
+                            .queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
+                } catch (Throwable t) {
+                    LOGGER.warn("Could not clean up feedback from raid creation: " + t.getMessage());
+                }
+            });
+        } catch (Throwable t) {
+            LOGGER.warn("Could not send feedback for raid creation: " + t.getMessage());
+        }
     }
 
     private void createGroupIfConfigSaysSo(User user, GuildMessageReceivedEvent guildEvent, Config config,
@@ -243,10 +256,15 @@ public class GymHuntrRaidEventListener implements EventListener {
                         config.getGroupCreationStrategy() == Config.RaidGroupCreationStrategy.NAMED_CHANNEL) {
                     channelToCreateGroupIn = chn;
                 }
-                NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, guildEvent.getGuild(), config, user,
-                        config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
-                        botService, serverConfigRepository, pokemonRepository, gymRepository,
-                        clockService, executorService, strategyService);
+                try {
+                    NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, guildEvent.getGuild(), config, user,
+                            config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
+                            botService, serverConfigRepository, pokemonRepository, gymRepository,
+                            clockService, executorService, strategyService);
+                } catch (Throwable t) {
+                    LOGGER.warn("Could not create raid group for server " + config.getServer() + " and raid " +
+                    createdRaid + ": " + t.getMessage());
+                }
             }
         } else {
             if (pokemonRaidInfo == null) {

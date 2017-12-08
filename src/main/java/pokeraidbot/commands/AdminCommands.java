@@ -96,9 +96,34 @@ public class AdminCommands extends Command {
                 }
                 event.replyInDM(sb.toString());
                 return;
+            } else if (event.getArgs().startsWith("ismember")) {
+                String userIdAndGuildName = event.getArgs().replaceAll("ismember\\s{1,3}", "");
+                String[] args = userIdAndGuildName.split(" ");
+                if (args.length < 2) {
+                    event.reply("Bad syntax, should be something like: !raid admin ismember {userid} {guildname}");
+                    return;
+                } else {
+                    final JDA bot = botService.getBot();
+                    Guild guild = null;
+                    final List<Guild> guilds = bot.getGuilds();
+                    for (Guild guildToCheck : guilds) {
+                        if (guildToCheck.getName().equalsIgnoreCase(args[1])) {
+                            guild = guildToCheck;
+                        }
+                    }
+                    if (guild != null) {
+                        final Member memberById = guild.getMemberById(args[0]);
+                        if (memberById != null) {
+                            event.reply("User is a member of server " + guild.getName());
+                        } else {
+                            event.reply("User is not a member of server " + guild.getName());
+                        }
+                    }
+                    return;
+                }
             }
         }
         event.reply("No such command. Existing ones are:\n- userconfig {userid}\n- permissions\n" +
-                "- clear tracking\n- announce {message}");
+                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}");
     }
 }

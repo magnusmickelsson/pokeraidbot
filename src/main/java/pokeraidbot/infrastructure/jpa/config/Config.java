@@ -51,10 +51,10 @@ public class Config {
         id = UUID.randomUUID().toString();
         Validate.notEmpty(region);
         Validate.notEmpty(server);
-        this.region = region;
+        this.region = region.toLowerCase();
         this.replyInDmWhenPossible = replyInDmWhenPossible;
         setLocale(locale);
-        this.server = server;
+        this.server = server.toLowerCase();
     }
 
     public Config(String region, Boolean replyInDmWhenPossible, String server) {

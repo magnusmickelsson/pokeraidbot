@@ -21,6 +21,9 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
     private Pokemon pokemon;
 
     public PokemonTrackingTarget(String region, String userId, Pokemon pokemon) {
+        Validate.notEmpty(region, "Region is empty!");
+        Validate.notEmpty(userId, "User ID is empty!");
+        Validate.notNull(pokemon, "Pokemon is null!");
         this.region = region;
         this.userId = userId;
         this.pokemon = pokemon;
@@ -38,69 +41,6 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         return pokemon;
     }
 
-//    @Override
-//    public boolean canHandle(CommandEvent commandEvent, Command command, Raid raid) {
-//        if (commandEvent.getAuthor().isBot()) {
-//            return false; // Skip bot messages
-//        }
-//        if (commandEvent.getAuthor().getId().equals(userId)) {
-//            return false; // Skip raids user created
-//        }
-//        if (command instanceof NewRaidCommand || command instanceof NewRaidExCommand ||
-//                command instanceof NewRaidStartsAtCommand || command instanceof EggHatchedCommand) {
-//            boolean raidIsForPokemon =
-//                    StringUtils.containsIgnoreCase(raid.getPokemon().getName(),
-//                            pokemon.getName());
-//            return raidIsForPokemon;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public void handle(CommandEvent commandEvent, Command command, LocaleService localeService, Locale locale,
-//                       Config config, Raid raid) {
-//        final Member memberById = commandEvent.getGuild().getMemberById(Long.parseLong(userId));
-//        final User userToMessage = memberById.getUser();
-//        final String raidCreator = commandEvent.getEvent().getAuthor().getName();
-//        final String rawContent = commandEvent.getEvent().getMessage().getRawContent();
-//
-//        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
-//                raidCreator, rawContent);
-//        sendPrivateMessage(userToMessage, message);
-//    }
-//
-//    @Override
-//    public boolean canHandle(GuildMessageReceivedEvent event, Raid raid) {
-//        if (event == null || event.getAuthor() == null || raid == null || event.getAuthor().getId().equals(userId)) {
-//            return false; // Skip events user created
-//        }
-//        return raid.getPokemon().equals(pokemon);
-//    }
-//
-//    @Override
-//    public void handle(GuildMessageReceivedEvent event, Raid raid, LocaleService localeService, Locale locale,
-//                       Config config) {
-//        Validate.notNull(event, "Guild event is null");
-//        Validate.notNull(config, "Config is null");
-//        Validate.notNull(raid, "Raid is null");
-//        Validate.notNull(locale, "Locale is null");
-//
-//        final Member memberById = event.getGuild().getMemberById(Long.parseLong(userId));
-//        if (memberById == null) {
-//            LOGGER.warn("Member with user ID " + userId + " could not be found!");
-//            return;
-//        }
-//        final User userToMessage = memberById.getUser();
-//        final String raidCreator = event.getAuthor().getName();
-//
-//        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, pokemon.getName(),
-//                raidCreator, raid.toString(locale));
-//        if (LOGGER.isDebugEnabled()) {
-//            LOGGER.debug("Sending DM to user with ID " + userId + " for tracked pokemon " + pokemon.getName());
-//        }
-//        sendPrivateMessage(userToMessage, message);
-//    }
-
     private void sendPrivateMessage(User user, String content)
     {
         // openPrivateChannel provides a RestAction<PrivateChannel>
@@ -109,9 +49,13 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         {
             // value is a parameter for the `accept(T channel)` method of our callback.
             // here we implement the body of that method, which will be called later by JDA automatically.
-            channel.sendMessage(content).queue();
-            // here we access the enclosing scope variable -content-
-            // which was provided to sendPrivateMessage(User, String) as a parameter
+            try {
+                channel.sendMessage(content).queue();
+                // here we access the enclosing scope variable -content-
+                // which was provided to sendPrivateMessage(User, String) as a parameter
+            } catch (Throwable t) {
+                LOGGER.warn("Could not send private message for tracking " + this + ": " + t.getMessage());
+            }
         });
     }
 
@@ -192,6 +136,10 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Sending DM to user with ID " + userId + " for tracked pokemon " + pokemon.getName());
         }
-        sendPrivateMessage(userToMessage, message);
+        try {
+            sendPrivateMessage(userToMessage, message);
+        } catch (Throwable t) {
+            LOGGER.warn("Could not send private message for tracking " + this + ": " + t.getMessage());
+        }
     }
 }

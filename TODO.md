@@ -14,12 +14,15 @@ Needs testing:
 * Change emote for overview/list that shows groups, to: 👥
 * !raid overview/list - skip total number of signups, instead go for groups + others: 
 10:00 (2), 10:30 (4), Others (2)
-
-Being developed:
-
 * Remove pokemon boss from EX list in overview and list
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
+* Admin tool - get information if a user by ID is member of a server
+* Admin tool - reset tracking for a user by ID - already implemented via resetting user's config
+
+Being developed:
+
+-
 
 Discussion:
 
@@ -36,7 +39,6 @@ Experiment with:
 
 Fix issue:
 
-* !raid track can trigger for wrong server if you are a member of different servers
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -47,8 +49,6 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-* Admin tool - get information if a user by ID is member of a server
-* Admin tool - reset tracking for a user by ID
 * (Maybe) PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * (Maybe) Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
