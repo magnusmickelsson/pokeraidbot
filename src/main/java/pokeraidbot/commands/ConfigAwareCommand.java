@@ -122,7 +122,7 @@ public abstract class ConfigAwareCommand extends Command {
         } catch (Throwable t) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Exception thrown from command " + this.getClass().getSimpleName()
-                        + " with input message " + commandEvent.getMessage().getRawContent() +
+                        + " with input message \"" + commandEvent.getMessage().getRawContent() + "\"" +
                         (configForServer != null ? " for server " +
                                 configForServer.getServer() : "") + ":\n" + t.getMessage());
                 if (t.getMessage() == null) {

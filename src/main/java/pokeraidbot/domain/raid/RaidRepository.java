@@ -544,7 +544,7 @@ public class RaidRepository {
             final Set<RaidEntitySignUp> signUpsAsSet = entity.getSignUpsAsSet();
             final long totalSignUps = signUpsAsSet.stream().mapToInt(RaidEntitySignUp::getNumberOfPeople).sum();
             if (totalSignUps > signUpsInGroups) {
-                sb.append(", - (**").append(totalSignUps - signUpsInGroups).append("**)");
+                sb.append(", X (**").append(totalSignUps - signUpsInGroups).append("**)");
             }
         }
         return sb.toString();

@@ -278,9 +278,9 @@ Ndex,Pokemon,Type1,Type2,GenderRate
 277,Swellow,Normal,Flying,3
 278,Wingull,Water,Flying,3
 279,Pelipper,Water,Flying,3
-280,Ralts,Psychic,None,3
-281,Kirlia,Psychic,None,3
-282,Gardevoir,Psychic,None,3
+280,Ralts,Psychic,Fairy,3
+281,Kirlia,Psychic,Fairy,3
+282,Gardevoir,Psychic,Fairy,3
 283,Surskit,Bug,Water,3
 284,Masquerain,Bug,Flying,3
 285,Shroomish,Grass,None,3
@@ -296,12 +296,12 @@ Ndex,Pokemon,Type1,Type2,GenderRate
 295,Exploud,Normal,None,3
 296,Makuhita,Fighting,None,2
 297,Hariyama,Fighting,None,2
-298,Azurill,Normal,None,4
+298,Azurill,Normal,Fairy,4
 299,Nosepass,Rock,None,3
 300,Skitty,Normal,None,4
 301,Delcatty,Normal,None,4
 302,Sableye,Dark,Ghost,3
-303,Mawile,Steel,None,3
+303,Mawile,Steel,Fairy,3
 304,Aron,Steel,Rock,3
 305,Lairon,Steel,Rock,3
 306,Aggron,Steel,Rock,3

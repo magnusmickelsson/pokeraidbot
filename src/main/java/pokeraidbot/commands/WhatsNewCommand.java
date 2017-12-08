@@ -22,24 +22,26 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
-                    "- !raid overview och !raid list listar nu grupptider i stället för ETA\n" +
-                    "- Gen3 pokemons finns nu inlagda\n" +
+                    "- !raid overview och !raid list är omgjorda, listar nu bland annat grupptider i stället för ETA\n" +
+                    "- Gen3 pokemons finns nu inlagda (rapportera gärna om något är fel!)\n" +
                     "- Alias för vissa kommandon, så det blir mindre att skriva - t.ex. " +
-                    "*!r s Tyranitar 10:00 hästen* är nu samma som *!raid start Tyranitar 10:00 hästen*\n" +
+                    "*!r s Tyra 10:00 hästen* är samma som *!raid start Tyranitar 10:00 hästen*\n" +
                     "- Bot bekräftar nu ok !raid group med check\n" +
                     "- Resistance-tabell, mer detaljerad/korrekt !raid vs\n" +
                     "- !raid track notifiering omgjord\n" +
+                    "- Nya adminverktyg\n" +
                     "- Fix: Bättre felmeddelande vid !raid start zipit ger nu ett \"dålig syntax\"-meddelande\n" +
                     "- Fix: EX raids kommer inte längre skapas via botintegration";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
-                    "- !raid overview and !raid list should list times for groups instead of ETA\n" +
+                    "- !raid overview and !raid list remade, for example they now list times for groups instead of ETA\n" +
                     "- Gen3 pokemons added to repository\n" +
                     "- Aliases for commands, to reduce typing during winter - for example " +
                     "*!r s Tyranitar 10:00 hasten* is the same as *!raid start Tyranitar 10:00 hasten*\n" +
                     "- Green checkmark on !raid group as bot confirmation\n" +
                     "- Resistances table, detailed\n" +
                     "- !raid track notification handling refactored\n" +
+                    "- New admin tools\n" +
                     "- Fix: Error message when doing !raid start zipit is bad, now gives a bad syntax message\n" +
                     "- Fix: EX raids will no longer be created via bot integration";
         }

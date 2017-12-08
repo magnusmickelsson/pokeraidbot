@@ -1,6 +1,8 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.FluentIterable;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,7 +20,7 @@ import static pokeraidbot.Utils.getStartOfRaid;
 @Entity
 @Table(indexes = {@Index(name = "id", columnList = "id"), @Index(name = "region", columnList = "region"),
         @Index(name = "pokemon", columnList = "pokemon,region")}
-        ) // todo: uniqueconstraint that creator can only have one signup per id
+) // todo: uniqueconstraint that creator can only have one signup per id
 public class RaidEntity implements Serializable {
     @Id
     @Column(nullable = false)
@@ -36,14 +38,14 @@ public class RaidEntity implements Serializable {
     @Column(nullable = false)
     private String creator;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name="raid", referencedColumnName="id")
+    @JoinColumn(name = "raid", referencedColumnName = "id")
     @BatchSize(size = 20)
     private Set<RaidEntitySignUp> signUps = new HashSet<>();
     @Basic(optional = false)
     @Column(nullable = false)
     private String region;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name="raidid", referencedColumnName="id")
+    @JoinColumn(name = "raidid", referencedColumnName = "id")
     @BatchSize(size = 5)
     private Set<RaidGroup> groups = new HashSet<>();
 
@@ -206,14 +208,8 @@ public class RaidEntity implements Serializable {
     }
 
     public Set<RaidGroup> getGroupsAsSet() {
-        return Collections.unmodifiableSet(new LinkedHashSet<>(groups).stream().sorted(
-                (o1, o2) -> {
-                    final LocalDateTime o1Start = o1.getStartsAt();
-                    final LocalDateTime o2Start = o2.getStartsAt();
-                    if (o1Start.isBefore(o2Start)) return -1;
-                    else if (o1Start.isAfter(o2Start)) return 1;
-                    return 0;
-                }).collect(Collectors.toSet()));
+        final TreeSet<RaidGroup> sortedGroups = new TreeSet<>(groups);
+        return sortedGroups;
     }
 
     public boolean isExRaid() {

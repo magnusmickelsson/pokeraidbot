@@ -13,7 +13,7 @@ import java.util.UUID;
 // todo: constraints that we can only have one raid group for a certain time for a certain raid, and that
 // the message id's are not duplicated?
 @Entity // todo: indexing
-public class RaidGroup implements Serializable {
+public class RaidGroup implements Serializable, Comparable<RaidGroup> {
     @Id
     @Column(nullable = false)
     private String id;
@@ -151,5 +151,19 @@ public class RaidGroup implements Serializable {
 
     public String getRaidId() {
         return raidId;
+    }
+
+    @Override
+    public int compareTo(RaidGroup o) {
+        if (o == null) {
+            throw new NullPointerException("Input raid group to compare to was null!");
+        }
+        if (getStartsAt().isBefore(o.getStartsAt())) {
+            return -1;
+        } else if (this.equals(o)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

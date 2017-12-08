@@ -1,7 +1,7 @@
 FUTURE (?)
 =====
 
-1.6.0 (?)
+1.6.0 (2017-12-09)
 =====
 * !raid overview should list times for groups instead of ETA
 * Gen3 pokemons added to repository
@@ -12,6 +12,8 @@ FUTURE (?)
 * !raid track notification handling refactored
 * Fix: Error message when doing !raid start zipit is bad, now gives a bad syntax message
 * Fix: EX raids will no longer be created via bot integration
+* Admin tool - reset tracking for a user by ID - admins can reset user's entire config
+* Admin tool - get information if a user by ID is member of a server
 
 1.5.1 (2017-11-30)
 =====

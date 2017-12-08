@@ -121,9 +121,18 @@ public class AdminCommands extends Command {
                     }
                     return;
                 }
+            } else if (event.getArgs().startsWith("guilds")) {
+                final JDA bot = botService.getBot();
+                final List<Guild> guilds = bot.getGuilds();
+                StringBuilder sb = new StringBuilder();
+                for (Guild guildToCheck : guilds) {
+                    sb.append(guildToCheck.getName().toLowerCase()).append("\n");
+                }
+                event.reply(sb.toString());
+                return;
             }
         }
         event.reply("No such command. Existing ones are:\n- userconfig {userid}\n- permissions\n" +
-                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}");
+                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds");
     }
 }

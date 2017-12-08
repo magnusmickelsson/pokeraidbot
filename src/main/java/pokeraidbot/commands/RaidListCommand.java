@@ -13,6 +13,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalTime;
 import java.util.Locale;
@@ -78,36 +79,31 @@ public class RaidListCommand extends ConfigAwareCommand {
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
+                final Set<RaidGroup> groups = raidRepository.getGroups(raid);
                 if (!raid.isExRaid()) {
                     stringBuilder.append("*").append(raidGym.getName()).append("*");
                     stringBuilder.append(" ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false)))
                             .append("-")
                             .append(printTime(raid.getEndOfRaid().toLocalTime()));
-                    if (raid.getNumberOfPeopleSignedUp() < 1) {
+                    if (groups.size() < 1) {
                         stringBuilder.append(" (**").append(numberOfPeople)
                                 .append("**)");
-                    }
-//                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                    if (raid.getSignUps().size() > 0) {
-                        stringBuilder.append(raidRepository.listGroupsForRaid(raid, raidRepository.getGroups(raid)));
+                    } else {
+                        stringBuilder.append(raidRepository.listGroupsForRaid(raid, groups));
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("\n").append(raidGym.getName());
-//                            .append(" (")
-//                            .append(raidBoss.getName()).append(")")
-                    exRaids.append(" ")
+                    exRaids.append("\n*").append(raidGym.getName());
+                    exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
                                     printTime(raid.getEndOfRaid().toLocalTime())));
-                    if (raid.getNumberOfPeopleSignedUp() < 1) {
-                        stringBuilder.append(" (**").append(numberOfPeople)
+                    if (groups.size() < 1) {
+                        exRaids.append(" (**").append(numberOfPeople)
                                 .append("**)");
-                    }
-//                            .append(localeService.getMessageFor(LocaleService.SIGNED_UP, locale))
-                    if (raid.getSignUps().size() > 0) {
-                        exRaids.append(raidRepository.listGroupsForRaid(raid, raidRepository.getGroups(raid)));
+                    } else {
+                        exRaids.append(raidRepository.listGroupsForRaid(raid, groups));
                     }
                     exRaids.append("\n");
                 }

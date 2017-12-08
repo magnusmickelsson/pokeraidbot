@@ -68,7 +68,15 @@ public class PokemonRaidStrategyService {
             "egg4".toUpperCase(),
             // Tier 5 /EX
             "egg5".toUpperCase(),
-            "Ho-oh".toUpperCase()
+            "Ho-oh".toUpperCase(),
+            // ==== Generation 3 ====
+            // Tier 2
+            "Mawile".toUpperCase(),
+            // Tier 4
+            "Absol".toUpperCase(),
+            "Salamence".toUpperCase(),
+            // Tier 5
+            "Groudon".toUpperCase()
     };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {
@@ -183,6 +191,17 @@ public class PokemonRaidStrategyService {
         // Tier 5 / EX
         populateRaidInfoForBoss(pokemonRepository, "egg5", "1", 5);
         populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
+
+        // ==== Gen 3 ====
+
+        // Tier 2
+        populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);
+
+        // Tier 4
+        populateRaidInfoForBoss(pokemonRepository, "Absol", "1303", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
+        // Tier 5
+        populateRaidInfoForBoss(pokemonRepository, "Groudon", "2785", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

@@ -2,23 +2,11 @@ Done:
 
 See [Changelog](CHANGELOG.md).
 
-Needs testing:
+Needs testing/keeping track of:
 
-* !raid track refactored
 * EX raids can no longer be created via bot integration
-* Green checkmark on !raid group as bot confirmation
-* Resistances table, detailed
-* Data for all gen 3 pokemons
-* Error message when doing !raid start zipit is bad, needs to be like "no such pokemon"
-* !raid overview should list times for groups instead of ETA. Try to make text for a line shorter to make it possible.
-* Change emote for overview/list that shows groups, to: 👥
-* !raid overview/list - skip total number of signups, instead go for groups + others: 
-10:00 (2), 10:30 (4), Others (2)
-* Remove pokemon boss from EX list in overview and list
 * !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
 bot integration. Check (and possibly fix).
-* Admin tool - get information if a user by ID is member of a server
-* Admin tool - reset tracking for a user by ID - already implemented via resetting user's config
 
 Being developed:
 
@@ -49,20 +37,19 @@ Fix, misc:
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
 Do, features:
-* (Maybe) PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
+
+* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
-* (Maybe) Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
+* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
 signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
 user name/user id for checking.
-
---- 1.6.0
-
 * !raid change remove should lead to any related group messages being removed
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
 * REST API with open operations (read-only)
+* Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
@@ -71,7 +58,6 @@ to check server, and that raid entity, group etc also need to include server
 * Get seasonal boss from database settings for server, and allow admin command to change on the fly 
 when niantic comes up with new tricks
 * Be able to auto create groups via botintegration for several tiers and to different channels
-* Use nickname instead of username when displaying user
 
 --- 1.7.0
 
