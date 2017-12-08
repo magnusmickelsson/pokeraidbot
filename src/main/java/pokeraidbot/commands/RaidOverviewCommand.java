@@ -19,9 +19,9 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.net.SocketTimeoutException;
-import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -44,8 +44,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     public RaidOverviewCommand(RaidRepository raidRepository, LocaleService localeService,
                                ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository,
                                CommandListener commandListener, ClockService clockService,
-                               ExecutorService executorService) {
-        super(serverConfigRepository, commandListener, localeService, executorService);
+                               ExecutorService executorService, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, executorService, userConfigRepository);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.clockService = clockService;
@@ -55,8 +55,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final Locale locale = config.getLocale();
         if (!isUserAdministrator(commandEvent) && !isUserServerMod(commandEvent, config)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,

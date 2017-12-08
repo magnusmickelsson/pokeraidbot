@@ -4,9 +4,11 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
 import org.apache.commons.lang3.StringUtils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,8 +23,9 @@ public class HelpManualCommand extends ConfigAwareCommand {
     private final Map<String, Map<String, String>> helpTopicsMap = new LinkedHashMap<>();
     private String helpText;
 
-    public HelpManualCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+    public HelpManualCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository,
+                             CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.localeService = localeService;
         this.name = "man";
         helpText = localeService.getMessageFor(LocaleService.HELP_MANUAL_HELP_TEXT, LocaleService.DEFAULT);
@@ -54,7 +57,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, User user) {
         final String language;
 
         if (config == null) {

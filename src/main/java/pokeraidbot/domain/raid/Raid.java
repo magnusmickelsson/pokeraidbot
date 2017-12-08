@@ -1,7 +1,7 @@
 package pokeraidbot.domain.raid;
 
-import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -112,7 +112,7 @@ public class Raid {
             Utils.assertNotTooManyOrNoNumber(user, localeService, String.valueOf(numberOfPeopleInSignup));
             signUp.setHowManyPeople(numberOfPeopleInSignup);
         } else {
-            signUp = new SignUp(user.getName(), howManyPeople, arrivalTime);
+            signUp = new SignUp(user.getName(), howManyPeople, arrivalTime, user.getNickName());
             signUps.put(user.getName(), signUp);
         }
         repository.addSignUp(user, this, signUp);

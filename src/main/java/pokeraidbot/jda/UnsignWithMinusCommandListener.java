@@ -1,8 +1,6 @@
 package pokeraidbot.jda;
 
-import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -12,12 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.commands.ConfigAwareCommand;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,15 +29,17 @@ public class UnsignWithMinusCommandListener implements EventListener {
     private final ServerConfigRepository serverConfigRepository;
     private final BotService botService;
     private final LocaleService localeService;
+    private final UserConfigRepository userConfigRepository;
 
     public UnsignWithMinusCommandListener(RaidRepository raidRepository, PokemonRepository pokemonRepository,
                                           ServerConfigRepository serverConfigRepository, BotService botService,
-                                          LocaleService localeService) {
+                                          LocaleService localeService, UserConfigRepository userConfigRepository) {
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.serverConfigRepository = serverConfigRepository;
         this.botService = botService;
         this.localeService = localeService;
+        this.userConfigRepository = userConfigRepository;
     }
 
     public static final String minusXRegExp = "^[-]\\d{1,2}\\s{1,2}.*";
@@ -62,7 +64,8 @@ public class UnsignWithMinusCommandListener implements EventListener {
         }
     }
 
-    private void attemptUnsignFromMinusCommand(GuildMessageReceivedEvent guildMessageReceivedEvent, String[] splitArguments) {
+    private void attemptUnsignFromMinusCommand(GuildMessageReceivedEvent guildMessageReceivedEvent,
+                                               String[] splitArguments) {
         final String numberOfPeopleArgument = splitArguments[0];
         final String[] gymArgument = ArrayUtils.removeAll(splitArguments, 0);
         if (LOGGER.isDebugEnabled()) {
@@ -71,7 +74,8 @@ public class UnsignWithMinusCommandListener implements EventListener {
         }
         final String guild = guildMessageReceivedEvent.getGuild().getName().trim().toLowerCase();
         final Config configForServer = serverConfigRepository.getConfigForServer(guild);
-        final User user = guildMessageReceivedEvent.getAuthor();
+        final User user = new User(guildMessageReceivedEvent.getAuthor(),
+                userConfigRepository.findOne(guildMessageReceivedEvent.getAuthor().getId()));
         String message;
         try {
             message = raidRepository.executeUnsignCommand(configForServer, user,

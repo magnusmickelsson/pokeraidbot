@@ -4,12 +4,12 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
@@ -21,6 +21,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDateTime;
@@ -47,8 +48,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     public AlterRaidCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ServerConfigRepository serverConfigRepository,
-                            CommandListener commandListener, BotService botService) {
-        super(serverConfigRepository, commandListener, localeService);
+                            CommandListener commandListener, BotService botService,
+                            UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -60,8 +62,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, User user) {
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         String whatToChange = args[0].trim().toLowerCase();

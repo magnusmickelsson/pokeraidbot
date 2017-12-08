@@ -6,10 +6,12 @@ import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 public class GettingStartedCommand extends ConfigAwareCommand {
-    public GettingStartedCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+    public GettingStartedCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository,
+                                 CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.name = "getting-started";
         this.aliases = new String[]{"get-started"};
         this.guildOnly = false;
@@ -18,7 +20,7 @@ public class GettingStartedCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String message = "**Kom-i-gång guide (Svenska):**\n" +
                 "<https://github.com/magnusmickelsson/pokeraidbot/blob/master/GETTING_STARTED_USER_sv.md>\n\n" +
                 "**Getting started guide (English):**\n" +

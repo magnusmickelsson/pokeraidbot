@@ -151,7 +151,7 @@ public class RaidEntityRepositoryTest {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public RaidEntitySignUp createSignUp(String id, Integer thread, LocalTime now, Random random, int i) {
         RaidEntitySignUp signUp = new RaidEntitySignUp("Mupp" + thread + "_" + i,
-                random.nextInt(4) + 1, printTime(now));
+                random.nextInt(4) + 1, printTime(now), "MuppNick" + thread + "_" + i);
         RaidEntity entity = entityRepository.findOne(id);
         entity.addSignUp(signUp);
         entityRepository.save(entity);

@@ -2,17 +2,16 @@ package pokeraidbot.domain.raid.signup;
 
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReactionEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.GymRepository;
@@ -20,10 +19,9 @@ import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
-import java.net.SocketException;
 import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class EmoticonSignUpMessageListener implements EventListener {
@@ -35,6 +33,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     private final PokemonRepository pokemonRepository;
     private final GymRepository gymRepository;
     private String emoteMessageId;
+    private final UserConfigRepository userConfigRepository;
     private final String raidId;
     private String infoMessageId;
     private LocalDateTime startAt;
@@ -45,13 +44,15 @@ public class EmoticonSignUpMessageListener implements EventListener {
                                          ServerConfigRepository serverConfigRepository,
                                          RaidRepository raidRepository, PokemonRepository pokemonRepository,
                                          GymRepository gymRepository,
-                                         String raidId, LocalDateTime startAt, User user) {
+                                         UserConfigRepository userConfigRepository, String raidId,
+                                         LocalDateTime startAt, User user) {
         this.botService = botService;
         this.localeService = localeService;
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
+        this.userConfigRepository = userConfigRepository;
         this.raidId = raidId;
         this.startAt = startAt;
         this.userId = user.getId();
@@ -62,6 +63,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                                          ServerConfigRepository serverConfigRepository,
                                          RaidRepository raidRepository, PokemonRepository pokemonRepository,
                                          GymRepository gymRepository,
+                                         UserConfigRepository userConfigRepository,
                                          String raidId, LocalDateTime startAt, String userId) {
         this.botService = botService;
         this.localeService = localeService;
@@ -69,6 +71,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
         this.raidRepository = raidRepository;
         this.pokemonRepository = pokemonRepository;
         this.gymRepository = gymRepository;
+        this.userConfigRepository = userConfigRepository;
         this.raidId = raidId;
         this.startAt = startAt;
         this.userId = userId;
@@ -94,7 +97,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 if (!emoteMessageId.equals(reactionMessageId)) {
                     return;
                 }
-                user = reactionEvent.getUser();
+                user = new User(reactionEvent.getUser(), userConfigRepository.findOne(reactionEvent.getUser().getId()));
                 // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
                 if (user.getName().equals(userHadError)) {
                     userHadError = null;
@@ -145,7 +148,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
             } else if (event instanceof GuildMessageReactionRemoveEvent) {
                 final GuildMessageReactionRemoveEvent reactionEvent = (GuildMessageReactionRemoveEvent) event;
                 // If the bot added any reactions, don't respond to them
-                user = reactionEvent.getUser();
+                user = new User(reactionEvent.getUser(), userConfigRepository.findOne(reactionEvent.getUser().getId()));
                 // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
                 if (user.getName().equals(userHadError)) {
                     userHadError = null;

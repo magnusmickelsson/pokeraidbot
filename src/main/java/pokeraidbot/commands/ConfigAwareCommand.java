@@ -23,6 +23,7 @@ import pokeraidbot.domain.feedback.KeepAllFeedbackStrategy;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 public abstract class ConfigAwareCommand extends Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigAwareCommand.class);
@@ -31,11 +32,14 @@ public abstract class ConfigAwareCommand extends Command {
     protected final ServerConfigRepository serverConfigRepository;
     protected final CommandListener commandListener;
     protected final LocaleService localeService;
+    protected final UserConfigRepository userConfigRepository;
 
     public ConfigAwareCommand(ServerConfigRepository serverConfigRepository,
                               CommandListener commandListener,
-                              LocaleService localeService) {
+                              LocaleService localeService, UserConfigRepository userConfigRepository) {
         Validate.notNull(serverConfigRepository);
+        Validate.notNull(userConfigRepository);
+        this.userConfigRepository = userConfigRepository;
         this.localeService = localeService;
         this.commandListener = commandListener;
         this.serverConfigRepository = serverConfigRepository;
@@ -115,7 +119,8 @@ public abstract class ConfigAwareCommand extends Command {
                     return;
                 }
             }
-            executeWithConfig(commandEvent, configForServer);
+            executeWithConfig(commandEvent, configForServer, new pokeraidbot.domain.User(commandEvent.getAuthor(),
+                    userConfigRepository.findOne(commandEvent.getAuthor().getId())));
             if (commandListener != null) {
                 commandListener.onCompletedCommand(commandEvent, this);
             }
@@ -148,7 +153,7 @@ public abstract class ConfigAwareCommand extends Command {
 
     ;
 
-    protected abstract void executeWithConfig(CommandEvent commandEvent, Config config);
+    protected abstract void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user);
 
     public void replyBasedOnConfigAndRemoveAfter(Config config, CommandEvent commandEvent,
                                                  String message, int numberOfSeconds) {

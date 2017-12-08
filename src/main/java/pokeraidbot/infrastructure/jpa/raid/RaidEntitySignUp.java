@@ -17,6 +17,8 @@ public class RaidEntitySignUp implements Serializable {
     private String id;
     @Column(nullable = false)
     private String responsible;
+    @Column
+    private String nickname;
     @Column(nullable = false)
     private Integer numberOfPeople;
     @Column(nullable = false)
@@ -26,11 +28,15 @@ public class RaidEntitySignUp implements Serializable {
     protected RaidEntitySignUp() {
     }
 
-    public RaidEntitySignUp(String responsible, Integer numberOfPeople, String eta) {
+    public RaidEntitySignUp(String responsible, Integer numberOfPeople, String eta, String nickname) {
         id = UUID.randomUUID().toString();
         this.responsible = responsible;
         this.numberOfPeople = numberOfPeople;
         this.eta = eta;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public String getResponsible() {
@@ -46,30 +52,10 @@ public class RaidEntitySignUp implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RaidEntitySignUp)) return false;
-
-        RaidEntitySignUp that = (RaidEntitySignUp) o;
-
-        if (responsible != null ? !responsible.equals(that.responsible) : that.responsible != null) return false;
-        if (numberOfPeople != null ? !numberOfPeople.equals(that.numberOfPeople) : that.numberOfPeople != null)
-            return false;
-        return eta != null ? eta.equals(that.eta) : that.eta == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = responsible != null ? responsible.hashCode() : 0;
-        result = 31 * result + (numberOfPeople != null ? numberOfPeople.hashCode() : 0);
-        result = 31 * result + (eta != null ? eta.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "RaidEntitySignUp{" +
                 "user='" + responsible + '\'' +
+                "nickname='" + nickname + '\'' +
                 ", numberOfPeople=" + numberOfPeople +
                 ", eta='" + eta + '\'' +
                 '}';
@@ -90,5 +76,30 @@ public class RaidEntitySignUp implements Serializable {
 
     public LocalTime getArrivalTime() {
         return LocalTime.parse(eta, Utils.timeParseFormatter);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RaidEntitySignUp)) return false;
+
+        RaidEntitySignUp signUp = (RaidEntitySignUp) o;
+
+        if (id != null ? !id.equals(signUp.id) : signUp.id != null) return false;
+        if (responsible != null ? !responsible.equals(signUp.responsible) : signUp.responsible != null) return false;
+        if (nickname != null ? !nickname.equals(signUp.nickname) : signUp.nickname != null) return false;
+        if (numberOfPeople != null ? !numberOfPeople.equals(signUp.numberOfPeople) : signUp.numberOfPeople != null)
+            return false;
+        return eta != null ? eta.equals(signUp.eta) : signUp.eta == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (responsible != null ? responsible.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (numberOfPeople != null ? numberOfPeople.hashCode() : 0);
+        result = 31 * result + (eta != null ? eta.hashCode() : 0);
+        return result;
     }
 }

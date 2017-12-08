@@ -2,9 +2,11 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Locale;
 
@@ -12,15 +14,15 @@ public class UsageCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public UsageCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository,
-                        CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                        CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.localeService = localeService;
         this.name = "usage";
         this.help = localeService.getMessageFor(LocaleService.USAGE_HELP, LocaleService.DEFAULT);
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, User user) {
         final String args = commandEvent.getArgs();
         Locale locale;
         if (args != null && args.length() > 0) {

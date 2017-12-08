@@ -2,7 +2,6 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -14,6 +13,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,8 +34,8 @@ public class NewRaidExCommand extends ConfigAwareCommand {
     public NewRaidExCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ServerConfigRepository serverConfigRepository,
-                            CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                            CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.name = "ex";
@@ -45,8 +45,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String[] args = commandEvent.getArgs().replaceAll("\\s{1,3}", " ").split(" ");
         if (args.length < 3) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.BAD_SYNTAX,

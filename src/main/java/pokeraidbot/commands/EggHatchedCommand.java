@@ -2,7 +2,6 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +19,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 /**
  * !raid hatch [Pokemon] [Pokestop name]
@@ -38,8 +38,9 @@ public class EggHatchedCommand extends ConfigAwareCommand {
                              PokemonRepository pokemonRepository, LocaleService localeService,
                              ServerConfigRepository serverConfigRepository,
                              CommandListener commandListener, BotService botService,
-                             PokemonRaidStrategyService raidStrategyService) {
-        super(serverConfigRepository, commandListener, localeService);
+                             PokemonRaidStrategyService raidStrategyService,
+                             UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -52,8 +53,7 @@ public class EggHatchedCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
         if (args.length < 2) {

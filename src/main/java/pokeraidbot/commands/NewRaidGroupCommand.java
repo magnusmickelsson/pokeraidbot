@@ -6,13 +6,13 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
@@ -28,6 +28,7 @@ import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDate;
@@ -62,8 +63,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                ServerConfigRepository serverConfigRepository,
                                CommandListener commandListener, BotService botService,
                                ClockService clockService, ExecutorService executorService,
-                               PokemonRaidStrategyService pokemonRaidStrategyService) {
-        super(serverConfigRepository, commandListener, localeService, executorService);
+                               PokemonRaidStrategyService pokemonRaidStrategyService,
+                               UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, executorService, userConfigRepository);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
         this.botService = botService;
@@ -77,8 +79,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String[] args = commandEvent.getArgs().split(" ");
         final Locale locale = localeService.getLocaleForUser(user);
         if (args.length < 2) {
@@ -101,7 +102,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         createRaidGroup(commandEvent.getChannel(), commandEvent.getGuild(),
                 config, user, locale, startAtTime, raid.getId(),
                 localeService, raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
-                clockService, executorService, pokemonRaidStrategyService);
+                clockService, executorService, pokemonRaidStrategyService, userConfigRepository);
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
@@ -112,7 +113,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                        ServerConfigRepository serverConfigRepository,
                                        PokemonRepository pokemonRepository, GymRepository gymRepository,
                                        ClockService clockService, ExecutorService executorService,
-                                       PokemonRaidStrategyService pokemonRaidStrategyService) {
+                                       PokemonRaidStrategyService pokemonRaidStrategyService,
+                                       UserConfigRepository userConfigRepository) {
         assertAllParametersOk(channel, config, user, locale, startAtTime, raidId, localeService,
                 raidRepository, botService, serverConfigRepository, pokemonRepository, gymRepository,
                 clockService, executorService);
@@ -145,7 +147,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                 new EmoticonSignUpMessageListener(botService, localeService,
                         serverConfigRepository, raidRepository, pokemonRepository, gymRepository,
-                        raid.getId(), startAt, user);
+                        userConfigRepository, raid.getId(), startAt, user);
         TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
         int delay = raid.isExRaid() ? 1 : 15;
         final MessageEmbed messageEmbed = getRaidGroupMessageEmbed(startAt, raid.getId(), localeService,

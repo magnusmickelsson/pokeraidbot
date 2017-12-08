@@ -7,10 +7,10 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 public class UnTrackPokemonCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
@@ -18,8 +18,9 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
 
     public UnTrackPokemonCommand(ServerConfigRepository serverConfigRepository,
                                  LocaleService localeService,
-                                 PokemonRepository pokemonRepository, CommandListener commandListener, TrackingService trackingService) {
-        super(serverConfigRepository, commandListener, localeService);
+                                 PokemonRepository pokemonRepository, CommandListener commandListener,
+                                 TrackingService trackingService, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.trackingService = trackingService;
         this.pokemonRepository = pokemonRepository;
         this.name = "untrack";
@@ -27,10 +28,9 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         String args = commandEvent.getArgs();
         final String userId = commandEvent.getAuthor().getId();
-        final User user = commandEvent.getAuthor();
         if (args == null || args.length() < 1) {
             trackingService.removeAllForUser(user);
             commandEvent.reactSuccess();

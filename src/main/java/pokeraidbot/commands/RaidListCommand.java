@@ -3,8 +3,6 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.User;
-import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -13,14 +11,12 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
-import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 
-import static pokeraidbot.Utils.getStartOfRaid;
-import static pokeraidbot.Utils.printTime;
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid status [Pokestop name]
@@ -31,8 +27,9 @@ public class RaidListCommand extends ConfigAwareCommand {
     private final PokemonRepository pokemonRepository;
 
     public RaidListCommand(RaidRepository raidRepository, LocaleService localeService,
-                           ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository, CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                           ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository,
+                           CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "list";
@@ -42,8 +39,7 @@ public class RaidListCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String args = commandEvent.getArgs();
         final Locale locale = localeService.getLocaleForUser(user);
         Set<Raid> raids;

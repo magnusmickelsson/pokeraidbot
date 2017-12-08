@@ -1,7 +1,6 @@
 package pokeraidbot.domain.raid;
 
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
@@ -187,7 +187,7 @@ public class RaidRepository {
         Map<String, SignUp> signUps = new ConcurrentHashMap<>();
         for (RaidEntitySignUp signUp : raidEntity.getSignUpsAsSet()) {
             signUps.put(signUp.getResponsible(), new SignUp(signUp.getResponsible(), signUp.getNumberOfPeople(),
-                    LocalTime.parse(signUp.getEta(), Utils.timeParseFormatter)));
+                    LocalTime.parse(signUp.getEta(), Utils.timeParseFormatter), signUp.getNickname()));
         }
         raid.setSignUps(signUps);
         return raid;
@@ -273,7 +273,7 @@ public class RaidRepository {
         RaidEntitySignUp entitySignUp = entity.getSignUp(user.getName());
         if (entitySignUp == null) {
             entity.addSignUp(new RaidEntitySignUp(user.getName(), theSignUp.getHowManyPeople(),
-                    Utils.printTime(theSignUp.getArrivalTime())));
+                    Utils.printTime(theSignUp.getArrivalTime()), theSignUp.getNickName()));
         } else {
             entitySignUp.setNumberOfPeople(theSignUp.getHowManyPeople(), localeService, user);
             entitySignUp.setEta(Utils.printTime(theSignUp.getArrivalTime()));
@@ -284,7 +284,7 @@ public class RaidRepository {
     public void removeSignUp(User user, Raid raid, SignUp theSignUp) {
         RaidEntity entity = findEntityByRaidId(raid.getId());
         entity.removeSignUp(new RaidEntitySignUp(user.getName(), theSignUp.getHowManyPeople(),
-                Utils.printTime(theSignUp.getArrivalTime())));
+                Utils.printTime(theSignUp.getArrivalTime()), theSignUp.getNickName()));
         raidEntityRepository.save(entity);
     }
 
@@ -347,7 +347,7 @@ public class RaidRepository {
         if (signUp == null) {
             final int sum = mystic + instinct + valor + plebs;
             assertSumNotLessThanOne(user, sum);
-            raidEntity.addSignUp(new RaidEntitySignUp(user.getName(), sum, startAtTime));
+            raidEntity.addSignUp(new RaidEntitySignUp(user.getName(), sum, startAtTime, user.getNickName()));
         } else {
             int sum = signUp.getNumberOfPeople();
             if (startAt.toLocalTime().equals(Utils.parseTime(user, signUp.getEta(), localeService))) {

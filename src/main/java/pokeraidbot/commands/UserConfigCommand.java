@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
-import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -19,17 +18,16 @@ public class UserConfigCommand extends ConfigAwareCommand {
 
     public UserConfigCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
                              LocaleService localeService, UserConfigRepository userConfigRepository) {
-        super(serverConfigRepository, commandListener, localeService);
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.userConfigRepository = userConfigRepository;
         this.name = "config";
         this.help = localeService.getMessageFor(LocaleService.HELP_USER_CONFIG, LocaleService.DEFAULT);
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config serverConfig) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config serverConfig, pokeraidbot.domain.User user) {
         UserConfig userConfig = userConfigRepository.findOne(user.getId());
-        final String[] arguments = commandEvent.getArgs().split(" ");
+        final String[] arguments = commandEvent.getArgs().split(" ", 1);
         if (arguments.length > 1 || arguments.length < 1) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.USER_CONFIG_BAD_SYNTAX,
                     localeService.getLocaleForUser(user))

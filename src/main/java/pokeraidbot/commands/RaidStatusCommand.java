@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Locale;
 import java.util.Set;
@@ -39,8 +39,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
                              ServerConfigRepository serverConfigRepository, BotService botService, CommandListener commandListener,
-                             PokemonRepository pokemonRepository) {
-        super(serverConfigRepository, commandListener, localeService);
+                             PokemonRepository pokemonRepository, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.localeService = localeService;
         this.botService = botService;
         this.pokemonRepository = pokemonRepository;
@@ -52,9 +52,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         String gymName = commandEvent.getArgs();
-        final User user = commandEvent.getAuthor();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final Set<SignUp> signUps = raid.getSignUps();

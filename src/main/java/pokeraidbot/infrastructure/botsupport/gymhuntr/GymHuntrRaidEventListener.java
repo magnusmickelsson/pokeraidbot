@@ -4,8 +4,6 @@ import main.BotServerMain;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
@@ -16,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.commands.NewRaidGroupCommand;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -28,6 +27,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,12 +53,14 @@ public class GymHuntrRaidEventListener implements EventListener {
     private final ClockService clockService;
     private final BotService botService;
     private final PokemonRaidStrategyService strategyService;
+    private final UserConfigRepository userConfigRepository;
 
     public GymHuntrRaidEventListener(ServerConfigRepository serverConfigRepository, RaidRepository raidRepository,
                                      GymRepository gymRepository, PokemonRepository pokemonRepository,
                                      LocaleService localeService, ExecutorService executorService,
                                      ClockService clockService, BotService botService,
-                                     PokemonRaidStrategyService strategyService) {
+                                     PokemonRaidStrategyService strategyService,
+                                     UserConfigRepository userConfigRepository) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.gymRepository = gymRepository;
@@ -68,13 +70,15 @@ public class GymHuntrRaidEventListener implements EventListener {
         this.clockService = clockService;
         this.botService = botService;
         this.strategyService = strategyService;
+        this.userConfigRepository = userConfigRepository;
     }
 
     @Override
     public void onEvent(Event event) {
         if (event instanceof GuildMessageReceivedEvent) {
             GuildMessageReceivedEvent guildEvent = (GuildMessageReceivedEvent) event;
-            final User messageAuthor = guildEvent.getAuthor();
+            final User messageAuthor = new User(guildEvent.getAuthor(),
+                    userConfigRepository.findOne(guildEvent.getAuthor().getId()));
             if (isUserGymhuntrBot(messageAuthor) || isUserPokeAlarmBot(messageAuthor)) {
                 final String serverName = guildEvent.getGuild().getName().toLowerCase();
                 final Config config = serverConfigRepository.getConfigForServer(serverName);
@@ -116,7 +120,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                                 final LocalDate currentDate = currentDateTime.toLocalDate();
                                 final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
                                         LocalTime.parse(time, Utils.timeParseFormatter));
-                                final SelfUser botUser = botService.getBot().getSelfUser();
+                                final User botUser = new User(botService.getBot().getSelfUser(), null);
                                 final PokemonRaidInfo raidInfo;
                                 raidInfo = strategyService.getRaidInfo(raidBoss);
                                 handleRaidFromIntegration(botUser,
@@ -260,7 +264,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, guildEvent.getGuild(), config, user,
                             config.getLocale(), groupStart, createdRaid.getId(), localeService, raidRepository,
                             botService, serverConfigRepository, pokemonRepository, gymRepository,
-                            clockService, executorService, strategyService);
+                            clockService, executorService, strategyService, userConfigRepository);
                 } catch (Throwable t) {
                     LOGGER.warn("Could not create raid group for server " + config.getServer() + " and raid " +
                     createdRaid + ": " + t.getMessage());

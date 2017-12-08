@@ -1,7 +1,6 @@
 package pokeraidbot.domain.raid;
 
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -218,6 +218,7 @@ public class RaidRepositoryTest {
         String raidCreatorName = "testUser1";
         User user = mock(User.class);
         when(user.getName()).thenReturn(raidCreatorName);
+        when(user.getNickName()).thenReturn(raidCreatorName);
         Guild guild = mock(Guild.class);
         Config config = mock(Config.class);
 
@@ -237,7 +238,8 @@ public class RaidRepositoryTest {
         Raid raid = repo.getActiveRaidOrFallbackToExRaid(gym, uppsalaRegion, user);
         final LocalDateTime raidGroupTime = endOfRaid.minusMinutes(10);
         for (User raider : raiders) {
-            repo.addSignUp(raider, raid, new SignUp(raider.getName(), 2, raidGroupTime.toLocalTime()));
+            repo.addSignUp(raider, raid, new SignUp(raider.getName(), 2, raidGroupTime.toLocalTime(),
+                    user.getNickName()));
         }
         final LocalDateTime newRaidGroupTime = raidGroupTime.plusMinutes(2);
         RaidEntity entity = raidEntityRepository.findOne(raid.getId());

@@ -7,18 +7,20 @@ import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 public class WhatsNewCommand extends ConfigAwareCommand {
     public WhatsNewCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
-                           LocaleService localeService) {
-        super(serverConfigRepository, commandListener, localeService);
+                           LocaleService localeService, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.name = "whatsnew";
         this.aliases = new String[]{"latest", "version"};
-        this.help = localeService.getMessageFor(LocaleService.WHATS_NEW_HELP, localeService.getLocaleForUser((User) null));
+        this.help = localeService.getMessageFor(LocaleService.WHATS_NEW_HELP,
+                localeService.getLocaleForUser((User) null));
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +

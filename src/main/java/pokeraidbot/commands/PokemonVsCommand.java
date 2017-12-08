@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.Utils;
+import pokeraidbot.domain.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
@@ -12,6 +13,7 @@ import pokeraidbot.domain.raid.RaidBossCounters;
 import pokeraidbot.infrastructure.CounterPokemon;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,8 +27,9 @@ public class PokemonVsCommand extends ConfigAwareCommand {
     private final PokemonRepository repo;
 
     public PokemonVsCommand(PokemonRepository repo, PokemonRaidStrategyService raidInfoService,
-                            LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                            LocaleService localeService, ServerConfigRepository serverConfigRepository,
+                            CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.raidInfoService = raidInfoService;
         this.localeService = localeService;
         this.name = "vs";
@@ -35,7 +38,7 @@ public class PokemonVsCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, User user) {
         String pokemonName = commandEvent.getArgs();
         final Pokemon pokemon = repo.search(pokemonName, commandEvent.getAuthor());
         final RaidBossCounters counters = raidInfoService.getCounters(pokemon);

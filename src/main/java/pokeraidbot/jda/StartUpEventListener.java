@@ -25,6 +25,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.EmoticonSignUpMessageListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.util.List;
@@ -42,12 +43,14 @@ public class StartUpEventListener implements EventListener {
     private final GymRepository gymRepository;
     private final PokemonRepository pokemonRepository;
     private final PokemonRaidStrategyService pokemonRaidStrategyService;
+    private final UserConfigRepository userConfigRepository;
 
     public StartUpEventListener(ServerConfigRepository serverConfigRepository,
                                 RaidRepository raidRepository, LocaleService localeService,
                                 ClockService clockService, ExecutorService executorService, BotService botService,
                                 GymRepository gymRepository, PokemonRepository pokemonRepository,
-                                PokemonRaidStrategyService pokemonRaidStrategyService) {
+                                PokemonRaidStrategyService pokemonRaidStrategyService,
+                                UserConfigRepository userConfigRepository) {
         this.serverConfigRepository = serverConfigRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;
@@ -57,6 +60,7 @@ public class StartUpEventListener implements EventListener {
         this.gymRepository = gymRepository;
         this.pokemonRepository = pokemonRepository;
         this.pokemonRaidStrategyService = pokemonRaidStrategyService;
+        this.userConfigRepository = userConfigRepository;
     }
 
     @Override
@@ -117,7 +121,8 @@ public class StartUpEventListener implements EventListener {
                 Raid raid = raidRepository.getById(raidGroup.getRaidId());
                 final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
                         new EmoticonSignUpMessageListener(botService, localeService, serverConfigRepository,
-                                raidRepository, pokemonRepository, gymRepository, raid.getId(), raidGroup.getStartsAt(),
+                                raidRepository, pokemonRepository, gymRepository, userConfigRepository,
+                                raid.getId(), raidGroup.getStartsAt(),
                                 raidGroup.getCreatorId());
                 emoticonSignUpMessageListener.setEmoteMessageId(raidGroup.getEmoteMessageId());
                 emoticonSignUpMessageListener.setInfoMessageId(raidGroup.getInfoMessageId());

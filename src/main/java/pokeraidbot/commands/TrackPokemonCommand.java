@@ -6,10 +6,10 @@ import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 public class TrackPokemonCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
@@ -18,8 +18,8 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
 
     public TrackPokemonCommand(ServerConfigRepository serverConfigRepository, LocaleService localeService,
                                PokemonRepository pokemonRepository, TrackingService trackingService,
-                               CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                               CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.trackingService = trackingService;
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
@@ -28,10 +28,9 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         String args = commandEvent.getArgs();
         Pokemon pokemon = pokemonRepository.search(args, commandEvent.getAuthor());
-        final User user = commandEvent.getAuthor();
         trackingService.add(pokemon, user, config);
         commandEvent.reactSuccess();
         removeOriginMessageIfConfigSaysSo(config, commandEvent);

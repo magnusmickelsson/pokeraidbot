@@ -73,14 +73,14 @@ public class BotService {
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
                 serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
                 executorService,
-                clockService, this, raidInfoService);
+                clockService, this, raidInfoService, userConfigRepository);
         StartUpEventListener startUpEventListener = new StartUpEventListener(serverConfigRepository,
                 raidRepository, localeService, clockService, executorService, this, gymRepository,
-                pokemonRepository, raidInfoService);
+                pokemonRepository, raidInfoService, userConfigRepository);
         SignupWithPlusCommandListener plusCommandEventListener = new SignupWithPlusCommandListener(raidRepository,
-                pokemonRepository, serverConfigRepository, this, localeService);
+                pokemonRepository, serverConfigRepository, this, localeService, userConfigRepository);
         UnsignWithMinusCommandListener minusCommandEventListener = new UnsignWithMinusCommandListener(raidRepository,
-                pokemonRepository, serverConfigRepository, this, localeService);
+                pokemonRepository, serverConfigRepository, this, localeService, userConfigRepository);
         aggregateCommandListener = new AggregateCommandListener(Arrays.asList());
 
         CommandClientBuilder client = new CommandClientBuilder();
@@ -90,58 +90,58 @@ public class BotService {
         client.setAlternativePrefix("!r ");
         client.setGame(Game.of("Type !raid usage"));
         client.addCommands(
-                new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService),
-                new HelpManualCommand(localeService, serverConfigRepository, aggregateCommandListener),
+                new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService, userConfigRepository),
+                new HelpManualCommand(localeService, serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new AboutCommand(
                         Color.BLUE, localeService.getMessageFor(LocaleService.AT_YOUR_SERVICE, LocaleService.DEFAULT),
                         new String[]{LocaleService.featuresString_SV}, Permission.ADMINISTRATOR
                 ),
                 new PingCommand(),
-                new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener),
-                new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener),
+                new UsageCommand(localeService, serverConfigRepository, aggregateCommandListener, userConfigRepository),
+                new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new AdminCommands(userConfigRepository, serverConfigRepository, gymRepository,
                         this, trackingService),
 //                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new NewRaidStartsAtCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new UserConfigCommand(serverConfigRepository, aggregateCommandListener, localeService,
                         userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
-                        serverConfigRepository, this, aggregateCommandListener, pokemonRepository),
+                        serverConfigRepository, this, aggregateCommandListener, pokemonRepository, userConfigRepository),
                 new RaidListCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
-                        aggregateCommandListener),
+                        aggregateCommandListener, userConfigRepository),
                 new SignUpCommand(gymRepository, raidRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new WhereIsGymCommand(gymRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new WhereIsGymInChatCommand(gymRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new RemoveSignUpCommand(gymRepository, raidRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new PokemonVsCommand(pokemonRepository, raidInfoService, localeService, serverConfigRepository,
-                        aggregateCommandListener),
-                new ServerInfoCommand(serverConfigRepository, localeService, aggregateCommandListener, clockService),
-                new DonateCommand(localeService, serverConfigRepository, aggregateCommandListener),
+                        aggregateCommandListener, userConfigRepository),
+                new ServerInfoCommand(serverConfigRepository, localeService, aggregateCommandListener, clockService, userConfigRepository),
+                new DonateCommand(localeService, serverConfigRepository, aggregateCommandListener, userConfigRepository),
                 new TrackPokemonCommand(serverConfigRepository, localeService, pokemonRepository,
-                        trackingService, aggregateCommandListener),
+                        trackingService, aggregateCommandListener, userConfigRepository),
                 new UnTrackPokemonCommand(serverConfigRepository, localeService, pokemonRepository,
-                        aggregateCommandListener, trackingService),
+                        aggregateCommandListener, trackingService, userConfigRepository),
                 new InstallCommand(serverConfigRepository, gymRepository),
                 new InstallEmotesCommand(localeService),
                 new AlterRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService, serverConfigRepository,
-                        aggregateCommandListener, this),
+                        aggregateCommandListener, this, userConfigRepository),
                 new NewRaidGroupCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener, this, clockService,
-                        executorService, raidInfoService),
+                        executorService, raidInfoService, userConfigRepository),
                 new EggHatchedCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository,
-                        aggregateCommandListener, this, raidInfoService),
+                        aggregateCommandListener, this, raidInfoService, userConfigRepository),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
-                        aggregateCommandListener, clockService, executorService)
+                        aggregateCommandListener, clockService, executorService, userConfigRepository)
         );
 
         try {

@@ -2,7 +2,6 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
@@ -12,6 +11,7 @@ import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
+import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Locale;
 
@@ -21,8 +21,8 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 
     public RemoveSignUpCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                               ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
-        super(serverConfigRepository, commandListener, localeService);
+                               ServerConfigRepository serverConfigRepository, CommandListener commandListener, UserConfigRepository userConfigRepository) {
+        super(serverConfigRepository, commandListener, localeService, userConfigRepository);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;
         this.localeService = localeService;
@@ -32,8 +32,7 @@ public class RemoveSignUpCommand extends ConfigAwareCommand {
     }
 
     @Override
-    protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        final User user = commandEvent.getAuthor();
+    protected void executeWithConfig(CommandEvent commandEvent, Config config, pokeraidbot.domain.User user) {
         final String userName = user.getName();
         final Locale localeForUser = localeService.getLocaleForUser(user);
         String gymName = commandEvent.getArgs();
