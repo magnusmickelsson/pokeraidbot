@@ -590,4 +590,15 @@ public class RaidRepository {
         }
         return false;
     }
+
+    public boolean isActiveOrExRaidAt(Gym raidGym, String region) {
+        List<RaidEntity> entities =
+                raidEntityRepository.findByGymAndRegionOrderByEndOfRaidAsc(raidGym.getName(), region);
+
+        if (entities.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

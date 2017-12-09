@@ -158,7 +158,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                     localeService, config.getRegion());
             final MessageChannel channel = guildEvent.getChannel();
             try {
-                if (raidRepository.isActiveRaidAt(raidGym, config.getRegion())) {
+                if (raidRepository.isActiveOrExRaidAt(raidGym, config.getRegion())) {
                     Raid existingRaid =
                             raidRepository.getActiveRaidOrFallbackToExRaid(raidGym, config.getRegion(), user);
                     if (existingRaid.getPokemon().isEgg()) {
@@ -168,7 +168,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                                         "!raid hatch " + raidBoss.getName() + " " + existingRaid.getGym().getName());
                         LOGGER.info("Hatched raid: " + existingRaid);
                     } else {
-                        LOGGER.info("Active raid already present, which is not an egg to hatch. " +
+                        LOGGER.info("Raid already present, which is not an egg to hatch. " +
                                 "Skipping raid at: " + raidGym.getName());
                     }
                 } else {
