@@ -252,7 +252,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                             emoticonSignUpMessageListener.setStartAt(null);
                             LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
                                     ", creator: " + emoticonSignUpMessageListener.getUserId());
-                            cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(), raid != null ? raid.getId() : null,
+                            cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(),
+                                    currentStateOfRaid != null ? currentStateOfRaid.getId() : null,
                                     emoticonSignUpMessageListener, raidRepository, botService, groupId);
                         });
                 return true;
@@ -310,7 +311,14 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
             if (!StringUtils.isEmpty(infoMessageId)) {
                 try {
-                    messageChannel.deleteMessageById(infoMessageId).queue();
+                    messageChannel.deleteMessageById(infoMessageId).queue(m -> {}, t -> {
+                        LOGGER.warn("Exception occurred when removing group message: " + t.getMessage());
+                        botService.getBot().removeEventListener(emoticonSignUpMessageListener);
+                        raidRepository.deleteGroupInNewTransaction(raidId, groupId);
+                        if (LOGGER.isInfoEnabled()) {
+                            LOGGER.info("Cleaned up listener related to this group.");
+                        }
+                    });
                 } catch (Throwable t) {
                     LOGGER.warn("Exception occurred when removing group message: " + t.getMessage());
                 }
@@ -342,7 +350,10 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 locale);
         embedBuilder.setTitle(getHereText + " " + gym.getName(), Utils.getNonStaticMapUrl(gym));
-        embedBuilder.setAuthor(headline, null, Utils.getPokemonIcon(pokemon));
+        final LocalDateTime endOfRaid = currentStateOfRaid.getEndOfRaid();
+        embedBuilder.setAuthor(headline + " " +
+                Utils.printTime(Utils.getStartOfRaid(endOfRaid, currentStateOfRaid.isExRaid()).toLocalTime()) +
+                "-" + Utils.printTime(endOfRaid.toLocalTime()), null, Utils.getPokemonIcon(pokemon));
         final Set<SignUp> signUpsAt = currentStateOfRaid.getSignUpsAt(startAt.toLocalTime());
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(signUpsAt, false);
         final String allSignUpNames = signUpNames.size() > 0 ? StringUtils.join(signUpNames, ", ") : "-";

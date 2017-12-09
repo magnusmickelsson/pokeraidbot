@@ -111,8 +111,7 @@ public class StartUpEventListener implements EventListener {
                 }
             }
             // todo: change to only use one message listener
-            if (channel.getMessageById(raidGroup.getEmoteMessageId()).complete() != null &&
-                    channel.getMessageById(raidGroup.getInfoMessageId()).complete() != null) {
+            if (channel.getMessageById(raidGroup.getEmoteMessageId()).complete() != null) {
                 final Locale locale = config.getLocale();
                 Raid raid = raidRepository.getById(raidGroup.getRaidId());
                 final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
@@ -148,7 +147,7 @@ public class StartUpEventListener implements EventListener {
             LOGGER.debug("Caught exception: " + e.getMessage());
         } catch (Throwable e) {
             cleanUpRaidGroup(raidGroup);
-            // Ignore any other error and try the other server channels
+            // Ignore any other error
             LOGGER.debug("Caught exception: " + e.getMessage());
         }
         return false;
@@ -156,8 +155,12 @@ public class StartUpEventListener implements EventListener {
 
     private void cleanUpRaidGroup(RaidGroup raidGroup) {
         try {
-            raidRepository.deleteGroupInNewTransaction(raidGroup.getRaidId(), raidGroup.getId());
-            LOGGER.debug("Cleaned up raid group: " + raidGroup);
+            RaidGroup deletedRaidGroup = raidRepository.deleteGroupInNewTransaction(raidGroup.getRaidId(), raidGroup.getId());
+            if (deletedRaidGroup != null) {
+                LOGGER.debug("Cleaned up raid group: " + deletedRaidGroup);
+            } else {
+                LOGGER.debug("Didn't delete raid group, it was apparantly deleted already.");
+            }
         } catch (Throwable t) {
             // Ignore any other error and try the other server channels
             LOGGER.warn("Exception when cleaning up group " + raidGroup + ": " + t.getMessage());

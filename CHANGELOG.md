@@ -1,6 +1,11 @@
 FUTURE (?)
 =====
 
+1.6.1 (2017-12-10)
+=====
+* Add raid duration to group message header
+* Better cleanup of event listeners
+
 1.6.0 (2017-12-09)
 =====
 * !raid overview should list times for groups instead of ETA

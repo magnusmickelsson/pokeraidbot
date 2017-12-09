@@ -470,9 +470,6 @@ public class RaidRepository {
     public RaidGroup deleteGroupInNewTransaction(String raidId, String groupId) {
         final RaidEntity entity = findEntityByRaidId(raidId);
         final RaidGroup removedGroup = entity.removeGroup(groupId);
-        if (removedGroup == null) {
-            throw new RuntimeException("No group with ID " + groupId + " for raid " + entity);
-        }
         return removedGroup;
     }
 

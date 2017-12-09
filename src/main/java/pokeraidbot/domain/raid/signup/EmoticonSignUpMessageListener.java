@@ -8,7 +8,6 @@ import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReacti
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +20,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.net.SocketException;
 import java.time.LocalDateTime;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class EmoticonSignUpMessageListener implements EventListener {
@@ -87,21 +84,25 @@ public class EmoticonSignUpMessageListener implements EventListener {
     public void onEvent(Event event) {
         String reactionMessageId = null;
         User user = null;
+        if (emoteMessageId == null && infoMessageId == null) {
+            LOGGER.trace("This listener haven't received a emote message id or info message id yet.");
+            return;
+        }
         try {
             if (event instanceof GuildMessageReactionAddEvent) {
                 final GuildMessageReactionAddEvent reactionEvent = (GuildMessageReactionAddEvent) event;
+                user = reactionEvent.getUser();
+                // If the bot added any reactions, don't respond to them
+                if (user.isBot()) return;
                 reactionMessageId = reactionEvent.getReaction().getMessageId();
-                if (!emoteMessageId.equals(reactionMessageId)) {
+                if (emoteMessageId == null || !emoteMessageId.equals(reactionMessageId)) {
                     return;
                 }
-                user = reactionEvent.getUser();
                 // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
                 if (user.getName().equals(userHadError)) {
                     userHadError = null;
                     return;
                 }
-                // If the bot added any reactions, don't respond to them
-                if (user.equals(botService.getBot().getSelfUser())) return;
 
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {
@@ -146,6 +147,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final GuildMessageReactionRemoveEvent reactionEvent = (GuildMessageReactionRemoveEvent) event;
                 // If the bot added any reactions, don't respond to them
                 user = reactionEvent.getUser();
+                if (user.isBot()) return;
                 // If this is a reaction for a user that just triggered an error with his/her reaction, skip it
                 if (user.getName().equals(userHadError)) {
                     userHadError = null;
@@ -155,7 +157,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 if (!emoteMessageId.equals(reactionMessageId)) {
                     return;
                 }
-                if (user.equals(botService.getBot().getSelfUser())) return;
 
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {

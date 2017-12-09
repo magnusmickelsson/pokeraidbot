@@ -49,6 +49,9 @@ user name/user id for checking.
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
+
+-- 1.7.0
+
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)

@@ -1,30 +1,31 @@
 Supreme Counters
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Entei
+
+Entei
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Flamethrower
+Ho-Oh
+
+Ho-Oh
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Flamethrower
+Good Counters
 Rhydon
 
 Rhydon
 Quick Move	Charge Move
 Mud Slap
 Earthquake
-Moltres
-
-Moltres
-Quick Move	Charge Move
-Fire Spin
-Overheat
-Ho-Oh
-
-Ho-Oh
-Quick Move	Charge Move
-Fire Spin
-Overheat
-Flamethrower
-Entei
-
-Entei
-Quick Move	Charge Move
-Fire Spin
-Overheat
-Flamethrower
 Donphan
 
 Donphan
