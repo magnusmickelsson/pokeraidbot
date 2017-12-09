@@ -544,7 +544,7 @@ public class RaidRepository {
             final Set<RaidEntitySignUp> signUpsAsSet = entity.getSignUpsAsSet();
             final long totalSignUps = signUpsAsSet.stream().mapToInt(RaidEntitySignUp::getNumberOfPeople).sum();
             if (totalSignUps > signUpsInGroups) {
-                sb.append(", X (**").append(totalSignUps - signUpsInGroups).append("**)");
+                sb.append(", -:- (**").append(totalSignUps - signUpsInGroups).append("**)");
             }
         }
         return sb.toString();
@@ -572,7 +572,7 @@ public class RaidRepository {
         }
         group.setStartsAt(newDateTime);
         raidEntityRepository.save(entityByRaidId);
-        // todo: notify !raid track listeners
+        // todo: notify !raid track listeners?
 
         return group;
     }

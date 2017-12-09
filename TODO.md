@@ -38,6 +38,7 @@ Fix, misc:
 
 Do, features:
 
+* Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group

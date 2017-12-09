@@ -244,9 +244,16 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 messageChannel.editMessageById(infoMessageId,
                         newContent)
                         .queue(m -> {
+                            if (LOGGER.isTraceEnabled()) {
+                                LOGGER.trace("Message edit ok for " + infoMessageId);
+                            }
                         }, m -> {
                             LOGGER.warn(m.getClass().getName() + " occurred in edit message loop: " + m.getMessage());
                             emoticonSignUpMessageListener.setStartAt(null);
+                            LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
+                                    ", creator: " + emoticonSignUpMessageListener.getUserId());
+                            cleanUp(messageChannel, emoticonSignUpMessageListener.getStartAt(), raid != null ? raid.getId() : null,
+                                    emoticonSignUpMessageListener, raidRepository, botService, groupId);
                         });
                 return true;
             };
@@ -254,6 +261,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                     emoticonSignUpMessageListener.getStartAt(), clockService)) {
                 try {
                     executorService.submit(editTask).get();
+                    if (LOGGER.isTraceEnabled()) {
+                        LOGGER.trace("Edit task done for now: " + infoMessageId);
+                    }
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
@@ -311,9 +321,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             botService.getBot().removeEventListener(emoticonSignUpMessageListener);
             raidRepository.deleteGroupInNewTransaction(raidId, groupId);
             if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Cleaned up listener and message related to this group - raid: " + (raid == null ?
-                        "not cleaned up :( - had ID: " + raidId : raid) +
-                        " , start time: " + startAt);
+                LOGGER.info("Cleaned up listener and message related to this group - raid signups: " + (raid == null ?
+                        "not removed." : "cleaned up."));
             }
         }
     }
@@ -346,7 +355,6 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         embedBuilder.clearFields();
         final String handleSignUpText =
                 localeService.getMessageFor(LocaleService.HANDLE_SIGNUP, locale);
-        // todo: i18n
         final Set<RaidGroup> groups = raidRepository.getGroups(currentStateOfRaid);
         final String descriptionAppendixText;
         if (groups.size() > 1) {
