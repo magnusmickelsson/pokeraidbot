@@ -129,7 +129,7 @@ public class AdminCommands extends Command {
             } else if (event.getArgs().startsWith("member")) {
                 String userIdAndGuildName = event.getArgs().replaceAll("member\\s{1,3}", "");
                 String[] args = userIdAndGuildName.split(" ");
-                if (args.length < 2) {
+                if (args.length < 1 || args.length > 2) {
                     event.reply("Bad syntax, should be something like: !raid admin member {userid}");
                     return;
                 } else {
@@ -157,6 +157,6 @@ public class AdminCommands extends Command {
             }
         }
         event.reply("No such command. Existing ones are:\n- userconfig {userid}\n- permissions\n" +
-                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds");
+                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds\n - member {userid}");
     }
 }
