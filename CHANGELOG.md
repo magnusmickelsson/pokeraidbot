@@ -1,6 +1,13 @@
 FUTURE (?)
 =====
 
+1.6.2 (2017-12-11)
+=====
+* Remove pokemon types from group headline to reduce space
+* Getting started documentation updated with the new changes
+* In the logs: One of the EventListeners had an uncaught exception: java.lang.NullPointerException: null - ensure this
+can not happen, so we get cleaner logs
+
 1.6.1 (2017-12-10)
 =====
 * Add raid duration to group message header
