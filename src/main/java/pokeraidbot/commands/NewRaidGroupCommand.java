@@ -346,7 +346,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         MessageEmbed messageEmbed;
         EmbedBuilder embedBuilder = new EmbedBuilder();
         final String headline = localeService.getMessageFor(LocaleService.GROUP_HEADLINE,
-                locale, currentStateOfRaid.getPokemon().toString(), gym.getName());
+                locale, currentStateOfRaid.getPokemon().getName(), gym.getName());
         final String getHereText = localeService.getMessageFor(LocaleService.GETTING_HERE,
                 locale);
         embedBuilder.setTitle(getHereText + " " + gym.getName(), Utils.getNonStaticMapUrl(gym));

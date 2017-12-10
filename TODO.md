@@ -36,8 +36,23 @@ Fix, misc:
 
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
+Users who may have messed up config:
+
+Member with ID 153630267062484992 doesn't exist for server Pokemon go Uppsala!
+Member with ID 357607248102686731 doesn't exist for server Pokemon go Uppsala!
+Member with ID 210082881966571532 doesn't exist for server Pokemon go Uppsala!
+Member with ID 235136531247923200 doesn't exist for server Pokemon go Uppsala!
+Member with ID 353156035403448321 doesn't exist for server Pokemon go Uppsala!
+Member with ID 364848562091327498 doesn't exist for server Pokemon go Uppsala!
+
 Do, features:
 
+* Combined command to create raid starting at, and creating a group at the same time
+* !r nest command for reporting rare pokemon nests near gym
+* Should only be able to create raids for raidbosses (atleast via fuzzy search)
+* !raid install needs to be made easier
+* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
+* add egg handling to getting started documentation
 * Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
@@ -46,11 +61,8 @@ signups, raid status etc. Store both user name or user id on signups as well as 
 user name/user id for checking.
 * !raid change remove should lead to any related group messages being removed
 * Only use a single Emoticon listener for signups to reduce memory and complexity
-* !raid install needs to be made easier
-* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
-* add egg handling to getting started documentation
 
--- 1.7.0
+--- 1.7.0
 
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
@@ -62,9 +74,6 @@ to check server, and that raid entity, group etc also need to include server
 * Get seasonal boss from database settings for server, and allow admin command to change on the fly 
 when niantic comes up with new tricks
 * Be able to auto create groups via botintegration for several tiers and to different channels
-
---- 1.7.0
-
 * Move gyms to the database, use CSV files just to initialize and keep in synch?
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group

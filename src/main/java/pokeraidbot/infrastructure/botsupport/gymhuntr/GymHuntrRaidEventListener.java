@@ -75,63 +75,70 @@ public class GymHuntrRaidEventListener implements EventListener {
         if (event instanceof GuildMessageReceivedEvent) {
             GuildMessageReceivedEvent guildEvent = (GuildMessageReceivedEvent) event;
             final User messageAuthor = guildEvent.getAuthor();
-            if (isUserGymhuntrBot(messageAuthor) || isUserPokeAlarmBot(messageAuthor)) {
-                final String serverName = guildEvent.getGuild().getName().toLowerCase();
-                final Config config = serverConfigRepository.getConfigForServer(serverName);
-                if (config == null) {
-                    LOGGER.warn("Server configuration is null for this guild: " + guildEvent.getGuild().getName());
-                    return;
-                }
+            try {
+                if (isUserGymhuntrBot(messageAuthor) || isUserPokeAlarmBot(messageAuthor)) {
+                    final String serverName = guildEvent.getGuild().getName().toLowerCase();
+                    final Config config = serverConfigRepository.getConfigForServer(serverName);
+                    if (config == null) {
+                        LOGGER.warn("Server configuration is null for this guild: " + guildEvent.getGuild().getName());
+                        return;
+                    }
 
-                if (!config.useBotIntegration()) {
-                    if (LOGGER.isTraceEnabled()) {
-                        LOGGER.trace("Skipping trigger, since bot integration setting is false for server " +
-                                guildEvent.getGuild().getName());
-                    }
-                    return;
-                }
-                final List<MessageEmbed> embeds = guildEvent.getMessage().getEmbeds();
-                if (embeds != null && embeds.size() > 0) {
-                    for (MessageEmbed embed : embeds) {
-                        final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
-                        final String description = embed.getDescription();
-                        final String title = embed.getTitle();
-                        List<String> newRaidArguments;
-                        if (isUserGymhuntrBot(messageAuthor)) {
-                            newRaidArguments = gymhuntrArgumentsToCreateRaid(title, description, clockService);
-                        } else if (isUserPokeAlarmBot(messageAuthor)) {
-                            newRaidArguments = pokeAlarmArgumentsToCreateRaid(title, description, clockService);
-                        } else {
-                            newRaidArguments = new ArrayList<>();
+                    if (!config.useBotIntegration()) {
+                        if (LOGGER.isTraceEnabled()) {
+                            LOGGER.trace("Skipping trigger, since bot integration setting is false for server " +
+                                    guildEvent.getGuild().getName());
                         }
-                        try {
-                            if (newRaidArguments != null && newRaidArguments.size() > 0) {
-                                final Iterator<String> iterator = newRaidArguments.iterator();
-                                final String gym = iterator.next();
-                                final String pokemon = iterator.next();
-                                final String time = iterator.next();
-                                final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
-                                final String region = config.getRegion();
-                                final Gym raidGym = gymRepository.findByName(gym, region);
-                                final LocalDate currentDate = currentDateTime.toLocalDate();
-                                final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
-                                        LocalTime.parse(time, Utils.timeParseFormatter));
-                                final SelfUser botUser = botService.getBot().getSelfUser();
-                                final PokemonRaidInfo raidInfo;
-                                raidInfo = strategyService.getRaidInfo(raidBoss);
-                                handleRaidFromIntegration(botUser,
-                                        guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
-                                        raidInfo, strategyService);
+                        return;
+                    }
+                    final List<MessageEmbed> embeds = guildEvent.getMessage().getEmbeds();
+                    if (embeds != null && embeds.size() > 0) {
+                        for (MessageEmbed embed : embeds) {
+                            final LocalDateTime currentDateTime = clockService.getCurrentDateTime();
+                            final String description = embed.getDescription();
+                            final String title = embed.getTitle();
+                            List<String> newRaidArguments;
+                            if (isUserGymhuntrBot(messageAuthor)) {
+                                newRaidArguments = gymhuntrArgumentsToCreateRaid(title, description, clockService);
+                            } else if (isUserPokeAlarmBot(messageAuthor)) {
+                                newRaidArguments = pokeAlarmArgumentsToCreateRaid(title, description, clockService);
                             } else {
-                                if (LOGGER.isDebugEnabled()) {
-                                    LOGGER.debug("No arguments to create raid with for server " + config +
-                                            ", skipping. Raw command: " + guildEvent.getMessage().getRawContent());
-                                }
+                                newRaidArguments = new ArrayList<>();
                             }
-                        } catch (Throwable t) {
-                            LOGGER.warn("Exception when trying to get arguments for raid creation: " + t.getMessage());
+                            try {
+                                if (newRaidArguments != null && newRaidArguments.size() > 0) {
+                                    final Iterator<String> iterator = newRaidArguments.iterator();
+                                    final String gym = iterator.next();
+                                    final String pokemon = iterator.next();
+                                    final String time = iterator.next();
+                                    final Pokemon raidBoss = pokemonRepository.getByName(pokemon);
+                                    final String region = config.getRegion();
+                                    final Gym raidGym = gymRepository.findByName(gym, region);
+                                    final LocalDate currentDate = currentDateTime.toLocalDate();
+                                    final LocalDateTime endOfRaid = LocalDateTime.of(currentDate,
+                                            LocalTime.parse(time, Utils.timeParseFormatter));
+                                    final SelfUser botUser = botService.getBot().getSelfUser();
+                                    final PokemonRaidInfo raidInfo;
+                                    raidInfo = strategyService.getRaidInfo(raidBoss);
+                                    handleRaidFromIntegration(botUser,
+                                            guildEvent, raidBoss, raidGym, endOfRaid, config, clockService,
+                                            raidInfo, strategyService);
+                                } else {
+                                    if (LOGGER.isDebugEnabled()) {
+                                        LOGGER.debug("No arguments to create raid with for server " + config +
+                                                ", skipping. Raw command: " + guildEvent.getMessage().getRawContent());
+                                    }
+                                }
+                            } catch (Throwable t) {
+                                LOGGER.warn("Exception when trying to get arguments for raid creation: " + t.getMessage());
+                            }
                         }
                     }
+                }
+            } catch (Throwable t) {
+                LOGGER.warn("Exception thrown for event listener: " + t.getMessage());
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Stacktrace: ", t);
                 }
             }
         }
@@ -169,7 +176,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                         LOGGER.info("Hatched raid: " + existingRaid);
                     } else {
                         LOGGER.info("Raid already present, which is not an egg to hatch. " +
-                                "Skipping raid at: " + raidGym.getName());
+                                "Skipping raid at: " + raidGym.getName() + " for server " + config.getServer());
                     }
                 } else {
                     createRaid(user, guildEvent, config, clockService, pokemonRaidInfo, now, raidToCreate, channel);
@@ -219,9 +226,9 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     private void sendFeedbackThenCleanUp(Raid createdRaid, MessageChannel channel, MessageEmbed messageEmbed) {
+        LOGGER.info("Raid created via Bot integration: " + createdRaid);
         try {
             channel.sendMessage(messageEmbed).queue(m -> {
-                LOGGER.info("Raid created via Bot integration: " + createdRaid);
                 // Clean up message
                 try {
                     channel.deleteMessageById(m.getId())
@@ -231,7 +238,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                 }
             });
         } catch (Throwable t) {
-            LOGGER.warn("Could not send feedback for raid creation: " + t.getMessage());
+            LOGGER.debug("Could not send feedback for raid creation: " + t.getMessage());
         }
     }
 

@@ -11,11 +11,8 @@ Exempel här:
 
 ![Overview](img/overview.png)
 
-Närmaste ETA betyder närmaste tid från nu då det kommer anlända raiders som anmält sig, så
-det kan vara lämpligt att se till att vara på plats då och en bra tid att anmäla sig till.
-
-Om det inte står närmaste ETA men det finns anmälda, är det troligt att de som är på plats håller på och kör raiden,
-eller har precis kört.
+Symbolen med en svart och grå gubbe betecknar att efter detta kommer tider för 
+grupper för raiden listas, om det finns några, samt hur många som är anmälda till just den gruppen.
 
 Hur gör man då för att bidra till det botten visar upp här?
 
@@ -32,16 +29,22 @@ Skriv då följande i kanalen som är till för att skapa den typen av raid (#su
 
 *!raid new Suicune 09:45 hästen*
 
+(eller *!r n suicune 945 hästen* för att hålla det kort)
+
 ![Create](img/started1.png)
 
-(Vill du rapportera utifrån starttid för en raid för det är jobbigt att räkna ut sluttid?
-Använd *!raid start Suicune 09:00 hästen* istället)
+Vill du rapportera utifrån starttid för en raid för det är jobbigt att räkna ut sluttid?
+Använd *!raid start Suicune 09:00 hästen* istället.
+
+(eller *!r s suicune 900 hästen* för att hålla det kort)
 
 Du vill sedan skapa en grupp som kör raiden 09:30.
 
 Skriv då följande i kanalen för Suicune-raider (#suicune_raid i Uppsala):
 
 *!raid group 09:30 hästen*
+
+(eller *!r g 930 hästen*)
 
 ![Group](img/started2.png)
 

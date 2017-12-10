@@ -13,11 +13,8 @@ Here is an example:
 
 ![Overview](img/overview_en.png)
 
-"Next ETA" means the next time from now where there will be raiders arriving to the raid, who signed up.
-It means, that time might be a good time to arrive at the raid so you can join up with those who signed up.
-
-If there is no "next ETA" but there are people signed up, it's likely that they are either in the process of
-doing the raid, or they've just done it.
+The symbol of a black and gray head means that after it, available groups for the raid
+will be listed (if there are any), as well as how many are signed up.
 
 So, how can you contribute to what the bot shows in the overview?
 
@@ -35,15 +32,22 @@ Type the following in your server's text channel where pokeraidbot is active:
 
 *!raid new Suicune 09:45 cafe lalo*
 
+(or *!r n suicune 945 cafe lalo* if you want to keep it short)
+
 ![Create](img/en/started1.png)
 
-(If you think it's too much of a pain to figure out the end time of a raid, you can report the raid via start 
-time/hatch time - use *!raid start Suicune 09:00 cafe lalo* instead)
+If you think it's too much of a pain to figure out the end time of a raid, you can report the raid via start 
+time/hatch time - use *!raid start Suicune 09:00 cafe lalo* instead.
+
+(or *!r s suicune 900 cafe lalo* if you want to keep it short)
+
 
 Then, you want to create a group that raids at 09:30.
 
 Type the following:
 *!raid group 09:30 cafe lalo*
+
+(or *!r g 930 cafe lalo* if you want to keep it short)
 
 ![Group](img/en/started2.png)
 

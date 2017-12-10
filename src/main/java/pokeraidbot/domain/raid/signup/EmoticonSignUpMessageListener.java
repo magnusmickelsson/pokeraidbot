@@ -228,25 +228,38 @@ public class EmoticonSignUpMessageListener implements EventListener {
                             t.getClass().getSimpleName() + ") message is null! Event: " +
                             printInfoAbout(event));
                 }
+            } else {
+                LOGGER.warn("Exception in event listener! Event: " +
+                        printInfoAbout(event));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Stacktrace:", t);
+                }
             }
         }
     }
 
     private String printInfoAbout(Event event) {
-        StringBuilder sb = new StringBuilder();
-        if (event == null) {
-            return "null";
-        }
-        String className = event.getClass().getSimpleName();
-        sb.append(className);
-        String reflectionToString;
         try {
-            reflectionToString = ReflectionToStringBuilder.toString(event);
+            StringBuilder sb = new StringBuilder();
+            if (event == null) {
+                return "null";
+            }
+            String className = event.getClass().getSimpleName();
+            sb.append(className);
+            String reflectionToString;
+            try {
+                reflectionToString = ReflectionToStringBuilder.toString(event);
+            } catch (Throwable t) {
+                reflectionToString = "N/A";
+            }
+            sb.append(":").append(reflectionToString);
+            return sb.toString();
         } catch (Throwable t) {
-            reflectionToString = "N/A";
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Exception when printing info about event", t);
+            }
+            return "N/A";
         }
-        sb.append(":").append(reflectionToString);
-        return sb.toString();
     }
 
     private Raid addToSignUp(User user, int mystic, int instinct, int valor, int plebs) {

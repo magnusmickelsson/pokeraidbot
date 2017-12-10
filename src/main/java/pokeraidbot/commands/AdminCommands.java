@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.BotService;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.tracking.TrackingService;
@@ -106,12 +108,34 @@ public class AdminCommands extends Command {
                     final JDA bot = botService.getBot();
                     Guild guild = null;
                     final List<Guild> guilds = bot.getGuilds();
+                    String guildName = StringUtils.join(ArrayUtils.remove(args, 0), " ");
                     for (Guild guildToCheck : guilds) {
-                        if (guildToCheck.getName().equalsIgnoreCase(args[1])) {
+                        if (guildToCheck.getName().equalsIgnoreCase(guildName)) {
                             guild = guildToCheck;
                         }
                     }
                     if (guild != null) {
+                        final Member memberById = guild.getMemberById(args[0]);
+                        if (memberById != null) {
+                            event.reply("User is a member of server " + guild.getName());
+                        } else {
+                            event.reply("User is not a member of server " + guild.getName());
+                        }
+                    } else {
+                        event.reply("There was no server the user is a member of.");
+                    }
+                    return;
+                }
+            } else if (event.getArgs().startsWith("member")) {
+                String userIdAndGuildName = event.getArgs().replaceAll("member\\s{1,3}", "");
+                String[] args = userIdAndGuildName.split(" ");
+                if (args.length < 2) {
+                    event.reply("Bad syntax, should be something like: !raid admin member {userid}");
+                    return;
+                } else {
+                    final JDA bot = botService.getBot();
+                    final List<Guild> guilds = bot.getGuilds();
+                    for (Guild guild : guilds) {
                         final Member memberById = guild.getMemberById(args[0]);
                         if (memberById != null) {
                             event.reply("User is a member of server " + guild.getName());
