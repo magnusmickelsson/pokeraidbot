@@ -10,6 +10,7 @@ Being developed:
 
 * !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
 be able to do this if no people signed up for the group
+* !raid change remove should lead to any related group messages being removed as well
 
 Discussion:
 
@@ -25,7 +26,6 @@ Experiment with:
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
-* !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set

@@ -21,7 +21,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
-            message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+            message = "**Nytt i 1.6.0-" + BotServerMain.version + ":**\n\n" +
                     "- Fix: !raid track när en server har botintegration aktiverad ska nu funka som det ska\n" +
                     "- !raid group titel har nu raidstart och -slut\n" +
                     "- Fix: Eventlyssnare för grupper rensas undan bättre\n" +
@@ -36,7 +36,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Fix: Bättre felmeddelande vid !raid start zipit ger nu ett \"dålig syntax\"-meddelande\n" +
                     "- Fix: EX raids kommer inte längre skapas via botintegration";
         } else {
-            message = "**New in " + BotServerMain.version + ":**\n\n" +
+            message = "**New in 1.6.0-" + BotServerMain.version + ":**\n\n" +
                     "- Fix: !raid track when a server has bot integration setting active should now work properly\n" +
                     "- Add raid duration to group message header\n" +
                     "- Fix: Better cleanup of event listeners\n" +
