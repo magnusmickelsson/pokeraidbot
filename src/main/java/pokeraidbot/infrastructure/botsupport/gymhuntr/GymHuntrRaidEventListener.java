@@ -226,7 +226,7 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     private void sendFeedbackThenCleanUp(Raid createdRaid, MessageChannel channel, MessageEmbed messageEmbed) {
-        LOGGER.info("Raid created via Bot integration: " + createdRaid);
+        LOGGER.info("Raid created via Bot integration for region " + createdRaid.getRegion() + ": " + createdRaid);
         try {
             channel.sendMessage(messageEmbed).queue(m -> {
                 // Clean up message

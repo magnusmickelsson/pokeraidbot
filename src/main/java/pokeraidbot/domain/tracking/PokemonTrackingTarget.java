@@ -50,7 +50,9 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
             // value is a parameter for the `accept(T channel)` method of our callback.
             // here we implement the body of that method, which will be called later by JDA automatically.
             try {
-                channel.sendMessage(content).queue();
+                channel.sendMessage(content).queue(m -> {}, m ->{
+                    LOGGER.warn("Could not send private message for tracking " + this + ": " + m.getMessage());
+                });
                 // here we access the enclosing scope variable -content-
                 // which was provided to sendPrivateMessage(User, String) as a parameter
             } catch (Throwable t) {
@@ -95,7 +97,12 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
     @Override
     public boolean canHandle(Config config, User user, Raid raid) {
-        if (user.isBot()) {
+        if (config == null || user == null || raid == null) {
+            LOGGER.debug("Returning tracker can't handle this, because some input is null. Config: " +
+                    config + ", User: " + (user == null ? "null" : user.getName()) + ", Raid: " + raid);
+            return false;
+        }
+        if (!config.useBotIntegration() && user.isBot()) {
             return false; // Skip bot messages
         }
         if (user.getId().equals(userId)) {
