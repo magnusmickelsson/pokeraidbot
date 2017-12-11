@@ -469,12 +469,23 @@ public class RaidRepository {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public RaidGroup deleteGroupInNewTransaction(String raidId, String groupId) {
         final RaidEntity entity = findEntityByRaidId(raidId);
-        final RaidGroup removedGroup = entity.removeGroup(groupId);
-        return removedGroup;
+        if (entity != null) {
+            final RaidGroup removedGroup = entity.removeGroup(groupId);
+            if (removedGroup == null) {
+                LOGGER.debug("Didn't delete group, raid seems to have been deleted.");
+            }
+            return removedGroup;
+        } else {
+            LOGGER.debug("Didn't delete group, raid seems to have been deleted.");
+            return null;
+        }
     }
 
     public RaidGroup deleteGroup(String raidId, String groupId) {
         final RaidEntity entity = findEntityByRaidId(raidId);
+        if (entity == null) {
+            return null;
+        }
         final RaidGroup removedGroup = entity.removeGroup(groupId);
         if (removedGroup == null) {
             throw new RuntimeException("No group with ID " + groupId + " for raid " + entity);

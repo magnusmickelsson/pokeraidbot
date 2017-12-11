@@ -34,8 +34,10 @@ import static pokeraidbot.Utils.*;
  * !raid change when [New time (HH:MM)] [Pokestop name] (Only administrators or raid creator)
  * !raid change pokemon [Pokemon] [Pokestop name] (Only administrators or raid creator)
  * !raid change remove [Pokestop name] (Only administrators)
+ * !raid change group [new time] [Pokestop name] (Only administrators or raid group creator)
+ * !raid change group [new time] [current time] [Pokestop name] (Only administrators or raid group creator)
+ * !raid change group remove [group time] [Pokestop name] (Only administrators or raid group creator - if no one signed up)
  */
-// todo: refactor and clean up
 public class AlterRaidCommand extends ConfigAwareCommand {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(AlterRaidCommand.class);
     private final GymRepository gymRepository;
@@ -84,7 +86,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                 deleteRaid(commandEvent, config, user, userName, args);
                 break;
             case "group":
-                changeGroup(commandEvent, config, user, userName, args);
+                changeOrDeleteGroup(commandEvent, config, user, userName, args);
                 break;
             default:
                 throw new UserMessedUpException(userName,
@@ -93,25 +95,65 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void changeGroup(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
+    private void changeOrDeleteGroup(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
         String whatToChangeTo;
         StringBuilder gymNameBuilder;
         String gymName;
         Gym gym;
         Raid raid;
         whatToChangeTo = args[1].trim().toLowerCase();
+        String originalTime = preProcessTimeString(args[2].trim());
+        LocalTime existingGroupTimeIfAvailable = null;
+        try {
+            existingGroupTimeIfAvailable = Utils.parseTime(user, originalTime, localeService);
+        } catch (UserMessedUpException e) {
+            // Input was not a time
+        }
+        int gymIndex = 2;
+        if (existingGroupTimeIfAvailable != null) {
+            gymIndex = 3;
+        }
         gymNameBuilder = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
+        for (int i = gymIndex; i < args.length; i++) {
             gymNameBuilder.append(args[i]).append(" ");
         }
         gymName = gymNameBuilder.toString().trim();
         gym = gymRepository.search(user, gymName, config.getRegion());
         raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
-        LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
-        LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
+        if (whatToChangeTo.equals("remove")) {
+            final Set<EmoticonSignUpMessageListener> listenersToCheck =
+                    getListenersToCheck(commandEvent, config, user, raid);
+            EmoticonSignUpMessageListener listener = listenersToCheck.iterator().next();
+            final Set<RaidGroup> groups = raidRepository.getGroups(raid);
+            verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
+            RaidGroup theGroupToDelete = getGroupToDelete(user, existingGroupTimeIfAvailable, groups);
+            assertPermissionToManageThisGroup(user, theGroupToDelete);
+            NewRaidGroupCommand.cleanUpGroupMessageAndEntity(commandEvent.getChannel(), raid.getId(),
+                    listener, raidRepository, botService, theGroupToDelete.getId(), raid);
+            replyBasedOnConfig(config, commandEvent, "Grupp borttagen. Eventuella anmälningar finns kvar.");
+        } else {
+            LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
+            LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
 
-        checkIfInputIsValidAndUserHasRights(commandEvent, config, user, raid, newDateTime);
+            checkIfInputIsValidAndUserHasRights(commandEvent, config, user, raid, newDateTime);
 
+            if (changeGroupTime(commandEvent, config, user, userName, raid, newDateTime)) return;
+        }
+        removeOriginMessageIfConfigSaysSo(config, commandEvent);
+    }
+
+    private RaidGroup getGroupToDelete(User user, LocalTime existingGroupTimeIfAvailable, Set<RaidGroup> groups) {
+        RaidGroup theGroupToDelete;
+        if (groups.size() > 1 && (existingGroupTimeIfAvailable == null)) {
+            // todo: i18n
+            throw new UserMessedUpException(user, "Det finns flera grupper för denna raid. " +
+                    "Använd *!raid change group remove {grupptid} {gym}* för att ta bort gruppen.");
+        }
+        theGroupToDelete = groups.iterator().next();
+        return theGroupToDelete;
+    }
+
+    private boolean changeGroupTime(CommandEvent commandEvent, Config config, User user, String userName, Raid raid, LocalDateTime newDateTime) {
         boolean groupChanged = false;
         final Set<EmoticonSignUpMessageListener> listenersToCheck = getListenersToCheck(commandEvent, config, user, raid);
 
@@ -145,7 +187,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         localeService.getMessageFor(LocaleService.GROUP_CLEANING_UP,
                                 localeService.getLocaleForUser(user)),
                         BotServerMain.timeToRemoveFeedbackInSeconds);
-                return;
+                return true;
             }
         }
         if (!groupChanged) {
@@ -153,7 +195,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
                             "!raid change group 10:00 solna platform"));
         }
-        removeOriginMessageIfConfigSaysSo(config, commandEvent);
+        return false;
     }
 
     private Set<EmoticonSignUpMessageListener> getListenersToCheck(CommandEvent commandEvent, Config config,
@@ -216,7 +258,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
 
     private void checkIfInputIsValidAndUserHasRights(CommandEvent commandEvent, Config config, User user, Raid raid,
                                                      LocalDateTime newDateTime) {
-        verifyGroupPermission(commandEvent, user, raid, config);
+        verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
         assertTimeInRaidTimespan(user, newDateTime, raid, localeService);
         assertGroupTimeNotBeforeNow(user, newDateTime, localeService);
         if (raidRepository.existsGroupForRaidAt(raid, newDateTime)) { // Check for any user
@@ -333,11 +375,19 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         LOGGER.info("Changed time for raid: " + raid);
     }
 
-    private void verifyGroupPermission(CommandEvent commandEvent, User user, Raid raid, Config config) {
+    private void verifyIsModOrHasGroupForRaid(CommandEvent commandEvent, User user, Raid raid,
+                                              Config config) {
         final boolean isServerMod = isUserServerMod(commandEvent, config);
         final boolean userIsNotAdministrator = !isUserAdministrator(commandEvent) && !isServerMod;
         final boolean userHasNoGroupForRaid = !raidRepository.userHasGroupForRaid(user, raid);
         if (userIsNotAdministrator && userHasNoGroupForRaid) {
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                    localeService.getLocaleForUser(user)));
+        }
+    }
+
+    private void assertPermissionToManageThisGroup(User user, RaidGroup raidGroup) {
+        if (!raidGroup.getCreatorId().equals(user.getId())) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
                     localeService.getLocaleForUser(user)));
         }
