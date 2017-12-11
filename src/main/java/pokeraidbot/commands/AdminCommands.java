@@ -11,12 +11,20 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.BotService;
+import pokeraidbot.Utils;
+import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.Raid;
+import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.tracking.TrackingService;
+import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfig;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AdminCommands extends Command {
@@ -25,15 +33,22 @@ public class AdminCommands extends Command {
     private final GymRepository gymRepository;
     private final BotService botService;
     private final TrackingService trackingCommandListener;
+    private final LocaleService localeService;
+    private final PokemonRepository pokemonRepository;
+    private final RaidRepository raidRepository;
 
     public AdminCommands(UserConfigRepository userConfigRepository, ServerConfigRepository serverConfigRepository,
                          GymRepository gymRepository, BotService botService,
-                         TrackingService trackingCommandListener) {
+                         TrackingService trackingCommandListener, LocaleService localeService,
+                         PokemonRepository pokemonRepository, RaidRepository raidRepository) {
         this.userConfigRepository = userConfigRepository;
         this.serverConfigRepository = serverConfigRepository;
         this.gymRepository = gymRepository;
         this.botService = botService;
         this.trackingCommandListener = trackingCommandListener;
+        this.localeService = localeService;
+        this.pokemonRepository = pokemonRepository;
+        this.raidRepository = raidRepository;
         this.guildOnly = false;
         this.name = "admin";
         this.help = "Admin commands, only for Bot creator.";
@@ -41,10 +56,10 @@ public class AdminCommands extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        final User author = event.getAuthor();
-        if (author == null || author.getId() == null || (!author.getId().equals(BotServerMain.BOT_CREATOR_USERID))) {
+        final User user = event.getAuthor();
+        if (user == null || user.getId() == null || (!user.getId().equals(BotServerMain.BOT_CREATOR_USERID))) {
             event.replyInDM("This command is reserved only for bot creator. Hands off! ;p Your user ID was: " +
-                    String.valueOf(author.getId()));
+                    String.valueOf(user.getId()));
             return;
         } else {
             if (event.getArgs().startsWith("userconfig")) {
@@ -154,9 +169,27 @@ public class AdminCommands extends Command {
                 }
                 event.reply(sb.toString());
                 return;
+            }  else if (event.getArgs().startsWith("test")) {
+                final Config configForServer =
+                        serverConfigRepository.getConfigForServer(event.getGuild().getName().toLowerCase());
+                String[] args = event.getArgs().replaceAll("test ", "").trim().split(" ");
+                String pokemon = args[0];
+                LocalDateTime startsAt = LocalDateTime.of(LocalDate.now(),
+                        Utils.parseTime(user, args[1], localeService));
+                String gymName = StringUtils.join(ArrayUtils.removeElements(args, 0, 1), " ").trim();
+                final String region = configForServer.getRegion();
+                Raid raid = new Raid(pokemonRepository.search(pokemon, user),
+                        startsAt.plusMinutes(Utils.RAID_DURATION_IN_MINUTES),
+                        gymRepository.search(user, gymName, region), localeService, region);
+                final Raid createdRaid = raidRepository.newRaid(botService.getBot().getSelfUser(), raid,
+                        event.getGuild(), configForServer,
+                        event.getMessage().getRawContent());
+                event.reply("Bot created your test raid: " + createdRaid);
+                return;
             }
         }
         event.reply("No such command. Existing ones are:\n- userconfig {userid}\n- permissions\n" +
-                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds\n - member {userid}");
+                "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds\n" +
+                " - member {userid}\n - test {pokemon} {start time} {gym}");
     }
 }
