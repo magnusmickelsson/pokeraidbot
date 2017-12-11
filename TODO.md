@@ -4,13 +4,12 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* EX raids can no longer be created via bot integration
-* !raid track seems to be slightly confused regarding what region/server of members to send DMs to, in relation to
-bot integration. Check (and possibly fix).
+-
 
 Being developed:
 
--
+* !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
+be able to do this if no people signed up for the group
 
 Discussion:
 
@@ -26,7 +25,6 @@ Experiment with:
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
-
 * !raid change remove should lead to any related group messages being removed
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
@@ -47,13 +45,13 @@ Member with ID 364848562091327498 doesn't exist for server Pokemon go Uppsala!
 
 Do, features:
 
+* !raid change remove {gym} -> !raid remove raid {gym}
 * Combined command to create raid starting at, and creating a group at the same time
 * !r nest command for reporting rare pokemon nests near gym
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
-* Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
@@ -64,6 +62,7 @@ user name/user id for checking.
 
 --- 1.7.0
 
+* Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)

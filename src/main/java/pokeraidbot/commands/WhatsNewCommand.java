@@ -22,6 +22,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+                    "- Fix: !raid track när en server har botintegration aktiverad ska nu funka som det ska\n" +
                     "- !raid group titel har nu raidstart och -slut\n" +
                     "- Fix: Eventlyssnare för grupper rensas undan bättre\n" +
                     "- !raid overview och !raid list är omgjorda, listar nu bland annat grupptider i stället för ETA\n" +
@@ -36,6 +37,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Fix: EX raids kommer inte längre skapas via botintegration";
         } else {
             message = "**New in " + BotServerMain.version + ":**\n\n" +
+                    "- Fix: !raid track when a server has bot integration setting active should now work properly\n" +
                     "- Add raid duration to group message header\n" +
                     "- Fix: Better cleanup of event listeners\n" +
                     "- !raid overview and !raid list remade, for example they now list times for groups instead of ETA\n" +
