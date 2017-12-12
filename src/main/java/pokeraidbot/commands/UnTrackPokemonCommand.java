@@ -7,7 +7,6 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.tracking.PokemonTrackingTarget;
-import pokeraidbot.domain.tracking.TrackingCommandListener;
 import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
@@ -36,7 +35,7 @@ public class UnTrackPokemonCommand extends ConfigAwareCommand {
             commandEvent.reactSuccess();
         } else {
             Pokemon pokemon = pokemonRepository.search(args, user);
-            trackingService.removeForUser(new PokemonTrackingTarget(config.getRegion(), userId, pokemon), user);
+            trackingService.removeForUser(new PokemonTrackingTarget(userId, pokemon), user);
             commandEvent.reactSuccess();
         }
         removeOriginMessageIfConfigSaysSo(config, commandEvent);

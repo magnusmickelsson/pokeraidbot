@@ -18,7 +18,6 @@ import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.stream.Collectors;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 public class TrackingService {
@@ -41,9 +40,9 @@ public class TrackingService {
         Validate.notNull(raid, "Raid is null");
         Validate.notNull(configForServer, "Config is null");
         Validate.notNull(user, "User is null");
-        final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets(configForServer.getRegion());
+        final Set<PokemonTrackingTarget> trackingTargets = getTrackingTargets();
         for (TrackingTarget t : trackingTargets) {
-            if (t.canHandle(configForServer, user, raid)) {
+            if (t.canHandle(configForServer, user, raid, guild)) {
                 try {
                     t.handle(guild, localeService, configForServer, user, raid, rawMessage);
                 } catch (Throwable e) {
@@ -55,25 +54,25 @@ public class TrackingService {
         }
     }
 
-    public Set<PokemonTrackingTarget> getTrackingTargets(String region) {
+    public Set<PokemonTrackingTarget> getTrackingTargets() {
         if (trackingTargets.size() == 0) {
             // We most likely had a server restart, load saved tracking from database
             for (UserConfig config : userConfigRepository.findAll()) {
                 if (config.getTracking1() != null) {
-                    trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
+                    trackingTargets.add(new PokemonTrackingTarget(config.getId(),
                             pokemonRepository.search(config.getTracking1(), null)));
                 }
                 if (config.getTracking2() != null) {
-                    trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
+                    trackingTargets.add(new PokemonTrackingTarget(config.getId(),
                             pokemonRepository.search(config.getTracking2(), null)));
                 }
                 if (config.getTracking3() != null) {
-                    trackingTargets.add(new PokemonTrackingTarget(region, config.getId(),
+                    trackingTargets.add(new PokemonTrackingTarget(config.getId(),
                             pokemonRepository.search(config.getTracking3(), null)));
                 }
             }
         }
-        return trackingTargets.stream().filter(t -> t.getRegion().equalsIgnoreCase(region)).collect(Collectors.toSet());
+        return trackingTargets;
     }
 
     public void clearCache() {
@@ -84,9 +83,9 @@ public class TrackingService {
         Validate.notNull(pokemon, "Pokemon");
         Validate.notNull(user, "User");
         Validate.notNull(config, "Config");
-        final String region = config.getRegion();
-        PokemonTrackingTarget trackingTarget = new PokemonTrackingTarget(region, user.getId(), pokemon);
-        if (getTrackingTargets(region).contains(trackingTarget)) {
+
+        PokemonTrackingTarget trackingTarget = new PokemonTrackingTarget(user.getId(), pokemon);
+        if (getTrackingTargets().contains(trackingTarget)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_EXISTS,
                     localeService.getLocaleForUser(user)));
         }
@@ -112,7 +111,7 @@ public class TrackingService {
     }
 
     public void removeForUser(PokemonTrackingTarget trackingTarget, User user) {
-        if (!getTrackingTargets(trackingTarget.getRegion()).contains(trackingTarget)) {
+        if (!getTrackingTargets().contains(trackingTarget)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.TRACKING_NOT_EXISTS,
                     localeService.getLocaleForUser(user)));
         }

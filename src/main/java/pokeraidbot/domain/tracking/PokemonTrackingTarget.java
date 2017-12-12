@@ -16,21 +16,14 @@ import java.util.Locale;
 
 public class PokemonTrackingTarget implements TrackingTarget, Comparable<PokemonTrackingTarget> {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(PokemonTrackingTarget.class);
-    private String region;
     private String userId;
     private Pokemon pokemon;
 
-    public PokemonTrackingTarget(String region, String userId, Pokemon pokemon) {
-        Validate.notEmpty(region, "Region is empty!");
+    public PokemonTrackingTarget(String userId, Pokemon pokemon) {
         Validate.notEmpty(userId, "User ID is empty!");
         Validate.notNull(pokemon, "Pokemon is null!");
-        this.region = region;
         this.userId = userId;
         this.pokemon = pokemon;
-    }
-
-    public String getRegion() {
-        return region;
     }
 
     public String getUserId() {
@@ -68,15 +61,13 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
 
         PokemonTrackingTarget that = (PokemonTrackingTarget) o;
 
-        if (region != null ? !region.equals(that.region) : that.region != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         return pokemon != null ? pokemon.equals(that.pokemon) : that.pokemon == null;
     }
 
     @Override
     public int hashCode() {
-        int result = region != null ? region.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (pokemon != null ? pokemon.hashCode() : 0);
         return result;
     }
@@ -84,8 +75,7 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
     @Override
     public String toString() {
         return "PokemonTrackingTarget{" +
-                "region='" + region + '\'' +
-                ", userId='" + userId + '\'' +
+                "userId='" + userId + '\'' +
                 ", pokemon='" + pokemon.getName() + '\'' +
                 '}';
     }
@@ -96,17 +86,30 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
     }
 
     @Override
-    public boolean canHandle(Config config, User user, Raid raid) {
-        if (config == null || user == null || raid == null) {
+    public boolean canHandle(Config config, User user, Raid raid, Guild guild) {
+        if (config == null || user == null || raid == null || guild == null) {
             LOGGER.debug("Returning tracker can't handle this, because some input is null. Config: " +
-                    config + ", User: " + (user == null ? "null" : user.getName()) + ", Raid: " + raid);
+                    config + ", User: " + (user == null ? "null" : user.getName()) + ", Raid: " + raid +
+                    ", Guild: " + guild);
             return false;
         }
         if (!config.useBotIntegration() && user.isBot()) {
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("Skipping, since server has no bot integration and message is from a bot.");
+            }
             return false; // Skip bot messages
         }
         if (user.getId().equals(userId)) {
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("Skipping, since this is user's own raid.");
+            }
             return false; // Skip raids user created
+        }
+        if (guild.getMemberById(this.userId) == null) {
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("Skipping, since user with this tracking is not a member of server " + guild.getName());
+            }
+            return false; // Skip raids for guilds where user is not a member
         }
 
         boolean raidIsForPokemon =
@@ -138,7 +141,7 @@ public class PokemonTrackingTarget implements TrackingTarget, Comparable<Pokemon
         final String commandInitiator = user.getName();
         final Locale locale = localeService.getLocaleForUser(user);
 
-        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, inputMessage,
+        final String message = localeService.getMessageFor(LocaleService.TRACKED_RAID, locale, guild.getName(),
                 commandInitiator, raid.toString(locale));
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Sending DM to user with ID " + userId + " for tracked pokemon " + pokemon.getName());

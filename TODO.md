@@ -14,7 +14,7 @@ be able to do this if no people signed up for the group
 
 Discussion:
 
-- 
+* !raid track handling should be smarter for people who are on several servers (?)
 
 Experiment with:
 

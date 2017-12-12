@@ -6,7 +6,6 @@ import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.domain.tracking.PokemonTrackingTarget;
 import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
