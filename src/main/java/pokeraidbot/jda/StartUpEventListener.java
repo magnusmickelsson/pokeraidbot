@@ -78,23 +78,6 @@ public class StartUpEventListener implements EventListener {
                         getAndAttachToGroupMessageIfItExists(guild, config, group);
                     }
                 }
-
-                // Try to resend last message and catch it - as part of tests
-//                if (guild.getName().toLowerCase().contains("pokeraidbot")) {
-//                    final TextChannel textChannel = guild.getTextChannels().stream().filter(
-//                            c -> c.getName().toLowerCase().contains("general")).findFirst().get();
-//                    try {
-//                        textChannel.getHistory().retrievePast(1).queue(l -> {
-//                            l.stream().forEach(m -> textChannel.sendMessage(m).queue(msg -> {
-//                                System.out.println("Message sent: " + msg);
-//                            }, msg -> {
-//                                System.out.println("Failed to send message: " + msg);
-//                            }));
-//                        });
-//                    } catch (Throwable t) {
-//                        System.out.println("Error: " + t.getMessage());
-//                    }
-//                }
             }
         }
     }

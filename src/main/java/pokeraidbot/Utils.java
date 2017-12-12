@@ -277,7 +277,7 @@ public class Utils {
         return isRaidExPokemon(raid.getPokemon().getName());
     }
 
-    private static String preProcessTimeString(String timeString) {
+    public static String preProcessTimeString(String timeString) {
         if (timeString != null && timeString.matches("[0-9]{3,4}")) {
             return new StringBuilder(timeString).insert(timeString.length()-2, ":").toString();
         } else {
