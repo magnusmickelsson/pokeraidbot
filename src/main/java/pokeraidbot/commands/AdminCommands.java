@@ -148,16 +148,20 @@ public class AdminCommands extends Command {
                     event.reply("Bad syntax, should be something like: !raid admin member {userid}");
                     return;
                 } else {
+                    StringBuilder sb = new StringBuilder();
                     final JDA bot = botService.getBot();
                     final List<Guild> guilds = bot.getGuilds();
+                    sb.append("User with ID ").append(args[0]).append(" is a member of the following servers:\n\n");
+                    if (guilds.size() == 0) {
+                        sb.append("-");
+                    }
                     for (Guild guild : guilds) {
                         final Member memberById = guild.getMemberById(args[0]);
                         if (memberById != null) {
-                            event.reply("User is a member of server " + guild.getName());
-                        } else {
-                            event.reply("User is not a member of server " + guild.getName());
+                            sb.append(guild.getName()).append("\n");
                         }
                     }
+                    event.reply(sb.toString());
                     return;
                 }
             } else if (event.getArgs().startsWith("guilds")) {

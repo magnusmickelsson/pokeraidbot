@@ -34,15 +34,6 @@ Fix, misc:
 
 * Uniqueconstraints to prevent in database that the same user can signup more than once for a certain raid.
 
-Users who may have messed up config:
-
-Member with ID 153630267062484992 doesn't exist for server Pokemon go Uppsala!
-Member with ID 357607248102686731 doesn't exist for server Pokemon go Uppsala!
-Member with ID 210082881966571532 doesn't exist for server Pokemon go Uppsala!
-Member with ID 235136531247923200 doesn't exist for server Pokemon go Uppsala!
-Member with ID 353156035403448321 doesn't exist for server Pokemon go Uppsala!
-Member with ID 364848562091327498 doesn't exist for server Pokemon go Uppsala!
-
 Do, features:
 
 * !raid change remove {gym} -> !raid remove raid {gym}

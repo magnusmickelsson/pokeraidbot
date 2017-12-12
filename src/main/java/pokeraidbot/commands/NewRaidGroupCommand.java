@@ -373,7 +373,7 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         } else {
             descriptionAppendixText = "- " + handleSignUpText;
         }
-        embedBuilder.setDescription("Start: " + printTimeIfSameDay(startAt) + " " + descriptionAppendixText);
+        embedBuilder.setDescription("**Start: " + printTimeIfSameDay(startAt) + "** " + descriptionAppendixText);
         embedBuilder.addField(totalSignUpsText + ". " + thoseWhoAreComingText, allSignUpNames, true);
         final String updatedMessage = localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                 locale, LocaleService.asString(delayTimeUnit, locale),

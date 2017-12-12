@@ -106,7 +106,11 @@ public class Config {
     }
 
     public Boolean useBotIntegration() {
-        return useBotIntegration;
+        if (useBotIntegration != null) {
+            return useBotIntegration;
+        } else {
+            return false;
+        }
     }
 
     public void setUseBotIntegration(Boolean useBotIntegration) {
