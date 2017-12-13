@@ -6,6 +6,7 @@ FUTURE (?)
 * Possible to change current tier5 pokemon for bot admin on the fly
 * Minor fixes to i18n texts
 * Fix: If a server admin failed with !raid install, they will no longer spam the log needlessly
+* Gymdata import tool updated to changes at map site
 
 1.6.3 (2017-12-12)
 =====

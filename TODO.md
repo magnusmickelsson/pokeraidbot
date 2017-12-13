@@ -36,6 +36,7 @@ Fix, misc:
 
 Do, features:
 
+* Import new map data for Umeå, Luleå, Norrköping, Uppsala, Vännäs - there have been changes
 * !raid change remove {gym} -> !raid remove raid {gym}
 * Combined command to create raid starting at, and creating a group at the same time
 * !r nest command for reporting rare pokemon nests near gym

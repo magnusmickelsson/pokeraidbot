@@ -3,10 +3,9 @@ ID,LOCATION,NAME,IMAGE
 9669770,"59.857198,17.653145",En Baggis,blah_not_used_yet
 620987,"59.873960000000004,17.637963",Uppsala Mosque,blah_not_used_yet
 9670060,"59.861077,17.627198",Lutande Tornet,blah_not_used_yet
-9669840,"59.85205,17.642775",Wooden Gentleman ,blah_not_used_yet
+9669840,"59.85205,17.642775",Wooden Gentleman,blah_not_used_yet
 3690165,"59.822757,17.682698",Årsringar,blah_not_used_yet
 36553292,"59.703977,17.617829",Minnessten Magnus Brahe,blah_not_used_yet
-3689720,"59.830177000000006,17.65085",Kronparken (Ulleråker),blah_not_used_yet
 3690259,"59.839342,17.647659",Ångströmlaboratoriet,blah_not_used_yet
 3689692,"59.810213999999995,17.703315",Sävja bibliotek,blah_not_used_yet
 36553299,"59.704421,17.624024",Antoniuskors,blah_not_used_yet
@@ -16,10 +15,10 @@ ID,LOCATION,NAME,IMAGE
 12012128,"59.874779000000004,17.623122",Statue near Torbjörnstorg,blah_not_used_yet
 3690121,"59.796865000000004,17.662233",Vad Är Ett Barr,blah_not_used_yet
 690578,"59.953887,17.695205",Lyckebokyrka,blah_not_used_yet
-787543,"59.875108000000004,17.675441",Uppsala Stads Gräns ,blah_not_used_yet
-3689745,"59.82377,17.611050000000002",Tuppen ,blah_not_used_yet
-3690143,"59.817607,17.612025",Pattons Hage ,blah_not_used_yet
-9670027,"59.853851999999996,17.62705",Staty utanför Svedbergs Laboratoriet ,blah_not_used_yet
+787543,"59.875108000000004,17.675441",Uppsala Stads Gräns,blah_not_used_yet
+3689745,"59.82377,17.611050000000002",Tuppen,blah_not_used_yet
+3690143,"59.817607,17.612025",Pattons Hage,blah_not_used_yet
+9670027,"59.853851999999996,17.62705",Staty utanför Svedbergs Laboratoriet,blah_not_used_yet
 9669603,"59.859349,17.631189",Folkvisan,blah_not_used_yet
 3689780,"59.825744,17.61563",I Målarens Trädgård,blah_not_used_yet
 3690017,"59.84817,17.771026",Vedyxa Runsten,blah_not_used_yet
@@ -28,7 +27,7 @@ ID,LOCATION,NAME,IMAGE
 3689735,"59.826023,17.618878000000002",Svamptorget Fountain,blah_not_used_yet
 12011847,"59.898727,17.630633",Östhögen,blah_not_used_yet
 12012607,"59.854842000000005,17.686853",Shurgard,blah_not_used_yet
-45058759,"59.711206,17.799159",Runsten Knivsta ,blah_not_used_yet
+45058759,"59.711206,17.799159",Runsten Knivsta,blah_not_used_yet
 3689969,"59.848361,17.660054000000002",Suspended Cab Convertible,blah_not_used_yet
 3689840,"59.839197999999996,17.608019000000002",Norwell Form Function Träningspark,blah_not_used_yet
 3690059,"59.803913,17.609656",Tomtebo,blah_not_used_yet
@@ -47,7 +46,7 @@ ID,LOCATION,NAME,IMAGE
 3689464,"59.814831999999996,17.658676",Veterinärmedicinskt och husdjursvetenskapligt centrum,blah_not_used_yet
 12012177,"59.883509,17.625308",What Does The Fox Say?,blah_not_used_yet
 12011896,"59.876763000000004,17.673208",Mehrad Khosravani,blah_not_used_yet
-3690239,"59.846118,17.691653",Cows ,blah_not_used_yet
+3690239,"59.846118,17.691653",Cows,blah_not_used_yet
 36553317,"59.724413,17.776155",Art Wall of Angby,blah_not_used_yet
 12013109,"59.886029,17.637362",The Farm,blah_not_used_yet
 3689741,"59.822227,17.615426",Three Legged Rock,blah_not_used_yet
@@ -80,7 +79,7 @@ ID,LOCATION,NAME,IMAGE
 3689554,"59.848154,17.635113",Arm Art,blah_not_used_yet
 3689695,"59.810876,17.698326",Sculpure in Sävja Uppsala,blah_not_used_yet
 49080922,"59.809544,17.628848",Gottsundakyrkans Klocktorn,blah_not_used_yet
-3689932,"59.838281,17.575995",Kulturoasen ,blah_not_used_yet
+3689932,"59.838281,17.575995",Kulturoasen,blah_not_used_yet
 3690293,"59.837694,17.620528",Trollskogen,blah_not_used_yet
 9669496,"59.858098000000005,17.632566999999998",Cathedral of Uppsala,blah_not_used_yet
 9669862,"59.858415,17.682149",Fyrislunds Station,blah_not_used_yet
@@ -91,7 +90,7 @@ ID,LOCATION,NAME,IMAGE
 36553298,"59.704792,17.624",Runsten,blah_not_used_yet
 12011826,"59.877939999999995,17.641837000000002",Supergungan Brf Ling,blah_not_used_yet
 36518801,"59.69189,17.611297",Castle Park,blah_not_used_yet
-43179542,"59.949695,17.695764",Sunbeam Monument ,blah_not_used_yet
+43179542,"59.949695,17.695764",Sunbeam Monument,blah_not_used_yet
 3689923,"59.832096,17.690096",Danmarksvandringen,blah_not_used_yet
 12013205,"59.876022,17.686004",Vaksala Kyrka,blah_not_used_yet
 3689772,"59.834796000000004,17.60763",Stadsskogen,blah_not_used_yet
@@ -100,11 +99,12 @@ ID,LOCATION,NAME,IMAGE
 3690468,"59.817524999999996,17.776235",Linnés Hammarby,blah_not_used_yet
 12012525,"59.857355,17.570846",Vattentrappan,blah_not_used_yet
 9670206,"59.854878,17.65065",Lindvalls Kaffe,blah_not_used_yet
-9669876,"59.865914,17.677639",Bollhunden ,blah_not_used_yet
+9669876,"59.865914,17.677639",Bollhunden,blah_not_used_yet
 3690066,"59.813775,17.667682",Minnessten av Johan Arrhenius,blah_not_used_yet
 12011994,"59.871374,17.65732",Red Sculpture,blah_not_used_yet
 3690242,"59.845266,17.692193",The Giant Card,blah_not_used_yet
 3690279,"59.839107000000006,17.640577",Kronparken (Dag Hammarskölds väg),blah_not_used_yet
+3689720,"59.830177000000006,17.65085",Kronparken (Ulleråker),blah_not_used_yet
 9670031,"59.871026,17.670894",Faces in Tree,blah_not_used_yet
 3690289,"59.838612999999995,17.6247",Valltjärn,blah_not_used_yet
 12012603,"59.858428,17.690457",Livets Ord,blah_not_used_yet
@@ -114,13 +114,13 @@ ID,LOCATION,NAME,IMAGE
 3690136,"59.78914,17.655896000000002",Flottsundskyrkan,blah_not_used_yet
 12012120,"59.885601,17.640701",Stencirklar,blah_not_used_yet
 12013102,"59.883035,17.661403",Utk Hallen,blah_not_used_yet
-3690087,"59.813333,17.621958",Dansande Flickor ,blah_not_used_yet
+3690087,"59.813333,17.621958",Dansande Flickor,blah_not_used_yet
 9669539,"59.85958,17.637185000000002",Speakers Corner,blah_not_used_yet
 9670156,"59.855790999999996,17.680643",Vattenfalls Vattentorn,blah_not_used_yet
 12012773,"59.858266,17.579629",Bell Tower,blah_not_used_yet
 12013051,"59.879192,17.62753",Domarringen Frisbeegolfbana,blah_not_used_yet
 12828383,"59.97204,17.566533",Högsta Bälinge Socken,blah_not_used_yet
-3690221,"59.829296,17.667711",Danmarksvandringen Fågelplattformen ,blah_not_used_yet
+3690221,"59.829296,17.667711",Danmarksvandringen Fågelplattformen,blah_not_used_yet
 491141,"59.888338,17.606751000000003",Gate Tower,blah_not_used_yet
 3690264,"59.839121,17.648262",Betongplatta med tillfällighet,blah_not_used_yet
 3689730,"59.827296000000004,17.683484",Fågelberget,blah_not_used_yet
@@ -157,6 +157,7 @@ ID,LOCATION,NAME,IMAGE
 45058773,"59.723932,17.804012",Särstabadet,blah_not_used_yet
 12012005,"59.874252,17.655153",Möbius Circles,blah_not_used_yet
 3690358,"59.849474,17.58332",Whale Mural,blah_not_used_yet
+12013098,"59.886106000000005,17.655453",Beacon Of Light Östra Nyby,blah_not_used_yet
 49014141,"60.027377,17.553634000000002",Steeple of Björklinge,blah_not_used_yet
 12013049,"59.8771,17.62031",Black Wall Art,blah_not_used_yet
 3689996,"59.848338999999996,17.556432",Curlinghallen,blah_not_used_yet
@@ -169,7 +170,7 @@ ID,LOCATION,NAME,IMAGE
 3689479,"59.791520000000006,17.663425",Fiskar,blah_not_used_yet
 635965,"59.922923,17.496879",Åkerby Bygdegård,blah_not_used_yet
 262891,"59.962509,17.697533",Storvreta Runsten,blah_not_used_yet
-886577,"59.706748000000005,17.538073",Sånkan Rune Stone ,blah_not_used_yet
+886577,"59.706748000000005,17.538073",Sånkan Rune Stone,blah_not_used_yet
 3690376,"59.848467,17.670491",Rostblomma,blah_not_used_yet
 9669710,"59.866015,17.608538",Keyboard in Concrete,blah_not_used_yet
 3690244,"59.844276,17.689476",Suspended Cube,blah_not_used_yet
@@ -186,7 +187,7 @@ ID,LOCATION,NAME,IMAGE
 3690001,"59.85136,17.555919",Mural in Stenhagen,blah_not_used_yet
 3690345,"59.842709,17.591801",Håga Bro,blah_not_used_yet
 9669854,"59.870664,17.623837",Lekande Ringar,blah_not_used_yet
-3690092,"59.81001,17.624385",Kissing ,blah_not_used_yet
+3690092,"59.81001,17.624385",Kissing,blah_not_used_yet
 12012534,"59.854853,17.565289",Orange Arch and Mural,blah_not_used_yet
 493345,"59.927013,17.484094",Åkerby Milsten,blah_not_used_yet
 12012158,"59.871838999999994,17.643487",Klätterställningen i kapellgärdsparken,blah_not_used_yet
@@ -195,7 +196,7 @@ ID,LOCATION,NAME,IMAGE
 3689617,"59.79058,17.658485",Sunnerstaåsen,blah_not_used_yet
 12013045,"59.877946,17.619383",Tunaberg Church,blah_not_used_yet
 3690129,"59.817256,17.688034",Fire truck playground,blah_not_used_yet
-3690194,"59.830703,17.634413",SEB USIF Arena,blah_not_used_yet
+3690194,"59.831019,17.633754",SEB USIF Arena,blah_not_used_yet
 9670245,"59.868208,17.641969",Lekplatsen vid Djäknegatans höghus,blah_not_used_yet
 9669413,"59.853928,17.639017",I Robot,blah_not_used_yet
 3689544,"59.84953,17.636187",1850 MIL,blah_not_used_yet
