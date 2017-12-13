@@ -158,7 +158,8 @@ public class AdminCommands extends Command {
                     for (Guild guild : guilds) {
                         final Member memberById = guild.getMemberById(args[0]);
                         if (memberById != null) {
-                            sb.append(guild.getName()).append("\n");
+                            sb.append(guild.getName()).append(" (Username ").append(memberById.getUser().getName())
+                            .append(")\n");
                         }
                     }
                     event.reply(sb.toString());

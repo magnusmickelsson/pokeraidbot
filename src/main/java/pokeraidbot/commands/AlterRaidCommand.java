@@ -95,7 +95,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void changeOrDeleteGroup(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
+    private void changeOrDeleteGroup(CommandEvent commandEvent, Config config, User user, String userName,
+                                     String[] args) {
         String whatToChangeTo;
         StringBuilder gymNameBuilder;
         String gymName;
@@ -127,7 +128,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             final Set<RaidGroup> groups = raidRepository.getGroups(raid);
             verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
             RaidGroup theGroupToDelete = getGroupToDelete(user, existingGroupTimeIfAvailable, groups);
-            assertPermissionToManageThisGroup(user, theGroupToDelete);
+            assertPermissionToManageThisGroup(user, theGroupToDelete, commandEvent, config);
             NewRaidGroupCommand.cleanUpGroupMessageAndEntity(commandEvent.getChannel(), raid.getId(),
                     listener, raidRepository, botService, theGroupToDelete.getId(), raid);
             replyBasedOnConfig(config, commandEvent, "Grupp borttagen. Eventuella anmälningar finns kvar.");
@@ -143,13 +144,25 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     }
 
     private RaidGroup getGroupToDelete(User user, LocalTime existingGroupTimeIfAvailable, Set<RaidGroup> groups) {
-        RaidGroup theGroupToDelete;
+        RaidGroup theGroupToDelete = null;
         if (groups.size() > 1 && (existingGroupTimeIfAvailable == null)) {
             // todo: i18n
             throw new UserMessedUpException(user, "Det finns flera grupper för denna raid. " +
                     "Använd *!raid change group remove {grupptid} {gym}* för att ta bort gruppen.");
+        } else if (groups.size() == 1) {
+            theGroupToDelete = groups.iterator().next();
+        } else {
+            for (RaidGroup g : groups) {
+                if (g.getStartsAt().toLocalTime().equals(existingGroupTimeIfAvailable)) {
+                    theGroupToDelete = g;
+                    break;
+                }
+            }
         }
-        theGroupToDelete = groups.iterator().next();
+        if (theGroupToDelete == null) {
+            // todo: i18n
+            throw new UserMessedUpException(user, "Kunde inte hitta en grupp att ta bort för denna raid.");
+        }
         return theGroupToDelete;
     }
 
@@ -386,8 +399,9 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void assertPermissionToManageThisGroup(User user, RaidGroup raidGroup) {
-        if (!raidGroup.getCreatorId().equals(user.getId())) {
+    private void assertPermissionToManageThisGroup(User user, RaidGroup raidGroup,
+                                                   CommandEvent commandEvent, Config config) {
+        if (!isUserServerMod(commandEvent, config) && !raidGroup.getCreatorId().equals(user.getId())) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_PERMISSION,
                     localeService.getLocaleForUser(user)));
         }

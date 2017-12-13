@@ -11,6 +11,9 @@ Being developed:
 * !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
 be able to do this if no people signed up for the group
 * !raid change remove should lead to any related group messages being removed as well
+* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
+instant, should be able to reconfigure these in runtime via admin tool.
+* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
 
 Discussion:
 
@@ -36,15 +39,13 @@ Fix, misc:
 
 Do, features:
 
-* !raid change remove {gym} -> !raid remove raid {gym}
+* New source for images of pokemons, old one doesn't have gen 3 sprites
 * Combined command to create raid starting at, and creating a group at the same time
 * !r nest command for reporting rare pokemon nests near gym
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
-* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
-instant, should be able to reconfigure these in runtime via admin tool.
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
 signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
 user name/user id for checking.
@@ -53,6 +54,7 @@ user name/user id for checking.
 
 --- 1.7.0
 
+* !raid change remove {gym} -> !raid remove raid {gym}
 * Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
