@@ -314,15 +314,11 @@ public class GymHuntrRaidEventListener implements EventListener {
 
     protected static String getTier5RaidBossBasedOnSeason(ClockService clockService) {
         String pokemon;
-        final LocalDateTime raikouEndOfSpawn =
-                LocalDateTime.of(LocalDate.of(2017, Month.NOVEMBER, 30),
-                        LocalTime.of(23, 0));
-        // todo: get seasonal boss from database settings for server, and allow admin command to change on the fly
-        // when niantic comes up with new tricks
-        if (clockService.getCurrentDateTime().isAfter(raikouEndOfSpawn)) {
-            pokemon = "Ho-Oh";
-        } else {
+        final List<String> currentTier5Bosses = BotService.currentTier5Bosses;
+        if (currentTier5Bosses == null || currentTier5Bosses.size() != 1){
             pokemon = "Egg5";
+        } else {
+            pokemon = currentTier5Bosses.iterator().next();
         }
         return pokemon;
     }

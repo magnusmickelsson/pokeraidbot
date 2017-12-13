@@ -31,9 +31,9 @@ import pokeraidbot.jda.*;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 
@@ -49,6 +49,10 @@ public class BotService {
     private GymRepository gymRepository;
     private ServerConfigRepository serverConfigRepository;
     private UserConfigRepository userConfigRepository;
+    public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
+    static {
+        currentTier5Bosses.add("Ho-Oh");
+    }
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,
                       PokemonRepository pokemonRepository, PokemonRaidStrategyService raidInfoService,

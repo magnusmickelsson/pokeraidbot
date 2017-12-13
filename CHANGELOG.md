@@ -1,6 +1,12 @@
 FUTURE (?)
 =====
 
+1.6.4 (2017-12-13)
+=====
+* Possible to change current tier5 pokemon for bot admin on the fly
+* Minor fixes to i18n texts
+* Fix: If a server admin failed with !raid install, they will no longer spam the log needlessly
+
 1.6.3 (2017-12-12)
 =====
 * Fix: !raid track didn't work when server had bot integration enabled

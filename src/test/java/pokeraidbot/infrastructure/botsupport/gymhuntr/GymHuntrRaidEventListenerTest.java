@@ -2,12 +2,14 @@ package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
 import org.junit.Before;
 import org.junit.Test;
+import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 
 import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,10 +17,15 @@ import static org.junit.Assert.assertThat;
 public class GymHuntrRaidEventListenerTest {
 
     private ClockService clockService;
+    private String expectedTier5Boss = "Groudon";
 
     @Before
     public void setUp() throws Exception {
         clockService = new ClockService();
+        final CopyOnWriteArrayList<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
+        currentTier5Bosses.add(expectedTier5Boss);
+        BotService.currentTier5Bosses = currentTier5Bosses;
+
     }
 
     @Test
@@ -46,7 +53,7 @@ public class GymHuntrRaidEventListenerTest {
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("Staty utanför Svedbergs Laboratoriet"));
-        assertThat(iterator.next(), is("Ho-Oh"));
+        assertThat(iterator.next(), is(expectedTier5Boss));
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(15).plusSeconds(59).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }
@@ -73,7 +80,7 @@ public class GymHuntrRaidEventListenerTest {
         assertThat(arguments.size(), is(3));
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("T3 Center"));
-        assertThat(iterator.next(), is("Ho-Oh"));
+        assertThat(iterator.next(), is(expectedTier5Boss));
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(31).plusSeconds(10).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }

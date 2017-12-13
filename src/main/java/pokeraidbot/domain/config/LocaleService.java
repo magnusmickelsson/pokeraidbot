@@ -1039,7 +1039,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(MANUAL_TRACKING, Locale.ENGLISH),
                 "**Note: All of these commands must be executed in a server text channel, not in DM!**\n\n" +
-                        "**Track new raids for raid boss (Note: *any tracking is reset on bot restart*):**\n" +
+                        "**Track new raids for raid boss:**\n" +
                         "!raid track *[Pokemon]*\n" +
                         "*Example:* !raid track Entei\n\n" +
                         "**Untrack raids for raid boss:**\n!raid untrack *[Pokemon]*\n" +
@@ -1048,7 +1048,7 @@ public class LocaleService {
         );
         i18nMessages.put(new I18nLookup(MANUAL_TRACKING, SWEDISH),
                 "**OBS: Alla dessa kommandon måste köras i en servers textkanal, inte i DM!**\n\n" +
-                        "**Övervakning av nya raids för pokemon (OBS: *nollställs om botten startas om*):" +
+                        "**Övervakning av nya raids för pokemon:" +
                         "**\n!raid track *[Pokemon]*\n" +
                         "*Exempel:* !raid track Entei\n\n" +
                         "**Ta bort övervakning av nya raids för pokemon:**\n!raid untrack *[Pokemon]*\n" +
