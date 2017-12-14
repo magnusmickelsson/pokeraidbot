@@ -1,5 +1,7 @@
-FUTURE (?)
+1.6.5 (2017-12-14)
 =====
+* Ho-Oh turned off as suggested tier5 boss
+* Logging turned back to info level
 
 1.6.4 (2017-12-13)
 =====

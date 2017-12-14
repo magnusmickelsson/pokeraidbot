@@ -26,8 +26,10 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @Configuration
@@ -42,7 +44,7 @@ public class BotServerMain {
     private String ownerId;
     @Value("${token}")
     private String token;
-    public static final String version = "1.6.4"; // todo: should be filter copied from pom.xml
+    public static final String version = "1.6.5"; // todo: should be filter copied from pom.xml
     public static final int timeToRemoveFeedbackInSeconds = 30; // todo: should be setting?
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {

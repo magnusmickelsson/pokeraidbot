@@ -20,7 +20,6 @@ Experiment with:
 
 * Geofence possibility to define areas
 * Be able to subscribe via !raid track to any raid in a certain area
-* Improve !raid overview
 * Read Pokemon go screenshot to create raid automatically (Swepocks)
 * Can we create a map with a certain pokestop as centre and plot all raids in that area around it?
 * Ability to create channels on the fly to put certain raids in
@@ -36,10 +35,9 @@ Fix, misc:
 
 Do, features:
 
-* Import new map data for Umeå, Luleå, Norrköping, Uppsala, Vännäs - there have been changes
+* Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * !raid change remove {gym} -> !raid remove raid {gym}
 * Combined command to create raid starting at, and creating a group at the same time
-* !r nest command for reporting rare pokemon nests near gym
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
@@ -54,6 +52,7 @@ user name/user id for checking.
 
 --- 1.7.0
 
+* !r nest command for reporting rare pokemon nests near gym
 * Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
