@@ -22,6 +22,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.6.0-" + BotServerMain.version + ":**\n\n" +
+                    "- Groudon ny default tier5-raidboss 2017-12-15\n" +
                     "- Ho-Oh är inte längre default tier5-raidboss 2017-12-14\n" +
                     "- Möjligt för bot admin att ändra nuvarande tier5 boss i runtime\n" +
                     "- Mindre korrigering av i18n texter\n" +
@@ -42,6 +43,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "- Fix: EX raids kommer inte längre skapas via botintegration";
         } else {
             message = "**New in 1.6.0-" + BotServerMain.version + ":**\n\n" +
+                    "- Groudon new default tier5-raidboss 2017-12-15\n" +
                     "- Ho-Oh no longer default tier 5 boss after 2017-12-14\n" +
                     "- Possible to change current tier5 pokemon for bot admin on the fly\n" +
                     "- Minor fixes to i18n texts\n" +

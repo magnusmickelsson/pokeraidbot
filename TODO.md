@@ -35,6 +35,9 @@ Fix, misc:
 
 Do, features:
 
+* !raid team mystic/valor/instinct - eller om man skriver !raid team, svar med tre emotes - om man klickar en tas klicket bort och
+man får feedback att man valt team
+* Automatically create eggs via bot integration also for tier 4, and hatch when boss spawns
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * !raid change remove {gym} -> !raid remove raid {gym}
 * Combined command to create raid starting at, and creating a group at the same time

@@ -53,8 +53,7 @@ public class BotService {
     private UserConfigRepository userConfigRepository;
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
-        // Ho-Oh expired at 2017-12-14 22:00 CEST
-//        currentTier5Bosses.add("Ho-Oh");
+        currentTier5Bosses.add("Groudon");
     }
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,

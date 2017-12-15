@@ -1,3 +1,7 @@
+1.6.6 (2017-12-15)
+=====
+* Groudon new suggested tier5 boss
+
 1.6.5 (2017-12-14)
 =====
 * Ho-Oh turned off as suggested tier5 boss
