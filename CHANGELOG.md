@@ -1,5 +1,18 @@
-FUTURE (?)
+1.6.6 (2017-12-15)
 =====
+* Groudon new suggested tier5 boss
+
+1.6.5 (2017-12-14)
+=====
+* Ho-Oh turned off as suggested tier5 boss
+* Logging turned back to info level
+
+1.6.4 (2017-12-13)
+=====
+* Possible to change current tier5 pokemon for bot admin on the fly
+* Minor fixes to i18n texts
+* Fix: If a server admin failed with !raid install, they will no longer spam the log needlessly
+* Gymdata import tool updated to changes at map site
 
 1.6.3 (2017-12-12)
 =====

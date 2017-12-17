@@ -2,10 +2,11 @@ package dataimport;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie2;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -40,12 +42,24 @@ public class GymDataImportTool {
             String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1[##split##]0[##split##]1[##split##]1[##split##]1";
             String ann6Cookie = "1";
             String latlngZoomCookie = "14[##split##]59.84869731029538[##split##]17.579755254187045";
-            final DefaultHttpClient httpClient = new DefaultHttpClient();
+            final BasicCookieStore cookieStore = new BasicCookieStore();
+            final CloseableHttpClient httpClient = HttpClientBuilder.create()
+                    .setMaxConnPerRoute(10)
+                    .setMaxConnTotal(10)
+                    .setSSLSocketFactory(new SSLConnectionSocketFactory(SSLContext.getDefault()))
+                    .setConnectionManager(new BasicHttpClientConnectionManager())
+                    .setDefaultCookieStore(cookieStore)
+                    .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+                            "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36")
+                    .disableAutomaticRetries()
+            //                    .disableConnectionState()
+                    .disableContentCompression()
+//                    .disableCookieManagement()
+                    .disableRedirectHandling()
+                    .build();
             RestTemplate restTemplate;
             final HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
             restTemplate = new RestTemplate(requestFactory);
-            final BasicCookieStore cookieStore = new BasicCookieStore();
-            httpClient.setCookieStore(cookieStore);
 
             URI uri;
             String address = "https://www.pokemongomap.info";
@@ -57,16 +71,28 @@ public class GymDataImportTool {
                 throw new RuntimeException("Could not get session cookie from map site!");
             }
             final List<String> cookiesFromServer = responseEntity.getHeaders().get("Set-Cookie");
-            for (String c : cookiesFromServer) {
-                final String[] cookieNamesAndValues = c.split("[=]");
-                final String[] strippedArray = ArrayUtils.removeElements(cookieNamesAndValues, cookieNamesAndValues[0]);
-                final String joinedCookieValue = StringUtils.join(strippedArray);
-                cookieStore.addCookie(new BasicClientCookie2(cookieNamesAndValues[0], joinedCookieValue));
-            }
-            cookieStore.addCookie(new BasicClientCookie2("announcementnews4", ann4Cookie));
-            cookieStore.addCookie(new BasicClientCookie2("mapfilters", mapFiltersCookie));
-            cookieStore.addCookie(new BasicClientCookie2("announcementnews6", ann6Cookie));
-            cookieStore.addCookie(new BasicClientCookie2("latlngzoom", latlngZoomCookie));
+//            for (String c : cookiesFromServer) {
+//                final String[] cookieNamesAndValues = c.split("[=]");
+//                final String[] strippedArray = ArrayUtils.removeElements(cookieNamesAndValues, cookieNamesAndValues[0]);
+//                final String joinedCookieValue = StringUtils.join(strippedArray);
+//                cookieStore.addCookie(new BasicClientCookie2(cookieNamesAndValues[0], joinedCookieValue));
+//            }
+            final BasicClientCookie2 announcementnews6 = new BasicClientCookie2("announcementnews6", ann4Cookie);
+            announcementnews6.setDomain("www.pokemongomap.info");
+            announcementnews6.setPath("/");
+            cookieStore.addCookie(announcementnews6);
+            final BasicClientCookie2 mapfilters = new BasicClientCookie2("mapfilters", mapFiltersCookie);
+            mapfilters.setDomain("www.pokemongomap.info");
+            mapfilters.setPath("/");
+            cookieStore.addCookie(mapfilters);
+            final BasicClientCookie2 announcementnews8 = new BasicClientCookie2("announcementnews8", ann6Cookie);
+            announcementnews8.setDomain("www.pokemongomap.info");
+            announcementnews8.setPath("/");
+            cookieStore.addCookie(announcementnews8);
+            final BasicClientCookie2 latlngzoom = new BasicClientCookie2("latlngzoom", latlngZoomCookie);
+            latlngzoom.setDomain("www.pokemongomap.info");
+            latlngzoom.setPath("/");
+            cookieStore.addCookie(latlngzoom);
 
             // Delays so we don't overload the site and get banned
             Thread.sleep(1000);
@@ -75,17 +101,25 @@ public class GymDataImportTool {
             uri = new URI(address);
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.put("searchloc", asList(location));
+            body.put("fromlat", asList("59.854661870313116"));
+            body.put("tolat", asList("59.85956994867656"));
+            body.put("fromlng", asList("17.624897788330145"));
+            body.put("tolng", asList("17.63279421166999"));
             final LinkedMultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             headers.put("DNT", asList("1"));
             headers.put("Accept", asList("application/json", "text/javascript", "*/*; q=0.01"));
             headers.put("Content-Type", asList("application/x-www-form-urlencoded; charset=UTF-8"));
+//            headers.put(":authority:", asList("www.pokemongomap.info"));
+//            headers.put(":path:", asList("/includes/geocode.php"));
+//            headers.put(":scheme:", asList("https"));
+            headers.put("upgrade-insecure-requests", asList("1"));
             headers.put("Host", asList("www.pokemongomap.info"));
             headers.put("Origin", asList("https://www.pokemongomap.info"));
             headers.put("Referer", asList("www.pokemongomap.info/"));
             headers.put("Connection", asList("keep-alive"));
             headers.put("X-Requested-With", asList("XMLHttpRequest"));
-            headers.put("User-Agent", asList("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, " +
-                    "like Gecko) Chrome/60.0.3112.113 Safari/537.36"));
+//            headers.put("User-Agent", asList("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, " +
+//                    "like Gecko) Chrome/60.0.3112.113 Safari/537.36"));
             headers.put("Accept-Encoding", asList(""));
             headers.put("Accept-Language", asList("sv-SE","sv;q=0.8","en-US;q=0.6","en;q=0.4","nb;q=0.2","de;q=0.2"));
 
@@ -98,7 +132,7 @@ public class GymDataImportTool {
 
             Thread.sleep(2000);
 
-            String pokeStopUrl = "https://www.pokemongomap.info/includes/uy22ewsd1.php";
+            String pokeStopUrl = "https://www.pokemongomap.info/includes/it55nmsq9.php";
             address = new String(pokeStopUrl);
             headers.put("Accept", asList("*/*"));
             body = new LinkedMultiValueMap<>();

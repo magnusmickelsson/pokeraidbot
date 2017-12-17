@@ -54,7 +54,7 @@ public class PokemonVsCommand extends ConfigAwareCommand {
         }
 
         if (maxCp != null) {
-            builder.append("\nMax CP (100% IV): ").append(maxCp).append("\n");
+            builder.append("\nMax CP level 20 (100% IV): ").append(maxCp).append("\n");
         }
 
         replyBasedOnConfig(config, commandEvent, builder.toString());

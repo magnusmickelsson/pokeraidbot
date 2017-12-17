@@ -35,16 +35,53 @@ public class GymRepositoryTest {
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("uppsala")).thenReturn(uppsalaConfig);
         final Config angelholmConfig = new Config("ängelholm", "ängelholm");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("ängelholm")).thenReturn(angelholmConfig);
+        final Config luleConfig = new Config("luleå", "luleå");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("luleå")).thenReturn(luleConfig);
+        final Config umeConfig = new Config("umeå", "umeå");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("umeå")).thenReturn(umeConfig);
+        final Config vannasConfig = new Config("vännäs", "vännäs");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("vännäs")).thenReturn(vannasConfig);
+        final Config norrkopingConfig = new Config("norrköping", "norrköping");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("norrköping")).thenReturn(norrkopingConfig);
         final HashMap<String, Config> configMap = new HashMap<>();
         configMap.put("uppsala", uppsalaConfig);
         configMap.put("ängelholm", angelholmConfig);
+        configMap.put("luleå", luleConfig);
+        configMap.put("umeå", umeConfig);
+        configMap.put("vännäs", vannasConfig);
+        configMap.put("norrköping", norrkopingConfig);
         when(SERVER_CONFIG_REPOSITORY.getAllConfig()).thenReturn(configMap);
         repo = TestServerMain.getGymRepositoryForConfig(localeService, SERVER_CONFIG_REPOSITORY);
     }
 
     @Test
-    public void allGymsAreRead() {
+    public void allGymsAreReadForUppsala() {
         assertThat(repo.getAllGymsForRegion("uppsala").size(), is(186));
+    }
+
+    @Test
+    public void allGymsAreReadForAngelholm() {
+        assertThat(repo.getAllGymsForRegion("ängelholm").size(), is(32));
+    }
+
+    @Test
+    public void allGymsAreReadForLulea() {
+        assertThat(repo.getAllGymsForRegion("luleå").size(), is(51));
+    }
+
+    @Test
+    public void allGymsAreReadForUmea() {
+        assertThat(repo.getAllGymsForRegion("umeå").size(), is(71));
+    }
+
+    @Test
+    public void allGymsAreReadForVannas() {
+        assertThat(repo.getAllGymsForRegion("vännäs").size(), is(9));
+    }
+
+    @Test
+    public void allGymsAreReadForNorrkoping() {
+        assertThat(repo.getAllGymsForRegion("norrköping").size(), is(96));
     }
 
     @Test

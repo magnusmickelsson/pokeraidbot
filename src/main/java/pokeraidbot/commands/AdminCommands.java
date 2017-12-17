@@ -25,7 +25,9 @@ import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AdminCommands extends Command {
     private final UserConfigRepository userConfigRepository;
@@ -62,8 +64,9 @@ public class AdminCommands extends Command {
                     String.valueOf(user.getId()));
             return;
         } else {
-            if (event.getArgs().startsWith("userconfig")) {
-                String userId = event.getArgs().replaceAll("userconfig\\s{1,3}", "");
+            final String eventArgs = event.getArgs();
+            if (eventArgs.startsWith("userconfig")) {
+                String userId = eventArgs.replaceAll("userconfig\\s{1,3}", "");
                 final UserConfig userConfig = userConfigRepository.findOne(userId);
                 if (userConfig == null) {
                     event.replyInDM("No user with ID " + userId);
@@ -73,7 +76,7 @@ public class AdminCommands extends Command {
                     event.replyInDM("Removed user configuration for user with ID " + userId);
                     return;
                 }
-            } else if (event.getArgs().startsWith("permissions")) {
+            } else if (eventArgs.startsWith("permissions")) {
                 final JDA bot = botService.getBot();
                 final List<Guild> guilds = bot.getGuilds();
                 StringBuilder sb = new StringBuilder();
@@ -93,17 +96,17 @@ public class AdminCommands extends Command {
                 }
                 event.replyInDM(sb.toString());
                 return;
-            } else if (event.getArgs().startsWith("clear tracking")) {
+            } else if (eventArgs.startsWith("clear tracking")) {
                 trackingCommandListener.clearCache();
                 event.replyInDM("Cleared tracking cache.");
                 return;
-            } else if (event.getArgs().startsWith("announce")) {
+            } else if (eventArgs.startsWith("announce")) {
                 final JDA bot = botService.getBot();
                 final List<Guild> guilds = bot.getGuilds();
                 StringBuilder sb = new StringBuilder();
                 for (Guild guild : guilds) {
                     try {
-                        guild.getDefaultChannel().sendMessage(event.getArgs()
+                        guild.getDefaultChannel().sendMessage(eventArgs
                                 .replaceAll("announce\\s{1,3}", "")).queue();
                         sb.append("Sent message for guild ").append(guild.getName()).append("\n");
                     } catch (Throwable t) {
@@ -113,8 +116,8 @@ public class AdminCommands extends Command {
                 }
                 event.replyInDM(sb.toString());
                 return;
-            } else if (event.getArgs().startsWith("ismember")) {
-                String userIdAndGuildName = event.getArgs().replaceAll("ismember\\s{1,3}", "");
+            } else if (eventArgs.startsWith("ismember")) {
+                String userIdAndGuildName = eventArgs.replaceAll("ismember\\s{1,3}", "");
                 String[] args = userIdAndGuildName.split(" ");
                 if (args.length < 2) {
                     event.reply("Bad syntax, should be something like: !raid admin ismember {userid} {guildname}");
@@ -141,8 +144,8 @@ public class AdminCommands extends Command {
                     }
                     return;
                 }
-            } else if (event.getArgs().startsWith("member")) {
-                String userIdAndGuildName = event.getArgs().replaceAll("member\\s{1,3}", "");
+            } else if (eventArgs.startsWith("member")) {
+                String userIdAndGuildName = eventArgs.replaceAll("member\\s{1,3}", "");
                 String[] args = userIdAndGuildName.split(" ");
                 if (args.length < 1 || args.length > 2) {
                     event.reply("Bad syntax, should be something like: !raid admin member {userid}");
@@ -165,7 +168,7 @@ public class AdminCommands extends Command {
                     event.reply(sb.toString());
                     return;
                 }
-            } else if (event.getArgs().startsWith("guilds")) {
+            } else if (eventArgs.startsWith("guilds")) {
                 final JDA bot = botService.getBot();
                 final List<Guild> guilds = bot.getGuilds();
                 StringBuilder sb = new StringBuilder();
@@ -174,10 +177,10 @@ public class AdminCommands extends Command {
                 }
                 event.reply(sb.toString());
                 return;
-            }  else if (event.getArgs().startsWith("test")) {
+            }  else if (eventArgs.startsWith("test")) {
                 final Config configForServer =
                         serverConfigRepository.getConfigForServer(event.getGuild().getName().toLowerCase());
-                String[] args = event.getArgs().replaceAll("test ", "").trim().split(" ");
+                String[] args = eventArgs.replaceAll("test\\s{1,3}", "").trim().split(" ");
                 String pokemon = args[0];
                 LocalDateTime startsAt = LocalDateTime.of(LocalDate.now(),
                         Utils.parseTime(user, args[1], localeService));
@@ -191,10 +194,22 @@ public class AdminCommands extends Command {
                         event.getMessage().getRawContent());
                 event.reply("Bot created your test raid: " + createdRaid);
                 return;
+            } else if (eventArgs.startsWith("tier5")) {
+                String[] bosses = eventArgs.replaceAll("tier5\\s{1,3}", "").trim().split(";");
+                if (bosses == null || bosses.length < 1) {
+                    event.reply("Bad syntax, should be: !raid admin tier5 Boss1;Boss2;Boss3");
+                    return;
+                } else {
+                    final CopyOnWriteArrayList<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
+                    currentTier5Bosses.addAll(Arrays.asList(bosses));
+                    BotService.currentTier5Bosses = currentTier5Bosses;
+                    event.reply("Set current tier5 boss list: " + StringUtils.join(bosses, ", "));
+                    return;
+                }
             }
         }
         event.reply("No such command. Existing ones are:\n- userconfig {userid}\n- permissions\n" +
                 "- clear tracking\n- announce {message}\n- ismember {userid} {guild name}\n- guilds\n" +
-                " - member {userid}\n - test {pokemon} {start time} {gym}");
+                " - member {userid}\n - test {pokemon} {start time} {gym}\n- tier5 {list of bosses ;-separated}");
     }
 }

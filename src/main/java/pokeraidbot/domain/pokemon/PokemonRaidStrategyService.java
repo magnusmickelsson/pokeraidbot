@@ -201,7 +201,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Absol", "1303", 4);
         populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
         // Tier 5
-        populateRaidInfoForBoss(pokemonRepository, "Groudon", "2785", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
-import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -15,13 +14,10 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
-import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
 
-import static pokeraidbot.Utils.getStartOfRaid;
-import static pokeraidbot.Utils.printTime;
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid status [Pokestop name]
@@ -94,7 +90,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("\n*").append(raidGym.getName());
+                    exRaids.append("*").append(raidGym.getName());
                     exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),

@@ -22,14 +22,14 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.net.SocketTimeoutException;
-import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import static pokeraidbot.Utils.getStartOfRaid;
-import static pokeraidbot.Utils.printTime;
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import static pokeraidbot.Utils.*;
 
 /**
  * !raid overview [Pokestop name]
@@ -218,9 +218,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("\n*").append(raidGym.getName());
-//                            .append(" (")
-//                            .append(raidBoss.getName()).append(")")
+                    exRaids.append("*").append(raidGym.getName());
                     exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),

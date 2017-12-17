@@ -20,15 +20,26 @@ Water Gun
 Hydro Pump
 Aqua Tail
 Good Counters
-Articuno
+Dragonite
 
-Articuno
+Dragonite
 Quick Move	Charge Move
-Frost Breath
-Ice Beam
-Ho-Oh
+Dragon Breath
+Dragon Tail
+Dragon Claw
+Outrage
+Hurricane
+Venusaur
 
-Ho-Oh
+Venusaur
 Quick Move	Charge Move
-Extrasensory
+Razor Leaf
+Vine Whip
 Solar Beam
+Petal Blizzard
+Feraligatr
+
+Feraligatr
+Quick Move	Charge Move
+Water Gun
+Hydro Pump
