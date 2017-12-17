@@ -20,7 +20,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class Utils {
     public static final DateTimeFormatter timeParseFormatter = DateTimeFormatter.ofPattern("H[:][.]mm");
@@ -265,8 +267,7 @@ public class Utils {
     }
 
     public static String getPokemonIcon(Pokemon pokemon) {
-        return "https://raw.githubusercontent.com/kvangent/PokeAlarm/master/icons/" +
-                pokemon.getNumber() + ".png";
+        return "https://pokemongohub.net/sprites/normal/" + pokemon.getNumber() + ".png";
     }
 
     public static String[] prepareArguments(CommandEvent commandEvent) {

@@ -4,7 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
--
+* Correct pictures for pokemon, including gen 3
 
 Being developed:
 
