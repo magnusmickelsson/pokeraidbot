@@ -5,6 +5,8 @@ See [Changelog](CHANGELOG.md).
 Needs testing/keeping track of:
 
 * Correct pictures for pokemon, including gen 3
+* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
+* !r sg (mon) (time) (gym) - Combined command to create raid starting at, and creating a group at the same time
 
 Being developed:
 
@@ -13,7 +15,6 @@ be able to do this if no people signed up for the group
 * !raid change remove should lead to any related group messages being removed as well
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
-* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
 
 Discussion:
 
@@ -38,12 +39,8 @@ Fix, misc:
 
 Do, features:
 
-* !raid team mystic/valor/instinct - eller om man skriver !raid team, svar med tre emotes - om man klickar en tas klicket bort och
-man får feedback att man valt team
-* Automatically create eggs via bot integration also for tier 4, and hatch when boss spawns
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * !raid change remove {gym} -> !raid remove raid {gym}
-* Combined command to create raid starting at, and creating a group at the same time
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
@@ -93,6 +90,7 @@ time (equalling no time to "now", if raid is active) to signup using that?
 
 Maybe, features:
 
+* Automatically create eggs via bot integration also for tier 4, and hatch when boss spawns
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:
     * Raid functions like create, list can be set to be admin only
