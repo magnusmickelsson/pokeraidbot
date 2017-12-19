@@ -2,6 +2,8 @@ package dataimport;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -21,7 +23,6 @@ import javax.net.ssl.SSLContext;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -32,14 +33,17 @@ public class GymDataImportTool {
 
     public static void main(String[] args) {
         if (args == null || args.length > 2 || args.length < 2) {
-            System.out.println("Wrong use of the import tool! Run " + GymDataImportTool.class.getSimpleName() + " with parameters: [side of map cube, in kilometres] [the location to search for]");
+            System.out.println("Wrong use of the import tool! Run " + GymDataImportTool.class.getSimpleName() +
+                    " with parameters: [side of map cube, in kilometres] [the location to search for]");
+            throw new RuntimeException("Error!");
         }
         FileOutputStream fis = null;
         try {
-            final String location = args[1];
+            final String location = StringUtils.join(ArrayUtils.removeElements(args, 0), " ");
             final Integer widthCube = new Integer(args[0]);
             String ann4Cookie = "1";
-            String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1[##split##]0[##split##]1[##split##]1[##split##]1";
+            String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1" +
+                    "[##split##]0[##split##]1[##split##]1[##split##]1";
             String ann6Cookie = "1";
             String latlngZoomCookie = "14[##split##]59.84869731029538[##split##]17.579755254187045";
             final BasicCookieStore cookieStore = new BasicCookieStore();
@@ -52,13 +56,12 @@ public class GymDataImportTool {
                     .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
                             "(KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36")
                     .disableAutomaticRetries()
-            //                    .disableConnectionState()
                     .disableContentCompression()
-//                    .disableCookieManagement()
                     .disableRedirectHandling()
                     .build();
             RestTemplate restTemplate;
-            final HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+            final HttpComponentsClientHttpRequestFactory requestFactory =
+                    new HttpComponentsClientHttpRequestFactory(httpClient);
             restTemplate = new RestTemplate(requestFactory);
 
             URI uri;
@@ -66,17 +69,12 @@ public class GymDataImportTool {
             uri = new URI(address);
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
 
-            System.out.println("Response code for request to get cookies (200 = OK): " + responseEntity.getStatusCode());
+            System.out.println("Response code for request to get cookies (200 = OK): " +
+                    responseEntity.getStatusCode());
             if (responseEntity.getStatusCode() != HttpStatus.OK) {
                 throw new RuntimeException("Could not get session cookie from map site!");
             }
-            final List<String> cookiesFromServer = responseEntity.getHeaders().get("Set-Cookie");
-//            for (String c : cookiesFromServer) {
-//                final String[] cookieNamesAndValues = c.split("[=]");
-//                final String[] strippedArray = ArrayUtils.removeElements(cookieNamesAndValues, cookieNamesAndValues[0]);
-//                final String joinedCookieValue = StringUtils.join(strippedArray);
-//                cookieStore.addCookie(new BasicClientCookie2(cookieNamesAndValues[0], joinedCookieValue));
-//            }
+
             final BasicClientCookie2 announcementnews6 = new BasicClientCookie2("announcementnews6", ann4Cookie);
             announcementnews6.setDomain("www.pokemongomap.info");
             announcementnews6.setPath("/");
@@ -109,17 +107,12 @@ public class GymDataImportTool {
             headers.put("DNT", asList("1"));
             headers.put("Accept", asList("application/json", "text/javascript", "*/*; q=0.01"));
             headers.put("Content-Type", asList("application/x-www-form-urlencoded; charset=UTF-8"));
-//            headers.put(":authority:", asList("www.pokemongomap.info"));
-//            headers.put(":path:", asList("/includes/geocode.php"));
-//            headers.put(":scheme:", asList("https"));
             headers.put("upgrade-insecure-requests", asList("1"));
             headers.put("Host", asList("www.pokemongomap.info"));
             headers.put("Origin", asList("https://www.pokemongomap.info"));
             headers.put("Referer", asList("www.pokemongomap.info/"));
             headers.put("Connection", asList("keep-alive"));
             headers.put("X-Requested-With", asList("XMLHttpRequest"));
-//            headers.put("User-Agent", asList("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, " +
-//                    "like Gecko) Chrome/60.0.3112.113 Safari/537.36"));
             headers.put("Accept-Encoding", asList(""));
             headers.put("Accept-Language", asList("sv-SE","sv;q=0.8","en-US;q=0.6","en;q=0.4","nb;q=0.2","de;q=0.2"));
 
