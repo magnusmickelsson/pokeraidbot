@@ -57,7 +57,6 @@ public class StartRaidAndCreateGroupCommand extends ConcurrencyAndConfigAwareCom
         this.pokemonRaidStrategyService = pokemonRaidStrategyService;
         this.name = "start-group";
         this.aliases = new String[]{"sg", "gs", "group-start"};
-        // todo: fix new help msg
         this.help = localeService.getMessageFor(LocaleService.RAID_CREATE_AND_GROUP_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
         this.raidRepository = raidRepository;

@@ -1,5 +1,5 @@
 {
   "name": "pokeraidbot",
-  "description": "A simple discord bot for pokemon go players. Handles gym map, pokemon info, raid boss counters and raid management. Try !raid usage",
+  "description": "A discord bot for pokemon go raiders. Handles gym maps, raid boss counters and raid management. Try !raid getting-started",
   "addons": []
 }

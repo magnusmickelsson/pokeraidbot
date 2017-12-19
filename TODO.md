@@ -7,9 +7,11 @@ Needs testing/keeping track of:
 * Correct pictures for pokemon, including gen 3
 * Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
 * !r sg (mon) (time) (gym) - Combined command to create raid starting at, and creating a group at the same time
+- note: add to getting-started guide!
 
 Being developed:
 
+* Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
 be able to do this if no people signed up for the group
 * !raid change remove should lead to any related group messages being removed as well
@@ -39,7 +41,6 @@ Fix, misc:
 
 Do, features:
 
-* Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * !raid change remove {gym} -> !raid remove raid {gym}
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
