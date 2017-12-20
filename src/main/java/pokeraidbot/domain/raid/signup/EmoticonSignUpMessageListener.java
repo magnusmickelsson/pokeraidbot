@@ -216,7 +216,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 }
                 if (user != null && t.getMessage() != null) {
                     MessageBuilder messageBuilder = new MessageBuilder();
-                    // todo: turn into message that only the target user can see
                     if (!t.getMessage().contains(user.getAsMention())) {
                         messageBuilder.append(user.getAsMention())
                                 .append(": ");

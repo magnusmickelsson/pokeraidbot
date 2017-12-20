@@ -103,6 +103,7 @@ public class LocaleService {
     public static final String EGG_WRONG_TIER = "EGG_WRONG_TIER";
     public static final String USER_NICK_INVALID = "USER_NICK_INVALID";
     public static final String RAID_CREATE_AND_GROUP_HELP = "RAID_CREATE_AND_GROUP_HELP";
+    public static final String GROUP_DELETED = "GROUP_DELETED";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -173,6 +174,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(GROUP_DELETED, Locale.ENGLISH),
+                "Group deleted, including any signups."
+        );
+        i18nMessages.put(new I18nLookup(GROUP_DELETED, SWEDISH),
+                "Grupp borttagen, inklusive alla eventuella anmälningar."
+        );
         i18nMessages.put(new I18nLookup(NO_SUCH_GROUP, Locale.ENGLISH),
                 "No such group exists."        );
         i18nMessages.put(new I18nLookup(NO_SUCH_GROUP, SWEDISH),
@@ -188,13 +195,12 @@ public class LocaleService {
                         "tillåta att skapa flera grupper per raid per användare igen."
         );
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, Locale.ENGLISH),
-                "There are several groups this user can change for raid %1 - so right now you can't change the time of them. " +
-                        "To be fixed in future releases."
+                "There are several groups this user can change for raid %1 - " +
+                        "Use *!raid change group remove {group starttime} {gym}* to remove the group."
         );
         i18nMessages.put(new I18nLookup(MANY_GROUPS_FOR_RAID, SWEDISH),
                 "Det finns flera grupper denna användare kan ändra för raiden %1 - " +
-                        "just nu kan du bara ändra tid om det finns en av dem. " +
-                        "Kommer fixas i framtida release."
+                        "använd *!raid change group remove {grupptid} {gym}* för att ta bort gruppen."
         );
         i18nMessages.put(new I18nLookup(TIME_NOT_IN_RAID_TIMESPAN, Locale.ENGLISH),
                 "There were several possible groups to change, so couldn't perform this change. " +

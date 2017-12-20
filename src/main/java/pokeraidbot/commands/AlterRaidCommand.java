@@ -26,6 +26,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import static pokeraidbot.Utils.*;
@@ -110,28 +111,23 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         } catch (UserMessedUpException e) {
             // Input was not a time
         }
-        int gymIndex = 2;
-        if (existingGroupTimeIfAvailable != null) {
-            gymIndex = 3;
-        }
-        gymNameBuilder = new StringBuilder();
-        for (int i = gymIndex; i < args.length; i++) {
-            gymNameBuilder.append(args[i]).append(" ");
-        }
-        gymName = gymNameBuilder.toString().trim();
+        gymName = getGymName(args, existingGroupTimeIfAvailable);
         gym = gymRepository.search(user, gymName, config.getRegion());
         raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         if (whatToChangeTo.equals("remove")) {
-            final Set<EmoticonSignUpMessageListener> listenersToCheck =
-                    getListenersToCheck(commandEvent, config, user, raid);
-            EmoticonSignUpMessageListener listener = listenersToCheck.iterator().next();
             final Set<RaidGroup> groups = raidRepository.getGroups(raid);
+            final Set<EmoticonSignUpMessageListener> listenersToCheck =
+                    getListenersToCheck(commandEvent, config, user, raid, groups);
+            EmoticonSignUpMessageListener listener = listenersToCheck.iterator().next();
             verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
-            RaidGroup theGroupToDelete = getGroupToDelete(user, existingGroupTimeIfAvailable, groups);
+            RaidGroup theGroupToDelete = getGroupToDelete(user, existingGroupTimeIfAvailable, groups, raid);
             assertPermissionToManageThisGroup(user, theGroupToDelete, commandEvent, config);
-            NewRaidGroupCommand.cleanUpGroupMessageAndEntity(commandEvent.getChannel(), raid.getId(),
-                    listener, raidRepository, botService, theGroupToDelete.getId(), raid);
-            replyBasedOnConfig(config, commandEvent, "Grupp borttagen. Eventuella anmälningar finns kvar.");
+            NewRaidGroupCommand.cleanUpRaidGroupAndDeleteSignUpsIfPossible(commandEvent.getChannel(),
+                    theGroupToDelete.getStartsAt(), raid.getId(),
+                    listener, raidRepository, botService, theGroupToDelete.getId());
+            final String message = localeService.getMessageFor(LocaleService.GROUP_DELETED,
+                    localeService.getLocaleForUser(user));
+            replyBasedOnConfig(config, commandEvent, message);
         } else {
             LocalTime newTime = parseTime(user, whatToChangeTo, localeService);
             LocalDateTime newDateTime = LocalDateTime.of(raid.getEndOfRaid().toLocalDate(), newTime);
@@ -143,12 +139,28 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         removeOriginMessageIfConfigSaysSo(config, commandEvent);
     }
 
-    private RaidGroup getGroupToDelete(User user, LocalTime existingGroupTimeIfAvailable, Set<RaidGroup> groups) {
+    private String getGymName(String[] args, LocalTime existingGroupTimeIfAvailable) {
+        StringBuilder gymNameBuilder;
+        String gymName;
+        int gymIndex = 2;
+        if (existingGroupTimeIfAvailable != null) {
+            gymIndex = 3;
+        }
+        gymNameBuilder = new StringBuilder();
+        for (int i = gymIndex; i < args.length; i++) {
+            gymNameBuilder.append(args[i]).append(" ");
+        }
+        gymName = gymNameBuilder.toString().trim();
+        return gymName;
+    }
+
+    private RaidGroup getGroupToDelete(User user, LocalTime existingGroupTimeIfAvailable, Set<RaidGroup> groups,
+                                       Raid raid) {
         RaidGroup theGroupToDelete = null;
+        final Locale localeForUser = localeService.getLocaleForUser(user);
         if (groups.size() > 1 && (existingGroupTimeIfAvailable == null)) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "Det finns flera grupper för denna raid. " +
-                    "Använd *!raid change group remove {grupptid} {gym}* för att ta bort gruppen.");
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.MANY_GROUPS_FOR_RAID,
+                    localeForUser, raid.toString(localeForUser)));
         } else if (groups.size() == 1) {
             theGroupToDelete = groups.iterator().next();
         } else {
@@ -160,15 +172,18 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             }
         }
         if (theGroupToDelete == null) {
-            // todo: i18n
-            throw new UserMessedUpException(user, "Kunde inte hitta en grupp att ta bort för denna raid.");
+            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NO_SUCH_GROUP,
+                    localeForUser));
         }
         return theGroupToDelete;
     }
 
-    private boolean changeGroupTime(CommandEvent commandEvent, Config config, User user, String userName, Raid raid, LocalDateTime newDateTime) {
+    private boolean changeGroupTime(CommandEvent commandEvent, Config config, User user, String userName, Raid raid,
+                                    LocalDateTime newDateTime) {
         boolean groupChanged = false;
-        final Set<EmoticonSignUpMessageListener> listenersToCheck = getListenersToCheck(commandEvent, config, user, raid);
+        final Set<RaidGroup> groups = raidRepository.getGroups(raid);
+        final Set<EmoticonSignUpMessageListener> listenersToCheck =
+                getListenersToCheck(commandEvent, config, user, raid, groups);
 
         for (EmoticonSignUpMessageListener listener : listenersToCheck) {
             final String raidId = raid.getId();
@@ -212,9 +227,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     }
 
     private Set<EmoticonSignUpMessageListener> getListenersToCheck(CommandEvent commandEvent, Config config,
-                                                                   User user, Raid raid) {
-        Set<EmoticonSignUpMessageListener> listenersToCheck;
-        listenersToCheck = getListenersForUser(user, raid);
+                                                                   User user, Raid raid, Set<RaidGroup> raidGroups) {
+        Set<EmoticonSignUpMessageListener> listenersToCheck = getListenersForUser(user, raid);
 
         // If admin doesn't have his/her own group, they can change group for others, as long as it's just one
         // to choose from. Will be fixed later on
@@ -222,16 +236,27 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             listenersToCheck = getListenersAdminCanChange(commandEvent, config, raid);
         }
 
+        assertOkListenerToChange(user, raid, raidGroups, listenersToCheck);
+        return listenersToCheck;
+    }
+
+    private void assertOkListenerToChange(User user, Raid raid, Set<RaidGroup> raidGroups,
+                                          Set<EmoticonSignUpMessageListener> listenersToCheck) {
         if (listenersToCheck.size() > 1) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.MANY_GROUPS_FOR_RAID,
                             localeService.getLocaleForUser(user), String.valueOf(raid)));
-        } else if (listenersToCheck.size() == 0) { // todo: could also be due to raid not having any groups
-            throw new UserMessedUpException(user,
-                    localeService.getMessageFor(LocaleService.NO_PERMISSION,
-                            localeService.getLocaleForUser(user)));
+        } else if (listenersToCheck.size() == 0) {
+            if (raidGroups != null && raidGroups.size() > 0) {
+                throw new UserMessedUpException(user,
+                        localeService.getMessageFor(LocaleService.NO_PERMISSION,
+                                localeService.getLocaleForUser(user)));
+            } else {
+                throw new UserMessedUpException(user,
+                        localeService.getMessageFor(LocaleService.NO_SUCH_GROUP,
+                                localeService.getLocaleForUser(user)));
+            }
         }
-        return listenersToCheck;
     }
 
     private Set<EmoticonSignUpMessageListener> getListenersAdminCanChange(CommandEvent commandEvent,

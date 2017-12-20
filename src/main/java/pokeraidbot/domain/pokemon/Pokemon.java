@@ -98,7 +98,4 @@ public class Pokemon {
     public boolean isEgg() {
         return StringUtils.containsIgnoreCase(name, "egg") && name.matches("[Ee][Gg][Gg][1-5]");
     }
-
-    // todo: getWeaknesses(Pokemon)
-    // todo: hasWeaknessFor(Type)
 }

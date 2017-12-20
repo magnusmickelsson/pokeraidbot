@@ -2,6 +2,7 @@ package pokeraidbot.domain.raid;
 
 import net.dv8tion.jda.core.entities.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class RaidStatisticsTest {
     }
 
     @Test
+    @Ignore //  Not done
     public void updateStatisticsWithRaid() throws Exception {
         RaidStatistics statistics = new RaidStatistics();
         Raid raid = new Raid(pokemonRepository.getByName("Groudon"), clockService.getCurrentDateTime(),

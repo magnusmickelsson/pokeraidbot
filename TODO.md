@@ -8,15 +8,12 @@ Needs testing/keeping track of:
 * Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
 * !r sg (mon) (time) (gym) - Combined command to create raid starting at, and creating a group at the same time
 - note: add to getting-started guide!
+* !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
+be able to do this if no people signed up for the group
 
 Being developed:
 
-* Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
-* !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
-be able to do this if no people signed up for the group
 * !raid change remove should lead to any related group messages being removed as well
-* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
-instant, should be able to reconfigure these in runtime via admin tool.
 
 Discussion:
 
@@ -41,33 +38,36 @@ Fix, misc:
 
 Do, features:
 
-* !raid change remove {gym} -> !raid remove raid {gym}
-* Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid install needs to be made easier
 * howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
 * add egg handling to getting started documentation
-* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
-signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
-user name/user id for checking.
 * !raid change remove should lead to any related group messages being removed
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 
 --- 1.7.0
 
-* !raid change remove {gym} -> !raid remove raid {gym}
-* !r nest command for reporting rare pokemon nests near gym
-* Max CP is now weather dependant. Either remove displaying it, or add a text that says the value is without weather modifications
+* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
+instant, should be able to reconfigure these in runtime via admin tool.
+* Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
+* Should only be able to create raids for raidbosses (atleast via fuzzy search)
+* Move gyms to the database, use CSV files just to initialize and keep in synch?
+* Make it possible to change gyms in database via admin command (Zhorhn only)
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
-* Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
-to check server, and that raid entity, group etc also need to include server
 * Get seasonal boss from database settings for server, and allow admin command to change on the fly 
 when niantic comes up with new tricks
 * Be able to auto create groups via botintegration for several tiers and to different channels
-* Move gyms to the database, use CSV files just to initialize and keep in synch?
+* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
+* Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
+signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
+user name/user id for checking.
+* !raid change remove {gym} -> !raid remove raid {gym}
+* !r nest command for reporting rare pokemon nests near gym
+* Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
+to check server, and that raid entity, group etc also need to include server
 * Performance improvements. Reduce number of queries, optimize, add caching.
 * !raid change group (time) (gym) - if more groups possible, reply with list of id:s and info to decide what group
 * !raid change groupbyid (id) (time)
@@ -76,12 +76,7 @@ when niantic comes up with new tricks
 * Handle changing raid group when user has many raid groups for a raid
 * Handle changing raid group as mod when there are many raid groups for a raid
 * Max number of chars for a gym name in !raid list and !raid overview?
-* Make it possible to change gyms in database via admin command (Zhorhn only)
-* Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Umeå request: If people do similar map commands after one other, skip following commands
-* !raid change remove-group (gym) so admins can clean up user mess when for example setting
-wrong time
-* Use nickname instead of user name in raid list etc (s1lence)
 * Create an in-bot FAQ, f.ex. "Why does my group not update? What to do?"
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
