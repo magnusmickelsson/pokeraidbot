@@ -294,6 +294,22 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         return listenersToCheck;
     }
 
+    private EmoticonSignUpMessageListener getListenerForGroup(Raid raid, RaidGroup raidGroup) {
+        for (Object o : botService.getBot().getRegisteredListeners()) {
+            if (o instanceof EmoticonSignUpMessageListener) {
+                EmoticonSignUpMessageListener listener = (EmoticonSignUpMessageListener) o;
+                final String raidId = raid.getId();
+                final boolean isCorrectRaid = raidId.equals(listener.getRaidId());
+                final boolean isCorrectGroup = raidGroup.getEmoteMessageId().equals(listener.getEmoteMessageId()) &&
+                        raidGroup.getInfoMessageId().equals(listener.getInfoMessageId());
+                if (isCorrectRaid && isCorrectGroup) {
+                    return listener;
+                }
+            }
+        }
+        return null;
+    }
+
     private void checkIfInputIsValidAndUserHasRights(CommandEvent commandEvent, Config config, User user, Raid raid,
                                                      LocalDateTime newDateTime) {
         verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
@@ -331,6 +347,17 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             localeService.getLocaleForUser(user))
             );
         }
+        final Set<RaidGroup> groups = raidRepository.getGroups(deleteRaid);
+        LOGGER.info("Deleting " +  groups.size() + " groups associated with raid " + deleteRaid + "... ");
+        for (RaidGroup group : groups) {
+            final EmoticonSignUpMessageListener listener = getListenerForGroup(deleteRaid, group);
+            if (listener != null) {
+                NewRaidGroupCommand.cleanUpRaidGroupAndDeleteSignUpsIfPossible(commandEvent.getChannel(),
+                        group.getStartsAt(), deleteRaid.getId(),
+                        listener, raidRepository, botService, group.getId());
+            }
+        }
+        LOGGER.info("Groups deleted for raid " + deleteRaid);
         if (raidRepository.delete(deleteRaid)) {
             commandEvent.reactSuccess();
             removeOriginMessageIfConfigSaysSo(config, commandEvent);
