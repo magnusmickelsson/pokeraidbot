@@ -44,7 +44,8 @@ Other features worth mentioning:
 * User errors can get automatically removed, along with any feedback (after user gets a chance to read it)
     * Server admins can choose a feedback and error message handling strategy via configuration
 * Automatic integration with [Gymhuntr bot](https://www.gymhuntr.com) and 
-[PokeAlarm](https://github.com/PokeAlarm/PokeAlarm), for automatic raid registration (if so desired)
+[PokeAlarm](https://github.com/PokeAlarm/PokeAlarm), for automatic raid registration (if so desired) -
+see [Bot how-to](BOT_SETUP.md) for details.
 
 Future development will most likely include:
 * OCR scanning of screenshots, possible to create raids from them
@@ -98,17 +99,13 @@ of inviting a bot to your server.
 ### Setting up permissions
 Assign the bot the following permissions:
 
-* Manage channels (to create channel on the fly for new raids, if so desired)
-* Create invitation (not used yet)
 * Manage emojis
-* Manage webhooks
 * Read text channels
 * Send messages
 * Manage messages (needs to edit raid group message)
 * Embed links (map function)
-* Attach files (not used yet)
+* Attach files
 * Read message history
-* Mention all (not used yet)
 * Use external emoji
 * Add reactions
    

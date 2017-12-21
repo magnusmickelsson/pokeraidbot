@@ -11,11 +11,12 @@ Needs testing/keeping track of:
 * !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
 be able to do this if no people signed up for the group
 * !raid change remove should lead to any related group messages being removed as well
+* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
+* add egg handling to getting started documentation
 
 Being developed:
 
-* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
-* add egg handling to getting started documentation
+-
 
 Discussion:
 
@@ -43,7 +44,7 @@ Do, features:
 * !raid install needs to be made easier
 * Only use a single Emoticon listener for signups to reduce memory and complexity
 
---- 1.7.0
+-- next
 
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.

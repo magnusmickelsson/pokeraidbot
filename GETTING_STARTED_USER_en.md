@@ -129,3 +129,25 @@ I hope this gives you an idea of what the bot can do, and that it shouldn't be *
 Report any problems or suggestions via Github's issue handling.
 
 Good luck and have fun!
+
+## FAQ ##
+
+* Can I report an egg without the raidboss having hatched?
+
+**Yes.** You can replace the raidboss' name with Egg1-5, depending on the tier of the raid (level 1-5).
+
+If the boss is an unhatched tier 5 boss, the pokemon name should be "Egg5". 
+
+Here's an example of how to create a raid for an unhatched tier5-egg due to hatch at 9:00 at the gym Blenda:
+
+    !raid start Egg5 9:00 Blenda
+    
+When the egg hatches, you can report what boss spawned via the command (example for the boss Groudon):
+
+    !raid hatch Groudon Blenda
+    
+Users using !raid track to keep track of raids for a certain pokemon, will then receive a DM from the raidbot as usual.
+
+* Can I create a raid group for an unhatched egg?
+
+**Yes, if a raid has been created via a command like above.** Use the same command as usual: !raid group (time) (gym)

@@ -124,3 +124,22 @@ Hoppas detta ger en idé om vad botten kan göra, och att det inte ska behöva v
 Rapportera gärna problem eller kom med förslag via Github's ärendehantering.
 
 Lycka till!
+
+## Vanliga frågor ##
+
+* Kan jag rapportera ägg innan en raidboss kläckts?
+
+**Ja.** Man kan ersätta raidbossens namn med Egg1-5, beroende på bossnivå. Om det är ett tier 5-ägg, blir
+pokemonnamn "Egg5". Exempel på hur man skapar en raid för ett tier5-ägg som kläcks kl 9.00 vid gymmet Blenda:
+
+    !raid start Egg5 9:00 Blenda
+    
+Man anmäler sedan vad det blev för boss i praktiken via ett kommando som
+
+    !raid hatch Groudon Blenda
+    
+Användare som kör med !raid track för att hålla koll på raider för en viss pokemon, kommer då få DM som vanligt.
+
+* Kan jag skapa en raidgrupp för ett okläckt ägg?
+
+**Ja, om någon skapat en raid enligt ett kommando som ovan.** Använd det vanliga kommandot: !raid group (tid) (gym)
