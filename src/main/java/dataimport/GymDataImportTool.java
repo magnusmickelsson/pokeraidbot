@@ -39,7 +39,7 @@ public class GymDataImportTool {
         }
         FileOutputStream fis = null;
         try {
-            final String location = StringUtils.join(ArrayUtils.removeElements(args, 0), " ");
+            final String location = StringUtils.join(ArrayUtils.remove(args, 0), " ");
             final Integer widthCube = new Integer(args[0]);
             String ann4Cookie = "1";
             String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1" +
