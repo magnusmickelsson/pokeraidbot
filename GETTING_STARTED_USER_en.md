@@ -67,6 +67,12 @@ The group's signups will automatically be updated every 15 seconds, and when it'
 start the raid, the group message will be automatically removed (5 minutes after raid start, so you have time to
 do a ready-check with the people you know should be there).
 
+If you want to create a raid AND a group directly at hatch time, use the combined command:
+
+*!raid start-group suicune 9:00 cafe lalo*
+
+(or *!r sg suicune 900 cafe lalo*)
+
 Do you want to see the current active raids, which have been reported? 
 
 The best way is of course to use the overview mentioned above, but you can also type the following:

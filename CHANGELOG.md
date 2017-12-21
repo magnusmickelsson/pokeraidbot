@@ -1,3 +1,15 @@
+1.7.0 (2017-12-22)
+=====
+* Correct pictures for pokemon, including gen 3
+* New gym data for many regions
+* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
+* !r sg (mon) (time) (gym) - Combined command to create raid starting at, and creating a group at the same time
+* !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
+be able to do this if no people signed up for the group
+* !raid change remove should lead to any related group messages being removed as well
+* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
+* add egg handling to getting started documentation
+
 1.6.6 (2017-12-15)
 =====
 * Groudon new suggested tier5 boss

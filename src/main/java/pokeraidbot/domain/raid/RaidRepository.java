@@ -399,6 +399,7 @@ public class RaidRepository {
         return getRaidInstance(raidEntity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Raid removeAllSignUpsAt(String raidId, LocalDateTime startAt) {
         Validate.notNull(raidId, "Raid ID cannot be null");
         Validate.notNull(startAt, "Start time cannot be null");
@@ -472,7 +473,7 @@ public class RaidRepository {
         if (entity != null) {
             final RaidGroup removedGroup = entity.removeGroup(groupId);
             if (removedGroup == null) {
-                LOGGER.debug("Didn't delete group, raid seems to have been deleted.");
+                LOGGER.debug("Didn't delete group, it has already been been deleted.");
             }
             return removedGroup;
         } else {

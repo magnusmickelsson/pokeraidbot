@@ -348,7 +348,10 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             );
         }
         final Set<RaidGroup> groups = raidRepository.getGroups(deleteRaid);
-        LOGGER.info("Deleting " +  groups.size() + " groups associated with raid " + deleteRaid + "... ");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Deleting " + groups.size() + " groups associated with raid " + deleteRaid + "... ");
+        }
+        final int numberOfGroups = groups.size();
         for (RaidGroup group : groups) {
             final EmoticonSignUpMessageListener listener = getListenerForGroup(deleteRaid, group);
             if (listener != null) {
@@ -357,11 +360,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                         listener, raidRepository, botService, group.getId());
             }
         }
-        LOGGER.info("Groups deleted for raid " + deleteRaid);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Groups deleted for raid " + deleteRaid);
+        }
         if (raidRepository.delete(deleteRaid)) {
             commandEvent.reactSuccess();
             removeOriginMessageIfConfigSaysSo(config, commandEvent);
-            LOGGER.info("Deleted raid: " + deleteRaid);
+            LOGGER.info("Deleted raid (and " + numberOfGroups + " related groups): " + deleteRaid);
         } else {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,

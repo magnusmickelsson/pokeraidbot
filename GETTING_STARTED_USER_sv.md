@@ -60,6 +60,12 @@ Den lägger till alla emotes du ser på bilden ovan och lyssnar sedan efter om n
 
 Gruppens anmälningar kommer automatiskt uppdateras var 15:e sekund, och när din grupp ska köra, kommer meddelandet i Discord automatiskt tas bort.
 
+Om man vill skapa en raid med en grupp direkt vid kläckning, kan man göra detta via det kombinerade kommandot:
+
+*!raid start-group suicune 9:00 hästen*
+
+(eller *!r sg suicune 900 hästen*)
+
 Vill du se vilka raids som är på gång just nu?
 
 Bäst är ju att kolla på översikten som vi nämnde tidigare, men du kan också skriva följande i kanalen för 

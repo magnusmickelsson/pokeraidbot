@@ -309,15 +309,16 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                 LOGGER.warn("This is probably due to raid being removed while cleaning up signups, which is normal.");
             }
         } finally {
+            final String raidDescription = raid == null ? "null" : raid.toString();
             cleanUpGroupMessageAndEntity(messageChannel, raidId, emoticonSignUpMessageListener, raidRepository,
-                    botService, groupId, raid);
+                    botService, groupId, raidDescription);
         }
     }
 
     public static void cleanUpGroupMessageAndEntity(MessageChannel messageChannel, String raidId,
                                                        EmoticonSignUpMessageListener emoticonSignUpMessageListener,
                                                        RaidRepository raidRepository, BotService botService,
-                                                       String groupId, Raid raid) {
+                                                       String groupId, String raidDescription) {
         // Clean up after raid expires
         final String infoMessageId = emoticonSignUpMessageListener.getInfoMessageId();
         if (!StringUtils.isEmpty(infoMessageId)) {
@@ -326,8 +327,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                     LOGGER.warn("Exception occurred when removing group message: " + t.getMessage());
                     botService.getBot().removeEventListener(emoticonSignUpMessageListener);
                     raidRepository.deleteGroupInNewTransaction(raidId, groupId);
-                    if (LOGGER.isInfoEnabled()) {
-                        LOGGER.info("Cleaned up listener related to this group.");
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Cleaned up listener related to this group.");
                     }
                 });
             } catch (Throwable t) {
@@ -339,9 +340,9 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
         }
         botService.getBot().removeEventListener(emoticonSignUpMessageListener);
         raidRepository.deleteGroupInNewTransaction(raidId, groupId);
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Cleaned up listener and message related to the group with ID " + groupId +
-                    " for raid " + raid);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Cleaned up listener and message related to the group with ID " + groupId +
+                    " for raid " + raidDescription);
         }
     }
 
