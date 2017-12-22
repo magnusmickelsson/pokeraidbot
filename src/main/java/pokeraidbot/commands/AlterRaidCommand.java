@@ -4,6 +4,8 @@ import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -355,9 +357,15 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         for (RaidGroup group : groups) {
             final EmoticonSignUpMessageListener listener = getListenerForGroup(deleteRaid, group);
             if (listener != null) {
-                NewRaidGroupCommand.cleanUpRaidGroupAndDeleteSignUpsIfPossible(commandEvent.getChannel(),
-                        group.getStartsAt(), deleteRaid.getId(),
-                        listener, raidRepository, botService, group.getId());
+                final MessageChannel channel = getChannel(commandEvent.getGuild(), group.getChannel());
+                if (channel != null) {
+                    NewRaidGroupCommand.cleanUpRaidGroupAndDeleteSignUpsIfPossible(channel,
+                            group.getStartsAt(), deleteRaid.getId(),
+                            listener, raidRepository, botService, group.getId());
+                } else {
+                    LOGGER.debug("Could not find channel " + group.getChannel() +
+                            " in guild " + commandEvent.getGuild().getName());
+                }
             }
         }
         if (LOGGER.isDebugEnabled()) {
@@ -372,6 +380,13 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                     localeService.getMessageFor(LocaleService.RAID_NOT_EXISTS,
                             localeService.getLocaleForUser(user)));
         }
+    }
+
+    private MessageChannel getChannel(Guild guild, String channel) {
+        for (MessageChannel c : guild.getTextChannelsByName(channel, true)) {
+            return c;
+        }
+        return null;
     }
 
     public static void changePokemon(Command command, GymRepository gymRepository, LocaleService localeService,
