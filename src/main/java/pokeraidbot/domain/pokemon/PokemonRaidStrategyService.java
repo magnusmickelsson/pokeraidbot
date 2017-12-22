@@ -70,6 +70,8 @@ public class PokemonRaidStrategyService {
             "egg5".toUpperCase(),
             "Ho-oh".toUpperCase(),
             // ==== Generation 3 ====
+            // Tier 1
+            "Wailmer".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             // Tier 4
@@ -193,6 +195,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
 
         // ==== Gen 3 ====
+        // Tier 1
+        populateRaidInfoForBoss(pokemonRepository, "Wailmer", "814", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);

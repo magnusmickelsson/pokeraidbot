@@ -94,11 +94,13 @@ public class RaidPokemonsTest {
 
     @Test
     public void verifyRaidbosses() {
-        final PokemonRaidInfo machamp = strategyService.getRaidInfo(pokemonRepository.search("machamp", null));
-        assertNotNull(machamp);
-        assertThat(machamp.getBossTier(), is(3));
+        PokemonRaidInfo raidInfo = strategyService.getRaidInfo(pokemonRepository.search("machamp", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(3));
 
-        // todo: add more bosses and verify
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("wailmer", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(1));
     }
 
 }
