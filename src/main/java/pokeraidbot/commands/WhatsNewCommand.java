@@ -21,7 +21,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
-            message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+            message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Wailmer ny raidboss\n" +
                     "* Bilder funkar nu även för gen 3 pokemons\n" +
                     "* Nya gym inlagda\n" +
                     "* Fix: fel kommer inte längre leda till att raid untrack/track-förändringar rullas tillbaka i databasen\n" +
@@ -32,7 +33,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation kring hur man sätter upp integration mot Gymhuntr och PokeAlarm\n" +
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
-            message = "**New in " + BotServerMain.version + ":**\n\n" +
+            message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Wailmer new raidboss\n" +
                     "* Correct pictures for pokemon, including gen 3\n" +
                     "* New gym data for many regions\n" +
                     "* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change\n" +
