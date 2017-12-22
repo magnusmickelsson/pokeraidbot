@@ -90,7 +90,7 @@ public class RaidListCommand extends ConfigAwareCommand {
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("*").append(raidGym.getName());
+                    exRaids.append("\n*").append(raidGym.getName());
                     exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
@@ -101,7 +101,6 @@ public class RaidListCommand extends ConfigAwareCommand {
                     } else {
                         exRaids.append(raidRepository.listGroupsForRaid(raid, groups));
                     }
-                    exRaids.append("\n");
                 }
             }
             final String exRaidList = exRaids.toString();

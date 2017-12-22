@@ -218,7 +218,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     }
                     stringBuilder.append("\n");
                 } else {
-                    exRaids.append("*").append(raidGym.getName());
+                    exRaids.append("\n*").append(raidGym.getName());
                     exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
                                     printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
@@ -229,7 +229,6 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     } else {
                         exRaids.append(raidRepository.listGroupsForRaid(raid, groups));
                     }
-                    exRaids.append("\n");
                 }
             }
             final String exRaidList = exRaids.toString();
