@@ -1,3 +1,7 @@
+1.7.1 (2017-12-22)
+=====
+* Fixed a couple of duplicate guild names and test case to ensure duplicates will be handled
+
 1.7.0 (2017-12-22)
 =====
 * Correct pictures for pokemon, including gen 3
