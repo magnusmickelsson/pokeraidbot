@@ -39,11 +39,6 @@ public class Gym {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public String getId() {
         return id;
     }
@@ -62,5 +57,19 @@ public class Gym {
 
     public String getImageLink() {
         return imageLink;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String toStringDetails() {
+        return "Gym{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", x='" + x + '\'' +
+                ", y='" + y + '\'' +
+                '}';
     }
 }

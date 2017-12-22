@@ -13,6 +13,8 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -52,6 +54,19 @@ public class GymRepositoryTest {
         configMap.put("norrköping", norrkopingConfig);
         when(SERVER_CONFIG_REPOSITORY.getAllConfig()).thenReturn(configMap);
         repo = TestServerMain.getGymRepositoryForConfig(localeService, SERVER_CONFIG_REPOSITORY);
+    }
+
+    @Test
+    public void noDuplicatesInDataFiles() {
+        Map<String, Set<Gym>> gymData = repo.getAllGymData();
+        for (String region : gymData.keySet()) {
+            Set<Gym> gyms = gymData.get(region);
+            for (Gym gym : gyms) {
+                final Gym gymFromRepo = repo.findByName(gym.getName(), region);
+                assertThat("Seems we have a duplicate for gymname: " + gym.getName() +
+                        " \n" + gymFromRepo.toStringDetails() + " != " + gym.toStringDetails(), gymFromRepo, is(gym));
+            }
+        }
     }
 
     @Test

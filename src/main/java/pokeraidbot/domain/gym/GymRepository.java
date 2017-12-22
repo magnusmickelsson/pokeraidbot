@@ -137,4 +137,8 @@ public class GymRepository {
         }
         return mathingGyms;
     }
+
+    public Map<String, Set<Gym>> getAllGymData() {
+        return Collections.unmodifiableMap(gymsPerRegion);
+    }
 }
