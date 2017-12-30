@@ -104,6 +104,7 @@ public class LocaleService {
     public static final String USER_NICK_INVALID = "USER_NICK_INVALID";
     public static final String RAID_CREATE_AND_GROUP_HELP = "RAID_CREATE_AND_GROUP_HELP";
     public static final String GROUP_DELETED = "GROUP_DELETED";
+    public static final String CREATED_BY = "CREATED_BY";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -174,6 +175,12 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(CREATED_BY, Locale.ENGLISH),
+                "Created by"
+        );
+        i18nMessages.put(new I18nLookup(CREATED_BY, SWEDISH),
+                "Skapad av"
+        );
         i18nMessages.put(new I18nLookup(GROUP_DELETED, Locale.ENGLISH),
                 "Group deleted, including any signups."
         );

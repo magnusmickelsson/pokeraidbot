@@ -27,7 +27,10 @@ import pokeraidbot.infrastructure.botsupport.gymhuntr.GymHuntrRaidEventListener;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
-import pokeraidbot.jda.*;
+import pokeraidbot.jda.AggregateCommandListener;
+import pokeraidbot.jda.SignupWithPlusCommandListener;
+import pokeraidbot.jda.StartUpEventListener;
+import pokeraidbot.jda.UnsignWithMinusCommandListener;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
@@ -75,7 +78,8 @@ public class BotService {
         initializeConfig();
 
         EventWaiter waiter = new EventWaiter();
-        EventLoggingListener eventLoggingListener = new EventLoggingListener();
+        // For detailed logging - used during debugging/development
+//        EventLoggingListener eventLoggingListener = new EventLoggingListener();
         GymHuntrRaidEventListener gymHuntrRaidEventListener = new GymHuntrRaidEventListener(
                 serverConfigRepository, raidRepository, gymRepository, pokemonRepository, localeService,
                 executorService,
@@ -107,7 +111,6 @@ public class BotService {
                 new GettingStartedCommand(localeService, serverConfigRepository, aggregateCommandListener),
                 new AdminCommands(userConfigRepository, serverConfigRepository, gymRepository,
                         this, trackingService, localeService, pokemonRepository, raidRepository),
-//                new ShutdownCommand(),
                 new NewRaidCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
                 new NewRaidStartsAtCommand(gymRepository, raidRepository, pokemonRepository, localeService,

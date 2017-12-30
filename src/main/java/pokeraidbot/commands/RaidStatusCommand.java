@@ -45,6 +45,7 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         this.botService = botService;
         this.pokemonRepository = pokemonRepository;
         this.name = "status";
+        this.aliases = new String[]{"stat"};
         this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);
 
         this.gymRepository = gymRepository;
@@ -71,9 +72,10 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         final String startGroupText = localeService.getMessageFor(LocaleService.START_GROUP, localeForUser);
         final String findYourWayText = localeService.getMessageFor(LocaleService.FIND_YOUR_WAY, localeForUser);
         final String raidBossText = localeService.getMessageFor(LocaleService.RAID_BOSS, localeForUser);
-//        final String hintsText = localeService.getMessageFor(LocaleService.FOR_HINTS, localeForUser);
         final Set<String> signUpNames = getNamesOfThoseWithSignUps(raid.getSignUps(), true);
         final String allSignUpNames = StringUtils.join(signUpNames, ", ");
+        sb.append(raidBossText).append(" **").append(pokemon).append("** - ")
+                .append("*!raid vs ").append(pokemon.getName()).append("*\n");
 
         sb.append("**").append(activeText).append(":** ")
                 .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false)))
@@ -83,9 +85,9 @@ public class RaidStatusCommand extends ConfigAwareCommand {
                 .append(signUps.size() > 0 ? ":\n" + allSignUpNames : "").append("\n").append(startGroupText)
                 .append(":\n*!raid group ")
                 .append(printTime(raid.getEndOfRaid().toLocalTime().minusMinutes(15))).append(" ")
-                .append(gymName).append("*\n")
-                .append(raidBossText).append(" **").append(pokemon).append("** - ") //.append(hintsText)
-                .append("*!raid vs ").append(pokemon.getName()).append("*");
+                .append(gymName).append("*\n\n");
+        sb.append(localeService.getMessageFor(LocaleService.CREATED_BY, localeForUser)).append(": ")
+                .append(raid.getCreator());
         embedBuilder.setFooter(findYourWayText + localeService.getMessageFor(LocaleService.GOOGLE_MAPS,
                 localeService.getLocaleForUser(user)),
                 Utils.getPokemonIcon(pokemon));

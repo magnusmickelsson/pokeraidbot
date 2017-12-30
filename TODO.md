@@ -4,15 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* Correct pictures for pokemon, including gen 3
-* Fix so that exceptions don't lead to raid untrack/track database update rollback for the user's change
-* !r sg (mon) (time) (gym) - Combined command to create raid starting at, and creating a group at the same time
-- note: add to getting-started guide!
-* !raid change group remove {optional: time} {gym} to delete group, both message and database entry - user should
-be able to do this if no people signed up for the group
-* !raid change remove should lead to any related group messages being removed as well
-* howto-documentation for PokeAlarm and Gymhuntr for helping with botintegration setup
-* add egg handling to getting started documentation
+* Show who created the raid at !raid status message
 
 Being developed:
 
@@ -41,24 +33,22 @@ Fix, misc:
 
 Do, features:
 
+* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
+instant, should be able to reconfigure these in runtime via admin tool.
 * !raid install needs to be made easier
 * Only use a single Emoticon listener for signups to reduce memory and complexity
+* Should only be able to create raids for raidbosses (atleast via fuzzy search)
+* !raid track for gym, if a user wants to see when there is a raid at their "home gym"
+so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
 
 -- next
 
-* PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
-instant, should be able to reconfigure these in runtime via admin tool.
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
-* Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * Move gyms to the database, use CSV files just to initialize and keep in synch?
 * Make it possible to change gyms in database via admin command (Zhorhn only)
 * REST API with open operations (read-only)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)
-* !raid track for gym, if a user wants to see when there is a raid at their "home gym"
-so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
-* Get seasonal boss from database settings for server, and allow admin command to change on the fly 
-when niantic comes up with new tricks
 * Be able to auto create groups via botintegration for several tiers and to different channels
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
