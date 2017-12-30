@@ -32,14 +32,11 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static pokeraidbot.Utils.getStartOfRaid;
-import static pokeraidbot.Utils.printTime;
-import static pokeraidbot.Utils.printTimeIfSameDay;
+import static pokeraidbot.Utils.*;
 
 public class GymHuntrRaidEventListener implements EventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(GymHuntrRaidEventListener.class);
@@ -204,11 +201,6 @@ public class GymHuntrRaidEventListener implements EventListener {
                 "(bot) !raid new " + raidToCreate.getPokemon().getName() + " " +
                         printTimeIfSameDay(raidToCreate.getEndOfRaid()) + " " + raidToCreate.getGym().getName());
         final Locale locale = config.getLocale();
-        if (LOGGER.isDebugEnabled()) {
-            if (channel != null) {
-                LOGGER.debug("Channel to use: " + channel.getName());
-            }
-        }
         EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(null, null);
         StringBuilder sb = new StringBuilder();
         sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
@@ -262,6 +254,11 @@ public class GymHuntrRaidEventListener implements EventListener {
                 if (chn != null &&
                         config.getGroupCreationStrategy() == Config.RaidGroupCreationStrategy.NAMED_CHANNEL) {
                     channelToCreateGroupIn = chn;
+                }
+                if (LOGGER.isDebugEnabled()) {
+                    if (channel != null) {
+                        LOGGER.debug("Channel to use to create group: " + channel.getName());
+                    }
                 }
                 try {
                     NewRaidGroupCommand.createRaidGroup(channelToCreateGroupIn, guildEvent.getGuild(), config, user,

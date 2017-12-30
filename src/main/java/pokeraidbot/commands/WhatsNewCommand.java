@@ -22,6 +22,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* !raid status visar vem som skapade raiden\n" +
+                    "* Lycksele gym data inlagt\n" +
                     "* Wailmer ny raidboss\n" +
                     "* Bilder funkar nu även för gen 3 pokemons\n" +
                     "* Nya gym inlagda\n" +
@@ -34,6 +36,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* !raid status shows who created the raid\n" +
+                    "* Lycksele gymdata added\n" +
                     "* Wailmer new raidboss\n" +
                     "* Correct pictures for pokemon, including gen 3\n" +
                     "* New gym data for many regions\n" +
