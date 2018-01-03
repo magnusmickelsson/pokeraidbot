@@ -1,33 +1,33 @@
-ID,LOCATION,NAME,IMAGE
-1292213,"56.316776,12.762201000000001",Delfinen Vejbystrand,blah_not_used_yet
-1291974,"56.285886,12.841845000000001",F10. Dragon / Draken,blah_not_used_yet
-1291952,"56.249686000000004,12.866464",LokStation,blah_not_used_yet
-49081270,"56.313376,12.765744",Lady And The Tramp,blah_not_used_yet
-1294808,"56.085577,12.913277",Bjuv Skate Park,blah_not_used_yet
-243445,"56.277963,12.94993",Tåstarps Kyrka,blah_not_used_yet
-1295306,"56.075998000000006,12.711057",Maria Station,blah_not_used_yet
-1291973,"56.288331,12.845127",Bloodhound MK II,blah_not_used_yet
-24021466,"56.243182999999995,12.861503",Stortorgs Fontänen,blah_not_used_yet
-563032,"56.077821,12.931248",Vattentornet,blah_not_used_yet
-1291969,"56.253215000000004,12.864355",Kanoner,blah_not_used_yet
-49191467,"56.072845,12.69993",Pålsjö Kyrkogård,blah_not_used_yet
-24021486,"56.259731,12.889086",Ängelholm Watertower,blah_not_used_yet
-1295384,"56.104820000000004,12.745367",Ödåkra TrainStation,blah_not_used_yet
-692157,"56.265227,12.836865",The Bunker,blah_not_used_yet
-1291949,"56.244381000000004,12.863582999999998",Var Är Du,blah_not_used_yet
-1295394,"56.070799,12.704442",Fontän,blah_not_used_yet
-1294806,"56.084955,12.914746000000001",Kommunalhus,blah_not_used_yet
-24021508,"56.260188,12.973843",Munka-Ljungby Kyrka,blah_not_used_yet
-1291959,"56.244667,12.861075",Hantverksmuseumet,blah_not_used_yet
-24021457,"56.242197999999995,12.865526",Gruvvagns Monument,blah_not_used_yet
-24021510,"56.258068,12.989198",Munka-Ljungby IP,blah_not_used_yet
-12720510,"56.079352,12.684792000000002",Sankta Maria,blah_not_used_yet
-24021499,"56.274805,12.838553",Ocean Ripple,blah_not_used_yet
-24021500,"56.225556999999995,12.844408",Kenny Jönsson Citat,blah_not_used_yet
-12720535,"56.063533,12.711024",Police Art,blah_not_used_yet
-24021455,"56.247499,12.859800000000002",Frukt Fontän,blah_not_used_yet
-12720508,"56.066626,12.715895",Kavalleristen,blah_not_used_yet
-96642,"56.066838,12.974400999999999",Billesholm Folkets Park Entré,blah_not_used_yet
-1295299,"56.068981,12.705843000000002",Flute Playing Boy,blah_not_used_yet
-1291971,"56.254042,12.864073",Teatern I Hembygdsparken,blah_not_used_yet
-1291942,"56.253617,12.831209",Key Holes,blah_not_used_yet
+ID;LOCATION;NAME;IMAGE
+1292213;"56.316776;12.762201000000001";Delfinen Vejbystrand;blah_not_used_yet
+1291974;"56.285886;12.841845000000001";F10. Dragon / Draken;blah_not_used_yet
+1291952;"56.249686000000004;12.866464";LokStation;blah_not_used_yet
+49081270;"56.313376;12.765744";Lady And The Tramp;blah_not_used_yet
+1294808;"56.085577;12.913277";Bjuv Skate Park;blah_not_used_yet
+243445;"56.277963;12.94993";Tåstarps Kyrka;blah_not_used_yet
+1295306;"56.075998000000006;12.711057";Maria Station;blah_not_used_yet
+1291973;"56.288331;12.845127";Bloodhound MK II;blah_not_used_yet
+24021466;"56.243182999999995;12.861503";Stortorgs Fontänen;blah_not_used_yet
+563032;"56.077821;12.931248";Vattentornet;blah_not_used_yet
+1291969;"56.253215000000004;12.864355";Kanoner;blah_not_used_yet
+49191467;"56.072845;12.69993";Pålsjö Kyrkogård;blah_not_used_yet
+24021486;"56.259731;12.889086";Ängelholm Watertower;blah_not_used_yet
+1295384;"56.104820000000004;12.745367";Ödåkra TrainStation;blah_not_used_yet
+692157;"56.265227;12.836865";The Bunker;blah_not_used_yet
+1291949;"56.244381000000004;12.863582999999998";Var Är Du;blah_not_used_yet
+1295394;"56.070799;12.704442";Fontän;blah_not_used_yet
+1294806;"56.084955;12.914746000000001";Kommunalhus;blah_not_used_yet
+24021508;"56.260188;12.973843";Munka-Ljungby Kyrka;blah_not_used_yet
+1291959;"56.244667;12.861075";Hantverksmuseumet;blah_not_used_yet
+24021457;"56.242197999999995;12.865526";Gruvvagns Monument;blah_not_used_yet
+24021510;"56.258068;12.989198";Munka-Ljungby IP;blah_not_used_yet
+12720510;"56.079352;12.684792000000002";Sankta Maria;blah_not_used_yet
+24021499;"56.274805;12.838553";Ocean Ripple;blah_not_used_yet
+24021500;"56.225556999999995;12.844408";Kenny Jönsson Citat;blah_not_used_yet
+12720535;"56.063533;12.711024";Police Art;blah_not_used_yet
+24021455;"56.247499;12.859800000000002";Frukt Fontän;blah_not_used_yet
+12720508;"56.066626;12.715895";Kavalleristen;blah_not_used_yet
+96642;"56.066838;12.974400999999999";Billesholm Folkets Park Entré;blah_not_used_yet
+1295299;"56.068981;12.705843000000002";Flute Playing Boy;blah_not_used_yet
+1291971;"56.254042;12.864073";Teatern I Hembygdsparken;blah_not_used_yet
+1291942;"56.253617;12.831209";Key Holes;blah_not_used_yet

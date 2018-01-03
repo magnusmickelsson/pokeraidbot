@@ -1,9 +1,9 @@
 package pokeraidbot.infrastructure;
 
+import dataimport.GymDataImportTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.Utils;
-import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonTypes;
 
@@ -33,7 +33,7 @@ public class CSVPokemonDataReader {
             BufferedReader br = new BufferedReader(inputStreamReader);
 
             while ((line = br.readLine()) != null) {
-                String[] rowElements = line.split(",");
+                String[] rowElements = line.split(GymDataImportTool.separator);
                 if (rowElements[0].equalsIgnoreCase("Ndex")) {
                     // This is the header of the file, ignore
                 } else {

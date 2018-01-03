@@ -29,7 +29,9 @@ import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class StartUpEventListener implements EventListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartUpEventListener.class);
@@ -163,15 +165,6 @@ public class StartUpEventListener implements EventListener {
                 executorService.submit(overviewTask);
                 LOGGER.info("Found overview message for channel " + channel.getName() +
                         " (server " + guild.getName() + "). Attaching to it.");
-                if (guild.getDefaultChannel() != null) {
-                    guild.getDefaultChannel().sendMessage(
-                            localeService.getMessageFor(LocaleService.OVERVIEW_ATTACH,
-                                    locale,
-                                    channel.getName())).queue(m -> {
-                                        m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds,
-                                                TimeUnit.SECONDS);
-                    });
-                }
                 return true;
             }
         } catch (UserMessedUpException e) {

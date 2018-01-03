@@ -1,3 +1,9 @@
+1.7.3 (2018-01-03)
+=====
+* Changing so CSV files now are separated by ; and not ,
+* Added a diff mechanism to gym data import
+* Turned off message that says Pokeraidbot is up after downtime
+
 1.7.2 (2017-12-31)
 =====
 * Show who created the raid at *!raid status* message

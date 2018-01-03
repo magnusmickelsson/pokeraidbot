@@ -18,18 +18,24 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import pokeraidbot.domain.gym.Gym;
+import pokeraidbot.infrastructure.CSVGymDataReader;
 
 import javax.net.ssl.SSLContext;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
 
 public class GymDataImportTool {
     private static final TypeReference<Map<String, GymResponse>> gymsTypeReference =
-            new TypeReference<Map<String, GymResponse>>() {};
+            new TypeReference<Map<String, GymResponse>>() {
+            };
+    public static final String separator = ";";
 
     public static void main(String[] args) {
         if (args == null || args.length > 2 || args.length < 2) {
@@ -38,8 +44,9 @@ public class GymDataImportTool {
             throw new RuntimeException("Error!");
         }
         FileOutputStream fis = null;
+        String location = null;
         try {
-            final String location = StringUtils.join(ArrayUtils.remove(args, 0), " ");
+            location = StringUtils.join(ArrayUtils.remove(args, 0), " ");
             final Integer widthCube = new Integer(args[0]);
             String ann4Cookie = "1";
             String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1" +
@@ -114,7 +121,7 @@ public class GymDataImportTool {
             headers.put("Connection", asList("keep-alive"));
             headers.put("X-Requested-With", asList("XMLHttpRequest"));
             headers.put("Accept-Encoding", asList(""));
-            headers.put("Accept-Language", asList("sv-SE","sv;q=0.8","en-US;q=0.6","en;q=0.4","nb;q=0.2","de;q=0.2"));
+            headers.put("Accept-Language", asList("sv-SE", "sv;q=0.8", "en-US;q=0.6", "en;q=0.4", "nb;q=0.2", "de;q=0.2"));
 
             RequestEntity<MultiValueMap<String, String>> request = new RequestEntity<>(body, headers, HttpMethod.POST, uri);
             responseEntity = restTemplate.postForEntity(address, request, String.class);
@@ -155,15 +162,17 @@ public class GymDataImportTool {
             System.out.println("Read " + response.getGyms().size() + " gyms from this query.");
             final String fileName = "target/" + location + ".csv";
             fis = new FileOutputStream(fileName);
-            fis.write("ID,LOCATION,NAME,IMAGE\n".getBytes("UTF-8"));
+            fis.write(("ID" + separator + "LOCATION" + separator + "NAME" + separator + "IMAGE\n")
+                    .getBytes("UTF-8"));
             System.out.println("Saving file: " + fileName);
             for (String id : response.getGyms().keySet()) {
                 GymResponse gym = response.getGyms().get(id);
                 if (gym == null) {
                     throw new RuntimeException("Found null gym for id " + id);
                 }
-                fis.write((id + "," + "\"" + gym.getLatitude() + "," + gym.getLongitude() + "\"," + gym.getName() +
-                        ",blah_not_used_yet\n").getBytes("UTF-8"));
+                fis.write((id + separator + "\"" + gym.getLatitude() + separator + gym.getLongitude() + "\"" +
+                        separator + gym.getName() +
+                         separator + "blah_not_used_yet\n").getBytes("UTF-8"));
             }
             System.out.println("File: " + fileName + " saved.");
         } catch (Throwable e) {
@@ -177,6 +186,39 @@ public class GymDataImportTool {
                     throw new RuntimeException(e);
                 }
             }
+        }
+
+        try {
+            CSVGymDataReader oldGymDataReader = new CSVGymDataReader("/gyms_" + location + ".csv");
+            CSVGymDataReader newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"));
+            final Set<Gym> oldGyms = oldGymDataReader.readAll();
+            final Set<Gym> newGyms = newGymDataReader.readAll();
+            int sameCount = 0;
+            for (Gym newGym : newGyms) {
+                if (!oldGyms.contains(newGym)) {
+                    boolean weird = false;
+                    for (Gym oldGym : oldGyms) {
+                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
+                            System.out.println("New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getId().equals(newGym.getId())) {
+                            System.out.println("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getName().equalsIgnoreCase(newGym.getName())) {
+                            System.out.println("Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        }
+                    }
+                    if (!weird) {
+                        System.out.println("New gym: " + newGym);
+                    }
+                } else {
+                    sameCount++;
+                }
+            }
+            System.out.println("Old gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() + ", exists in both: " + sameCount);
+        } catch (Throwable t) {
+            System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
         }
     }
 }

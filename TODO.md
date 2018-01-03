@@ -4,7 +4,7 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* Show who created the raid at !raid status message
+-
 
 Being developed:
 

@@ -22,6 +22,9 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* CSV-datafiler fixade från specialtecken\n" +
+                    "* Lade till en diff-rapport för gym data import\n" +
+                    "* Slog av meddelandet som säger att botten är här\n" +
                     "* !raid status visar vem som skapade raiden\n" +
                     "* Lycksele gym data inlagt\n" +
                     "* Wailmer ny raidboss\n" +
@@ -36,6 +39,9 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Changing so CSV files now are separated by ; and not ,\n" +
+                    "* Added a diff mechanism to gym data import\n" +
+                    "* Turned off message that says Pokeraidbot is up after downtime\n" +
                     "* !raid status shows who created the raid\n" +
                     "* Lycksele gymdata added\n" +
                     "* Wailmer new raidboss\n" +
