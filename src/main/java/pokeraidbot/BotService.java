@@ -166,6 +166,10 @@ public class BotService {
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
                     .setGame(Game.of("loading..."))
 
+                    // Network-related settings
+                    .setRequestTimeoutRetry(true)
+                    .setAutoReconnect(true)
+
                     // add the listeners
                     .addEventListener(waiter)
                     .addEventListener(commandClient)

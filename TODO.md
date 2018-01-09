@@ -23,6 +23,8 @@ Experiment with:
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
+* SocketTimeoutException during Discord issues - group seems to be cleaned up when it occurs, instead just let it skip the current edit
+* "Raid group will now be cleaned up" - should print something more identifiable
 * Can signup at raid group end time via raid group emote pressing. Seems bad.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
