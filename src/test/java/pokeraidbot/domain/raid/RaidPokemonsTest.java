@@ -1,4 +1,4 @@
-package pokeraidbot.domain;
+package pokeraidbot.domain.raid;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,10 +6,7 @@ import org.mockito.Mockito;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRaidInfo;
-import pokeraidbot.domain.pokemon.PokemonRaidStrategyService;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.domain.raid.RaidBossCounters;
-import pokeraidbot.domain.raid.RaidBossPokemons;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
@@ -67,7 +64,7 @@ public class RaidPokemonsTest {
     public void verifyAllPokemonsInPokemonGoInRepo() throws Exception {
         Set<Integer> numbers = new HashSet<>();
         try {
-            for (int n = 1; n < 252; n++) {
+            for (int n = 1; n < 387; n++) {
                 numbers.add(n);
             }
             for (Pokemon pokemon : pokemonRepository.getAll()) {
@@ -101,6 +98,25 @@ public class RaidPokemonsTest {
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("wailmer", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(1));
-    }
 
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("kyogre", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("latias", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("latios", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("rayquaza", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("registeel", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+    }
 }

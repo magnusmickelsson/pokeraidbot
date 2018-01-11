@@ -6,6 +6,15 @@ Quick Move	Charge Move
 Counter
 Karate Chop
 Dynamic Punch
+Hariyama
+
+Hariyama
+Quick Move	Charge Move
+Counter
+Karate Chop
+Dynamic Punch
+Close Combat
+Cross Chop
 Mewtwo
 
 Mewtwo

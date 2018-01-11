@@ -1,9 +1,11 @@
-package pokeraidbot.domain.pokemon;
+package pokeraidbot.domain.raid;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pokeraidbot.domain.raid.RaidBossCounters;
+import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidInfo;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.infrastructure.CounterTextFileParser;
 
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class PokemonRaidStrategyService {
             "Blastoise".toUpperCase(),
             "Charizard".toUpperCase(),
             "Lapras".toUpperCase(),
-            "Lapras".toUpperCase(), "Rhydon".toUpperCase(), "Snorlax".toUpperCase(), "Tyranitar".toUpperCase(),
+            "Rhydon".toUpperCase(), "Snorlax".toUpperCase(), "Tyranitar".toUpperCase(),
             "Venusaur".toUpperCase(), "Entei".toUpperCase(), "Articuno".toUpperCase(), "Moltres".toUpperCase(),
             "Zapdos".toUpperCase(), "Lugia".toUpperCase(),
             "Raikou".toUpperCase(), "Suicune".toUpperCase(),
@@ -206,6 +208,11 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Latios", "2082", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Kyogre", "2328", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Registeel", "1292", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Rayquaza", "2083", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Latias", "1929", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

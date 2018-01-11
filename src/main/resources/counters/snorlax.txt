@@ -15,6 +15,15 @@ Karate Chop
 Dynamic Punch
 Close Combat
 Cross Chop
+Hariyama
+
+Hariyama
+Quick Move	Charge Move
+Counter
+Karate Chop
+Dynamic Punch
+Close Combat
+Cross Chop
 Good Counters
 Moltres
 
