@@ -25,7 +25,6 @@ public class GymHuntrRaidEventListenerTest {
         final CopyOnWriteArrayList<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
         currentTier5Bosses.add(expectedTier5Boss);
         BotService.currentTier5Bosses = currentTier5Bosses;
-
     }
 
     @Test
@@ -81,6 +80,23 @@ public class GymHuntrRaidEventListenerTest {
         final Iterator<String> iterator = arguments.iterator();
         assertThat(iterator.next(), is("T3 Center"));
         assertThat(iterator.next(), is(expectedTier5Boss));
+        assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
+                .plusMinutes(31).plusSeconds(10).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
+    }
+
+    @Test
+    public void testTwoLegendariesInParallel() throws Exception {
+        final CopyOnWriteArrayList<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
+        currentTier5Bosses.add(expectedTier5Boss);
+        currentTier5Bosses.add("Kyogre");
+        BotService.currentTier5Bosses = currentTier5Bosses;
+        clockService.setMockTime(LocalTime.of(18, 0, 0));
+        final List<String> arguments = GymHuntrRaidEventListener.pokeAlarmArgumentsToCreateRaid(
+                "T3 Center has a level 5", "Raid will hatch 18:31:10 (54m 32s).", clockService);
+        assertThat(arguments.size(), is(3));
+        final Iterator<String> iterator = arguments.iterator();
+        assertThat(iterator.next(), is("T3 Center"));
+        assertThat(iterator.next(), is("Egg5"));
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(31).plusSeconds(10).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }
