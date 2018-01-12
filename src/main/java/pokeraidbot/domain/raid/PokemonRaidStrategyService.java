@@ -80,7 +80,12 @@ public class PokemonRaidStrategyService {
             "Absol".toUpperCase(),
             "Salamence".toUpperCase(),
             // Tier 5
-            "Groudon".toUpperCase()
+            "Groudon".toUpperCase(),
+            "Kyogre".toUpperCase(),
+            "Rayquaza".toUpperCase(),
+            "Latios".toUpperCase(),
+            "Latias".toUpperCase(),
+            "Registeel".toUpperCase()
     };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {

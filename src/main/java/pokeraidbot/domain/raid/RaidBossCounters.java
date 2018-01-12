@@ -19,11 +19,20 @@ public class RaidBossCounters {
     }
 
     public Set<CounterPokemon> getSupremeCounters() {
-        return Collections.unmodifiableSet(supremeCounters);
+        if (supremeCounters != null) {
+            return Collections.unmodifiableSet(supremeCounters);
+        } else {
+            return Collections.EMPTY_SET;
+        }
+
     }
 
     public Set<CounterPokemon> getGoodCounters() {
-        return Collections.unmodifiableSet(goodCounters);
+        if (goodCounters != null) {
+            return Collections.unmodifiableSet(goodCounters);
+        } else {
+            return Collections.EMPTY_SET;
+        }
     }
 
     @Override

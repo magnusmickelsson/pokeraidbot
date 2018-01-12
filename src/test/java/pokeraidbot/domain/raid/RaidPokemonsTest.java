@@ -91,32 +91,53 @@ public class RaidPokemonsTest {
 
     @Test
     public void verifyRaidbosses() {
+        RaidBossCounters counters;
         PokemonRaidInfo raidInfo = strategyService.getRaidInfo(pokemonRepository.search("machamp", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(3));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(7));
+        assertThat(counters.getSupremeCounters().size(), is(2));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("wailmer", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(1));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters == null, is(true));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("kyogre", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(4));
+        assertThat(counters.getSupremeCounters().size(), is(3));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("latias", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(0));
+        assertThat(counters.getSupremeCounters().size(), is(4));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("latios", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(0));
+        assertThat(counters.getSupremeCounters().size(), is(4));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("rayquaza", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(3));
+        assertThat(counters.getSupremeCounters().size(), is(3));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("registeel", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(4));
+        assertThat(counters.getSupremeCounters().size(), is(3));
     }
 }
