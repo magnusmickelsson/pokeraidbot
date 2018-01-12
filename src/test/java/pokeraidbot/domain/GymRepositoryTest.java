@@ -25,7 +25,7 @@ public class GymRepositoryTest {
     public static final ServerConfigRepository SERVER_CONFIG_REPOSITORY = Mockito.mock(ServerConfigRepository.class);
     GymRepository repo;
     private final Gym gym = new Gym("Hästen", "3690325", "59.844542", "17.63993",
-            "https://lh5.ggpht.com/HFkcuwx3HyE3TCiO9M2JvYB8_9wClxmnfQEfp7aLsqISxjQ8C5r89Hr_LIC44zercO6QcIu90hllcMbw7PPq");
+            "Uppsala");
     private LocaleService localeService;
 
     @Before
@@ -89,7 +89,7 @@ public class GymRepositoryTest {
 
     @Test
     public void allGymsAreReadForUppsala() {
-        assertThat(repo.getAllGymsForRegion("uppsala").size(), is(186));
+        assertThat(repo.getAllGymsForRegion("uppsala").size(), is(220));
     }
 
     @Test
@@ -132,5 +132,10 @@ public class GymRepositoryTest {
     @Test
     public void findGymById() throws Exception {
         assertThat(repo.findById("3690325", "uppsala"), is(gym));
+    }
+
+    @Test
+    public void findNewGymInUppsala() throws Exception {
+        assertThat(repo.findByName("U969", "uppsala").getName(), is("U969"));
     }
 }

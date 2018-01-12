@@ -217,7 +217,7 @@ public class GymDataImportTool {
                     sameCount++;
                 }
             }
-            System.out.println("Old gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() + ", exists in both: " + sameCount);
+            System.out.println("Old gyms: " + oldGyms.size() + ", new gyms: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
         } catch (Throwable t) {
             System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
         }
