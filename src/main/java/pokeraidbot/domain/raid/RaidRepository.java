@@ -260,7 +260,9 @@ public class RaidRepository {
             final String id = raidEntity.getId();
             // Clean up expired raid
             raidEntityRepository.delete(raidEntity);
-            LOGGER.info("Removed expired raid with ID: " + id);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Removed expired raid with ID: " + id);
+            }
             return null;
         } else {
             return raidEntity;
