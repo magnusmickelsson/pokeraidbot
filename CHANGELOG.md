@@ -1,3 +1,10 @@
+1.7.4 (2018-01-12)
+=====
+* Updated gym for Uppsala
+* Gym data for Dalarna
+* Fix: raid group cleanup during Discord API timeouts should not lead to messages dying anymore
+* Raid boss CP data and counter data updated for coming raid bosses 
+
 1.7.3 (2018-01-03)
 =====
 * Changing so CSV files now are separated by ; and not ,

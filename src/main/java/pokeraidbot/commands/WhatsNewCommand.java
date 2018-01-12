@@ -22,6 +22,10 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Uppdaterad gymdata för Uppsala\n" +
+                    "* Gym data för Dalarna\n" +
+                    "* Fix: raidgrupper som rensades vid Discord API-problem (timeouts) ska hanteras bättre\n" +
+                    "* Raid boss CP data och counter data uppdaterade för kommande bossar\n" +
                     "* CSV-datafiler fixade från specialtecken\n" +
                     "* Lade till en diff-rapport för gym data import\n" +
                     "* Slog av meddelandet som säger att botten är här\n" +
@@ -39,6 +43,10 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Updated gym for Uppsala\n" +
+                    "* Gym data for Dalarna\n" +
+                    "* Fix: raid group cleanup during Discord API timeouts should not lead to messages dying anymore\n" +
+                    "* Raid boss CP data and counter data updated for coming raid bosses\n" +
                     "* Changing so CSV files now are separated by ; and not ,\n" +
                     "* Added a diff mechanism to gym data import\n" +
                     "* Turned off message that says Pokeraidbot is up after downtime\n" +
