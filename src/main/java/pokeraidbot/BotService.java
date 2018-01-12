@@ -56,6 +56,7 @@ public class BotService {
     private UserConfigRepository userConfigRepository;
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
+        currentTier5Bosses.add("Kyogre");
         currentTier5Bosses.add("Groudon");
     }
 
