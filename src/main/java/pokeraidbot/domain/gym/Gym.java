@@ -1,18 +1,20 @@
 package pokeraidbot.domain.gym;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Gym {
     private String name;
     private String id;
     private String x;
     private String y;
-    private String imageLink;
+    private String area;
 
-    public Gym(String name, String id, String x, String y, String imageLink) {
+    public Gym(String name, String id, String x, String y, String area) {
         this.name = name;
         this.id = id;
         this.x = x;
         this.y = y;
-        this.imageLink = imageLink;
+        this.area = area;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class Gym {
         if (id != null ? !id.equals(gym.id) : gym.id != null) return false;
         if (x != null ? !x.equals(gym.x) : gym.x != null) return false;
         if (y != null ? !y.equals(gym.y) : gym.y != null) return false;
-        return imageLink != null ? imageLink.equals(gym.imageLink) : gym.imageLink == null;
+        return area != null ? area.equals(gym.area) : gym.area == null;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class Gym {
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (x != null ? x.hashCode() : 0);
         result = 31 * result + (y != null ? y.hashCode() : 0);
-        result = 31 * result + (imageLink != null ? imageLink.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
         return result;
     }
 
@@ -55,10 +57,17 @@ public class Gym {
         return y;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public String getArea() {
+        return area;
     }
 
+    public boolean isInArea(String area) {
+        if (!StringUtils.isEmpty(this.area)) {
+            return this.area.equalsIgnoreCase(area);
+        } else {
+            return false;
+        }
+    }
     @Override
     public String toString() {
         return name;
@@ -67,6 +76,7 @@ public class Gym {
     public String toStringDetails() {
         return "Gym{" +
                 "name='" + name + '\'' +
+                ", area='" + area + '\'' +
                 ", id='" + id + '\'' +
                 ", x='" + x + '\'' +
                 ", y='" + y + '\'' +

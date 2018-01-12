@@ -49,8 +49,8 @@ public class CSVGymDataReader {
                         String x = rowElements[1].replaceAll("\"", "").trim();
                         String y = rowElements[2].replaceAll("\"", "").trim();
                         String name = rowElements[3].trim();
-                        String image = rowElements[4].trim();
-                        Gym gym = new Gym(name, id, x, y, image);
+                        String area = rowElements[4].trim();
+                        Gym gym = new Gym(name, id, x, y, area);
                         gyms.add(gym);
                     } catch (Throwable t) {
                         LOGGER.warn("Encountered problem for this row: " + line + " - error: " + t.getMessage());

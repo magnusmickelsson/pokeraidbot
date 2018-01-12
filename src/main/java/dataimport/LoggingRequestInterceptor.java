@@ -11,6 +11,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Only used for detailed debugging HTTP requests, when needed
+ */
 public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
 
     final static Logger log = LoggerFactory.getLogger(LoggingRequestInterceptor.class);

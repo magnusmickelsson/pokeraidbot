@@ -30,6 +30,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
+import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -249,12 +250,22 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                             }
                         }, m -> {
                             LOGGER.warn(m.getClass().getName() + " occurred in edit message loop: " + m.getMessage());
-                            emoticonSignUpMessageListener.setStartAt(null);
-                            LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
-                                    ", creator: " + emoticonSignUpMessageListener.getUserId());
-                            cleanUpRaidGroupAndDeleteSignUpsIfPossible(messageChannel, emoticonSignUpMessageListener.getStartAt(),
-                                    currentStateOfRaid != null ? currentStateOfRaid.getId() : null,
-                                    emoticonSignUpMessageListener, raidRepository, botService, groupId);
+                            if (m instanceof SocketTimeoutException) {
+                                try {
+                                    // If we get a timeout, it's probably due to discord having issues.
+                                    // Try to delay 60 seconds and try again.
+                                    LOGGER.debug("Since we had a timeout, trying to wait 60 seconds before trying again.");
+                                    delayTimeUnit.sleep(60000);
+                                } catch (InterruptedException e) {
+                                }
+                            } else {
+                                emoticonSignUpMessageListener.setStartAt(null);
+                                LOGGER.info("Raid group will now be cleaned up. Raid ID: " + emoticonSignUpMessageListener.getRaidId() +
+                                        ", creator: " + emoticonSignUpMessageListener.getUserId());
+                                cleanUpRaidGroupAndDeleteSignUpsIfPossible(messageChannel, emoticonSignUpMessageListener.getStartAt(),
+                                        currentStateOfRaid != null ? currentStateOfRaid.getId() : null,
+                                        emoticonSignUpMessageListener, raidRepository, botService, groupId);
+                            }
                         });
                 return true;
             };

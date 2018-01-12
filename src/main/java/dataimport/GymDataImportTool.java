@@ -162,7 +162,7 @@ public class GymDataImportTool {
             System.out.println("Read " + response.getGyms().size() + " gyms from this query.");
             final String fileName = "target/" + location + ".csv";
             fis = new FileOutputStream(fileName);
-            fis.write(("ID" + separator + "LOCATION" + separator + "NAME" + separator + "IMAGE\n")
+            fis.write(("ID" + separator + "LOCATION" + separator + "NAME" + separator + "AREA\n")
                     .getBytes("UTF-8"));
             System.out.println("Saving file: " + fileName);
             for (String id : response.getGyms().keySet()) {
@@ -172,7 +172,8 @@ public class GymDataImportTool {
                 }
                 fis.write((id + separator + "\"" + gym.getLatitude() + separator + gym.getLongitude() + "\"" +
                         separator + gym.getName() +
-                         separator + "blah_not_used_yet\n").getBytes("UTF-8"));
+                         separator + StringUtils.left(location, 1).toUpperCase() +
+                        location.substring(1, location.length())+ "\n").getBytes("UTF-8"));
             }
             System.out.println("File: " + fileName + " saved.");
         } catch (Throwable e) {

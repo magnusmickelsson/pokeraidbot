@@ -33,6 +33,8 @@ public class GymRepositoryTest {
         UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
         localeService = new LocaleService("sv", userConfigRepository);
+        final Config dalarnaConfig = new Config("dalarna", "dalarna");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("dalarna")).thenReturn(dalarnaConfig);
         final Config uppsalaConfig = new Config("uppsala", "uppsala");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("uppsala")).thenReturn(uppsalaConfig);
         final Config angelholmConfig = new Config("ängelholm", "ängelholm");
@@ -48,6 +50,7 @@ public class GymRepositoryTest {
         final Config norrkopingConfig = new Config("norrköping", "norrköping");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("norrköping")).thenReturn(norrkopingConfig);
         final HashMap<String, Config> configMap = new HashMap<>();
+        configMap.put("dalarna", dalarnaConfig);
         configMap.put("uppsala", uppsalaConfig);
         configMap.put("ängelholm", angelholmConfig);
         configMap.put("luleå", luleConfig);
@@ -70,6 +73,13 @@ public class GymRepositoryTest {
                         " \n" + gymFromRepo.toStringDetails() + " != " + gym.toStringDetails(), gymFromRepo, is(gym));
             }
         }
+    }
+
+    @Test
+    public void allGymsAreReadForDalarna() {
+        final Set<Gym> dalarnaGyms = repo.getAllGymsForRegion("dalarna");
+        assertThat(dalarnaGyms.size(), is(115));
+        assertThat(dalarnaGyms.iterator().next().isInArea("rättvik"), is(true));
     }
 
     @Test

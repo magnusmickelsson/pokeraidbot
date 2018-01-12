@@ -8,7 +8,7 @@ Needs testing/keeping track of:
 
 Being developed:
 
--
+- Area categorization for gyms
 
 Discussion:
 
