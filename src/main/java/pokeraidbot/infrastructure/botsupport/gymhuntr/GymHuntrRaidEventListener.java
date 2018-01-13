@@ -293,7 +293,8 @@ public class GymHuntrRaidEventListener implements EventListener {
         if (title.contains("raid is available against")) {
             final String[] titleSplit = title.replaceAll("!", "").split(" ");
             pokemon = titleSplit[titleSplit.length - 1];
-            final String[] descriptionSplit = description.split(" ");
+            final String[] descriptionSplitNewLines = description.split("\n");
+            final String[] descriptionSplit = descriptionSplitNewLines[0].split(" ");
             timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3]));
             final String[] gymSplit = title.split("raid is available against");
             gym = gymSplit[0].trim();

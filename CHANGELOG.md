@@ -1,3 +1,7 @@
+1.7.5 (2018-01-13)
+=====
+* Fix: New format of PokeAlarm changed overnight, caused parsing issues. Changed parsing to fix it.
+
 1.7.4 (2018-01-12)
 =====
 * Updated gym for Uppsala
