@@ -22,6 +22,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Fix: Hantera förändring av PokeAlarm-meddelanden\n" +
                     "* Uppdaterad gymdata för Uppsala\n" +
                     "* Gym data för Dalarna\n" +
                     "* Fix: raidgrupper som rensades vid Discord API-problem (timeouts) ska hanteras bättre\n" +
@@ -43,6 +44,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Fix: Handle change of PokeAlarm-messages\n" +
                     "* Updated gym for Uppsala\n" +
                     "* Gym data for Dalarna\n" +
                     "* Fix: raid group cleanup during Discord API timeouts should not lead to messages dying anymore\n" +
