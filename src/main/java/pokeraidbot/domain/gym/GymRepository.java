@@ -51,9 +51,13 @@ public class GymRepository {
                 final String region = config.getRegion();
                 final Set<Gym> existingGyms = gymsPerRegion.get(region);
                 if (existingGyms == null) {
-                    final Set<Gym> gymsInRegion = new CSVGymDataReader("/gyms_" + region + ".csv").readAll();
-                    gymsPerRegion.put(region, gymsInRegion);
-                    LOGGER.info("Loaded " + gymsInRegion.size() + " gyms for region " + region + ".");
+                    try {
+                        final Set<Gym> gymsInRegion = new CSVGymDataReader("/gyms_" + region + ".csv").readAll();
+                        gymsPerRegion.put(region, gymsInRegion);
+                        LOGGER.info("Loaded " + gymsInRegion.size() + " gyms for region " + region + ".");
+                    } catch (Throwable t) {
+                        LOGGER.warn("Could not load data for region " + region + ", skipping.");
+                    }
                 }
             }
 
