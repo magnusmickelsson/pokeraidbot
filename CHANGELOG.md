@@ -2,6 +2,7 @@
 =====
 * Fix: Mapinchat command fixed so it actually prints in chat even if config says reply in DM
 * Fix: gym data handling for a region without data
+* Gyms added for Eskilstuna
 
 1.7.5 (2018-01-13)
 =====

@@ -677,7 +677,7 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(GYM_CONFIG_ERROR, Locale.ENGLISH),
                 "There are no gyms for this region. " +
-                        "Please check configuration and/or notify administrator!");
+                        "Please check configuration and/or notify administrator! You have imported the gymdata, right?");
         i18nMessages.put(new I18nLookup(GYM_CONFIG_ERROR, SWEDISH),
                 "Det finns inga gym för din valda region. Meddela en administratör så de kan kontrollera " +
                         "konfigurationen av servern. Ni har väl sett till att importera gymdata?");

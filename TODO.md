@@ -35,6 +35,7 @@ Fix, misc:
 
 Do, features:
 
+* Ensure the overview can handle discord API timeouts and weirdness
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * !raid install needs to be made easier
@@ -43,6 +44,8 @@ instant, should be able to reconfigure these in runtime via admin tool.
 * !raid track handling should be smarter for people who are on several servers
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
+* Separate so different servers can't share raids and reporting (in case we get malicious users)
+* Set Bot to private so not anyone can add it (atleast production/live bot)
 
 -- next
 
