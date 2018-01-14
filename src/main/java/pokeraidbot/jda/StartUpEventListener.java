@@ -129,7 +129,8 @@ public class StartUpEventListener implements EventListener {
                 });
         } catch (ErrorResponseException e) {
             // We couldn't find the message in this channel or had permission issues, ignore
-            LOGGER.debug("Caught exception: " + e.getMessage());
+            LOGGER.info("Caught exception during startup: " + e.getMessage());
+            LOGGER.debug("Stacktrace:", e);
         } catch (Throwable e) {
             cleanUpRaidGroup(raidGroup);
             // Ignore any other error

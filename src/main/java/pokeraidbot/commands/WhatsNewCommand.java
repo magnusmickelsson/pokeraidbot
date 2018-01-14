@@ -24,7 +24,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
                     "* Fix: Mapinchat-kommandot fixat så den svarar i chat även om server config är att svara i DM\n" +
                     "* Fix: Hantera förändring av PokeAlarm-meddelanden\n" +
-                    "* Uppdaterad gymdata för Uppsala\n" +
+                    "* Uppdaterad gymdata\n" +
                     "* Gym data för Dalarna\n" +
                     "* Fix: raidgrupper som rensades vid Discord API-problem (timeouts) ska hanteras bättre\n" +
                     "* Raid boss CP data och counter data uppdaterade för kommande bossar\n" +
@@ -47,7 +47,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
                     "* Fix: Mapinchat command fixed so it actually prints in chat even if config says reply in DM\n" +
                     "* Fix: Handle change of PokeAlarm-messages\n" +
-                    "* Updated gym for Uppsala\n" +
+                    "* Updated gym data\n" +
                     "* Gym data for Dalarna\n" +
                     "* Fix: raid group cleanup during Discord API timeouts should not lead to messages dying anymore\n" +
                     "* Raid boss CP data and counter data updated for coming raid bosses\n" +

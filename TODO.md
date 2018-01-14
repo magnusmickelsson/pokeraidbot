@@ -8,7 +8,8 @@ Needs testing/keeping track of:
 
 Being developed:
 
-- Area categorization for gyms
+* Ensure the overview can handle discord API timeouts and weirdness
+* Area categorization for gyms
 
 Discussion:
 
@@ -35,17 +36,17 @@ Fix, misc:
 
 Do, features:
 
-* Ensure the overview can handle discord API timeouts and weirdness
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * !raid install needs to be made easier
-* Only use a single Emoticon listener for signups to reduce memory and complexity
+* Only use a single Emoticon listener for signups to reduce memory and complexity?
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid track handling should be smarter for people who are on several servers
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
 * Separate so different servers can't share raids and reporting (in case we get malicious users)
 * Set Bot to private so not anyone can add it (atleast production/live bot)
+* Switch to Java 9, try to reduce runtime (https://devcenter.heroku.com/changelog-items/1263)
 
 -- next
 

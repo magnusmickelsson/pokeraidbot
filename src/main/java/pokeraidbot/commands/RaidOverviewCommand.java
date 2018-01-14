@@ -21,6 +21,7 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Locale;
 import java.util.Set;
@@ -144,8 +145,15 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 try {
                     overviewOk = executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException | OverviewException e) {
-                    LOGGER.warn("Exception when running edit task: " + e.getMessage() + " - shutting it down.");
-                    overviewOk = false;
+                    LOGGER.warn("Exception when running edit task: " + e.getMessage() + ".");
+                    if (e.getCause() != null &&
+                            (e.getCause() instanceof SocketException || e.getCause() instanceof SocketTimeoutException)) {
+                        LOGGER.info("Exception was due to timeout, so trying again later. Could be temporary.");
+                        overviewOk = true;
+                    } else {
+                        LOGGER.info("Exception was not due to timeout, so terminating this overview.");
+                        overviewOk = false;
+                    }
                 }
             } while (overviewOk);
             return false;
