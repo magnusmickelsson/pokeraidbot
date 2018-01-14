@@ -31,7 +31,7 @@ public class GymHuntrRaidEventListenerTest {
     public void testParseGymhuntrMessageForBossIntoArguments() throws Exception {
         final String typeOfMessage = "**Sunnerstakyrkan.**\n" +
                 "Ninetales\n" +
-                "CP: 14914.\n" +
+                "CP: 14914 - Moves: Dragon Tail / Earthquake\n" +
                 "*Raid Ending: 0 hours 15 min 59 sec*";
         final List<String> arguments = GymHuntrRaidEventListener.gymhuntrArgumentsToCreateRaid(
                 "Level 3 Raid has started!", typeOfMessage, clockService);

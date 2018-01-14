@@ -54,6 +54,8 @@ public interface FeedbackStrategy {
 
     void replyMap(Config config, CommandEvent commandEvent, MessageEmbed message);
 
+    void replyMapInChat(Config config, CommandEvent commandEvent, MessageEmbed message);
+
     void handleOriginMessage(CommandEvent commandEvent);
 
     void handleOriginMessage(GuildMessageReceivedEvent event);

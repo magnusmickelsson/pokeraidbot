@@ -1,3 +1,7 @@
+1.7.6 (2018-01-14)
+=====
+* Fix: Mapinchat command fixed so it actually prints in chat even if config says reply in DM
+
 1.7.5 (2018-01-13)
 =====
 * Fix: New format of PokeAlarm changed overnight, caused parsing issues. Changed parsing to fix it.

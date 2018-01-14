@@ -33,6 +33,6 @@ public class WhereIsGymInChatCommand extends ConfigAwareCommand {
         String nonStaticUrl = Utils.getNonStaticMapUrl(gym);
         final MessageEmbed messageEmbed = new EmbedBuilder().setImage(staticUrl).setTitle(gym.getName(), nonStaticUrl)
                 .build();
-        replyMapBasedOnConfig(config, commandEvent, messageEmbed);
+        replyMapInChat(config, commandEvent, messageEmbed);
     }
 }

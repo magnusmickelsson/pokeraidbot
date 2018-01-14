@@ -187,11 +187,11 @@ public class Config {
     }
 
     public enum FeedbackStrategy {
-        DEFAULT, KEEP_ALL, REMOVE_ALL_EXCEPT_MAP
+        DEFAULT, KEEP_ALL, REMOVE_ALL_EXCEPT_MAP // This actually also removes maps, but after some time (after wishes from users)
     }
 
     public enum RaidGroupCreationStrategy {
-        SAME_CHANNEL, NAMED_CHANNEL // , PER_LEVEL
+        SAME_CHANNEL, NAMED_CHANNEL // Create group in named group, not necessarily the channel where command originated
     }
 
     @Override

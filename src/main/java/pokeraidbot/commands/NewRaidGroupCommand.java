@@ -263,9 +263,11 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                 LOGGER.info("Raid group will now be cleaned up for raid: " +
                                         (raid == null ? emoticonSignUpMessageListener.getRaidId() : raid) +
                                         ", group at time " +
-                                        printTime(emoticonSignUpMessageListener.getStartAt().toLocalTime()) +
+                                        (emoticonSignUpMessageListener.getStartAt() == null ? "N/A" :
+                                        printTime(emoticonSignUpMessageListener.getStartAt().toLocalTime())) +
                                         " and creator: " + emoticonSignUpMessageListener.getUserId());
-                                cleanUpRaidGroupAndDeleteSignUpsIfPossible(messageChannel, emoticonSignUpMessageListener.getStartAt(),
+                                cleanUpRaidGroupAndDeleteSignUpsIfPossible(messageChannel,
+                                        emoticonSignUpMessageListener.getStartAt(),
                                         currentStateOfRaid != null ? currentStateOfRaid.getId() : null,
                                         emoticonSignUpMessageListener, raidRepository, botService, groupId);
                             }

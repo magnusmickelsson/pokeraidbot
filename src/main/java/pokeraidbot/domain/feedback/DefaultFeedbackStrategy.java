@@ -50,6 +50,11 @@ public class DefaultFeedbackStrategy implements FeedbackStrategy {
     }
 
     @Override
+    public void replyMapInChat(Config config, CommandEvent commandEvent, MessageEmbed message) {
+        commandEvent.reply(message);
+    }
+
+    @Override
     public void handleOriginMessage(CommandEvent commandEvent) {
     }
 

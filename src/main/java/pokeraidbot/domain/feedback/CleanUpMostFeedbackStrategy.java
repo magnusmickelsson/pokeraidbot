@@ -11,8 +11,8 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.concurrent.TimeUnit;
 
-public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
-    public CleanUpMostExceptMapsFeedbackStrategy() {
+public class CleanUpMostFeedbackStrategy implements FeedbackStrategy {
+    public CleanUpMostFeedbackStrategy() {
     }
 
     @Override
@@ -20,6 +20,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
+            handleOriginMessage(commandEvent);
         } else {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor(null, null, null);
@@ -36,6 +37,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
+            handleOriginMessage(commandEvent);
         } else {
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setAuthor(null, null, null);
@@ -52,6 +54,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
+            handleOriginMessage(commandEvent);
         } else {
             replyThenDeleteFeedbackAndOriginMessageAfterXTime(commandEvent, message,
                     BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS);
@@ -63,6 +66,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
+            handleOriginMessage(commandEvent);
         } else {
             commandEvent.getChannel().sendMessage(message).queue(m -> {
                 m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds * 4, TimeUnit.SECONDS);
@@ -71,6 +75,16 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
                     BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS
             );
         }
+    }
+
+    @Override
+    public void replyMapInChat(Config config, CommandEvent commandEvent, MessageEmbed message) {
+        commandEvent.getChannel().sendMessage(message).queue(m -> {
+            m.delete().queueAfter(BotServerMain.timeToRemoveFeedbackInSeconds * 4, TimeUnit.SECONDS);
+        });
+        commandEvent.getChannel().deleteMessageById(commandEvent.getMessage().getId()).queueAfter(
+                BotServerMain.timeToRemoveFeedbackInSeconds, TimeUnit.SECONDS
+        );
     }
 
     @Override
@@ -90,6 +104,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(throwable.getMessage());
             commandEvent.reactError();
+            handleOriginMessage(commandEvent);
         } else {
             commandEvent.reactError();
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -113,6 +128,7 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
         if (config != null && config.getReplyInDmWhenPossible()) {
             commandEvent.replyInDM(message);
             commandEvent.reactSuccess();
+            handleOriginMessage(commandEvent);
         } else {
             commandEvent.reactSuccess();
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -129,5 +145,4 @@ public class CleanUpMostExceptMapsFeedbackStrategy implements FeedbackStrategy {
                     TimeUnit.SECONDS);
         }
     }
-
 }

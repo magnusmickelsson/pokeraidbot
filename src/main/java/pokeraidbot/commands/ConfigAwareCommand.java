@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
-import pokeraidbot.domain.feedback.CleanUpMostExceptMapsFeedbackStrategy;
+import pokeraidbot.domain.feedback.CleanUpMostFeedbackStrategy;
 import pokeraidbot.domain.feedback.DefaultFeedbackStrategy;
 import pokeraidbot.domain.feedback.FeedbackStrategy;
 import pokeraidbot.domain.feedback.KeepAllFeedbackStrategy;
@@ -53,7 +53,7 @@ public abstract class ConfigAwareCommand extends Command {
         if (config != null && config.getFeedbackStrategy() != null) {
             switch (config.getFeedbackStrategy()) {
                 case REMOVE_ALL_EXCEPT_MAP:
-                    return new CleanUpMostExceptMapsFeedbackStrategy();
+                    return new CleanUpMostFeedbackStrategy();
                 case KEEP_ALL:
                     return new KeepAllFeedbackStrategy();
                 case DEFAULT:
@@ -80,6 +80,10 @@ public abstract class ConfigAwareCommand extends Command {
 
     public static void replyMapBasedOnConfig(Config config, CommandEvent commandEvent, MessageEmbed message) {
         getFeedbackStrategy(config).replyMap(config, commandEvent, message);
+    }
+
+    public static void replyMapInChat(Config config, CommandEvent commandEvent, MessageEmbed message) {
+        getFeedbackStrategy(config).replyMapInChat(config, commandEvent, message);
     }
 
     public static void verifyPermission(LocaleService localeService, CommandEvent commandEvent, User user,
