@@ -132,6 +132,7 @@ public class StartUpEventListener implements EventListener {
             LOGGER.info("Caught exception during startup: " + e.getMessage());
             LOGGER.debug("Stacktrace:", e);
         } catch (Throwable e) {
+            LOGGER.warn("Cleaning up raidgroup " + raidGroup + " due to exception: " + e.getMessage());
             cleanUpRaidGroup(raidGroup);
             // Ignore any other error
             LOGGER.debug("Caught exception: " + e.getMessage());
