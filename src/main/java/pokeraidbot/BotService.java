@@ -57,7 +57,6 @@ public class BotService {
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
         currentTier5Bosses.add("Kyogre");
-        currentTier5Bosses.add("Groudon");
     }
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,

@@ -71,21 +71,27 @@ public class StartUpEventListener implements EventListener {
                     final String messageId = config.getOverviewMessageId();
                     if (!StringUtils.isEmpty(messageId)) {
                         for (MessageChannel channel : guild.getTextChannels()) {
-                            getAndAttachToOverviewMessageIfExists(guild, config, messageId, channel);
+                            if (attachToOverviewMessageIfExists(guild, config, messageId, channel)) {
+                                break;
+                            } else {
+                                if (LOGGER.isDebugEnabled()) {
+                                    LOGGER.debug("Didn't find overview in channel " + channel.getName());
+                                }
+                            }
                         }
                     }
 
                     final List<RaidGroup> groupsForServer = raidRepository.getGroupsForServer(config.getServer());
                     for (RaidGroup group : groupsForServer) {
-                        getAndAttachToGroupMessageIfItExists(guild, config, group);
+                        attachToGroupMessage(guild, config, group);
                     }
                 }
             }
         }
     }
 
-    private boolean getAndAttachToGroupMessageIfItExists(Guild guild, Config config,
-                                                         RaidGroup raidGroup) {
+    private boolean attachToGroupMessage(Guild guild, Config config,
+                                         RaidGroup raidGroup) {
         MessageChannel channel = null;
         try {
             final List<TextChannel> textChannels = guild.getTextChannels();
@@ -95,33 +101,29 @@ public class StartUpEventListener implements EventListener {
                     break;
                 }
             }
-            // todo: change to only use one message listener
-            if (channel.getMessageById(raidGroup.getEmoteMessageId()).complete() != null) {
-                final Locale locale = config.getLocale();
-                Raid raid = raidRepository.getById(raidGroup.getRaidId());
-                final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
-                        new EmoticonSignUpMessageListener(botService, localeService, serverConfigRepository,
-                                raidRepository, pokemonRepository, gymRepository, raid.getId(), raidGroup.getStartsAt(),
-                                raidGroup.getCreatorId());
-                emoticonSignUpMessageListener.setEmoteMessageId(raidGroup.getEmoteMessageId());
-                emoticonSignUpMessageListener.setInfoMessageId(raidGroup.getInfoMessageId());
-                final int delayTime = raid.isExRaid() ? 1 : 15;
-                final TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
-                final Callable<Boolean> overviewTask =
-                        NewRaidGroupCommand.getMessageRefreshingTaskToSchedule(channel, raid,
-                                emoticonSignUpMessageListener,
-                                raidGroup.getInfoMessageId(), locale, raidRepository, pokemonRaidStrategyService,
-                                localeService,
-                                clockService, executorService, botService, delayTimeUnit, delayTime, raidGroup.getId());
-                executorService.submit(overviewTask);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Found group message for raid " + raid + " in channel " + channel.getName() +
-                            " (server " + guild.getName() + "). Attaching to it.");
-                }
-                return true;
-            } else {
-                cleanUpRaidGroup(raidGroup);
+            final Locale locale = config.getLocale();
+            Raid raid = raidRepository.getById(raidGroup.getRaidId());
+            final EmoticonSignUpMessageListener emoticonSignUpMessageListener =
+                    new EmoticonSignUpMessageListener(botService, localeService, serverConfigRepository,
+                            raidRepository, pokemonRepository, gymRepository, raid.getId(), raidGroup.getStartsAt(),
+                            raidGroup.getCreatorId());
+            emoticonSignUpMessageListener.setEmoteMessageId(raidGroup.getEmoteMessageId());
+            emoticonSignUpMessageListener.setInfoMessageId(raidGroup.getInfoMessageId());
+            final int delayTime = raid.isExRaid() ? 1 : 15;
+            final TimeUnit delayTimeUnit = raid.isExRaid() ? TimeUnit.MINUTES : TimeUnit.SECONDS;
+            final Callable<Boolean> groupEditTask =
+                    NewRaidGroupCommand.getMessageRefreshingTaskToSchedule(channel, raid,
+                            emoticonSignUpMessageListener,
+                            raidGroup.getInfoMessageId(), locale, raidRepository, pokemonRaidStrategyService,
+                            localeService,
+                            clockService, executorService, botService, delayTimeUnit, delayTime, raidGroup.getId());
+            executorService.submit(groupEditTask);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Found group message for raid " + raid + " in channel " +
+                        (channel == null ? "N/A" : channel.getName()) +
+                        " (server " + guild.getName() + "). Attaching to it.");
             }
+            return true;
         } catch (UserMessedUpException e) {
             if (channel != null)
                 channel.sendMessage(e.getMessage()).queue(m -> {
@@ -130,12 +132,12 @@ public class StartUpEventListener implements EventListener {
         } catch (ErrorResponseException e) {
             // We couldn't find the message in this channel or had permission issues, ignore
             LOGGER.info("Caught exception during startup: " + e.getMessage());
+            LOGGER.warn("Cleaning up raidgroup...");
+            cleanUpRaidGroup(raidGroup);
             LOGGER.debug("Stacktrace:", e);
         } catch (Throwable e) {
-            LOGGER.warn("Cleaning up raidgroup " + raidGroup + " due to exception: " + e.getMessage());
+            LOGGER.warn("Cleaning up raidgroup due to exception: " + e.getMessage());
             cleanUpRaidGroup(raidGroup);
-            // Ignore any other error
-            LOGGER.debug("Caught exception: " + e.getMessage());
         }
         return false;
     }
@@ -154,8 +156,8 @@ public class StartUpEventListener implements EventListener {
         }
     }
 
-    private boolean getAndAttachToOverviewMessageIfExists(Guild guild, Config config, String messageId,
-                                                          MessageChannel channel) {
+    private boolean attachToOverviewMessageIfExists(Guild guild, Config config, String messageId,
+                                                    MessageChannel channel) {
         try {
             if (channel.getMessageById(messageId).complete() != null) {
                 final Locale locale = config.getLocale();

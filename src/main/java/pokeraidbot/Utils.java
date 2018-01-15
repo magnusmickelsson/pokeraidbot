@@ -14,6 +14,8 @@ import pokeraidbot.domain.pokemon.ResistanceTable;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.signup.SignUp;
 
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -312,5 +314,14 @@ public class Utils {
 
     public static Set<String> getResistantTo(PokemonTypes pokemonTypes) {
         return resistanceTable.getResistantTo(pokemonTypes);
+    }
+
+    public static boolean isExceptionOrCauseNetworkIssues(Throwable t) {
+        return t != null && ((isInstanceOfSocketException(t) ||
+                (t.getCause() != null && isInstanceOfSocketException(t.getCause()))));
+    }
+
+    private static boolean isInstanceOfSocketException(Throwable t) {
+        return (t instanceof SocketException) || (t instanceof SocketTimeoutException);
     }
 }

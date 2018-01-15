@@ -1,3 +1,8 @@
+1.7.7 (2018-01-15)
+=====
+* Groudon gone as tier 5 boss
+* Minor optimization to system start up
+
 1.7.6 (2018-01-14)
 =====
 * Fix: Mapinchat command fixed so it actually prints in chat even if config says reply in DM

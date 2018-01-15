@@ -22,6 +22,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Groudon borta som tier 5-boss\n" +
                     "* Fix: Mapinchat-kommandot fixat så den svarar i chat även om server config är att svara i DM\n" +
                     "* Fix: Hantera förändring av PokeAlarm-meddelanden\n" +
                     "* Uppdaterad gymdata\n" +
@@ -45,6 +46,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Groudon gone.\n" +
                     "* Fix: Mapinchat command fixed so it actually prints in chat even if config says reply in DM\n" +
                     "* Fix: Handle change of PokeAlarm-messages\n" +
                     "* Updated gym data\n" +
