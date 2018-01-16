@@ -52,11 +52,14 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 
 -- next
 
+* Function to report new gym by name -> notification to admin to do a new import, for which region and the name of the new gym
 * Admin to send messages to when something happened they need to know about
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
 * Move gyms to the database, use CSV files just to initialize and keep in synch?
 * Make it possible to change gyms in database via admin command (Zhorhn only)
 * REST API with open operations (read-only)
+* Web page with complete map of Uppsala with all raids and gyms plotted 
+(ex raids marked as well, with number of raids they've had)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)
 * Be able to auto create groups via botintegration for several tiers and to different channels
