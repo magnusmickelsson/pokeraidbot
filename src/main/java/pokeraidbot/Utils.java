@@ -317,7 +317,7 @@ public class Utils {
     }
 
     public static boolean isExceptionOrCauseNetworkIssues(Throwable t) {
-        return t != null && ((isInstanceOfSocketException(t) ||
+        return t != null && (t.getMessage().contains("SocketTimeoutException") || (isInstanceOfSocketException(t) ||
                 (t.getCause() != null && isInstanceOfSocketException(t.getCause()))));
     }
 

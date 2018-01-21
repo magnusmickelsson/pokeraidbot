@@ -8,20 +8,22 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.OverviewException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRaidInfo;
 import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.PokemonRaidStrategyService;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Locale;
 import java.util.Set;
@@ -42,15 +44,17 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     private final LocaleService localeService;
     private final PokemonRepository pokemonRepository;
     private final ClockService clockService;
+    private final PokemonRaidStrategyService strategyService;
 
     public RaidOverviewCommand(RaidRepository raidRepository, LocaleService localeService,
                                ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository,
                                CommandListener commandListener, ClockService clockService,
-                               ExecutorService executorService) {
+                               ExecutorService executorService, PokemonRaidStrategyService strategyService) {
         super(serverConfigRepository, commandListener, localeService, executorService);
         this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.clockService = clockService;
+        this.strategyService = strategyService;
         this.name = "overview";
         this.help = localeService.getMessageFor(LocaleService.OVERVIEW_HELP, LocaleService.DEFAULT);
         this.raidRepository = raidRepository;
@@ -86,14 +90,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             }
         } else {
             final String messageString = getOverviewMessage(config,
-                    localeService, raidRepository, clockService, locale);
+                    localeService, raidRepository, clockService, locale, strategyService);
             commandEvent.getChannel().sendMessage(messageString).queue(msg -> {
                 final String messageId = msg.getId();
                 serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
                 final Callable<Boolean> refreshEditThreadTask =
                         getMessageRefreshingTaskToSchedule(user, server, messageId,
                                 localeService, locale, serverConfigRepository, raidRepository, clockService,
-                                commandEvent.getChannel(), executorService);
+                                commandEvent.getChannel(), executorService, strategyService);
                 executorService.submit(refreshEditThreadTask);
             });
         }
@@ -106,7 +110,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                                                                        RaidRepository raidRepository,
                                                                        ClockService clockService,
                                                                        MessageChannel messageChannel,
-                                                                       final ExecutorService executorService) {
+                                                                       final ExecutorService executorService,
+                                                                       PokemonRaidStrategyService strategyService) {
         final Callable<Boolean> refreshEditThreadTask = () -> {
             final Callable<Boolean> editTask = () -> {
                 TimeUnit.SECONDS.sleep(60); // Update once a minute
@@ -119,7 +124,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 if (config.getOverviewMessageId() != null &&
                         message != null) {
                     final String messageString = getOverviewMessage(config,
-                            localeService, raidRepository, clockService, locale);
+                            localeService, raidRepository, clockService, locale, strategyService);
                     messageChannel.editMessageById(messageId,
                             messageString)
                             .queue(m -> {
@@ -146,8 +151,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     overviewOk = executorService.submit(editTask).get();
                 } catch (InterruptedException | ExecutionException | OverviewException e) {
                     LOGGER.warn("Exception when running edit task: " + e.getMessage() + ".");
-                    if (e.getCause() != null &&
-                            (e.getCause() instanceof SocketException || e.getCause() instanceof SocketTimeoutException)) {
+                    if (Utils.isExceptionOrCauseNetworkIssues(e)) {
                         LOGGER.info("Exception was due to timeout, so trying again later. Could be temporary.");
                         overviewOk = true;
                     } else {
@@ -192,7 +196,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
     private static String getOverviewMessage(Config config,
                                              LocaleService localeService,
                                              RaidRepository raidRepository,
-                                             ClockService clockService, Locale locale) {
+                                             ClockService clockService, Locale locale,
+                                             PokemonRaidStrategyService strategyService) {
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
         StringBuilder stringBuilder = new StringBuilder();
         if (raids.size() == 0) {
@@ -208,7 +213,9 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Pokemon raidBoss = raid.getPokemon();
                 if (!raid.isExRaid() && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
-                    stringBuilder.append("\n**").append(currentPokemon.getName()).append("**\n");
+                    final PokemonRaidInfo raidInfo = strategyService.getRaidInfo(currentPokemon);
+                    stringBuilder.append("\n**").append(currentPokemon.getName()).append("**")
+                            .append(" (").append(raidInfo.getBossTier()).append(")").append("\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();

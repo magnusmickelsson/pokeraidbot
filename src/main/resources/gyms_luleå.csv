@@ -1,61 +1,64 @@
 ID;LOCATION;NAME;AREA
-3516369;"65.609126;22.100861";Midnattssol;Luleå
-3516255;"65.579272;22.198397";Playground at Kapellgrand;Luleå
-3516385;"65.563801;22.198839";Pryl?;Luleå
-3516256;"65.598246;22.19161";Ormbergsbron;Luleå
-3516361;"65.588165;22.166814";Skorsten;Luleå
-3516351;"65.587281;22.150961";Neon Tower;Luleå
-3516222;"65.58635600000001;22.12818";Spira;Luleå
-3516311;"65.54889;22.124014000000003";Textila Strukturer;Luleå
-3516261;"65.604851;22.153084000000003";Klintberg Tunnel;Luleå
-3516356;"65.588708;22.148899";A Bad Place;Luleå
-3516213;"65.620132;22.182138";Tolvsidig Kub;Luleå
-3516362;"65.58354899999999;22.227283";Klocktorn Vid Kapellet;Luleå
-3516257;"65.595871;22.194796";Wood Park;Luleå
-3516288;"65.613884;22.174086";Mirror park;Luleå
-3516404;"65.61612699999999;22.135395";The Thing;Luleå
-49084484;"65.596221;22.060807";Arcushallen;Luleå
-3516248;"65.59110600000001;22.172275";Lekplats;Luleå
-3516219;"65.58753;22.12575";Giraffen;Luleå
-3516392;"65.581476;22.263637";Hare Statue;Luleå
-3516387;"65.60389;22.118543";Mjölkuddskyrkan;Luleå
-3516338;"65.592014;22.152022000000002";White on Top;Luleå
-49061636;"65.647857;22.035618999999997";Museum Forge;Luleå
-3516312;"65.61510700000001;22.188019999999998";Forest Tower;Luleå
-3516260;"65.60079;22.130947";3 blommor;Luleå
-3516347;"65.58388000000001;22.16414";Malmvagn;Luleå
-49061641;"65.648545;22.035285000000002";Open Air Museum Hägnan;Luleå
-3516400;"65.617318;22.134941";"Mänsklig byggnad" av Arne Jon;Luleå
-3516391;"65.590024;22.241725000000002";Circle of Lights;Luleå
-1143855;"65.64575400000001;22.027299000000003";Gammelstads Kyrka;Luleå
-3516226;"65.582673;22.148413";Luleå Domkyrka;Luleå
-3516274;"65.58547;22.160747";Luleå Busstation;Luleå
-3516253;"65.57957999999999;22.200424";Boxer;Luleå
-49843663;"65.587298;22.199648";Luleå Bear;Luleå
-49061640;"65.642113;22.037567";Urnförvaringsrummet;Luleå
-3516281;"65.585207;22.151668";Svampen, Luleå;Luleå
-3516263;"65.60157099999999;22.155189";The Worm;Luleå
-49017694;"65.577963;22.133354";Green Outdoor Bed;Luleå
-3516237;"65.583631;22.14768";Sveriges Riksbank Luleå Ano 1902;Luleå
-49187696;"65.615714;22.154807";Rainbow Road;Luleå
-3516318;"65.592755;22.188872999999997";Mirrors of Deception;Luleå
-3516230;"65.583449;22.1509";Bird Eyes;Luleå
-3516262;"65.600778;22.153434999999998";The Molten Hand;Luleå
-3516357;"65.58937300000001;22.169739";Keramikrelief;Luleå
-49084485;"65.599126;22.068226";Krigsfångesminnesmärke;Luleå
-3516297;"65.616248;22.182746";Rainbow Bird;Luleå
-3516365;"65.605775;22.107011";Skulptur Tunastigen;Luleå
-3516405;"65.617642;22.138863";B Alphabet Structure;Luleå
-3516210;"65.580339;22.174831";Rondellpinnar;Luleå
-3516332;"65.583132;22.137561";Samuel Gustaf Hermelin;Luleå
-3516314;"65.598445;22.174028";Canoe House;Luleå
-49843646;"65.57262300000001;22.097597";Bergnäsets Bibliotek;Luleå
-3516217;"65.617294;22.127723999999997";Aurorum Science Park;Luleå
-49083810;"65.594701;22.069394";Slagghall;Luleå
-3516360;"65.588331;22.164762";Death Mobile;Luleå
-3516375;"65.587183;22.238347";Hertsö IP;Luleå
-3516409;"65.56226;22.188615";Stone Labyrinth;Luleå
-3516339;"65.60435600000001;22.179755";Night Spider;Luleå
-3516275;"65.58443;22.153723999999997";Reklampelaren;Luleå
-3516307;"65.619501;22.137099";Wibergsgården;Luleå
-3516327;"65.585736;22.13423";Ankdammsfyren;Luleå
+3516369;"65.609;22.101";Midnattssol;Luleå
+3516255;"65.579;22.198";Playground at Kapellgrand;Luleå
+3516385;"65.564;22.199";Pryl?;Luleå
+3516256;"65.598;22.192";Ormbergsbron;Luleå
+3516361;"65.588;22.167";Skorsten;Luleå
+3516351;"65.587;22.151";Neon Tower;Luleå
+3516222;"65.586;22.128";Spira;Luleå
+3516311;"65.549;22.124";Textila Strukturer;Luleå
+3516261;"65.605;22.153";Klintberg Tunnel;Luleå
+3516356;"65.589;22.149";A Bad Place;Luleå
+3516213;"65.62;22.182";Tolvsidig Kub;Luleå
+3516362;"65.584;22.227";Klocktorn Vid Kapellet;Luleå
+3516257;"65.596;22.195";Wood Park;Luleå
+3516288;"65.614;22.174";Mirror park;Luleå
+3516404;"65.616;22.135";The Thing;Luleå
+49084484;"65.596;22.061";Arcushallen;Luleå
+3516248;"65.591;22.172";Lekplats;Luleå
+3516219;"65.588;22.126";Giraffen;Luleå
+3516392;"65.581;22.264";Hare Statue;Luleå
+3516387;"65.604;22.119";Mjölkuddskyrkan;Luleå
+3516338;"65.592;22.152";White on Top;Luleå
+49824238;"65.659;21.946";Sunderby Folkhögskola;Luleå
+49061636;"65.648;22.036";Museum Forge;Luleå
+3516312;"65.615;22.188";Forest Tower;Luleå
+3516260;"65.601;22.131";3 blommor;Luleå
+3516347;"65.584;22.164";Malmvagn;Luleå
+49061641;"65.649;22.035";Open Air Museum Hägnan;Luleå
+3516400;"65.617;22.135";"Mänsklig byggnad" av Arne Jon;Luleå
+3516391;"65.59;22.242";Circle of Lights;Luleå
+1143855;"65.646;22.027";Gammelstads Kyrka;Luleå
+3516226;"65.583;22.148";Luleå Domkyrka;Luleå
+49060030;"65.484;21.958";Säljägarminne;Luleå
+3516274;"65.585;22.161";Luleå Busstation;Luleå
+3516253;"65.58;22.2";Boxer;Luleå
+49084483;"65.507;22.355";Klubbviken Havsbad;Luleå
+49843663;"65.587;22.2";Luleå Bear;Luleå
+49061640;"65.642;22.038";Urnförvaringsrummet;Luleå
+3516281;"65.585;22.152";Svampen, Luleå;Luleå
+3516263;"65.602;22.155";The Worm;Luleå
+49017694;"65.578;22.133";Green Outdoor Bed;Luleå
+3516237;"65.584;22.148";Sveriges Riksbank Luleå Ano 1902;Luleå
+49187696;"65.616;22.155";Rainbow Road;Luleå
+3516318;"65.593;22.189";Mirrors of Deception;Luleå
+3516230;"65.583;22.151";Bird Eyes;Luleå
+3516262;"65.601;22.153";The Molten Hand;Luleå
+3516357;"65.589;22.17";Keramikrelief;Luleå
+49084485;"65.599;22.068";Krigsfångesminnesmärke;Luleå
+3516297;"65.616;22.183";Rainbow Bird;Luleå
+3516365;"65.606;22.107";Skulptur Tunastigen;Luleå
+3516405;"65.618;22.139";B Alphabet Structure;Luleå
+3516210;"65.58;22.175";Rondellpinnar;Luleå
+3516332;"65.583;22.138";Samuel Gustaf Hermelin;Luleå
+3516314;"65.598;22.174";Canoe House;Luleå
+49843646;"65.573;22.098";Bergnäsets Bibliotek;Luleå
+3516217;"65.617;22.128";Aurorum Science Park;Luleå
+49083810;"65.595;22.069";Slagghall;Luleå
+3516360;"65.588;22.165";Death Mobile;Luleå
+3516375;"65.587;22.238";Hertsö IP;Luleå
+3516409;"65.562;22.189";Stone Labyrinth;Luleå
+3516339;"65.604;22.18";Night Spider;Luleå
+3516275;"65.584;22.154";Reklampelaren;Luleå
+3516307;"65.62;22.137";Wibergsgården;Luleå
+3516327;"65.586;22.134";Ankdammsfyren;Luleå

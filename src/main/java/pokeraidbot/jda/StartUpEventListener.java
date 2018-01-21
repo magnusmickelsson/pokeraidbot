@@ -71,7 +71,8 @@ public class StartUpEventListener implements EventListener {
                     final String messageId = config.getOverviewMessageId();
                     if (!StringUtils.isEmpty(messageId)) {
                         for (MessageChannel channel : guild.getTextChannels()) {
-                            if (attachToOverviewMessageIfExists(guild, config, messageId, channel)) {
+                            if (attachToOverviewMessageIfExists(guild, config, messageId, channel,
+                                    pokemonRaidStrategyService)) {
                                 break;
                             } else {
                                 if (LOGGER.isDebugEnabled()) {
@@ -157,7 +158,7 @@ public class StartUpEventListener implements EventListener {
     }
 
     private boolean attachToOverviewMessageIfExists(Guild guild, Config config, String messageId,
-                                                    MessageChannel channel) {
+                                                    MessageChannel channel, PokemonRaidStrategyService raidStrategyService) {
         try {
             if (channel.getMessageById(messageId).complete() != null) {
                 final Locale locale = config.getLocale();
@@ -165,7 +166,7 @@ public class StartUpEventListener implements EventListener {
                         RaidOverviewCommand.getMessageRefreshingTaskToSchedule(
                                 null, config.getServer(), messageId, localeService, locale, serverConfigRepository,
                                 raidRepository, clockService, channel,
-                                executorService);
+                                executorService, raidStrategyService);
                 executorService.submit(overviewTask);
                 LOGGER.info("Found overview message for channel " + channel.getName() +
                         " (server " + guild.getName() + "). Attaching to it.");

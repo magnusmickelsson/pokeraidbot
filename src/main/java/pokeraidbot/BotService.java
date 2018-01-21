@@ -153,7 +153,7 @@ public class BotService {
                         serverConfigRepository,
                         aggregateCommandListener, this, raidInfoService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
-                        aggregateCommandListener, clockService, executorService)
+                        aggregateCommandListener, clockService, executorService, raidInfoService)
         );
 
         try {

@@ -69,7 +69,7 @@ public class GymRepository {
     }
 
     public Gym search(User user, String query, String region) {
-        if (user == null || StringUtils.isEmpty(query)) {
+        if (region == null || StringUtils.isEmpty(query)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GYM_SEARCH,
                     LocaleService.DEFAULT));
         }
@@ -86,7 +86,7 @@ public class GymRepository {
             if (candidates.size() == 1) {
                 return findByName(candidates.iterator().next().getString(), region);
             } else if (candidates.size() < 1) {
-                throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH);
+                throw new GymNotFoundException(query, localeService, LocaleService.SWEDISH, region);
             } else {
                 List<Gym> matchingPartial = getMatchingPartial(query, region, candidates);
                 if (matchingPartial.size() == 1) {
@@ -106,7 +106,7 @@ public class GymRepository {
     public Gym findByName(String name, String region) {
         final Optional<Gym> gym = get(name, region);
         if (!gym.isPresent()) {
-            throw new GymNotFoundException(name, localeService, LocaleService.SWEDISH);
+            throw new GymNotFoundException(name, localeService, LocaleService.SWEDISH, region);
         }
         return gym.get();
     }
@@ -116,7 +116,7 @@ public class GymRepository {
             if (gym.getId().equals(id))
                 return gym;
         }
-        throw new GymNotFoundException("[No entry]", localeService, LocaleService.SWEDISH);
+        throw new GymNotFoundException("[No entry]", localeService, LocaleService.SWEDISH, region);
     }
 
     public Set<Gym> getAllGymsForRegion(String region) {

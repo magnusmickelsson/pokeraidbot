@@ -52,6 +52,7 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 
 -- next
 
+* Refactor: Move misc static code from commands to a CommandService, should reduce parameters and simplify
 * Function to report new gym by name -> notification to admin to do a new import, for which region and the name of the new gym
 * Admin to send messages to when something happened they need to know about
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.

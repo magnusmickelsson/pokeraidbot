@@ -869,8 +869,8 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(USAGE, Locale.ENGLISH), featuresString_EN);
         i18nMessages.put(new I18nLookup(USAGE, SWEDISH), featuresString_SV);
 
-        i18nMessages.put(new I18nLookup(GYM_NOT_FOUND, Locale.ENGLISH), "Could not find Gym with name: \"%1\"");
-        i18nMessages.put(new I18nLookup(GYM_NOT_FOUND, SWEDISH), "Kunde inte hitta gym: \"%1\"");
+        i18nMessages.put(new I18nLookup(GYM_NOT_FOUND, Locale.ENGLISH), "Could not find Gym with name \"%1\" in region %2");
+        i18nMessages.put(new I18nLookup(GYM_NOT_FOUND, SWEDISH), "Kunde inte hitta gym med namn \"%1\" i regionen %2");
 
         i18nMessages.put(new I18nLookup(RAID_EXISTS, Locale.ENGLISH),
                 "Sorry, %1, a raid at gym %2 already exists (for %3). Sign up for it!");

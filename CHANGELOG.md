@@ -1,3 +1,13 @@
+1.7.9 (2018-01-21)
+=====
+* Gym data updated
+* Boss tier level added to overview
+* Include region in gym not found exception
+
+1.7.8 (2018-01-16)
+=====
+* Gym data updated
+
 1.7.7 (2018-01-15)
 =====
 * Groudon gone as tier 5 boss
