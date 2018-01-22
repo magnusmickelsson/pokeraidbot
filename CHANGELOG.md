@@ -1,3 +1,8 @@
+1.7.10 (2018-01-22)
+=====
+* Fix: Non-static map url didn't work on some phones and google maps versions, changed it
+* Timeout handling for groups changed similarly to overview
+
 1.7.9 (2018-01-21)
 =====
 * Gym data updated

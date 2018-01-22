@@ -166,7 +166,7 @@ public class Utils {
     }
 
     public static String getNonStaticMapUrl(Gym gym) {
-        String url = "http://maps.google.com/maps?q=loc:" + gym.getX() + "," + gym.getY();
+        String url = "http://www.google.com/maps?q=" + gym.getX() + "," + gym.getY();
         return url;
     }
 

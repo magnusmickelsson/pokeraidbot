@@ -30,7 +30,6 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
-import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -250,7 +249,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                             }
                         }, m -> {
                             LOGGER.warn(m.getClass().getName() + " occurred in edit message loop: " + m.getMessage());
-                            if (m instanceof SocketTimeoutException) {
+                            if (Utils.isExceptionOrCauseNetworkIssues(m)) {
+                                LOGGER.info("Exception was due to timeout, so trying again soon. Could be temporary.");
                                 try {
                                     // If we get a timeout, it's probably due to discord having issues.
                                     // Try to delay 60 seconds and try again.
@@ -259,12 +259,13 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
                                 } catch (InterruptedException e) {
                                 }
                             } else {
+                                LOGGER.info("Exception was not due to timeout, so terminating this group.");
                                 emoticonSignUpMessageListener.setStartAt(null);
                                 LOGGER.info("Raid group will now be cleaned up for raid: " +
                                         (raid == null ? emoticonSignUpMessageListener.getRaidId() : raid) +
                                         ", group at time " +
                                         (emoticonSignUpMessageListener.getStartAt() == null ? "N/A" :
-                                        printTime(emoticonSignUpMessageListener.getStartAt().toLocalTime())) +
+                                                printTime(emoticonSignUpMessageListener.getStartAt().toLocalTime())) +
                                         " and creator: " + emoticonSignUpMessageListener.getUserId());
                                 cleanUpRaidGroupAndDeleteSignUpsIfPossible(messageChannel,
                                         emoticonSignUpMessageListener.getStartAt(),

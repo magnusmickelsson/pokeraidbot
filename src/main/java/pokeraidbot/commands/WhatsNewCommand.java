@@ -22,6 +22,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Fix: Icke-statiska karturl:en funkade inte på vissa telefoner och versioner av google maps\n" +
+                    "* Timeouthantering för grupper gjord på liknande sätt som översikten\n" +
                     "* Boss tier inlagt i översikten\n" +
                     "* Inkludera vilken region i GymNotFoundException\n" +
                     "* Groudon borta som tier 5-boss\n" +
@@ -48,6 +50,8 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Dokumentation - hantering av raidägg inlagd i !raid getting-started\n";
         } else {
             message = "**New in 1.7.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Fix: Non-static map url didn't work on some phones and google maps versions, changed it\n" +
+                    "* Timeout handling for groups changed similarly to overview\n" +
                     "* Boss tier level added to overview\n" +
                     "* Include region in gym not found exception\n" +
                     "* Groudon gone.\n" +
