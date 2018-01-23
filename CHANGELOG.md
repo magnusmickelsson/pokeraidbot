@@ -1,3 +1,7 @@
+1.7.11 (2018-01-23)
+=====
+* Gym data updated for Luleå
+
 1.7.10 (2018-01-22)
 =====
 * Fix: Non-static map url didn't work on some phones and google maps versions, changed it
