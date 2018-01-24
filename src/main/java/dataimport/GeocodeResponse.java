@@ -1,9 +1,11 @@
 package dataimport;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect
+@JsonIgnoreProperties("onesec")
 public class GeocodeResponse {
     @JsonProperty("lat")
     private String lat;

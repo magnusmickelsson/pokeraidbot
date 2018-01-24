@@ -1,3 +1,7 @@
+1.7.13 (?)
+=====
+* Gym removed from Umeå
+
 1.7.12 (2018-01-24)
 =====
 * Aggron, new tier 4 raid boss

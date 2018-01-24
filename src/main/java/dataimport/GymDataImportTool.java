@@ -10,6 +10,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -26,12 +28,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
 
 public class GymDataImportTool {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GymDataImportTool.class);
+
     private static final TypeReference<Map<String, GymResponse>> gymsTypeReference =
             new TypeReference<Map<String, GymResponse>>() {
             };
@@ -195,29 +200,58 @@ public class GymDataImportTool {
             final Set<Gym> oldGyms = oldGymDataReader.readAll();
             final Set<Gym> newGyms = newGymDataReader.readAll();
             int sameCount = 0;
+            LinkedList<String> report = new LinkedList<>();
             for (Gym newGym : newGyms) {
                 if (!oldGyms.contains(newGym)) {
                     boolean weird = false;
                     for (Gym oldGym : oldGyms) {
                         if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
-                            System.out.println("New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            report.add("New name for old gym? Old: " + oldGym + " - New: " + newGym);
                             weird = true;
                         } else if (oldGym.getId().equals(newGym.getId())) {
-                            System.out.println("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            report.add("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
                             weird = true;
-                        } else if (oldGym.getName().equalsIgnoreCase(newGym.getName())) {
-                            System.out.println("Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                        } else if (oldGym.getName().trim().equalsIgnoreCase(newGym.getName().trim())) {
+                            report.add("NEW: Potential duplicate. Old: " + oldGym + " - New: " + newGym);
                             weird = true;
                         }
                     }
                     if (!weird) {
-                        System.out.println("New gym: " + newGym);
+                        report.add("New gym: " + newGym);
                     }
                 } else {
                     sameCount++;
                 }
             }
-            System.out.println("Old gyms: " + oldGyms.size() + ", new gyms: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
+
+            for (Gym oldGym : oldGyms) {
+                if (!newGyms.contains(oldGym)) {
+                    boolean weird = false;
+                    for (Gym newGym : newGyms) {
+                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
+                            LOGGER.debug("OLD: New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getId().equals(newGym.getId())) {
+                            LOGGER.debug("OLD: Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getName().equalsIgnoreCase(newGym.getName())) {
+                            LOGGER.debug("OLD: Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        }
+                    }
+                    if (!weird) {
+                        report.add("Removed gym: " + oldGym);
+                    }
+                } else {
+                    report.add("Removed gym: " + oldGym);
+                }
+            }
+
+            System.out.println("\nREPORT:\n\nOld gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() +
+                    ", diff: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
+            for (String r : report) {
+                System.out.println(r);
+            }
         } catch (Throwable t) {
             System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
         }
