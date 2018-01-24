@@ -79,6 +79,7 @@ public class PokemonRaidStrategyService {
             // Tier 4
             "Absol".toUpperCase(),
             "Salamence".toUpperCase(),
+            "Aggron".toUpperCase(),
             // Tier 5
             "Groudon".toUpperCase(),
             "Kyogre".toUpperCase(),
@@ -210,6 +211,7 @@ public class PokemonRaidStrategyService {
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Absol", "1303", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Aggron", "1716", 4);
         populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);

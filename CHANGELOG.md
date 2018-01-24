@@ -1,3 +1,7 @@
+1.7.12 (2018-01-24)
+=====
+* Aggron, new tier 4 raid boss
+
 1.7.11 (2018-01-23)
 =====
 * Gym data updated for Luleå
