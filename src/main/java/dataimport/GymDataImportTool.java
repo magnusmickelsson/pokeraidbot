@@ -201,23 +201,24 @@ public class GymDataImportTool {
             final Set<Gym> newGyms = newGymDataReader.readAll();
             int sameCount = 0;
             LinkedList<String> report = new LinkedList<>();
+            LinkedList<String> focusReport = new LinkedList<>();
             for (Gym newGym : newGyms) {
                 if (!oldGyms.contains(newGym)) {
                     boolean weird = false;
                     for (Gym oldGym : oldGyms) {
                         if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
-                            report.add("New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            focusReport.add("New name for old gym? Old: " + oldGym + " - New: " + newGym);
                             weird = true;
                         } else if (oldGym.getId().equals(newGym.getId())) {
-                            report.add("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            focusReport.add("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
                             weird = true;
                         } else if (oldGym.getName().trim().equalsIgnoreCase(newGym.getName().trim())) {
-                            report.add("NEW: Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                            focusReport.add("Potential duplicate. Old: " + oldGym + " - New: " + newGym);
                             weird = true;
                         }
                     }
                     if (!weird) {
-                        report.add("New gym: " + newGym);
+                        focusReport.add("New gym: " + newGym);
                     }
                 } else {
                     sameCount++;
@@ -225,8 +226,8 @@ public class GymDataImportTool {
             }
 
             for (Gym oldGym : oldGyms) {
+                boolean weird = false;
                 if (!newGyms.contains(oldGym)) {
-                    boolean weird = false;
                     for (Gym newGym : newGyms) {
                         if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
                             LOGGER.debug("OLD: New name for old gym? Old: " + oldGym + " - New: " + newGym);
@@ -243,15 +244,18 @@ public class GymDataImportTool {
                         report.add("Removed gym: " + oldGym);
                     }
                 } else {
-                    report.add("Removed gym: " + oldGym);
+                    report.add("Exists in old and new: " + oldGym);
                 }
             }
 
-            System.out.println("\nREPORT:\n\nOld gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() +
-                    ", diff: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
             for (String r : report) {
                 System.out.println(r);
             }
+            for (String r : focusReport) {
+                System.out.println(r);
+            }
+            System.out.println("\nREPORT:\n\nOld gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() +
+                    ", diff: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
         } catch (Throwable t) {
             System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
         }

@@ -124,9 +124,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
             verifyIsModOrHasGroupForRaid(commandEvent, user, raid, config);
             RaidGroup theGroupToDelete = getGroupToDelete(user, existingGroupTimeIfAvailable, groups, raid);
             assertPermissionToManageThisGroup(user, theGroupToDelete, commandEvent, config);
-            NewRaidGroupCommand.cleanUpRaidGroupAndDeleteSignUpsIfPossible(commandEvent.getChannel(),
-                    theGroupToDelete.getStartsAt(), raid.getId(),
-                    listener, raidRepository, botService, theGroupToDelete.getId());
+            NewRaidGroupCommand.cleanUpGroupMessageAndEntity(commandEvent.getChannel(), raid.getId(),
+                    listener, raidRepository, botService, theGroupToDelete.getId(), raid.toString());
             final String message = localeService.getMessageFor(LocaleService.GROUP_DELETED,
                     localeService.getLocaleForUser(user));
             replyBasedOnConfig(config, commandEvent, message);

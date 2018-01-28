@@ -269,7 +269,11 @@ public class Utils {
     }
 
     public static String getPokemonIcon(Pokemon pokemon) {
-        return "https://pokemongohub.net/sprites/normal/" + pokemon.getNumber() + ".png";
+        if (!pokemon.isEgg()) {
+            return "https://pokemongohub.net/sprites/normal/" + pokemon.getNumber() + ".png";
+        } else {
+            return "https://pokeraidbot.herokuapp.com/img/" + pokemon.getName().toLowerCase() + ".png";
+        }
     }
 
     public static String[] prepareArguments(CommandEvent commandEvent) {

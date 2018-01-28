@@ -1,6 +1,10 @@
-1.7.13 (?)
+1.7.13 (2018-01-28)
 =====
 * Gym removed from Umeå
+* Gym removed from Uppsala
+* Import tool report remade
+* Egg URL changed, added egg icons to pokeraidbot
+* Removing group no longer removes signups
 
 1.7.12 (2018-01-24)
 =====
