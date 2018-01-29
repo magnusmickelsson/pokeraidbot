@@ -7,6 +7,9 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Command base class adding the concurrency executor service for spawned threads
+ */
 public abstract class ConcurrencyAndConfigAwareCommand extends ConfigAwareCommand {
     protected final ExecutorService executorService;
 

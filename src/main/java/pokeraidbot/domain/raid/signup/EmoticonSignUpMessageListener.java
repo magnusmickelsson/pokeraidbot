@@ -107,21 +107,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
-//                        case "mystic":
-//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-//                                addToSignUp(user, 1, 0, 0, 0);
-//                            }
-//                            break;
-//                        case "instinct":
-//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-//                                addToSignUp(user, 0, 1, 0, 0);
-//                            }
-//                            break;
-//                        case "valor":
-//                            if (assertUserDoesntHaveIncorrectRole(reactionEvent, emote.getName())) {
-//                                addToSignUp(user, 0, 0, 1, 0);
-//                            }
-//                            break;
                         case Emotes.ONE:
                             addToSignUp(user, 0, 0, 0, 1);
                             break;
@@ -137,9 +122,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                         case Emotes.FIVE:
                             addToSignUp(user, 0, 0, 0, 5);
                             break;
-//                        case Emotes.SIX:
-//                            addToSignUp(user, 0, 0, 0, 6);
-//                            break;
                         default:
                     }
                 }
@@ -161,15 +143,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
-//                        case "mystic":
-//                            removeFromSignUp(user, 1, 0, 0, 0);
-//                            break;
-//                        case "instinct":
-//                            removeFromSignUp(user, 0, 1, 0, 0);
-//                            break;
-//                        case "valor":
-//                            removeFromSignUp(user, 0, 0, 1, 0);
-//                            break;
                         case Emotes.ONE:
                             removeFromSignUp(user, 0, 0, 0, 1);
                             break;
@@ -185,9 +158,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
                         case Emotes.FIVE:
                             removeFromSignUp(user, 0, 0, 0, 5);
                             break;
-//                        case Emotes.SIX:
-//                            removeFromSignUp(user, 0, 0, 0, 6);
-//                            break;
                         default:
                     }
                 }
@@ -306,8 +276,6 @@ public class EmoticonSignUpMessageListener implements EventListener {
     public String getUserId() {
         return userId;
     }
-
-
 
     @Override
     public String toString() {

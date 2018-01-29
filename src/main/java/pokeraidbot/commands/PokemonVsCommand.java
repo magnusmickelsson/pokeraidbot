@@ -13,12 +13,12 @@ import pokeraidbot.infrastructure.CounterPokemon;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * !raid vs (boss name)
+ */
 public class PokemonVsCommand extends ConfigAwareCommand {
     private final PokemonRaidStrategyService raidInfoService;
     private final LocaleService localeService;
@@ -65,13 +65,14 @@ public class PokemonVsCommand extends ConfigAwareCommand {
         final String moveSetText = localeService.getMessageFor(LocaleService.IF_CORRECT_MOVESET, localeForUser);
         final String bestCounterText = localeService.getMessageFor(LocaleService.BEST_COUNTERS, localeForUser);
 
+        final Set<CounterPokemon> goodCounters = counters.getGoodCounters();
         if (counters != null && counters.getSupremeCounters().size() > 0) {
             builder.append(bestCounterText);
             final Optional<CounterPokemon> bestCounterPokemon = counters.getSupremeCounters().stream().findFirst();
             builder.append(bestCounterPokemon.get());
-            if (counters.getSupremeCounters().size() > 1 || counters.getGoodCounters().size() > 0) {
+            if (counters.getSupremeCounters().size() > 1 || goodCounters.size() > 0) {
                 final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(counters.getSupremeCounters());
-                totalCounters.addAll(counters.getGoodCounters());
+                totalCounters.addAll(goodCounters);
                 List<String> otherCounters = totalCounters.stream().skip(1)
                         .map(CounterPokemon::getCounterPokemonName).collect(Collectors.toList());
                 builder.append("\n")
@@ -81,10 +82,10 @@ public class PokemonVsCommand extends ConfigAwareCommand {
             }
         } else {
             builder.append(bestCounterText);
-            final Optional<CounterPokemon> bestCounterPokemon = counters.getGoodCounters().stream().findFirst();
-            builder.append(bestCounterPokemon.get());
-            if (counters.getGoodCounters().size() > 1) {
-                final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(counters.getGoodCounters());
+            final Optional<CounterPokemon> bestCounterPokemon = goodCounters.stream().findFirst();
+            bestCounterPokemon.ifPresent(builder::append);
+            if (goodCounters.size() > 1) {
+                final LinkedList<CounterPokemon> totalCounters = new LinkedList<>(goodCounters);
                 List<String> otherCounters = totalCounters.stream().skip(1)
                         .map(CounterPokemon::getCounterPokemonName).collect(Collectors.toList());
                 builder.append("\n").append(otherCountersText).append("[");

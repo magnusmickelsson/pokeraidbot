@@ -20,7 +20,7 @@ import java.util.Set;
 import static pokeraidbot.Utils.*;
 
 /**
- * !raid status [Pokestop name]
+ * !raid list [optional: boss name]
  */
 public class RaidListCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;

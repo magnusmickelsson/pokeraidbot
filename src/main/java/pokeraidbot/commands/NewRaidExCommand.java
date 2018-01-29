@@ -23,7 +23,8 @@ import java.util.Locale;
 import static pokeraidbot.Utils.*;
 
 /**
- * !raid new [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
+ * Create EX raid (right now only Mewtwo)
+ * !raid ex [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
  */
 public class NewRaidExCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;

@@ -23,6 +23,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * !raid install-emotes
+ */
 public class InstallEmotesCommand extends Command {
     private final LocaleService localeService;
 
@@ -79,7 +82,6 @@ public class InstallEmotesCommand extends Command {
                     Stream.of(roles).filter(Objects::nonNull).map(ISnowflake::getId).collect(Collectors.toSet()));
         }
 
-        // todo: check bot permissions, must be able to handle emojis
         GuildImpl guild = (GuildImpl) commandEvent.getGuild();
         JDA jda = commandEvent.getJDA();
         Route.CompiledRoute route = Route.Emotes.CREATE_EMOTE.compile(guild.getId());

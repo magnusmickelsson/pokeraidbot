@@ -3,17 +3,11 @@ package pokeraidbot.domain.pokemon;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import net.dv8tion.jda.core.entities.User;
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.CSVPokemonDataReader;
-import pokeraidbot.infrastructure.JsonPokemon;
-import pokeraidbot.infrastructure.JsonPokemons;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +30,7 @@ public class PokemonRepository {
             for (Pokemon p : pokemonsRead) {
                 pokemons.put(p.getName().toUpperCase(), p);
             }
+            // So we can handle eggs before they're hatched
             this.pokemons.put("EGG1", new Pokemon(99999, EGG_1, "Tier 1 egg", PokemonTypes.NONE,
                     "", new HashSet<>(),
                     new HashSet<>()));
@@ -70,12 +65,11 @@ public class PokemonRepository {
             return null;
         }
         final String nameToGet = name.trim().toUpperCase();
-        final Pokemon pokemon = pokemons.get(nameToGet);
-        return pokemon;
+        return pokemons.get(nameToGet);
     }
 
     // This method is a getter with fuzzy search that doesn't throw an exception if it doesn't find a pokemon, just returns null
-    public Pokemon fuzzySearch(String name) {
+    private Pokemon fuzzySearch(String name) {
         final Collection<Pokemon> allPokemons = pokemons.values();
 
         final String nameToSearchFor = name.trim().toUpperCase();

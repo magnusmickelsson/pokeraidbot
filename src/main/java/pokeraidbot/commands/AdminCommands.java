@@ -29,6 +29,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Admin commands, only meant for bot owner/creator
+ * Remove a user's config (to reset it): !raid admin userconfig {userid}
+ * Check bot permissions: !raid admin permissions
+ * Clear all !raid track entities - !raid admin clear tracking
+ * Send message to default channel in all guilds this bot is in: !raid admin announce {message}
+ * Check if a user is a member of a certain guild: !raid admin ismember {userid} {guild name}
+ * List guilds the bot is in: !raid admin guilds
+ * List what guilds a certain user is member of: !raid admin member {userid}
+ * Create a test raid: !raid admin test {pokemon} {start time} {gym}
+ * Set current tier 5 raid boss list: !raid admin tier5 {list of bosses ;-separated}
+ */
 public class AdminCommands extends Command {
     private final UserConfigRepository userConfigRepository;
     private final ServerConfigRepository serverConfigRepository;

@@ -78,10 +78,14 @@ public enum RaidBossPokemons {
     Mawile(2),
     // Tier 4
     Absol(4),
+    Aggron(4),
     Salamence(4),
     // Tier 5
     Groudon(5),
     Registeel(5),
+    Latios(5),
+    Rayquaza(5),
+    Latias(5),
     Kyogre(5);
 
     private final int tier;

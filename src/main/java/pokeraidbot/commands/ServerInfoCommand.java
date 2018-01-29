@@ -10,13 +10,11 @@ import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 public class ServerInfoCommand extends ConfigAwareCommand {
-    private final LocaleService localeService;
     private final ClockService clockService;
 
     public ServerInfoCommand(ServerConfigRepository serverConfigRepository, LocaleService localeService,
                              CommandListener commandListener, ClockService clockService) {
         super(serverConfigRepository, commandListener, localeService);
-        this.localeService = localeService;
         this.clockService = clockService;
         this.name = "server";
         this.help = localeService.getMessageFor(LocaleService.SERVER_HELP, LocaleService.DEFAULT);
@@ -24,7 +22,8 @@ public class ServerInfoCommand extends ConfigAwareCommand {
 
     @Override
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
-        replyBasedOnConfigAndRemoveAfter(config, commandEvent, Utils.printDateTime(clockService.getCurrentDateTime()) +
+        replyBasedOnConfigAndRemoveAfter(config, commandEvent,
+                Utils.printDateTime(clockService.getCurrentDateTime()) +
                 ": " + String.valueOf(config), BotServerMain.timeToRemoveFeedbackInSeconds * 2);
     }
 }

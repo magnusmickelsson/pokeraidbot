@@ -94,7 +94,6 @@ public class Utils {
         }
     }
 
-    // todo: test case
     public static LocalDateTime getStartOfRaid(LocalDateTime endOfRaid, boolean isExRaid) {
         return isExRaid ? endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES) :
                 endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES);
@@ -159,6 +158,7 @@ public class Utils {
     }
 
     public static String getStaticMapUrl(Gym gym) {
+        // todo: host marker png via pokeraidbot web
         String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + gym.getX() + "," + gym.getY() +
                 "&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C" +
                 gym.getX() + "," + gym.getY() + "&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU";
@@ -208,7 +208,8 @@ public class Utils {
     }
 
     public static boolean isRaidExPokemon(String pokemonName) {
-        return pokemonName.equalsIgnoreCase("mewtwo"); // || pokemonName.equalsIgnoreCase("ho-oh");
+        // todo: configurable ex raid list when we have non-free DB
+        return pokemonName.equalsIgnoreCase("mewtwo");
     }
 
     public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {

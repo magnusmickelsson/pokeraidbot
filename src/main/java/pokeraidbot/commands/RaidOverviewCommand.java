@@ -16,7 +16,6 @@ import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRaidInfo;
-import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.PokemonRaidStrategyService;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
@@ -42,17 +41,15 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
 
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
-    private final PokemonRepository pokemonRepository;
     private final ClockService clockService;
     private final PokemonRaidStrategyService strategyService;
 
     public RaidOverviewCommand(RaidRepository raidRepository, LocaleService localeService,
-                               ServerConfigRepository serverConfigRepository, PokemonRepository pokemonRepository,
+                               ServerConfigRepository serverConfigRepository,
                                CommandListener commandListener, ClockService clockService,
                                ExecutorService executorService, PokemonRaidStrategyService strategyService) {
         super(serverConfigRepository, commandListener, localeService, executorService);
         this.localeService = localeService;
-        this.pokemonRepository = pokemonRepository;
         this.clockService = clockService;
         this.strategyService = strategyService;
         this.name = "overview";
@@ -259,7 +256,6 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.LAST_UPDATE,
                         locale,
                         printTime(clockService.getCurrentTime())));
-        final String message = stringBuilder.toString();
-        return message;
+        return stringBuilder.toString();
     }
 }

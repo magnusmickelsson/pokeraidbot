@@ -115,7 +115,7 @@ public class StartUpEventListener implements EventListener {
             final Callable<Boolean> groupEditTask =
                     NewRaidGroupCommand.getMessageRefreshingTaskToSchedule(channel, raid,
                             emoticonSignUpMessageListener,
-                            raidGroup.getInfoMessageId(), locale, raidRepository, pokemonRaidStrategyService,
+                            raidGroup.getInfoMessageId(), locale, raidRepository,
                             localeService,
                             clockService, executorService, botService, delayTimeUnit, delayTime, raidGroup.getId());
             executorService.submit(groupEditTask);

@@ -120,7 +120,7 @@ public class BotService {
                 new UserConfigCommand(serverConfigRepository, aggregateCommandListener, localeService,
                         userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,
-                        serverConfigRepository, this, aggregateCommandListener, pokemonRepository),
+                        serverConfigRepository, aggregateCommandListener),
                 new RaidListCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
                         aggregateCommandListener),
                 new SignUpCommand(gymRepository, raidRepository, localeService,
@@ -151,8 +151,8 @@ public class BotService {
                         executorService, raidInfoService),
                 new EggHatchedCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository,
-                        aggregateCommandListener, this, raidInfoService),
-                new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository, pokemonRepository,
+                        aggregateCommandListener, raidInfoService),
+                new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository,
                         aggregateCommandListener, clockService, executorService, raidInfoService)
         );
 
@@ -203,15 +203,6 @@ public class BotService {
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_stage"));
             serverConfigRepository.save(new Config("uppsala", "pokeraidbot_test"));
 
-            // External user's servers
-//            serverConfigRepository.save(new Config("uppsala", "pokemon go uppsala"));
-//            serverConfigRepository.save(new Config("umeå", "pokémon go sverige admin"));
-//            serverConfigRepository.save(new Config("luleå", "pokémon luleå"));
-//            serverConfigRepository.save(new Config("ängelholm", "test pokemongo ängelholm"));
-//            serverConfigRepository.save(new Config("norrköping", true,
-//                    "raid-test-nkpg"));
-//            serverConfigRepository.save(new Config("norrköping", true,
-//                    "raid - pokemon go norrköping"));
             LOGGER.info("Server configurations created. Add more via the command for an administrator " +
                     "in a server where pokeraidbot has been added: !raid install");
         }

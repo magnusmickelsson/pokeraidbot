@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * !raid install
+ * todo: make this command easier and with better error handling
+ */
 public class InstallCommand extends Command {
     private final ServerConfigRepository serverConfigRepository;
     private final GymRepository gymRepository;

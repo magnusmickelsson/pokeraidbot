@@ -444,7 +444,6 @@ public class RaidRepository {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
         }
-        // todo: throw error if problem?
     }
 
     public RaidGroup newGroupForRaid(User user, RaidGroup group, Raid raid, Guild guild, Config config) {
@@ -458,7 +457,7 @@ public class RaidRepository {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GROUP_NOT_ADDED,
                     localeService.getLocaleForUser(user), String.valueOf(raid)));
         }
-        // todo: special message for new group
+        // todo: special message for new group?
 //        trackingService.notifyTrackers(guild, raid, config, user);
 
         return group;

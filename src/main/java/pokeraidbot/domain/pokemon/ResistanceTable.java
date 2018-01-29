@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// Todo: test cases against this class
 public class ResistanceTable {
     private Map<String, Map<String, Effect>> matchUpValues = new HashMap<>();
 
@@ -113,7 +112,7 @@ public class ResistanceTable {
         return typeStrengthValue > 1.0f;
     }
 
-    public float typeStrengthValue(String pokemonType, String typeToCheck) {
+    private float typeStrengthValue(String pokemonType, String typeToCheck) {
         final Map<String, Effect> stringEffectMap = matchUpValues.get(pokemonType);
         if (stringEffectMap == null) {
             throw new IllegalArgumentException("No resistances for pokemon type: " + pokemonType);

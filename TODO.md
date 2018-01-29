@@ -4,8 +4,6 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* SocketTimeoutException during Discord issues - group seems to be cleaned up when it occurs, instead just let it skip the current edit
-* Ensure the overview can handle discord API timeouts and weirdness
 * "Raid group will now be cleaned up" - should print something more identifiable
 
 Being developed:

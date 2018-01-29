@@ -10,8 +10,10 @@ import pokeraidbot.domain.tracking.TrackingService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+/**
+ * !raid track [pokemon name]
+ */
 public class TrackPokemonCommand extends ConfigAwareCommand {
-    private final LocaleService localeService;
     private final PokemonRepository pokemonRepository;
     private final TrackingService trackingService;
 
@@ -20,7 +22,6 @@ public class TrackPokemonCommand extends ConfigAwareCommand {
                                CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
         this.trackingService = trackingService;
-        this.localeService = localeService;
         this.pokemonRepository = pokemonRepository;
         this.name = "track";
         this.help = localeService.getMessageFor(LocaleService.TRACK_HELP, LocaleService.DEFAULT);

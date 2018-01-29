@@ -1,6 +1,5 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import main.BotServerMain;
@@ -81,12 +80,12 @@ public class AlterRaidCommand extends ConfigAwareCommand {
                             localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
                                     "!raid change {when/pokemon/remove/group} {params}"));
                 }
-                changePokemon(this, gymRepository, localeService, pokemonRepository, raidRepository,
+                changePokemon(gymRepository, localeService, pokemonRepository, raidRepository,
                         commandEvent, config, user, userName, args[1].trim().toLowerCase(),
                         ArrayUtils.removeAll(args, 0, 1));
                 break;
             case "remove":
-                deleteRaid(commandEvent, config, user, userName, args);
+                deleteRaidAndGroups(commandEvent, config, user, userName, args);
                 break;
             case "group":
                 changeOrDeleteGroup(commandEvent, config, user, userName, args);
@@ -101,7 +100,6 @@ public class AlterRaidCommand extends ConfigAwareCommand {
     private void changeOrDeleteGroup(CommandEvent commandEvent, Config config, User user, String userName,
                                      String[] args) {
         String whatToChangeTo;
-        StringBuilder gymNameBuilder;
         String gymName;
         Gym gym;
         Raid raid;
@@ -328,7 +326,7 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         }
     }
 
-    private void deleteRaid(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
+    private void deleteRaidAndGroups(CommandEvent commandEvent, Config config, User user, String userName, String[] args) {
         StringBuilder gymNameBuilder;
         String gymName;
         Gym gym;
@@ -388,7 +386,8 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         return null;
     }
 
-    public static void changePokemon(Command command, GymRepository gymRepository, LocaleService localeService,
+    // todo: move to service
+    public static void changePokemon(GymRepository gymRepository, LocaleService localeService,
                                      PokemonRepository pokemonRepository, RaidRepository raidRepository,
                                      CommandEvent commandEvent,
                                      Config config, User user, String userName,

@@ -8,6 +8,9 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+/**
+ * !raid whatsnew
+ */
 public class WhatsNewCommand extends ConfigAwareCommand {
     public WhatsNewCommand(ServerConfigRepository serverConfigRepository, CommandListener commandListener,
                            LocaleService localeService) {

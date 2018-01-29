@@ -8,6 +8,9 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
 import java.util.Locale;
 
+/**
+ * !raid usage
+ */
 public class UsageCommand extends ConfigAwareCommand {
     private final LocaleService localeService;
 

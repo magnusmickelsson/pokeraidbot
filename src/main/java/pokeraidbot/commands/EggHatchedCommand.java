@@ -7,7 +7,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pokeraidbot.BotService;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
@@ -24,25 +23,22 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 /**
  * !raid hatch [Pokemon] [Pokestop name]
  */
-// todo: refactor and clean up
 public class EggHatchedCommand extends ConfigAwareCommand {
     private static final transient Logger LOGGER = LoggerFactory.getLogger(EggHatchedCommand.class);
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
-    private final BotService botService;
     private final PokemonRaidStrategyService raidStrategyService;
 
     public EggHatchedCommand(GymRepository gymRepository, RaidRepository raidRepository,
                              PokemonRepository pokemonRepository, LocaleService localeService,
                              ServerConfigRepository serverConfigRepository,
-                             CommandListener commandListener, BotService botService,
+                             CommandListener commandListener,
                              PokemonRaidStrategyService raidStrategyService) {
         super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
-        this.botService = botService;
         this.raidStrategyService = raidStrategyService;
         this.name = "hatch";
         this.aliases = new String[]{"h"};
@@ -83,7 +79,7 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Trying to hatch raid " + raid + " into " + pokemonName);
         }
-        AlterRaidCommand.changePokemon(this, gymRepository, localeService, pokemonRepository, raidRepository,
+        AlterRaidCommand.changePokemon(gymRepository, localeService, pokemonRepository, raidRepository,
                 commandEvent, config, user, userName, pokemonName,
                 gymArguments);
     }

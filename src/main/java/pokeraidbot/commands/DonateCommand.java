@@ -6,10 +6,12 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+// todo: Pledgie will cease to exist in february!
 public class DonateCommand extends ConfigAwareCommand {
     private static final String link = "https://pledgie.com/campaigns/34823";
 
-    public DonateCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
+    public DonateCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository,
+                         CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
         this.name = "donate";
         this.help = localeService.getMessageFor(LocaleService.DONATE, LocaleService.DEFAULT);

@@ -7,6 +7,9 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+/**
+ * !raid getting-started
+ */
 public class GettingStartedCommand extends ConfigAwareCommand {
     public GettingStartedCommand(LocaleService localeService, ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);

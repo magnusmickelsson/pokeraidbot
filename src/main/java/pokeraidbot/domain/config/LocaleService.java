@@ -297,12 +297,6 @@ public class LocaleService {
                 "Detta meddelande är på gång att städas undan. " +
                         "Skapa en ny grupp via *!raid group {tid (HH:MM)} {gym}*"
         );
-//        i18nMessages.put(new I18nLookup(PLUS_SIGNUP_FAIL, Locale.ENGLISH),
-//                "Pokeraidbot wanted to sign you up, but couldn't"
-//        );
-//        i18nMessages.put(new I18nLookup(PLUS_SIGNUP_FAIL, SWEDISH),
-//                "Pokeraidbot vill hjälpa till med din anmälan, men kunde inte"
-//        );
         i18nMessages.put(new I18nLookup(GETTING_STARTED_HELP, Locale.ENGLISH),
                 "Getting started guide for the bot"
         );
@@ -581,19 +575,6 @@ public class LocaleService {
         i18nMessages.put(new I18nLookup(GROUP_HEADLINE, SWEDISH),
                 "%1 @ %2" //, startar %3"
         );
-
-//        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
-//                " Removed your group which was supposed to start at %1, since it's expired. " +
-//                        "Your signups remain on raid total until " +
-//                        "you either type \"!raid remove %2\" or the raid expires.\n" +
-//                        "If you want to run a group later than %1, " +
-//                        "type \"!raid group {tid}\" and give a later time.");
-//        i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, SWEDISH),
-//                " Tog bort din grupp som skulle börja raiden vid %1, tiden har nu passerat. " +
-//                        "Era signups står kvar på raidens total, tills " +
-//                        "ni kör kommandot \"!raid remove %2\" eller raiden tar slut.\n" +
-//                        "Om ni vill köra en ny grupp lite senare, " +
-//                        "skriv \"!raid group {tid}\" och ange en senare tid.");
 
         i18nMessages.put(new I18nLookup(HANDLE_SIGNUP, Locale.ENGLISH),
                 "To sign up, press emotes below for number of people to sign up.");
@@ -1104,8 +1085,7 @@ public class LocaleService {
     }
 
     public String getMessageFor(String messageKey, Locale locale, String ... parameters) {
-        final String messageWithoutParameters = getMessageTextToInjectParametersIn(messageKey, locale);
-        String messageWithParameters = messageWithoutParameters;
+        String messageWithParameters = getMessageTextToInjectParametersIn(messageKey, locale);
         int i = 1;
         for (String param : parameters) {
             messageWithParameters = messageWithParameters.replaceAll("[%][" + i + "]", param);
@@ -1114,7 +1094,7 @@ public class LocaleService {
         return messageWithParameters;
     }
 
-    public String getMessageTextToInjectParametersIn(String messageKey, Locale locale) {
+    private String getMessageTextToInjectParametersIn(String messageKey, Locale locale) {
         Locale actualLocale = locale;
         if (locale == null) {
             actualLocale = DEFAULT;
@@ -1149,7 +1129,7 @@ public class LocaleService {
         private String messageKey;
         private Locale locale;
 
-        public I18nLookup(String messageKey, Locale locale) {
+        I18nLookup(String messageKey, Locale locale) {
             this.messageKey = messageKey;
             this.locale = locale;
         }

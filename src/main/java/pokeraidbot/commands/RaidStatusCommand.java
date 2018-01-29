@@ -8,13 +8,11 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
-import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.domain.raid.signup.SignUp;
@@ -34,16 +32,11 @@ public class RaidStatusCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
     private final RaidRepository raidRepository;
     private final LocaleService localeService;
-    private final BotService botService;
-    private final PokemonRepository pokemonRepository;
 
     public RaidStatusCommand(GymRepository gymRepository, RaidRepository raidRepository, LocaleService localeService,
-                             ServerConfigRepository serverConfigRepository, BotService botService, CommandListener commandListener,
-                             PokemonRepository pokemonRepository) {
+                             ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
         this.localeService = localeService;
-        this.botService = botService;
-        this.pokemonRepository = pokemonRepository;
         this.name = "status";
         this.aliases = new String[]{"stat"};
         this.help = localeService.getMessageFor(LocaleService.RAIDSTATUS_HELP, LocaleService.DEFAULT);

@@ -43,16 +43,84 @@ public class GymDataImportTool {
     public static final String separator = ";";
 
     public static void main(String[] args) {
-        if (args == null || args.length > 2 || args.length < 2) {
-            System.out.println("Wrong use of the import tool! Run " + GymDataImportTool.class.getSimpleName() +
-                    " with parameters: [side of map cube, in kilometres] [the location to search for]");
-            throw new RuntimeException("Error!");
-        }
-        FileOutputStream fis = null;
-        String location = null;
+        checkArguments(args);
+        String location = StringUtils.join(ArrayUtils.remove(args, 0), " ");
+        getGymsFromMapSiteToFile(args[0], location);
+        reportDiffBetweenOldAndNewFileIfExists(location);
+    }
+
+    private static void reportDiffBetweenOldAndNewFileIfExists(String location) {
         try {
-            location = StringUtils.join(ArrayUtils.remove(args, 0), " ");
-            final Integer widthCube = new Integer(args[0]);
+            CSVGymDataReader oldGymDataReader = new CSVGymDataReader("/gyms_" + location + ".csv");
+            CSVGymDataReader newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"));
+            final Set<Gym> oldGyms = oldGymDataReader.readAll();
+            final Set<Gym> newGyms = newGymDataReader.readAll();
+            int sameCount = 0;
+            LinkedList<String> report = new LinkedList<>();
+            LinkedList<String> focusReport = new LinkedList<>();
+            for (Gym newGym : newGyms) {
+                if (!oldGyms.contains(newGym)) {
+                    boolean weird = false;
+                    for (Gym oldGym : oldGyms) {
+                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
+                            focusReport.add("New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getId().equals(newGym.getId())) {
+                            focusReport.add("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getName().trim().equalsIgnoreCase(newGym.getName().trim())) {
+                            focusReport.add("Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        }
+                    }
+                    if (!weird) {
+                        focusReport.add("New gym: " + newGym);
+                    }
+                } else {
+                    sameCount++;
+                }
+            }
+
+            for (Gym oldGym : oldGyms) {
+                boolean weird = false;
+                if (!newGyms.contains(oldGym)) {
+                    for (Gym newGym : newGyms) {
+                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
+                            LOGGER.debug("OLD: New name for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getId().equals(newGym.getId())) {
+                            LOGGER.debug("OLD: Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        } else if (oldGym.getName().equalsIgnoreCase(newGym.getName())) {
+                            LOGGER.debug("OLD: Potential duplicate. Old: " + oldGym + " - New: " + newGym);
+                            weird = true;
+                        }
+                    }
+                    if (!weird) {
+                        report.add("Removed gym: " + oldGym);
+                    }
+                } else {
+                    report.add("Exists in old and new: " + oldGym);
+                }
+            }
+
+            for (String r : report) {
+                System.out.println(r);
+            }
+            for (String r : focusReport) {
+                System.out.println(r);
+            }
+            System.out.println("\nREPORT:\n\nOld gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() +
+                    ", diff: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
+        } catch (Throwable t) {
+            System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
+        }
+    }
+
+    private static void getGymsFromMapSiteToFile(String arg, String location) {
+        FileOutputStream fis = null;
+        try {
+            final Integer widthCube = new Integer(arg);
             String ann4Cookie = "1";
             String mapFiltersCookie = "1[##split##]1[##split##]1[##split##]0[##split##]0[##split##]1[##split##]1" +
                     "[##split##]0[##split##]1[##split##]1[##split##]1";
@@ -193,71 +261,13 @@ public class GymDataImportTool {
                 }
             }
         }
+    }
 
-        try {
-            CSVGymDataReader oldGymDataReader = new CSVGymDataReader("/gyms_" + location + ".csv");
-            CSVGymDataReader newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"));
-            final Set<Gym> oldGyms = oldGymDataReader.readAll();
-            final Set<Gym> newGyms = newGymDataReader.readAll();
-            int sameCount = 0;
-            LinkedList<String> report = new LinkedList<>();
-            LinkedList<String> focusReport = new LinkedList<>();
-            for (Gym newGym : newGyms) {
-                if (!oldGyms.contains(newGym)) {
-                    boolean weird = false;
-                    for (Gym oldGym : oldGyms) {
-                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
-                            focusReport.add("New name for old gym? Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        } else if (oldGym.getId().equals(newGym.getId())) {
-                            focusReport.add("Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        } else if (oldGym.getName().trim().equalsIgnoreCase(newGym.getName().trim())) {
-                            focusReport.add("Potential duplicate. Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        }
-                    }
-                    if (!weird) {
-                        focusReport.add("New gym: " + newGym);
-                    }
-                } else {
-                    sameCount++;
-                }
-            }
-
-            for (Gym oldGym : oldGyms) {
-                boolean weird = false;
-                if (!newGyms.contains(oldGym)) {
-                    for (Gym newGym : newGyms) {
-                        if (oldGym.getX().equals(newGym.getX()) && oldGym.getY().equals(newGym.getY())) {
-                            LOGGER.debug("OLD: New name for old gym? Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        } else if (oldGym.getId().equals(newGym.getId())) {
-                            LOGGER.debug("OLD: Reused ID for old gym? Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        } else if (oldGym.getName().equalsIgnoreCase(newGym.getName())) {
-                            LOGGER.debug("OLD: Potential duplicate. Old: " + oldGym + " - New: " + newGym);
-                            weird = true;
-                        }
-                    }
-                    if (!weird) {
-                        report.add("Removed gym: " + oldGym);
-                    }
-                } else {
-                    report.add("Exists in old and new: " + oldGym);
-                }
-            }
-
-            for (String r : report) {
-                System.out.println(r);
-            }
-            for (String r : focusReport) {
-                System.out.println(r);
-            }
-            System.out.println("\nREPORT:\n\nOld gyms: " + oldGyms.size() + ", new gyms: " + newGyms.size() +
-                    ", diff: " + (newGyms.size() - oldGyms.size()) + ", same in both: " + sameCount);
-        } catch (Throwable t) {
-            System.out.printf("Could not perform a diff between old gym file and new one: " + t.getMessage());
+    private static void checkArguments(String[] args) {
+        if (args == null || args.length > 2 || args.length < 2) {
+            System.out.println("Wrong use of the import tool! Run " + GymDataImportTool.class.getSimpleName() +
+                    " with parameters: [side of map cube, in kilometres] [the location to search for]");
+            throw new RuntimeException("Error!");
         }
     }
 }

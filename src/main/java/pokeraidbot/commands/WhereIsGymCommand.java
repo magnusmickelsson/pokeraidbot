@@ -10,14 +10,15 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+/**
+ * !raid map [gym name]
+ */
 public class WhereIsGymCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
-    private final LocaleService localeService;
 
     public WhereIsGymCommand(GymRepository gymRepository, LocaleService localeService,
                              ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
-        this.localeService = localeService;
         this.name = "map";
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;

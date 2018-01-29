@@ -11,14 +11,15 @@ import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+/**
+ * !raid mapinchat [gym name]
+ */
 public class WhereIsGymInChatCommand extends ConfigAwareCommand {
     private final GymRepository gymRepository;
-    private final LocaleService localeService;
 
     public WhereIsGymInChatCommand(GymRepository gymRepository, LocaleService localeService,
                                    ServerConfigRepository serverConfigRepository, CommandListener commandListener) {
         super(serverConfigRepository, commandListener, localeService);
-        this.localeService = localeService;
         this.name = "mapinchat";
         this.aliases = new String[]{"m"};
         this.help = localeService.getMessageFor(LocaleService.WHERE_GYM_IN_CHAT_HELP, LocaleService.DEFAULT);
