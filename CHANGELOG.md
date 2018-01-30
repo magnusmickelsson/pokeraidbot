@@ -1,3 +1,7 @@
+1.7.14 (2018-01-30)
+=====
+* Gym removed from Uppsala
+
 1.7.13 (2018-01-28)
 =====
 * Gym removed from Umeå

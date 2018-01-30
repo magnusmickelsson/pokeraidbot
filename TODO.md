@@ -8,7 +8,7 @@ Needs testing/keeping track of:
 
 Being developed:
 
-* Area categorization for gyms
+* Ex gym raid list, and possibility to mark gyms as potential EX gyms
 
 Discussion:
 
@@ -23,7 +23,7 @@ Experiment with:
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
-* Can signup at raid group end time via raid group emote pressing. Seems bad.
+* Can signup at raid group end time via raid group emote pressing.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 
@@ -38,18 +38,16 @@ Do, features:
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
 instant, should be able to reconfigure these in runtime via admin tool.
 * !raid install needs to be made easier
-* Only use a single Emoticon listener for signups to reduce memory and complexity?
 * Should only be able to create raids for raidbosses (atleast via fuzzy search)
 * !raid track handling should be smarter for people who are on several servers
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
 * Separate so different servers can't share raids and reporting (in case we get malicious users)
-* Set Bot to private so not anyone can add it (atleast production/live bot)
 * Switch to Java 9, try to reduce runtime (https://devcenter.heroku.com/changelog-items/1263)
+* Refactor: Move misc static code from commands to a CommandService, should reduce parameters and simplify
 
 -- next
 
-* Refactor: Move misc static code from commands to a CommandService, should reduce parameters and simplify
 * Function to report new gym by name -> notification to admin to do a new import, for which region and the name of the new gym
 * Admin to send messages to when something happened they need to know about
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
@@ -65,6 +63,7 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group
 signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
 user name/user id for checking.
+* Area categorization for gyms
 * !raid change remove {gym} -> !raid remove raid {gym}
 * !r nest command for reporting rare pokemon nests near gym
 * Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
