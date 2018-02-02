@@ -6,6 +6,18 @@ Quick Move	Charge Move
 Fury Cutter
 Bullet Punch
 X-Scissor
+Entei
+
+Entei
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Moltres
+
+Moltres
+Quick Move	Charge Move
+Fire Spin
+Overheat
 Good Counters
 Mewtwo
 
@@ -14,12 +26,6 @@ Quick Move	Charge Move
 Confusion
 Psycho Cut
 Shadow Ball
-Moltres
-
-Moltres
-Quick Move	Charge Move
-Fire Spin
-Overheat
 Pinsir
 
 Pinsir
@@ -42,14 +48,6 @@ Quick Move	Charge Move
 Fire Spin
 Overheat
 Flamethrower
-Arcanine
-
-Arcanine
-Quick Move	Charge Move
-Fire Fang
-Bite
-Snarl
-Flamethrower
 Houndoom
 
 Houndoom
@@ -65,9 +63,3 @@ Fire Spin
 Wing Attack
 Overheat
 Flamethrower
-Jynx
-
-Jynx
-Quick Move	Charge Move
-Frost Breath
-Avalanche

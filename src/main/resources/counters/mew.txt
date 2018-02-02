@@ -6,14 +6,6 @@ Quick Move	Charge Move
 Bite
 Crunch
 Stone Edge
-Gengar
-
-Gengar
-Quick Move	Charge Move
-Shadow Claw
-Hex
-Sucker Punch
-Shadow Ball
 Good Counters
 Mewtwo
 
@@ -28,6 +20,21 @@ Houndoom
 Quick Move	Charge Move
 Snarl
 Foul Play
+Gyarados
+
+Gyarados
+Quick Move	Charge Move
+Bite
+Hydro Pump
+Crunch
+Gengar
+
+Gengar
+Quick Move	Charge Move
+Shadow Claw
+Hex
+Sucker Punch
+Shadow Ball
 Scizor
 
 Scizor
@@ -50,10 +57,3 @@ Dragon Tail
 Dragon Claw
 Outrage
 Hurricane
-Gyarados
-
-Gyarados
-Quick Move	Charge Move
-Bite
-Hydro Pump
-Crunch

@@ -86,6 +86,8 @@ public enum RaidBossPokemons {
     Latios(5),
     Rayquaza(5),
     Latias(5),
+    Mew(5),
+    Celebi(5),
     Kyogre(5);
 
     private final int tier;
