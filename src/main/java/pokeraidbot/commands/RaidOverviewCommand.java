@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.ClockService;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.errors.OverviewException;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
@@ -218,7 +219,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Gym raidGym = raid.getGym();
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
                 if (!raid.isExRaid()) {
-                    stringBuilder.append("*").append(raidGym.getName()).append("*");
+                    if (raidGym.isExGym()) {
+                        stringBuilder.append("**").append(raidGym.getName()).append(Emotes.STAR + "**");
+                    } else {
+                        stringBuilder.append("*").append(raidGym.getName()).append("*");
+                    }
                     stringBuilder.append(" ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append("-")
                             .append(printTime(raid.getEndOfRaid().toLocalTime()));

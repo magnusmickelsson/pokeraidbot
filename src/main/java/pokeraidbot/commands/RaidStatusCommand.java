@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
@@ -58,7 +59,8 @@ public class RaidStatusCommand extends ConfigAwareCommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setAuthor(null, null, null);
         final Pokemon pokemon = raid.getPokemon();
-        embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser, gym.getName()),
+        embedBuilder.setTitle(localeService.getMessageFor(LocaleService.RAIDSTATUS, localeForUser,
+                gym.getName() + (gym.isExGym() ? Emotes.STAR + "" : "")),
                 Utils.getNonStaticMapUrl(gym));
         StringBuilder sb = new StringBuilder();
         final String activeText = localeService.getMessageFor(LocaleService.ACTIVE, localeForUser);

@@ -123,6 +123,13 @@ public class GymRepositoryTest {
     }
 
     @Test
+    public void feather360IsExGym() throws Exception {
+        final Gym feather360 = repo.findByName("Feather Sculpture 360", "uppsala");
+        assertThat(feather360.isInArea("Uppsala"), is(true));
+        assertThat(feather360.isExGym(), is(true));
+    }
+
+    @Test
     public void findGymByFuzzySearch() throws Exception {
         User user = Mockito.mock(User.class);
         when(user.getName()).thenReturn("Greger");
@@ -136,6 +143,8 @@ public class GymRepositoryTest {
 
     @Test
     public void findNewGymInUppsala() throws Exception {
-        assertThat(repo.findByName("U969", "uppsala").getName(), is("U969"));
+        final Gym u969 = repo.findByName("U969", "uppsala");
+        assertThat(u969.getName(), is("U969"));
+        assertThat(u969.isExGym(), is(false));
     }
 }

@@ -8,6 +8,7 @@ public class Gym {
     private String x;
     private String y;
     private String area;
+    private boolean exGym = false;
 
     public Gym(String name, String id, String x, String y, String area) {
         this.name = name;
@@ -17,6 +18,11 @@ public class Gym {
         this.area = area;
     }
 
+    public Gym(String name, String id, String x, String y, String area, boolean exGym) {
+        this(name, id, x, y, area);
+        this.exGym = exGym;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -24,6 +30,7 @@ public class Gym {
 
         Gym gym = (Gym) o;
 
+        if (exGym != gym.exGym) return false;
         if (name != null ? !name.equals(gym.name) : gym.name != null) return false;
         if (id != null ? !id.equals(gym.id) : gym.id != null) return false;
         if (x != null ? !x.equals(gym.x) : gym.x != null) return false;
@@ -38,6 +45,7 @@ public class Gym {
         result = 31 * result + (x != null ? x.hashCode() : 0);
         result = 31 * result + (y != null ? y.hashCode() : 0);
         result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (exGym ? 1 : 0);
         return result;
     }
 
@@ -68,6 +76,11 @@ public class Gym {
             return false;
         }
     }
+
+    public boolean isExGym() {
+        return exGym;
+    }
+
     @Override
     public String toString() {
         return name;
@@ -80,6 +93,7 @@ public class Gym {
                 ", id='" + id + '\'' +
                 ", x='" + x + '\'' +
                 ", y='" + y + '\'' +
+                ", exGym=" + exGym +
                 '}';
     }
 }

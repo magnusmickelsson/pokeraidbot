@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
@@ -77,7 +78,11 @@ public class RaidListCommand extends ConfigAwareCommand {
                 final Gym raidGym = raid.getGym();
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
                 if (!raid.isExRaid()) {
-                    stringBuilder.append("*").append(raidGym.getName()).append("*");
+                    if (raidGym.isExGym()) {
+                        stringBuilder.append("**").append(raidGym.getName()).append(Emotes.STAR + "**");
+                    } else {
+                        stringBuilder.append("*").append(raidGym.getName()).append("*");
+                    }
                     stringBuilder.append(" ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false)))
                             .append("-")
