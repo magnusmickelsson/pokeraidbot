@@ -1,4 +1,4 @@
-1.8.0 (?)
+1.8.0 (2018-02-05)
 =====
 * Possible to mark EX gyms if one includes a gyms_REGION.csv.ex.txt file with a list of the possible EX gyms
 * Mew and Celebi prepared to be raid bosses (max CP etc)
