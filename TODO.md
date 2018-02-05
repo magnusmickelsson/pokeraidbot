@@ -4,11 +4,11 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* "Raid group will now be cleaned up" - should print something more identifiable
+* Ex gym raid list, and possibility to mark gyms as potential EX gyms
 
 Being developed:
 
-* Ex gym raid list, and possibility to mark gyms as potential EX gyms
+-
 
 Discussion:
 
@@ -23,7 +23,6 @@ Experiment with:
 * Ability to create channels on the fly to put certain raids in
 
 Fix issue:
-* Can signup at raid group end time via raid group emote pressing.
 * Better error message if bot doesn't have correct rights on server, and give info to admin on what rights
 to set
 
@@ -48,6 +47,7 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 
 -- next
 
+* UI to manage EX gym list
 * Function to report new gym by name -> notification to admin to do a new import, for which region and the name of the new gym
 * Admin to send messages to when something happened they need to know about
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
@@ -64,6 +64,7 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 signups, raid status etc. Store both user name or user id on signups as well as the nickname. Use nick for presentation and
 user name/user id for checking.
 * Area categorization for gyms
+* Function to automatically calculate if a gym is an EX gym via OpenStreetMap etc
 * !raid change remove {gym} -> !raid remove raid {gym}
 * !r nest command for reporting rare pokemon nests near gym
 * Admins/moderators should only be able to moderate stuff on their own server - means that change remove etc need
