@@ -123,10 +123,24 @@ public class GymRepositoryTest {
     }
 
     @Test
+    public void findNonExGym() throws Exception {
+        final Gym gym = repo.findByName("Sköldpaddorna", "norrköping");
+        assertThat(gym.isExGym(), is(false));
+        assertThat(gym.getName(), is("Sköldpaddorna"));
+    }
+
+    @Test
     public void feather360IsExGym() throws Exception {
         final Gym feather360 = repo.findByName("Feather Sculpture 360", "uppsala");
         assertThat(feather360.isInArea("Uppsala"), is(true));
         assertThat(feather360.isExGym(), is(true));
+    }
+
+    @Test
+    public void malakIsExGym() throws Exception {
+        final Gym gym = repo.findByName("Malak", "vännäs");
+        assertThat(gym.isInArea("Vännäs"), is(true));
+        assertThat(gym.isExGym(), is(true));
     }
 
     @Test
