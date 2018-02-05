@@ -32,6 +32,9 @@ Fix, misc:
 
 Do, features:
 
+* Configuration possibility to turn off ability to create raids/groups with eggs (Egg1-5). Umeå don't want that.
+* Snooze group emote which means a signup can mark themselves as coming a few minutes late. Their names get
+displayed via italic style, if they are marked as late.
 * Save overview channel in server config, so we won't have to check every channel during start up 
 (takes time if server has many channels)
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
