@@ -8,10 +8,12 @@ import pokeraidbot.TestServerMain;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
+import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,7 @@ public class GymRepositoryTest {
     private final Gym gym = new Gym("Hästen", "3690325", "59.844542", "17.63993",
             "Uppsala");
     private LocaleService localeService;
+    private Map<String, Config> configMap;
 
     @Before
     public void setUp() throws Exception {
@@ -49,7 +52,7 @@ public class GymRepositoryTest {
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("lycksele")).thenReturn(lyckseleConfig);
         final Config norrkopingConfig = new Config("norrköping", "norrköping");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("norrköping")).thenReturn(norrkopingConfig);
-        final HashMap<String, Config> configMap = new HashMap<>();
+        configMap = new HashMap<>();
         configMap.put("dalarna", dalarnaConfig);
         configMap.put("uppsala", uppsalaConfig);
         configMap.put("ängelholm", angelholmConfig);
@@ -89,7 +92,7 @@ public class GymRepositoryTest {
 
     @Test
     public void allGymsAreReadForUppsala() {
-        assertThat(repo.getAllGymsForRegion("uppsala").size(), is(219));
+        assertThat(repo.getAllGymsForRegion("uppsala").size(), is(222));
     }
 
     @Test
@@ -160,5 +163,25 @@ public class GymRepositoryTest {
         final Gym u969 = repo.findByName("U969", "uppsala");
         assertThat(u969.getName(), is("U969"));
         assertThat(u969.isExGym(), is(false));
+    }
+
+    @Test
+    public void checkThatAllExGymsAreInGymRepos() {
+        for (String region : configMap.keySet()) {
+            assertAllExGymsInRegion(region);
+        }
+    }
+
+    private void assertAllExGymsInRegion(String region) {
+        Set<String> exGymNamesForRegion;
+        final String fileName = "/gyms_" + region.toLowerCase() + ".csv.ex.txt";
+        final InputStream inputStreamEx = GymRepositoryTest.class.getResourceAsStream(fileName);
+        exGymNamesForRegion = CSVGymDataReader.readExGymListIfExists(inputStreamEx, fileName);
+
+        for (String gymName : exGymNamesForRegion) {
+            final Gym gym = repo.findByName(gymName, region);
+            assertThat(gym != null, is(true));
+            assertThat(gym.getName(), is(gymName));
+        }
     }
 }

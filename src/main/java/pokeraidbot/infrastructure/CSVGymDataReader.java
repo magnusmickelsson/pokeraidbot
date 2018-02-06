@@ -50,7 +50,7 @@ public class CSVGymDataReader {
     public Set<Gym> readAll() {
         String line;
         Set<Gym> gyms = new HashSet<>();
-        Set<String> exGyms = readExGymListIfExists(inputStreamEx);
+        Set<String> exGyms = readExGymListIfExists(inputStreamEx, resourceName);
         try {
             final InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
             BufferedReader br = new BufferedReader(inputStreamReader);
@@ -66,7 +66,7 @@ public class CSVGymDataReader {
                         String y = rowElements[2].replaceAll("\"", "").trim();
                         String name = rowElements[3].trim();
                         String area = rowElements[4].trim();
-                        final boolean isExGym = exGyms.contains(name.toUpperCase());
+                        final boolean isExGym = exGyms.contains(name);
                         Gym gym = new Gym(name, id, x, y, area, isExGym);
                         gyms.add(gym);
                     } catch (Throwable t) {
@@ -85,7 +85,7 @@ public class CSVGymDataReader {
         return gyms;
     }
 
-    private Set<String> readExGymListIfExists(InputStream inputStreamEx) {
+    public static Set<String> readExGymListIfExists(InputStream inputStreamEx, String resourceName) {
         Set<String> exGyms = new HashSet<>();
         if (inputStreamEx != null) {
             try {
@@ -94,7 +94,7 @@ public class CSVGymDataReader {
 
                 String line;
                 while ((line = br.readLine()) != null) {
-                    final String gymNameUpperCase = line.trim().toUpperCase();
+                    final String gymNameUpperCase = line.trim();
                     exGyms.add(gymNameUpperCase);
                 }
 
