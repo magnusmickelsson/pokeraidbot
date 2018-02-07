@@ -24,11 +24,13 @@ public class WhatsNewCommand extends ConfigAwareCommand {
     protected void executeWithConfig(CommandEvent commandEvent, Config config) {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
-            message = "**Nytt i " + BotServerMain.version + ":**\n\n" +
+            message = "**Nytt i 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Gym data uppdaterad\n" +
                     "* Möjligt att markera gymnamn om de är potentiella EX gyms (kräver viss extradata)\n" +
                     "* Celebi och Mew preppade som nya bossar\n";
         } else {
-            message = "**New in " + BotServerMain.version + ":**\n\n" +
+            message = "**New in 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Gym data updated\n" +
                     "* Possible to mark gymnames if they are potential EX raid gyms (requires extra data)\n" +
                     "* Celebi and Mew prepared as new raid bosses\n";
         }
