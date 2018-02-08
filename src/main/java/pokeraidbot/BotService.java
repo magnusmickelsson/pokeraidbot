@@ -34,6 +34,8 @@ import pokeraidbot.jda.UnsignWithMinusCommandListener;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +58,12 @@ public class BotService {
     private UserConfigRepository userConfigRepository;
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
-        currentTier5Bosses.add("Kyogre");
+        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.FEBRUARY, 15))) {
+            currentTier5Bosses.add("Kyogre");
+        }
+        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.MARCH, 17))) {
+            currentTier5Bosses.add("Rayquaza");
+        }
     }
 
     public BotService(LocaleService localeService, GymRepository gymRepository, RaidRepository raidRepository,

@@ -1,3 +1,8 @@
+1.8.2 (2018-02-08)
+=====
+* Rayquaza will be new tier 5 boss as of tomorrow
+* Minor gym update
+
 1.8.1 (2018-02-07)
 =====
 * Gym data update

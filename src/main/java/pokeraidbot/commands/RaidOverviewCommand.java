@@ -212,8 +212,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 if (!raid.isExRaid() && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
                     currentPokemon = raid.getPokemon();
                     final PokemonRaidInfo raidInfo = strategyService.getRaidInfo(currentPokemon);
-                    stringBuilder.append("\n**").append(currentPokemon.getName()).append("**")
-                            .append(" (").append(raidInfo.getBossTier()).append(")").append("\n");
+                    stringBuilder.append("\n**").append(currentPokemon.getName()).append("**");
+                    if (raidInfo != null && raidInfo.getBossTier() > 0) {
+                        stringBuilder.append(" (").append(raidInfo.getBossTier()).append(")");
+                    }
+                    stringBuilder.append("\n");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
