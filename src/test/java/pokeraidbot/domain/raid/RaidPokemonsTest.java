@@ -162,5 +162,36 @@ public class RaidPokemonsTest {
         counters = strategyService.getCounters(raidInfo.getPokemon());
         assertThat(counters.getGoodCounters().size(), is(7));
         assertThat(counters.getSupremeCounters().size(), is(1));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("snorunt", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(1));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("swablu", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(1));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("dewgong", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(2));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("azumarill", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(3));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("jynx", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(3));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("piloswine", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(3));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("feraligatr", null));
+        assertNotNull(raidInfo);
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(raidInfo.getBossTier(), is(4));
+        assertThat(counters.getGoodCounters().size(), is(4));
+        assertThat(counters.getSupremeCounters().size(), is(3));
     }
 }

@@ -1,3 +1,7 @@
+1.8.3 (2018-02-09)
+=====
+* New minor raidbosses
+
 1.8.2 (2018-02-08)
 =====
 * Rayquaza will be new tier 5 boss as of tomorrow

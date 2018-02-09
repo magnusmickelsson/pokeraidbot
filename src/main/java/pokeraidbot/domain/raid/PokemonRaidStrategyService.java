@@ -74,9 +74,17 @@ public class PokemonRaidStrategyService {
             // ==== Generation 3 ====
             // Tier 1
             "Wailmer".toUpperCase(),
+            "snorunt".toUpperCase(),
+            "swablu".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
+            "dewgong".toUpperCase(),
+            // Tier 3
+            "azumarill".toUpperCase(),
+            "jynx".toUpperCase(),
+            "piloswine".toUpperCase(),
             // Tier 4
+            "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
             "Salamence".toUpperCase(),
             "Aggron".toUpperCase(),
@@ -207,14 +215,24 @@ public class PokemonRaidStrategyService {
         // ==== Gen 3 ====
         // Tier 1
         populateRaidInfoForBoss(pokemonRepository, "Wailmer", "814", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Snorunt", "441", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Swablu", "412", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Dewgong", "1082", 2);
+
+        // Tier 3
+        populateRaidInfoForBoss(pokemonRepository, "Azumarill", "858", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Jynx", "1435", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Piloswine", "1305", 3);
 
         // Tier 4
+        populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
         populateRaidInfoForBoss(pokemonRepository, "Absol", "1303", 4);
         populateRaidInfoForBoss(pokemonRepository, "Aggron", "1716", 4);
         populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
+
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
         populateRaidInfoForBoss(pokemonRepository, "Latios", "2082", 5);

@@ -25,11 +25,13 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Nya raidbossar\n" +
                     "* Gym data uppdaterad\n" +
                     "* Möjligt att markera gymnamn om de är potentiella EX gyms (kräver viss extradata)\n" +
                     "* Celebi och Mew preppade som nya bossar\n";
         } else {
             message = "**New in 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* New raidbosses\n" +
                     "* Gym data updated\n" +
                     "* Possible to mark gymnames if they are potential EX raid gyms (requires extra data)\n" +
                     "* Celebi and Mew prepared as new raid bosses\n";
