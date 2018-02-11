@@ -114,4 +114,14 @@ public class GymHuntrRaidEventListenerTest {
         assertThat(iterator.next(), is(Utils.printTime(clockService.getCurrentTime()
                 .plusMinutes(31).plusSeconds(10).plusMinutes(Utils.RAID_DURATION_IN_MINUTES))));
     }
+
+    @Test
+    public void minutesAfterHatchForRaidGroupCreation() throws Exception {
+        assertThat(GymHuntrRaidEventListener.getDefaultNumberOfMinutesAfterHatchForGroupCreation(), is(10));
+        final CopyOnWriteArrayList<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
+        currentTier5Bosses.add(expectedTier5Boss);
+        currentTier5Bosses.add("Kyogre");
+        BotService.currentTier5Bosses = currentTier5Bosses;
+        assertThat(GymHuntrRaidEventListener.getDefaultNumberOfMinutesAfterHatchForGroupCreation(), is(30));
+    }
 }

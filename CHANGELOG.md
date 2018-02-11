@@ -1,3 +1,8 @@
+1.8.4 (2018-02-11)
+=====
+* New handling of automatically created raid groups via bot integration, if more than one tier 5 boss is active, 
+set start time to 30 min after hatch so people can find out what boss it was
+
 1.8.3 (2018-02-09)
 =====
 * New minor raidbosses

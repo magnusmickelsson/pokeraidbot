@@ -239,14 +239,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                                            LocalDateTime now, Raid createdRaid, MessageChannel channel) {
         // Auto create group for tier 5 bosses, if server config says to do so
         if (pokemonRaidInfo != null && pokemonRaidInfo.getBossTier() == 5) {
-            LocalTime groupStart = null;
-            // todo: fetch setting 10 minutes from server config?
-            final LocalDateTime startOfRaid = getStartOfRaid(createdRaid.getEndOfRaid(), createdRaid.isExRaid());
-            if (now.isBefore(startOfRaid)) {
-                groupStart = startOfRaid.toLocalTime().plusMinutes(10);
-            } else if (now.isAfter(startOfRaid) && now.plusMinutes(15).isBefore(createdRaid.getEndOfRaid())) {
-                groupStart = now.toLocalTime().plusMinutes(10);
-            }
+            LocalTime groupStart = getAutoCreatedRaidGroupStart(now, createdRaid);
 
             if (groupStart != null) {
                 MessageChannel chn = config.getGroupCreationChannel(guildEvent.getGuild());
@@ -275,6 +268,28 @@ public class GymHuntrRaidEventListener implements EventListener {
                 LOGGER.debug("PokeRaidInfo was null for pokemon " + createdRaid.getPokemon().getName());
             }
         }
+    }
+
+    protected static LocalTime getAutoCreatedRaidGroupStart(LocalDateTime now, Raid createdRaid) {
+        LocalTime groupStart = null;
+        final LocalDateTime endOfRaid = createdRaid.getEndOfRaid();
+        final LocalDateTime startOfRaid = getStartOfRaid(endOfRaid, createdRaid.isExRaid());
+        final int defaultNumberOfMinutesAfterHatchForGroupCreation = getDefaultNumberOfMinutesAfterHatchForGroupCreation();
+        if (now.isBefore(startOfRaid)) {
+            groupStart = startOfRaid.toLocalTime().plusMinutes(defaultNumberOfMinutesAfterHatchForGroupCreation);
+        } else if (now.isAfter(startOfRaid) && now.plusMinutes(defaultNumberOfMinutesAfterHatchForGroupCreation)
+                .plusMinutes(5)
+                .isBefore(endOfRaid)) {
+            groupStart = now.toLocalTime().plusMinutes(defaultNumberOfMinutesAfterHatchForGroupCreation);
+        } else if (now.isBefore(endOfRaid.minusMinutes(10))) {
+            groupStart = endOfRaid.toLocalTime().minusMinutes(5);
+        }
+
+        return groupStart;
+    }
+
+    protected static int getDefaultNumberOfMinutesAfterHatchForGroupCreation() {
+        return BotService.currentTier5Bosses.size() > 1 ? 30 : 10;
     }
 
     public static boolean isUserPokeAlarmBot(User user) {
