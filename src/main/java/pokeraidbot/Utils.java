@@ -273,7 +273,7 @@ public class Utils {
         if (!pokemon.isEgg()) {
             return "https://pokemongohub.net/sprites/normal/" + pokemon.getNumber() + ".png";
         } else {
-            return "https://pokeraidbot.herokuapp.com/img/" + pokemon.getName().toLowerCase() + ".png";
+            return "https://pokeraidbot2.herokuapp.com/img/" + pokemon.getName().toLowerCase() + ".png";
         }
     }
 
