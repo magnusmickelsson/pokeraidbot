@@ -4,11 +4,12 @@ See [Changelog](CHANGELOG.md).
 
 Needs testing/keeping track of:
 
-* Ex gym raid list, and possibility to mark gyms as potential EX gyms
+-
 
 Being developed:
 
--
+* List all ex gyms for a region
+* List potential EX gyms for a region (all ex gyms - current ex raid gyms)
 
 Discussion:
 

@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pokeraidbot.commands.PotentialExRaidListCommand;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.errors.UserMessedUpException;
@@ -12,6 +13,7 @@ import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ public class GymRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(GymRepository.class);
 
     private Map<String, Set<Gym>> gymsPerRegion = new ConcurrentHashMap<>();
+    private Map<String, Set<String>> exGymsPerRegion = new ConcurrentHashMap<>();
     private final ServerConfigRepository serverConfigRepository;
     private final LocaleService localeService;
 
@@ -82,7 +85,8 @@ public class GymRepository {
             return gym.get();
         } else {
             //70 seems like a reasonable cutoff here...
-            List<ExtractedResult> candidates = extractTop(query, gyms.stream().map(s -> s.getName()).collect(Collectors.toList()), 6, 70);
+            List<ExtractedResult> candidates = extractTop(query, gyms.stream().map(
+                    s -> s.getName()).collect(Collectors.toList()), 6, 70);
             if (candidates.size() == 1) {
                 return findByName(candidates.iterator().next().getString(), region);
             } else if (candidates.size() < 1) {
@@ -93,11 +97,14 @@ public class GymRepository {
                     return matchingPartial.get(0);
                 }
                 if (candidates.size() <= 5) {
-                    String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region).getName()).collect(Collectors.joining(", "));
+                    String possibleMatches = candidates.stream().map(s -> findByName(s.getString(), region)
+                            .getName()).collect(Collectors.joining(", "));
                     throw new UserMessedUpException(user,
-                            localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser, possibleMatches));
+                            localeService.getMessageFor(LocaleService.GYM_SEARCH_OPTIONS, localeForUser,
+                                    possibleMatches));
                 } else {
-                    throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
+                    throw new UserMessedUpException(user,
+                            localeService.getMessageFor(LocaleService.GYM_SEARCH_MANY_RESULTS, localeForUser));
                 }
             }
         }
@@ -144,5 +151,22 @@ public class GymRepository {
 
     public Map<String, Set<Gym>> getAllGymData() {
         return Collections.unmodifiableMap(gymsPerRegion);
+    }
+
+    public Set<String> getExGyms(String region) {
+        Set<String> exGyms = exGymsPerRegion.get(region);
+        if (exGyms == null) {
+            exGyms = loadExGyms(region);
+            exGymsPerRegion.put(region, exGyms);
+        }
+        return exGyms;
+    }
+
+    private Set<String> loadExGyms(String region) {
+        Set<String> exGymNamesForRegion;
+        final String fileName = "/gyms_" + region.toLowerCase() + ".csv.ex.txt";
+        final InputStream inputStreamEx = PotentialExRaidListCommand.class.getResourceAsStream(fileName);
+        exGymNamesForRegion = CSVGymDataReader.readExGymListIfExists(inputStreamEx, fileName);
+        return exGymNamesForRegion;
     }
 }
