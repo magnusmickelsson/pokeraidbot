@@ -1,3 +1,7 @@
+1.8.5 (2018-02-18)
+=====
+* Gym data updated
+
 1.8.4 (2018-02-11)
 =====
 * New handling of automatically created raid groups via bot integration, if more than one tier 5 boss is active, 
