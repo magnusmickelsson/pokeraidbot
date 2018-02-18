@@ -31,7 +31,7 @@ public class ExRaidListCommand extends ConfigAwareCommand {
         this.gymRepository = gymRepository;
         this.name = "list-ex";
         this.help = localeService.getMessageFor(LocaleService.LIST_HELP, LocaleService.DEFAULT);
-        this.aliases = new String[]{"listex", "ex-list"};
+        this.aliases = new String[]{"listex", "ex-list", "exgyms"};
     }
 
     @Override
