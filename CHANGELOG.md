@@ -1,3 +1,7 @@
+1.8.6 (2018-02-23)
+=====
+* Groudon and Kyogre will be tier 5 bosses from 23/2 to 5/3
+
 1.8.5 (2018-02-18)
 =====
 * Gym data updated
