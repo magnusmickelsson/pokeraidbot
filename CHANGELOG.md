@@ -1,3 +1,7 @@
+1.8.7 (2018-02-25)
+=====
+* Limit for creating EX raids increased (10 -> 20 days)
+
 1.8.6 (2018-02-23)
 =====
 * Groudon and Kyogre will be tier 5 bosses from 23/2 to 5/3

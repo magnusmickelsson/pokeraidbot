@@ -25,6 +25,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
         final String message;
         if (config.getLocale().equals(LocaleService.SWEDISH)) {
             message = "**Nytt i 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Gräns för att kunna skapa EX raider ökad från 10 -> 20 dagar" +
                     "* Ny logik för grupper som skapas automatiskt via botintegration, " +
                     "om det finns mer än en aktiv tier5-boss, " +
                     "sätt gruppens starttid till 30 min efter kläckning istället för 10 så folk hinner se vad det blev\n" +
@@ -34,6 +35,7 @@ public class WhatsNewCommand extends ConfigAwareCommand {
                     "* Celebi och Mew preppade som nya bossar\n";
         } else {
             message = "**New in 1.8.0-" + BotServerMain.version + ":**\n\n" +
+                    "* Limit for creating EX raids increased (10 -> 20 days)" +
                     "* New handling of automatically created raid groups via bot integration, " +
                     "if more than one tier 5 boss is active, " +
                     "set start time to 30 min after hatch instead of 10, so people can find out what boss it was\n" +
