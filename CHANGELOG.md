@@ -1,3 +1,8 @@
+1.8.8 (2018-02-26)
+=====
+* New gym data
+* New donation link
+
 1.8.7 (2018-02-25)
 =====
 * Limit for creating EX raids increased (10 -> 20 days)
