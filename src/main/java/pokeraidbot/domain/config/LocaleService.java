@@ -942,6 +942,10 @@ public class LocaleService {
                         "**Change start time for a raid group:** !raid change group *[New time (HH:MM)]* *[Pokestop name]*" +
                         " (Only raid creator or server admin)\n" +
                         "*Example:* !raid change group 09:35 Solna Platform*\n\n" +
+                        "**Remove raid group:** !raid change group remove *[Time (HH:MM)]* *[Pokestop name]*" +
+                        " (Only group creator - if no signups - or server admin)\n" +
+                        "*Example:* !raid change group remove 09:35 Solna Platform*\n" +
+                        "You can also remove the group message to remove the raid group.\n\n" +
                         "**Change raid boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
                         "(Only raid creator or server admin)\n" +
                         "*Example:* !raid change pokemon Suicune Solna Platform\n\n" +
@@ -956,6 +960,10 @@ public class LocaleService {
                         "**Ändra tid för en raidgrupp:** !raid change group *[Ny tid (HH:MM)]* *[Gym-namn]*" +
                         " (Endast raidskapare eller admin)\n" +
                         "*Exempel:* !raid change group 09:35 Solna Platform*\n\n" +
+                        "**Ta bort raidgrupp:** !raid change group remove *[Time (HH:MM)]* *[Pokestop name]*" +
+                        " (Bara gruppskapare - om det inte finns anmälningar - eller admin)\n" +
+                        "*Exempel:* !raid change group remove 09:35 Solna Platform*\n" +
+                        "*Man kan också ta bort gruppmeddelandet så rensas gruppen automatiskt.\n\n" +
                         "**Ändra en raids boss:** !raid change pokemon *[Pokemon]* *[Pokestop name]* " +
                         "(Endast raidskapare eller admin)\n" +
                         "*Exempel:* !raid change pokemon Suicune Solna Platform\n\n" +
