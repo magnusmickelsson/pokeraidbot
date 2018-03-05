@@ -79,10 +79,14 @@ public class PokemonRaidStrategyService {
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
+            "slowbro".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
             "piloswine".toUpperCase(),
+            "Aerodactyl".toUpperCase(),
+            "Starmie".toUpperCase(),
+            "Claydol".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -221,11 +225,15 @@ public class PokemonRaidStrategyService {
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);
         populateRaidInfoForBoss(pokemonRepository, "Dewgong", "1082", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Slowbro", "1418", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "858", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Aerodactyl", "1490", 3);
         populateRaidInfoForBoss(pokemonRepository, "Jynx", "1435", 3);
         populateRaidInfoForBoss(pokemonRepository, "Piloswine", "1305", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Starmie", "1316", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Claydol", "1018", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);

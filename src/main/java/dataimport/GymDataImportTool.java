@@ -27,6 +27,7 @@ import javax.net.ssl.SSLContext;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.Map;
@@ -52,7 +53,13 @@ public class GymDataImportTool {
     private static void reportDiffBetweenOldAndNewFileIfExists(String location) {
         try {
             CSVGymDataReader oldGymDataReader = new CSVGymDataReader("/gyms_" + location + ".csv");
-            CSVGymDataReader newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"));
+            InputStream exStream = GymDataImportTool.class.getResourceAsStream("/gyms_" + location + ".csv.ex.txt");
+            CSVGymDataReader newGymDataReader;
+            if (exStream != null) {
+                newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"), exStream);
+            } else {
+                newGymDataReader = new CSVGymDataReader(new FileInputStream("target/" + location + ".csv"));
+            }
             final Set<Gym> oldGyms = oldGymDataReader.readAll();
             final Set<Gym> newGyms = newGymDataReader.readAll();
             int sameCount = 0;
