@@ -1,3 +1,14 @@
+1.8.11 (2018-03-12)
+=====
+* Changed raid track notification text after request from users
+* Gym data update
+
+1.8.10 (2018-03-05)
+=====
+* Gym data update
+* Import tool improvement
+* New raid bosses
+
 1.8.9 (2018-03-03)
 =====
 * New gym data

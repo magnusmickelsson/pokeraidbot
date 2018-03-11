@@ -637,9 +637,9 @@ public class LocaleService {
                 "Tog bort övervakning av %1 för %2.");
 
         i18nMessages.put(new I18nLookup(TRACKED_RAID, Locale.ENGLISH),
-                "Raid track notification for server %1: %3 by %2");
+                "%3 by %2- raid track notification for server %1");
         i18nMessages.put(new I18nLookup(TRACKED_RAID, SWEDISH),
-                "Notifikation från %1: %3 av %2");
+                "%3 av %2 - notifikation från %1");
 
        i18nMessages.put(new I18nLookup(TRACKING_NOT_EXISTS, Locale.ENGLISH),
                 "There was no such tracking set for you.");
