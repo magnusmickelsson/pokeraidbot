@@ -1,4 +1,4 @@
-1.8.11 (2018-03-12)
+1.8.11 (2018-03-13)
 =====
 * Changed raid track notification text after request from users
 * Gym data update
