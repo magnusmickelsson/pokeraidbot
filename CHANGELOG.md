@@ -1,3 +1,7 @@
+1.8.12 (2018-03-16)
+=====
+* Lugia back as tier 5 boss for a period
+
 1.8.11 (2018-03-13)
 =====
 * Changed raid track notification text after request from users
