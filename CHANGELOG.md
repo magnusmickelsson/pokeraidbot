@@ -1,3 +1,7 @@
+1.8.13 (2018-03-17)
+=====
+* Gym data update
+
 1.8.12 (2018-03-16)
 =====
 * Lugia back as tier 5 boss for a period
