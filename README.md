@@ -67,7 +67,7 @@ better availability etc.
 
 Click below:
 
-<a href='https://pledgie.com/campaigns/34823'><img alt='Click here to lend your support to: pokeraidbot and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34823.png?skin_name=chrome' border='0'></a>
+https://www.paypal.com/pools/c/821lf4bmi6
 
 ## Setting up the bot in your Discord server
 
