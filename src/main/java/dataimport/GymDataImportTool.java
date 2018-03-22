@@ -271,7 +271,7 @@ public class GymDataImportTool {
     }
 
     private static void checkArguments(String[] args) {
-        if (args == null || args.length > 2 || args.length < 2) {
+        if (args == null || args.length > 10 || args.length < 2) {
             System.out.println("Wrong use of the import tool! Run " + GymDataImportTool.class.getSimpleName() +
                     " with parameters: [side of map cube, in kilometres] [the location to search for]");
             throw new RuntimeException("Error!");

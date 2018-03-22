@@ -1,3 +1,8 @@
+1.8.15 (2018-03-22)
+=====
+* Added gyms for Ragusa, Italy
+* Gym import tool now can handle locations with position or for example "Ragusa, Sicily, Italy"
+
 1.8.14 (2018-03-21)
 =====
 * Gym data update
