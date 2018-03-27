@@ -3,6 +3,7 @@
 * Added gyms for Trollhättan
 * Gym data updated
 * Donation links fixed
+* Raid time limits increased, some raids has raid end after 22.00
 
 1.8.15 (2018-03-22)
 =====
