@@ -1,3 +1,9 @@
+1.8.16 (2018-03-27)
+=====
+* Added gyms for Trollhättan
+* Gym data updated
+* Donation links fixed
+
 1.8.15 (2018-03-22)
 =====
 * Added gyms for Ragusa, Italy
