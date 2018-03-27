@@ -141,7 +141,7 @@ public class Utils {
     public static void assertTimeNotMoreThanXHoursFromNow(User user, LocalTime time,
                                                           LocaleService localeService, Integer hours) {
         final LocalTime now = clockService.getCurrentTime();
-        if (now.plusHours(2).isBefore(time)) {
+        if (now.isBefore(LocalTime.of(22, 0)) && now.plusHours(2).isBefore(time)) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.NO_RAID_TOO_LONG, localeService.getLocaleForUser(user),
                             printTime(time), printTime(now), String.valueOf(hours)));
