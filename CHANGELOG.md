@@ -1,6 +1,7 @@
 1.8.17 (2018-03-28)
 =====
 * Gym data updated
+* Added gyms for Helsingborg
 
 1.8.16 (2018-03-27)
 =====
