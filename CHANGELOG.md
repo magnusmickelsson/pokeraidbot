@@ -1,3 +1,7 @@
+1.8.17 (2018-03-28)
+=====
+* Gym data updated
+
 1.8.16 (2018-03-27)
 =====
 * Added gyms for Trollhättan
