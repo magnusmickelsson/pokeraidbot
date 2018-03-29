@@ -1,3 +1,8 @@
+1.8.19 (2018-03-30)
+=====
+* Gym data updated
+* Prepare for Ho-Oh as next tier5 boss
+
 1.8.18 (2018-03-29)
 =====
 * Gym data updated

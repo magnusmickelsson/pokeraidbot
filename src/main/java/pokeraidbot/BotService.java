@@ -62,8 +62,12 @@ public class BotService {
             currentTier5Bosses.add("Rayquaza");
         }
 
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.MARCH, 16))) {
+        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.APRIL, 3))) {
             currentTier5Bosses.add("Lugia");
+        }
+
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 2))) {
+            currentTier5Bosses.add("Ho-Oh");
         }
     }
 
