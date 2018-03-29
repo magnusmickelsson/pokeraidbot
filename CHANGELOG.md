@@ -1,3 +1,7 @@
+1.8.18 (2018-03-29)
+=====
+* Gym data updated
+
 1.8.17 (2018-03-28)
 =====
 * Gym data updated
