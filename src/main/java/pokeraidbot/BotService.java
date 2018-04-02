@@ -62,12 +62,12 @@ public class BotService {
             currentTier5Bosses.add("Rayquaza");
         }
 
-        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.APRIL, 3))) {
+        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.APRIL, 2))) {
             currentTier5Bosses.add("Lugia");
         }
 
         // EU rules
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 2)) &&
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 1)) &&
                 LocalDate.now().isBefore(LocalDate.of(2018, Month.MAY, 9))) {
             currentTier5Bosses.add("Latias");
         }
