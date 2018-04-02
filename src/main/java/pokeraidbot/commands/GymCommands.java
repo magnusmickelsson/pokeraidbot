@@ -50,7 +50,7 @@ public class GymCommands extends ConfigAwareCommand {
         } else {
             String[] gymArgs = eventArgs.replaceAll("gym\\s{1,3}", "").trim().split(";");
             if (gymArgs == null || gymArgs.length < 4 || gymArgs.length > 4) {
-                event.reply("Bad syntax, should be: !raid gym add {gymname};{latitude};{longitude};{exgym true or false");
+                replyBasedOnConfig(config, event, "Bad syntax, should be: !raid gym add {gymname};{latitude};{longitude};{exgym true or false");
                 return;
             } else {
                 final Random random = new Random();
