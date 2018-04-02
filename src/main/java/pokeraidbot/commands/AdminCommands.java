@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**

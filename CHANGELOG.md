@@ -1,7 +1,13 @@
+1.8.20 (2018-04-03)
+=====
+* Prepare for Latias/Latios as next tier5 bosses
+* Admin command for temporarily adding gyms on demand if needed - 
+!raid gym {gymname};{latitude};{longitude};{exgym true or false}
+
 1.8.19 (2018-03-30)
 =====
 * Gym data updated
-* Prepare for Ho-Oh as next tier5 boss
+* Prepare for Ho-Oh as next tier5 boss (?) - turned out to be false rumor
 
 1.8.18 (2018-03-29)
 =====

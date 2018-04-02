@@ -66,8 +66,14 @@ public class BotService {
             currentTier5Bosses.add("Lugia");
         }
 
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 2))) {
-            currentTier5Bosses.add("Ho-Oh");
+        // EU rules
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 2)) &&
+                LocalDate.now().isBefore(LocalDate.of(2018, Month.MAY, 9))) {
+            currentTier5Bosses.add("Latias");
+        }
+
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.MAY, 8))) {
+            currentTier5Bosses.add("Latios");
         }
     }
 
@@ -169,7 +175,8 @@ public class BotService {
                         serverConfigRepository,
                         aggregateCommandListener, raidInfoService),
                 new RaidOverviewCommand(raidRepository, localeService, serverConfigRepository,
-                        aggregateCommandListener, clockService, executorService, raidInfoService)
+                        aggregateCommandListener, clockService, executorService, raidInfoService),
+                new GymCommands(localeService, serverConfigRepository, gymRepository, aggregateCommandListener)
         );
 
         try {

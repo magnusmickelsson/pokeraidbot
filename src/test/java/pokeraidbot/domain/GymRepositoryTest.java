@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.domain.config.LocaleService;
+import pokeraidbot.domain.errors.GymNotFoundException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.CSVGymDataReader;
@@ -20,11 +21,13 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GymRepositoryTest {
-    public static final ServerConfigRepository SERVER_CONFIG_REPOSITORY = Mockito.mock(ServerConfigRepository.class);
+    public static final ServerConfigRepository SERVER_CONFIG_REPOSITORY = mock(ServerConfigRepository.class);
     GymRepository repo;
     private final Gym gym = new Gym("Hästen", "3690325", "59.844542", "17.63993",
             "Uppsala");
@@ -33,7 +36,7 @@ public class GymRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        UserConfigRepository userConfigRepository = Mockito.mock(UserConfigRepository.class);
+        UserConfigRepository userConfigRepository = mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
         localeService = new LocaleService("sv", userConfigRepository);
         final Config dalarnaConfig = new Config("dalarna", "dalarna");
@@ -164,7 +167,7 @@ public class GymRepositoryTest {
 
     @Test
     public void findGymByFuzzySearch() throws Exception {
-        User user = Mockito.mock(User.class);
+        User user = mock(User.class);
         when(user.getName()).thenReturn("Greger");
         assertThat(repo.search(user,"hosten", "uppsala"), is(gym));
     }
@@ -179,6 +182,26 @@ public class GymRepositoryTest {
         final Gym u969 = repo.findByName("U969", "uppsala");
         assertThat(u969.getName(), is("U969"));
         assertThat(u969.isExGym(), is(false));
+    }
+
+    @Test
+    public void addTemporaryGymToUppsala() {
+        Gym gym;
+        try {
+            gym = repo.findByName("Mongo", "uppsala");
+            fail("Gym should not exist yet.");
+        } catch (GymNotFoundException e) {
+            // Expected
+        }
+
+        final User userMock = mock(User.class);
+        when(userMock.getName()).thenReturn("User");
+        repo.addTemporary(userMock, new Gym("Mongo", "66666666", "50.0001", "25.00001",
+                "Uppsala", false), "uppsala");
+
+        gym = repo.findByName("Mongo", "uppsala");
+        assertThat(gym.getName(), is("Mongo"));
+        assertThat(gym.isExGym(), is(false));
     }
 
     @Test

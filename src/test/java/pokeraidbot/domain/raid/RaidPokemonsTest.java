@@ -117,14 +117,14 @@ public class RaidPokemonsTest {
         assertThat(raidInfo.getBossTier(), is(5));
         counters = strategyService.getCounters(raidInfo.getPokemon());
         assertThat(counters.getGoodCounters().size(), is(0));
-        assertThat(counters.getSupremeCounters().size(), is(4));
+        assertThat(counters.getSupremeCounters().size(), is(5));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("latios", null));
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
         counters = strategyService.getCounters(raidInfo.getPokemon());
         assertThat(counters.getGoodCounters().size(), is(0));
-        assertThat(counters.getSupremeCounters().size(), is(4));
+        assertThat(counters.getSupremeCounters().size(), is(5));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("rayquaza", null));
         assertNotNull(raidInfo);

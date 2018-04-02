@@ -118,6 +118,18 @@ public class GymRepository {
         return gym.get();
     }
 
+    // Temporary method to work around problem with gym data updates from the map site - will be removed when we move
+    // gym data to database and do an administrative UI to maintain them
+    public void addTemporary(User user, Gym gym, String region) {
+        if (get(gym.getName(), region).isPresent()) {
+            // todo: i18n?
+            throw new UserMessedUpException(user, "Could not add gym, it already exists for this region.");
+        }
+        final Set<Gym> gymsForRegion = new HashSet<>(gymsPerRegion.get(region));
+        gymsForRegion.add(gym);
+        gymsPerRegion.put(region, gymsForRegion);
+    }
+
     public Gym findById(String id, String region) {
         for (Gym gym : getAllGymsForRegion(region)) {
             if (gym.getId().equals(id))
