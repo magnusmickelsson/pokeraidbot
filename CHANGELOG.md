@@ -1,5 +1,6 @@
 1.8.20 (2018-04-03)
 =====
+* Gym data updated
 * Prepare for Latias/Latios as next tier5 bosses
 * Admin command for temporarily adding gyms on demand if needed - 
 !raid gym {gymname};{latitude};{longitude};{exgym true or false}
