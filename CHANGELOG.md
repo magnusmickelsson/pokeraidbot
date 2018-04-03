@@ -1,3 +1,8 @@
+1.8.21 (2018-04-04)
+=====
+* Gym data updated
+* Raid boss data updated
+
 1.8.20 (2018-04-03)
 =====
 * Gym data updated
