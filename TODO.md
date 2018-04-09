@@ -8,8 +8,7 @@ Needs testing/keeping track of:
 
 Being developed:
 
-* List all ex gyms for a region
-* List potential EX gyms for a region (all ex gyms - current ex raid gyms)
+-
 
 Discussion:
 
@@ -33,7 +32,6 @@ Fix, misc:
 
 Do, features:
 
-* Configuration possibility to turn off ability to create raids/groups with eggs (Egg1-5). Umeå don't want that.
 * Snooze group emote which means a signup can mark themselves as coming a few minutes late. Their names get
 displayed via italic style, if they are marked as late.
 * Save overview channel in server config, so we won't have to check every channel during start up 
@@ -91,6 +89,8 @@ time (equalling no time to "now", if raid is active) to signup using that?
 
 Maybe, features:
 
+* Quest handling (reporting, lists of current reported quests etc)
+* Pokemon reporting (lists etc)
 * Automatically create eggs via bot integration also for tier 4, and hatch when boss spawns
 * Emote to mark group as having finished (removes all signups) - only group creator?
 * Config for permission setting of various groups of commands:
@@ -113,6 +113,7 @@ Maybe, features:
 so we can't get test config on a prod server running by mistake
 * Add counters/counter moves to all pokemon, based on "good dps pokemons" for each type?
 * Checking error codes?
+* Configuration possibility to turn off ability to create raids/groups with eggs (Egg1-5). Umeå don't want that.
 ...
 
 

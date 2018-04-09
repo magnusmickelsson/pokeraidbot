@@ -1,3 +1,7 @@
+1.8.22 (2018-04-09)
+=====
+* Gym data updated
+
 1.8.21 (2018-04-04)
 =====
 * Gym data updated
