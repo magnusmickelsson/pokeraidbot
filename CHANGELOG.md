@@ -1,3 +1,8 @@
+1.8.23 (2018-04-11)
+=====
+* New raidbosses
+* Fixed hatchcommand to allow for raid bosses to not have tier/counter data yet
+
 1.8.22 (2018-04-09)
 =====
 * Gym data updated

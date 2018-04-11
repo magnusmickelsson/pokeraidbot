@@ -67,11 +67,8 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final PokemonRaidInfo existingRaidInfo = raidStrategyService.getRaidInfo(raid.getPokemon());
         final PokemonRaidInfo hatchRaidInfo = raidStrategyService.getRaidInfo(pokemon);
-        if (hatchRaidInfo == null) {
-            throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EGG_WRONG_TIER,
-                    localeService.getLocaleForUser(user)));
-        }
-        final int newBossTier = hatchRaidInfo.getBossTier();
+        // We allow null hatch info if it's a new boss that doesn't have tier/counter data yet
+        final int newBossTier = hatchRaidInfo != null ? hatchRaidInfo.getBossTier() : existingRaidInfo.getBossTier();
         if (!raid.getPokemon().isEgg()) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.EGG_ALREADY_HATCHED,
