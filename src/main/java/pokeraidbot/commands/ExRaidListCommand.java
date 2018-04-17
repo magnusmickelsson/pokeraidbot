@@ -39,15 +39,8 @@ public class ExRaidListCommand extends ConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final Locale locale = localeService.getLocaleForUser(user);
         StringBuilder stringBuilder = new StringBuilder();
-        // todo: i18n
-        stringBuilder.append("Alla EX-gym för regionen ").append(config.getRegion()).append(":\n\n");
-//            stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
-//            if (args != null && args.length() > 0) {
-//                stringBuilder.append(" (").append(args).append(")");
-//            }
-//            stringBuilder.append(":**");
-//            stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
-//                    localeService.getLocaleForUser(user))).append("\n");
+        stringBuilder.append(localeService.getMessageFor(LocaleService.ALL_EX, locale))
+                .append(config.getRegion()).append(":\n\n");
         final Set<String> exGyms = gymRepository.getExGyms(config.getRegion());
         for (String gym : exGyms) {
             stringBuilder.append(gym).append("\n");

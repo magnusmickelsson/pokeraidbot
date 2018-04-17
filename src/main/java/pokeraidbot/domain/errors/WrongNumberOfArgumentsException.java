@@ -9,7 +9,7 @@ public class WrongNumberOfArgumentsException extends UserMessedUpException {
         super(user, localeService.getMessageFor(LocaleService.WRONG_NUMBER_OF_ARGUMENTS,
                 localeService.getLocaleForUser(user),
                 "" + expectedArguments,
-                // todo: i18n
-                "" + actualArguments) + "\n\nHelp:\n" + helpTextForCommand);
+                "" + actualArguments) + "\n\n" + localeService.getMessageFor(LocaleService.HELP,
+                localeService.getLocaleForUser(user)) + ":\n" + helpTextForCommand);
     }
 }

@@ -44,15 +44,7 @@ public class PotentialExRaidListCommand extends ConfigAwareCommand {
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
 
         StringBuilder stringBuilder = new StringBuilder();
-        // todo: i18n
-        stringBuilder.append("Potentiella exgym som inte har en kommande EX-raid:\n\n");
-//            stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
-//            if (args != null && args.length() > 0) {
-//                stringBuilder.append(" (").append(args).append(")");
-//            }
-//            stringBuilder.append(":**");
-//            stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
-//                    localeService.getLocaleForUser(user))).append("\n");
+        stringBuilder.append(localeService.getMessageFor(LocaleService.EX_WITHOUT_RAID, locale)).append("\n\n");
         Set<String> exGymNames = new HashSet<>();
         for (Raid raid : raids) {
             if (raid.isExRaid()) {

@@ -122,8 +122,9 @@ public class GymRepository {
     // gym data to database and do an administrative UI to maintain them
     public void addTemporary(User user, Gym gym, String region) {
         if (get(gym.getName(), region).isPresent()) {
-            // todo: i18n?
-            throw new UserMessedUpException(user, "Could not add gym, it already exists for this region.");
+            throw new UserMessedUpException(user, localeService.getMessageFor(
+                    LocaleService.COULD_NOT_ADD_GYM,
+                    localeService.getLocaleForUser(user)));
         }
         final Set<Gym> gymsForRegion = new HashSet<>(gymsPerRegion.get(region));
         gymsForRegion.add(gym);

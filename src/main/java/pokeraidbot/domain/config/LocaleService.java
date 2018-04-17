@@ -105,6 +105,10 @@ public class LocaleService {
     public static final String RAID_CREATE_AND_GROUP_HELP = "RAID_CREATE_AND_GROUP_HELP";
     public static final String GROUP_DELETED = "GROUP_DELETED";
     public static final String CREATED_BY = "CREATED_BY";
+    public static final String COULD_NOT_ADD_GYM = "COULD_NOT_ADD_GYM";
+    public static final String HELP = "HELP";
+    public static final String EX_WITHOUT_RAID = "EX_WITHOUT_RAID";
+    public static final String ALL_EX = "ALL_EX";
 
     // Change this if you want another default locale, affects the usage texts etc
     public static Locale DEFAULT = Locale.ENGLISH;
@@ -175,6 +179,26 @@ public class LocaleService {
     }
 
     private void initTexts() {
+        i18nMessages.put(new I18nLookup(ALL_EX, Locale.ENGLISH),
+                "All EX-gyms for the region ");
+        i18nMessages.put(new I18nLookup(ALL_EX, SWEDISH),
+                "Alla EX-gym för regionen ");
+
+        i18nMessages.put(new I18nLookup(EX_WITHOUT_RAID, Locale.ENGLISH),
+                "Potential EX gyms without a scheduled EX-raid:");
+        i18nMessages.put(new I18nLookup(EX_WITHOUT_RAID, SWEDISH),
+                "Potentiella EX-gym som inte har en kommande EX-raid:");
+
+        i18nMessages.put(new I18nLookup(HELP, Locale.ENGLISH),
+                "Help");
+        i18nMessages.put(new I18nLookup(HELP, SWEDISH),
+                "Hjälp");
+
+        i18nMessages.put(new I18nLookup(COULD_NOT_ADD_GYM, Locale.ENGLISH),
+                "Could not add gym, it already exists for this region.");
+        i18nMessages.put(new I18nLookup(COULD_NOT_ADD_GYM, SWEDISH),
+                "Kunde inte lägga till gym, det finns redan för den här regionen.");
+
         i18nMessages.put(new I18nLookup(CREATED_BY, Locale.ENGLISH),
                 "Created by"
         );

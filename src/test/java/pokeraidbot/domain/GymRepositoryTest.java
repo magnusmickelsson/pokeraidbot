@@ -39,6 +39,8 @@ public class GymRepositoryTest {
         UserConfigRepository userConfigRepository = mock(UserConfigRepository.class);
         when(userConfigRepository.findOne(any(String.class))).thenReturn(null);
         localeService = new LocaleService("sv", userConfigRepository);
+        final Config staffordConfig = new Config("stafford uk", "stafford uk");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("stafford uk")).thenReturn(staffordConfig);
         final Config dalarnaConfig = new Config("dalarna", "dalarna");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("dalarna")).thenReturn(dalarnaConfig);
         final Config uppsalaConfig = new Config("uppsala", "uppsala");
@@ -60,6 +62,7 @@ public class GymRepositoryTest {
         final Config helsingborgConfig = new Config("helsingborg", "helsingborg");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("helsingborg")).thenReturn(helsingborgConfig);
         configMap = new HashMap<>();
+        configMap.put("stafford uk", staffordConfig);
         configMap.put("dalarna", dalarnaConfig);
         configMap.put("uppsala", uppsalaConfig);
         configMap.put("ängelholm", angelholmConfig);
@@ -85,6 +88,11 @@ public class GymRepositoryTest {
                         " \n" + gymFromRepo.toStringDetails() + " != " + gym.toStringDetails(), gymFromRepo, is(gym));
             }
         }
+    }
+
+    @Test
+    public void allGymsAreReadForStafford() {
+        assertThat(repo.getAllGymsForRegion("stafford uk").size(), is(148));
     }
 
     @Test
