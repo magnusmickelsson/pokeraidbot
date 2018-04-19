@@ -1,6 +1,7 @@
-1.8.25 (2018-04-17)
+1.8.25 (2018-04-19)
 =====
 * Gym data for Stafford, UK
+* Gym data updated
 * Fixed some i18 texts
 
 1.8.24 (2018-04-17)
