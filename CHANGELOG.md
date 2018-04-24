@@ -1,3 +1,11 @@
+1.8.27 (2018-04-24)
+=====
+* Gym data updated
+
+1.8.26 (2018-04-20)
+=====
+* Gym data updated
+
 1.8.25 (2018-04-19)
 =====
 * Gym data for Stafford, UK
