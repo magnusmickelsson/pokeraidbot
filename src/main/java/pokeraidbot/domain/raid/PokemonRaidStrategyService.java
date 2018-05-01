@@ -90,6 +90,8 @@ public class PokemonRaidStrategyService {
             "Misdreavus".toUpperCase(),
             "lickitung".toUpperCase(),
             "venomoth".toUpperCase(),
+            "combusken".toUpperCase(),
+            "primeape".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -255,6 +257,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Misdreavus", "1018", 2);
         populateRaidInfoForBoss(pokemonRepository, "Lickitung", "755", 2);
         populateRaidInfoForBoss(pokemonRepository, "Venomoth", "1107", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Combusken", "841", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Primeape", "1203", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "858", 3);
