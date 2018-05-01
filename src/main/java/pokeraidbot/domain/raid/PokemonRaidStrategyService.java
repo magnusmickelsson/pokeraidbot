@@ -102,6 +102,8 @@ public class PokemonRaidStrategyService {
             "aerodactyl".toUpperCase(),
             "kabutops".toUpperCase(),
             "onix".toUpperCase(),
+            "hitmonlee".toUpperCase(),
+            "breloom".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -266,6 +268,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Aerodactyl", "1490", 3);
         populateRaidInfoForBoss(pokemonRepository, "Kabutops", "1438", 3);
         populateRaidInfoForBoss(pokemonRepository, "Onix", "572", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Breloom", "1375", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Hitmonlee", "1375", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);

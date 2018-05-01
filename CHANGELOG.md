@@ -1,3 +1,8 @@
+1.8.29 (2018-05-01)
+=====
+* Gym data updated
+* New raid bosses - Hitmonlee and Breloom
+
 1.8.28 (2018-04-25)
 =====
 * Gym data updated
