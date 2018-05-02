@@ -1,3 +1,7 @@
+1.8.30 (2018-05-02)
+=====
+* New raid boss - Hitmonchan
+
 1.8.29 (2018-05-01)
 =====
 * Gym data updated

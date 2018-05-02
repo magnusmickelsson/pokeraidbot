@@ -105,6 +105,7 @@ public class PokemonRaidStrategyService {
             "kabutops".toUpperCase(),
             "onix".toUpperCase(),
             "hitmonlee".toUpperCase(),
+            "hitmonchan".toUpperCase(),
             "breloom".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
@@ -274,6 +275,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Onix", "572", 3);
         populateRaidInfoForBoss(pokemonRepository, "Breloom", "1375", 3);
         populateRaidInfoForBoss(pokemonRepository, "Hitmonlee", "1375", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Hitmonchan", "1199", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
