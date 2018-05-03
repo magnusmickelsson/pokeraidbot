@@ -1,6 +1,8 @@
 package pokeraidbot.domain.raid.signup;
 
+import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
@@ -8,10 +10,12 @@ import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReacti
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;
+import pokeraidbot.commands.ConfigAwareCommand;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.emote.Emotes;
 import pokeraidbot.domain.gym.GymRepository;
@@ -20,6 +24,7 @@ import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -121,6 +126,15 @@ public class EmoticonSignUpMessageListener implements EventListener {
                             break;
                         case Emotes.FIVE:
                             addToSignUp(user, 0, 0, 0, 5);
+                            break;
+                        case Emotes.CLOCK:
+                            if (isUserAdministrator(reactionEvent) || userId.equals(user.getId())) {
+                                final Duration snooze = Duration.ofMinutes(5);
+                                raidRepository.snoozeRaid(raidId, snooze, user, userId, startAt);
+                                this.startAt = startAt.plus(snooze);
+                            }
+                            reactionEvent.getReaction().removeReaction(user)
+                                    .queueAfter(30, TimeUnit.MILLISECONDS);
                             break;
                         default:
                     }
@@ -286,5 +300,10 @@ public class EmoticonSignUpMessageListener implements EventListener {
                 ", startAt=" + startAt +
                 ", userId='" + userId + '\'' +
                 '}';
+    }
+
+    protected static boolean isUserAdministrator(GuildMessageReactionAddEvent event) {
+        return PermissionUtil.checkPermission(event.getChannel(),
+                event.getMember(), Permission.ADMINISTRATOR);
     }
 }

@@ -16,4 +16,5 @@ public class Emotes {
     public static final String HAPPY = "\uD83D\uDE03";
     public static final String GROUP = "\uD83D\uDC65";
     public static final String STAR = "⭐";
+    public static final String CLOCK = "\uD83D\uDD50";
 }

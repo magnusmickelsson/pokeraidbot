@@ -29,6 +29,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidEntityRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidEntitySignUp;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -581,6 +582,9 @@ public class RaidRepository {
                     localeService.getLocaleForUser(user)));
         }
         group.setStartsAt(newDateTime);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Set new time for group to " + Utils.printTimeIfSameDay(newDateTime));
+        }
         raidEntityRepository.save(entityByRaidId);
         // todo: notify !raid track listeners?
 
@@ -613,5 +617,18 @@ public class RaidRepository {
         } else {
             return true;
         }
+    }
+
+    public void snoozeRaid(String raidId, Duration duration, User user, String groupCreatorId, LocalDateTime currentGroupStart) {
+        final RaidEntity entityByRaidId = findEntityByRaidId(raidId);
+        if (entityByRaidId == null) {
+            throw new UserMessedUpException(user,
+                    localeService.getMessageFor(LocaleService.NO_RAID_AT_GYM, localeService.getLocaleForUser(user)));
+        }
+        final LocalDateTime newTime = currentGroupStart.plus(duration);
+        assertTimeInRaidTimespan(user, newTime, getRaidInstance(entityByRaidId), localeService);
+
+        changeGroup(user, raidId, groupCreatorId, currentGroupStart, newTime);
+        moveAllSignUpsForTimeToNewTime(raidId, currentGroupStart, newTime, user);
     }
 }

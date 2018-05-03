@@ -158,9 +158,8 @@ public class Utils {
     }
 
     public static String getStaticMapUrl(Gym gym) {
-        // todo: host marker png via pokeraidbot web
         String url = "https://maps.googleapis.com/maps/api/staticmap?center=" + gym.getX() + "," + gym.getY() +
-                "&zoom=14&size=400x400&maptype=roadmap&markers=icon:http://millert.se/pogo/marker_xsmall.png%7C" +
+                "&zoom=14&size=400x400&maptype=roadmap&markers=icon:https://pokeraidbot2.herokuapp.com/marker_xsmall.png%7C" +
                 gym.getX() + "," + gym.getY() + "&key=AIzaSyAZm7JLojr2KaUvkeHEpHh0Y-zPwP3dpCU";
         return url;
     }

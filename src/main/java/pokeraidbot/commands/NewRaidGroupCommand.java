@@ -153,6 +153,8 @@ public class NewRaidGroupCommand extends ConcurrencyAndConfigAwareCommand {
             embedChannel.addReactionById(messageId, Emotes.THREE).queue();
             embedChannel.addReactionById(messageId, Emotes.FOUR).queue();
             embedChannel.addReactionById(messageId, Emotes.FIVE).queue();
+            // Add snooze button
+            embedChannel.addReactionById(messageId, Emotes.CLOCK).queue();
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Eventlistener and emotes added for emote message with ID: " + messageId);
             }
