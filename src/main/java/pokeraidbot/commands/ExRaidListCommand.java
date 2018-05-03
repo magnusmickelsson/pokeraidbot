@@ -3,21 +3,16 @@ package pokeraidbot.commands;
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
 import net.dv8tion.jda.core.entities.User;
-import org.apache.commons.collections4.CollectionUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
-import pokeraidbot.domain.raid.Raid;
-import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 /**
- * !raid potential-ex
+ * !raid list-ex
  */
 public class ExRaidListCommand extends ConfigAwareCommand {
     private final LocaleService localeService;

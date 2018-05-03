@@ -6,16 +6,15 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.GymRepository;
-import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
-import pokeraidbot.infrastructure.CSVGymDataReader;
 import pokeraidbot.infrastructure.jpa.config.Config;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 
-import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * !raid potential-ex

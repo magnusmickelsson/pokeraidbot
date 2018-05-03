@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.gym.Gym;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CSVGymDataReader {
     private final InputStream inputStream;
@@ -104,6 +103,9 @@ public class CSVGymDataReader {
 
             LOGGER.info("Parsed " + exGyms.size() + " EX gyms.");
         }
-        return exGyms;
+        final List<String> list = new ArrayList<>(exGyms);
+        list.sort(String::compareTo);
+
+        return new TreeSet<>(list);
     }
 }

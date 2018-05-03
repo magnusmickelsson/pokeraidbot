@@ -8,7 +8,7 @@ Needs testing/keeping track of:
 
 Being developed:
 
--
+* Snooze group emote for group leader and admins.
 
 Discussion:
 
@@ -32,8 +32,6 @@ Fix, misc:
 
 Do, features:
 
-* Snooze group emote which means a signup can mark themselves as coming a few minutes late. Their names get
-displayed via italic style, if they are marked as late.
 * Save overview channel in server config, so we won't have to check every channel during start up 
 (takes time if server has many channels)
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
@@ -60,6 +58,8 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 (ex raids marked as well, with number of raids they've had)
 * Web UI for administration, using the REST API
 * Web page with raid list for a certain region (using REST API)
+* Snooze group emote which means a signup can mark themselves as coming a few minutes late. Their names get
+displayed via italic style, if they are marked as late.
 * Be able to auto create groups via botintegration for several tiers and to different channels
 * Raid group messages could be sent to a specific channel, if so configured. Separate EX raid channel.
 * Choose your own Nickname, if you don't want the discord username - !raid nick {nickname}. Display said nick in group

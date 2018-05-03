@@ -1,3 +1,12 @@
+1.9.0 (?)
+=====
+* Snooze button for raid groups
+
+1.8.31 (2018-05-03)
+=====
+* Ex raid lists in alphabetical order
+* Gym data update
+
 1.8.30 (2018-05-02)
 =====
 * New raid boss - Hitmonchan
