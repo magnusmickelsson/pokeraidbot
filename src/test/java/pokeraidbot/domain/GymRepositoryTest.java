@@ -53,6 +53,8 @@ public class GymRepositoryTest {
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("umeå")).thenReturn(umeConfig);
         final Config vannasConfig = new Config("vännäs", "vännäs");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("vännäs")).thenReturn(vannasConfig);
+        final Config vindelnConfig = new Config("vindeln", "vindeln");
+        when(SERVER_CONFIG_REPOSITORY.getConfigForServer("vindeln")).thenReturn(vindelnConfig);
         final Config lyckseleConfig = new Config("lycksele", "lycksele");
         when(SERVER_CONFIG_REPOSITORY.getConfigForServer("lycksele")).thenReturn(lyckseleConfig);
         final Config norrkopingConfig = new Config("norrköping", "norrköping");
@@ -69,6 +71,7 @@ public class GymRepositoryTest {
         configMap.put("luleå", luleConfig);
         configMap.put("umeå", umeConfig);
         configMap.put("vännäs", vannasConfig);
+        configMap.put("vindeln", vindelnConfig);
         configMap.put("norrköping", norrkopingConfig);
         configMap.put("trollhättan", trollhattanConfig);
         configMap.put("helsingborg", helsingborgConfig);
@@ -130,6 +133,11 @@ public class GymRepositoryTest {
     @Test
     public void allGymsAreReadForTrollhattan() {
         assertThat(repo.getAllGymsForRegion("trollhättan").size(), is(72));
+    }
+
+    @Test
+    public void allGymsAreReadForVindeln() {
+        assertThat(repo.getAllGymsForRegion("vindeln").size(), is(1));
     }
 
     @Test

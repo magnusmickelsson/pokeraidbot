@@ -2,6 +2,10 @@
 =====
 * Snooze button for raid groups
 
+1.8.32 (2018-05-07)
+=====
+* Gym data for Vindeln
+
 1.8.31 (2018-05-03)
 =====
 * Ex raid lists in alphabetical order
