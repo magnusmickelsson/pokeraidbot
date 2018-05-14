@@ -2,6 +2,10 @@
 =====
 * Snooze button for raid groups
 
+1.8.34 (2018-05-14)
+=====
+* Gym data update
+
 1.8.33 (2018-05-08)
 =====
 * Gym data update

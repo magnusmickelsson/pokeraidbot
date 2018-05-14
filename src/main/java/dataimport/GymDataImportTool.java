@@ -224,7 +224,7 @@ public class GymDataImportTool {
             body.put("tolat", asList("" + (lat + cubeInDegrees)));
             body.put("fromlng", asList("" + (lng - cubeInDegrees)));
             body.put("tolng", asList("" + (lng + cubeInDegrees)));
-            body.put("fpoke", asList("0")); // 1 = include pokestops
+            body.put("fpoke", asList("1")); // 1 = include pokestops
             body.put("fgym", asList("1")); // 1 = include gyms
             body.put("farm", asList("0")); // 1 = ??
             body.put("nests", asList("0")); // 1 = include nest locations (don't use this)
