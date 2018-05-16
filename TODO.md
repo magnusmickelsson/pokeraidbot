@@ -32,6 +32,18 @@ Fix, misc:
 
 Do, features:
 
+* Possible to list gyms for the server's region
+* UI to manage EX gym list
+* Move gyms to the database, use CSV files just to initialize
+* REST API
+* Make it possible to change gyms in database via web admin command (server mods only)
+* Web UI for administration, using the REST API
+* Web page with raid list for a certain region (using REST API)
+* Web page with complete map of Uppsala with all raids and gyms plotted 
+(ex raids marked as well, with number of raids they've had)
+
+-- next
+
 * Save overview channel in server config, so we won't have to check every channel during start up 
 (takes time if server has many channels)
 * PokemonGoConfig entity for keeping track of current legendary bosses etc - things that may change on an
@@ -44,20 +56,8 @@ so they can get their daily raid done quickly (maybe subscribe to an "area" inst
 * Separate so different servers can't share raids and reporting (in case we get malicious users)
 * Switch to Java 9, try to reduce runtime (https://devcenter.heroku.com/changelog-items/1263)
 * Refactor: Move misc static code from commands to a CommandService, should reduce parameters and simplify
-
--- next
-
-* UI to manage EX gym list
-* Function to report new gym by name -> notification to admin to do a new import, for which region and the name of the new gym
 * Admin to send messages to when something happened they need to know about
 * Runtime signup statistics for each server, reset on server restart or start of next day, whichever comes first.
-* Move gyms to the database, use CSV files just to initialize and keep in synch?
-* Make it possible to change gyms in database via admin command (Zhorhn only)
-* REST API with open operations (read-only)
-* Web page with complete map of Uppsala with all raids and gyms plotted 
-(ex raids marked as well, with number of raids they've had)
-* Web UI for administration, using the REST API
-* Web page with raid list for a certain region (using REST API)
 * Snooze group emote which means a signup can mark themselves as coming a few minutes late. Their names get
 displayed via italic style, if they are marked as late.
 * Be able to auto create groups via botintegration for several tiers and to different channels
@@ -84,8 +84,6 @@ to check server, and that raid entity, group etc also need to include server
 * In !raid list, if the server has an overview, give a hint that there is an overview the user can use instead.
 * Can we listen for +(number) (time) (gym) and fix possible user weirdness like forgetting 
 time (equalling no time to "now", if raid is active) to signup using that?
-* Snooze button for raid group
-* REST API with passtoken and acqquiring tickets
 
 Maybe, features:
 
