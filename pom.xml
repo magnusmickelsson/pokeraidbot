@@ -5,7 +5,7 @@
 
     <groupId>itactually.rocks</groupId>
     <artifactId>pokeraidbot</artifactId>
-    <version>1.8.36</version>
+    <version>1.8.37</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -17,6 +17,7 @@
         <project.http.version>1.19.0</project.http.version>
         <project.oauth.version>1.19.0</project.oauth.version>
     </properties>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -25,7 +26,6 @@
     </parent>
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

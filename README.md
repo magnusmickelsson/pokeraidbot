@@ -12,8 +12,8 @@ and trying to determine who is coming where, and at what time?
 Well, I got annoyed with it. While trying to get a Gym map working, I started thinking about how to
 create raid management features in Discord, and this is where we're at right now.
 
-The bot still needs polish and some more nifty features, but it's usable and used in atleast 5 Swedish
-discord servers (Uppsala, Norrköping, Umeå, Vännäs, Luleå).
+The bot still needs some more nifty features, but it's usable and used in atleast 8 Swedish
+discord servers (Uppsala, Norrköping, Umeå, Vännäs, Luleå, Trollhättan, Lycksele, Vindeln), in Italy and the UK.
 
 Best to show some screenshots I guess. These are in Swedish, but there is also English locale.
 

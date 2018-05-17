@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dfile.encoding=UTF-8 -jar target/pokeraidbot.jar
+web: java -Xmx480m -Xss256k -Dserver.port=$PORT -Dfile.encoding=UTF-8 -jar target/pokeraidbot.jar
