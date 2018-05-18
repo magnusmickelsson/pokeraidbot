@@ -90,7 +90,7 @@ public class BotServerMain {
 
     @Bean
     public ExecutorService getExecutorService() {
-        return new ThreadPoolExecutor(100, Integer.MAX_VALUE,
+        return new ThreadPoolExecutor(30, 300,
                 65L, TimeUnit.SECONDS,
                 new LinkedTransferQueue<>());
     }
