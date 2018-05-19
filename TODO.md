@@ -33,6 +33,8 @@ Fix, misc:
 Do, features:
 
 * Possible to list gyms for the server's region
+* Separate so different servers can't share raids and reporting (in case we get malicious users)
+* Change thread handling, try to reduce server memory footprint
 * UI to manage EX gym list
 * Move gyms to the database, use CSV files just to initialize
 * REST API
@@ -53,7 +55,6 @@ instant, should be able to reconfigure these in runtime via admin tool.
 * !raid track handling should be smarter for people who are on several servers
 * !raid track for gym, if a user wants to see when there is a raid at their "home gym"
 so they can get their daily raid done quickly (maybe subscribe to an "area" instead?)
-* Separate so different servers can't share raids and reporting (in case we get malicious users)
 * Switch to Java 9, try to reduce runtime (https://devcenter.heroku.com/changelog-items/1263)
 * Refactor: Move misc static code from commands to a CommandService, should reduce parameters and simplify
 * Admin to send messages to when something happened they need to know about

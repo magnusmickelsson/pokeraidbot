@@ -3,14 +3,14 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
-1.8.38 (2018-05-18)
+1.8.38 (2018-05-19)
+=====
+* Java settings to improve memory handling
+
+1.8.37 (2018-05-18)
 =====
 * Java settings to improve memory handling
 * Gym data update
-
-1.8.37 (2018-05-17)
-=====
-* Java settings to improve memory handling
 
 1.8.36 (2018-05-16)
 =====
