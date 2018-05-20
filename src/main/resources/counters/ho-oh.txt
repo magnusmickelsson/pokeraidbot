@@ -6,9 +6,9 @@ Quick Move	Charge Move
 Rock Throw
 Stone Edge
 Rock Blast
-Omastar
+Kyogre
 
-Omastar
+Kyogre
 Quick Move	Charge Move
 Rock Throw
 Water Gun
@@ -38,9 +38,9 @@ Dragon Tail
 Dragon Claw
 Outrage
 Hurricane
-Kingdra
+Raikou
 
-Kingdra
+Raikou
 Quick Move	Charge Move
 Water Gun
 Hydro Pump
@@ -52,11 +52,3 @@ Bite
 Dragon Breath
 Dragon Tail
 Hydro Pump
-Kabutops
-
-Kabutops
-Quick Move	Charge Move
-Mud Shot
-Fury Cutter
-Stone Edge
-Ancient Power
