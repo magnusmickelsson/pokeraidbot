@@ -3,7 +3,7 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
-1.8.39 (?)
+1.8.39 (2018-05-21)
 =====
 * Gym data update
 * Ho-Oh counters improved
