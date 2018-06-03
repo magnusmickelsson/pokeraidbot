@@ -5,7 +5,7 @@
 
     <groupId>itactually.rocks</groupId>
     <artifactId>pokeraidbot</artifactId>
-    <version>1.8.45</version>
+    <version>1.8.46</version>
     <packaging>jar</packaging>
 
     <properties>
