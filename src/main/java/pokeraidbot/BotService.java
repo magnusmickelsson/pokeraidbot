@@ -58,22 +58,8 @@ public class BotService {
     private UserConfigRepository userConfigRepository;
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
-        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.MARCH, 17))) {
-            currentTier5Bosses.add("Rayquaza");
-        }
-
-        if (LocalDate.now().isBefore(LocalDate.of(2018, Month.APRIL, 2))) {
-            currentTier5Bosses.add("Lugia");
-        }
-
-        // EU rules
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.APRIL, 1)) &&
-                LocalDate.now().isBefore(LocalDate.of(2018, Month.MAY, 9))) {
-            currentTier5Bosses.add("Latias");
-        }
-
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.MAY, 8))) {
-            currentTier5Bosses.add("Latios");
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.JUNE, 7))) {
+            currentTier5Bosses.add("Kyogre");
         }
     }
 
