@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(value = {"cluster_rating", "cluster_ratingclose", "maxclusters", "usermark", "sponsor_status"})
+@JsonIgnoreProperties(value = {"cluster_rating", "cluster_ratingclose", "maxclusters", "usermark", "sponsor_status", "task_status", "markas_status"})
 public class GymResponse {
     @JsonProperty("raid_status")
     private Integer raidStatus;

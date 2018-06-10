@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.49 (2018-06-10)
+=====
+* Täfteå gyms added to Umeå
+
 1.8.48 (2018-06-08)
 =====
 * Gym data update

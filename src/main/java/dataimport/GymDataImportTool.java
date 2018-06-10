@@ -212,7 +212,7 @@ public class GymDataImportTool {
 
             Thread.sleep(2000);
 
-            String pokeStopUrl = "https://www.pokemongomap.info/includes/it66nmsq9.php";
+            String pokeStopUrl = "https://www.pokemongomap.info/includes/it77nmsq9.php";
             address = new String(pokeStopUrl);
             headers.put("Accept", asList("*/*"));
             body = new LinkedMultiValueMap<>();
@@ -224,7 +224,7 @@ public class GymDataImportTool {
             body.put("tolat", asList("" + (lat + cubeInDegrees)));
             body.put("fromlng", asList("" + (lng - cubeInDegrees)));
             body.put("tolng", asList("" + (lng + cubeInDegrees)));
-            body.put("fpoke", asList("0")); // 1 = include pokestops
+            body.put("fpoke", asList("1")); // 1 = include pokestops
             body.put("fgym", asList("1")); // 1 = include gyms
             body.put("farm", asList("0")); // 1 = ??
             body.put("nests", asList("0")); // 1 = include nest locations (don't use this)
