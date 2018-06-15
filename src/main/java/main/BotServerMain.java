@@ -49,7 +49,7 @@ public class BotServerMain {
     @Value("${token}")
     private String token;
 
-    public static final String version = "1.8.51"; // todo: should be filter copied from pom.xml
+    public static final String version = "1.8.52"; // todo: should be filter copied from pom.xml
     public static final int timeToRemoveFeedbackInSeconds = 30; // todo: should be setting?
 
     public static void main(String[] args) throws InterruptedException, IOException, LoginException, RateLimitedException {
