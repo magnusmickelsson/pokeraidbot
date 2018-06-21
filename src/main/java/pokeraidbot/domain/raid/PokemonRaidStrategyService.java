@@ -122,6 +122,8 @@ public class PokemonRaidStrategyService {
             "Latias".toUpperCase(),
             "Mew".toUpperCase(),
             "Celebi".toUpperCase(),
+            "Regice".toUpperCase(),
+            "Regirock".toUpperCase(),
             "Registeel".toUpperCase()
     };
 
@@ -290,6 +292,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Latios", "2082", 5);
         populateRaidInfoForBoss(pokemonRepository, "Kyogre", "2328", 5);
         populateRaidInfoForBoss(pokemonRepository, "Registeel", "1292", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Regice", "1764", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Regirock", "1764", 5);
         populateRaidInfoForBoss(pokemonRepository, "Rayquaza", "2083", 5);
         populateRaidInfoForBoss(pokemonRepository, "Latias", "1929", 5);
         populateRaidInfoForBoss(pokemonRepository, "Mew", "1766", 5);

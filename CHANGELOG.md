@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.56 (2018-06-21)
+=====
+* Regice, Regirock, Registeel bosses configured
+
 1.8.55 (2018-06-20)
 =====
 * Gym data update
