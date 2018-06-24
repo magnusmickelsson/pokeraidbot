@@ -3,6 +3,12 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.57 (2018-06-24)
+=====
+* Gym data update
+* Some counter data updated
+* Gym data Vattholma added to Uppsala
+
 1.8.56 (2018-06-21)
 =====
 * Regice, Regirock, Registeel bosses configured

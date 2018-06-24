@@ -8,6 +8,12 @@ Mud Slap
 Mud Shot
 Stone Edge
 Rock Blast
+Kyogre
+
+Kyogre
+Quick Move	Charge Move
+Waterfall
+Hydro Pump
 Omastar
 
 Omastar
