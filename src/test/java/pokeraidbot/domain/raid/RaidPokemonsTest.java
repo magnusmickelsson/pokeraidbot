@@ -137,8 +137,8 @@ public class RaidPokemonsTest {
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
         counters = strategyService.getCounters(raidInfo.getPokemon());
-        assertThat(counters.getGoodCounters().size(), is(4));
-        assertThat(counters.getSupremeCounters().size(), is(3));
+        assertThat(counters.getGoodCounters().size(), is(3));
+        assertThat(counters.getSupremeCounters().size(), is(4));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("aggron", null));
         assertNotNull(raidInfo);

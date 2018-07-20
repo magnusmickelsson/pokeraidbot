@@ -12,26 +12,6 @@ Moltres
 Quick Move	Charge Move
 Fire Spin
 Overheat
-Ho-Oh
-
-Ho-Oh
-Quick Move	Charge Move
-Fire Spin
-Overheat
-Flamethrower
-Good Counters
-Groudon
-
-Groudon
-Quick Move	Charge Move
-Mud Slap
-Earthquake
-Rhydon
-
-Rhydon
-Quick Move	Charge Move
-Mud Slap
-Earthquake
 Machamp
 
 Machamp
@@ -41,6 +21,26 @@ Karate Chop
 Dynamic Punch
 Close Combat
 Cross Chop
+Ho-Oh
+
+Ho-Oh
+Quick Move	Charge Move
+Fire Spin
+Overheat
+Flamethrower
+Good Counters
+Blaziken
+
+Blaziken
+Quick Move	Charge Move
+Mud Slap
+Earthquake
+Charizard
+
+Charizard
+Quick Move	Charge Move
+Mud Slap
+Earthquake
 Hariyama
 
 Hariyama

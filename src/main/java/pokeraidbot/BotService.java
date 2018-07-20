@@ -58,8 +58,8 @@ public class BotService {
     private UserConfigRepository userConfigRepository;
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
-        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.JUNE, 20))) {
-            currentTier5Bosses.add("Regice");
+        if (LocalDate.now().isAfter(LocalDate.of(2018, Month.JULY, 19))) {
+            currentTier5Bosses.add("Registeel");
         }
     }
 
