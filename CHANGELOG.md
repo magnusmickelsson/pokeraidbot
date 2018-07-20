@@ -6,6 +6,7 @@
 1.8.63 (2018-07-20)
 =====
 * Raid bosses update
+* Gym data update
 
 1.8.62 (2018-07-16)
 =====
