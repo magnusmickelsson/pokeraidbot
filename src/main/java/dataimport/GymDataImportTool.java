@@ -212,7 +212,7 @@ public class GymDataImportTool {
 
             Thread.sleep(2000);
 
-            String pokeStopUrl = "https://www.pokemongomap.info/includes/it77nmsq9.php";
+            String pokeStopUrl = "https://www.pokemongomap.info/includes/it88nmsq9.php";// https://www.pokemongomap.info/includes/it88nmsq9.php
             address = new String(pokeStopUrl);
             headers.put("Accept", asList("*/*"));
             body = new LinkedMultiValueMap<>();
