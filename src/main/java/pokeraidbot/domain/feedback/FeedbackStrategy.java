@@ -30,7 +30,7 @@ public interface FeedbackStrategy {
                 }
             });
         } catch (Throwable t) {
-            LOGGER.warn("Exception when replying to raw message " + commandEvent.getMessage().getRawContent() +
+            LOGGER.warn("Exception when replying to raw message " + commandEvent.getMessage().getContentRaw() +
                     " in server " + commandEvent.getGuild().getName() + ": " +
                     t.getMessage());
         }

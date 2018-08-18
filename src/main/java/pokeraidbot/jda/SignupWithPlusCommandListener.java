@@ -48,7 +48,7 @@ public class SignupWithPlusCommandListener implements EventListener {
                 return;
             }
 
-            final String rawContent = guildMessageReceivedEvent.getMessage().getRawContent();
+            final String rawContent = guildMessageReceivedEvent.getMessage().getContentRaw();
             if (rawContent.matches(plusXRegExp)) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("It would seem this is a + command to add signups: " + rawContent);

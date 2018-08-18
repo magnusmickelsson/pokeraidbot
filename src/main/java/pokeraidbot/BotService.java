@@ -102,7 +102,7 @@ public class BotService {
         client.setEmojis(Emotes.OK, "\uD83D\uDE2E", Emotes.ERROR);
         client.setPrefix("!raid ");
         client.setAlternativePrefix("!r ");
-        client.setGame(Game.of("Type !raid usage"));
+        client.setGame(Game.of(Game.GameType.DEFAULT, "Type !raid usage"));
         client.addCommands(
                 new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService),
                 new HelpManualCommand(localeService, serverConfigRepository, aggregateCommandListener),
@@ -173,7 +173,7 @@ public class BotService {
 
                     // set the game for when the bot is loading
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                    .setGame(Game.of("loading..."))
+                    .setGame(Game.of(Game.GameType.DEFAULT, "loading..."))
 
                     // Network-related settings
                     .setRequestTimeoutRetry(true)
@@ -194,7 +194,7 @@ public class BotService {
                 botInstance.addEventListener(extraListener);
                 LOGGER.info("Added extra event listener after initialization: " + extraListener);
             }
-        } catch (LoginException | RateLimitedException | InterruptedException e) {
+        } catch (LoginException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

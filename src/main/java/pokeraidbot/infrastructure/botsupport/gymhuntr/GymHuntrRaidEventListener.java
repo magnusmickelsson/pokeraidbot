@@ -123,7 +123,7 @@ public class GymHuntrRaidEventListener implements EventListener {
                                 } else {
                                     if (LOGGER.isDebugEnabled()) {
                                         LOGGER.debug("No arguments to create raid with for server " + config +
-                                                ", skipping. Raw command: " + guildEvent.getMessage().getRawContent());
+                                                ", skipping. Raw command: " + guildEvent.getMessage().getContentRaw());
                                     }
                                 }
                             } catch (Throwable t) {

@@ -6,6 +6,8 @@
 1.8.74 (2018-08-18)
 =====
 * Minor changes to raid bosses
+* Gym data update
+* Upgrade versions of JDA and JDA utilities
 
 1.8.73 (2018-08-14)
 =====

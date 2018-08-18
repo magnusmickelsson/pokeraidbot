@@ -92,7 +92,7 @@ public class StartRaidAndCreateGroupCommand extends ConcurrencyAndConfigAwareCom
             final LocalDateTime endOfRaid = LocalDateTime.of(LocalDate.now(),
                     startAtTime.plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
             raid = raidRepository.newRaid(user, new Raid(pokemon, endOfRaid, gym, localeService, region),
-                    commandEvent.getGuild(), config, commandEvent.getMessage().getRawContent());
+                    commandEvent.getGuild(), config, commandEvent.getMessage().getContentRaw());
         } else {
             raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, region, user);
         }

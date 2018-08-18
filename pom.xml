@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.14.RELEASE</version>
+        <version>1.5.15.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -45,12 +45,12 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.3.1_299</version>
+            <version>3.7.1_385</version>
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>
             <artifactId>JDA-Utilities</artifactId>
-            <version>1.8</version>
+            <version>1.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -104,7 +104,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                     return;
                 }
 
-                final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
+                final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getReactionEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
                         case Emotes.ONE:
@@ -140,7 +140,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
                     return;
                 }
 
-                final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getEmote();
+                final MessageReaction.ReactionEmote emote = reactionEvent.getReaction().getReactionEmote();
                 if (emote != null) {
                     switch (emote.getName()) {
                         case Emotes.ONE:

@@ -205,7 +205,7 @@ public class AdminCommands extends Command {
                         gymRepository.search(user, gymName, region), localeService, region);
                 final Raid createdRaid = raidRepository.newRaid(botService.getBot().getSelfUser(), raid,
                         event.getGuild(), configForServer,
-                        event.getMessage().getRawContent());
+                        event.getMessage().getContentRaw());
                 event.reply("Bot created your test raid: " + createdRaid);
                 return;
             } else if (eventArgs.startsWith("tier5")) {
