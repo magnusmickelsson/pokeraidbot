@@ -81,6 +81,8 @@ public class PokemonRaidStrategyService {
             "bulbasaur".toUpperCase(),
             "charmander".toUpperCase(),
             "squirtle".toUpperCase(),
+            "makuhita".toUpperCase(),
+            "meditite".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -93,6 +95,7 @@ public class PokemonRaidStrategyService {
             "combusken".toUpperCase(),
             "primeape".toUpperCase(),
             "kirlia".toUpperCase(),
+            "roselia".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -109,6 +112,8 @@ public class PokemonRaidStrategyService {
             "hitmonchan".toUpperCase(),
             "breloom".toUpperCase(),
             "raichu".toUpperCase(),
+            "donphan".toUpperCase(),
+            "tangela".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -156,7 +161,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "ELECTABUZZ", "1255", 2);
 
-        populateRaidInfoForBoss(pokemonRepository, "EXEGGUTOR", "1666", 2);
+        populateRaidInfoForBoss(pokemonRepository, "EXEGGUTOR", "1646", 2);
 
         populateRaidInfoForBoss(pokemonRepository, "MAGMAR", "1288", 2);
 
@@ -222,7 +227,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Tentacruel", "1356", 2);
         populateRaidInfoForBoss(pokemonRepository, "Cloyster", "1414", 2);
         populateRaidInfoForBoss(pokemonRepository, "egg2", "1", 2);
-        // Normally tier 2 but alolan raid is tier 4 because niantic sucks
+        // Normally tier 2 but alolan raid is tier 4 because niantic sucks in not letting different pokemons have different id's etc.
         populateRaidInfoForBoss(pokemonRepository, "Marowak", "966", 4);
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Ninetales", "1233", 3);
@@ -253,6 +258,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Bulbasaur", "560", 1);
         populateRaidInfoForBoss(pokemonRepository, "Charmander", "475", 1);
         populateRaidInfoForBoss(pokemonRepository, "Squirtle", "462", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Makuhita", "426", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Meditite", "317", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);
@@ -266,6 +273,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Combusken", "841", 2);
         populateRaidInfoForBoss(pokemonRepository, "Primeape", "1203", 2);
         populateRaidInfoForBoss(pokemonRepository, "Kirlia", "481", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Roselia", "982", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "858", 3);
@@ -282,7 +290,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Breloom", "1375", 3);
         populateRaidInfoForBoss(pokemonRepository, "Hitmonlee", "1375", 3);
         populateRaidInfoForBoss(pokemonRepository, "Hitmonchan", "1199", 3);
-        populateRaidInfoForBoss(pokemonRepository, "Raichu", "1157", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Raichu", "1224", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Donphan", "1727", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Tangela", "1262", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
