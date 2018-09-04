@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-public class CounterTextFileParserText {
+public class CounterTextFileParserTest {
 
     private LocaleService localeService;
 
@@ -30,17 +30,17 @@ public class CounterTextFileParserText {
 
     @Test
     public void checkFlareonFile() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Flareon", 9, 1);
+        assertPokemonHasCorrectNumberOfCounters("Flareon", 9, 2);
     }
 
     @Test
     public void checkMoltresFile() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Moltres", 6, 2);
+        assertPokemonHasCorrectNumberOfCounters("Moltres", 6, 3);
     }
 
     @Test
     public void checkHoOhFile() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Ho-oh", 6, 2);
+        assertPokemonHasCorrectNumberOfCounters("Ho-oh", 5, 2);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class CounterTextFileParserText {
 
     @Test
     public void checkPorygonFile() throws Exception {
-        assertPokemonHasCorrectNumberOfCounters("Porygon", 6, 2);
+        assertPokemonHasCorrectNumberOfCounters("Porygon", 6, 3);
     }
 
     @Test
