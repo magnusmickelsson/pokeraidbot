@@ -33,7 +33,7 @@ public class Utils {
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
-    public static final int RAID_DURATION_IN_MINUTES = 45;
+    public static final int RAID_DURATION_IN_MINUTES = 90;
     private static ClockService clockService = new ClockService();
     private static ResistanceTable resistanceTable = new ResistanceTable();
 

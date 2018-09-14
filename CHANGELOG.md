@@ -4,6 +4,10 @@
 * Possible to list gyms for the server's region
 * Dioxyx possible new EX boss, Mewtwo moves to be normal raid boss
 
+1.8.77 (2018-09-14)
+=====
+* Raid timers 90 minutes for now
+
 1.8.76 (2018-09-13)
 =====
 * Gym data update
