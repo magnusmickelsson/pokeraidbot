@@ -189,14 +189,14 @@ public class UtilsTest {
         LocalDateTime startOne = currentTimeService.getCurrentDateTime();
         LocalDateTime endOne = startOne.plusHours(1);
         LocalDateTime startTwo = currentTimeService.getCurrentDateTime().minusMinutes(1);
-        LocalDateTime endTwo = startTwo.plusHours(1);
+        LocalDateTime endTwo = startTwo.plusMinutes(Utils.RAID_DURATION_IN_MINUTES);
         assertThat(Utils.raidsCollide(endOne, false, endTwo, false), is(true));
         assertThat(Utils.raidsCollide(endTwo, false, endOne, false), is(true));
 
         startOne = currentTimeService.getCurrentDateTime();
         endOne = startOne.plusMinutes(10);
         startTwo = currentTimeService.getCurrentDateTime().plusMinutes(11);
-        endTwo = startTwo.plusHours(1);
+        endTwo = startTwo.plusMinutes(Utils.RAID_DURATION_IN_MINUTES);
         assertThat(Utils.raidsCollide(endOne, false, endTwo, false), is(false));
         assertThat(Utils.raidsCollide(endTwo, false, endOne, false), is(false));
     }
