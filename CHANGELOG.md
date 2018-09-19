@@ -2,7 +2,11 @@
 =====
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
-* Dioxyx possible new EX boss, Mewtwo moves to be normal raid boss
+
+1.8.78 (2018-09-19)
+=====
+* Deoxys new EX boss instead of Mewtwo
+* Some changes to i18n texts
 
 1.8.77 (2018-09-14)
 =====

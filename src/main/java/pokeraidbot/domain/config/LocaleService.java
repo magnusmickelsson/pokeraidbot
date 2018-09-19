@@ -719,10 +719,10 @@ public class LocaleService {
 
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, Locale.ENGLISH),
                 "You can't set an end of raid time which is later than %3 hours from the current time " +
-                        "%2 except for EX raids - your input was %1.");
+                        "%2 except for EX raids - your input would have yielded end time %1.");
         i18nMessages.put(new I18nLookup(NO_RAID_TOO_LONG, SWEDISH),
                 "Du kan inte sätta en sluttid för raid senare än %3 timmar från vad klockan är nu (%2), " +
-                        "förutom för EX raider. Du angav %1.");
+                        "förutom för EX raider. Rapporterad sluttid skulle blivit %1.");
 
         i18nMessages.put(new I18nLookup(NO_RAIDS_NOW, Locale.ENGLISH),
                 "You can't create raids between 22:00 and 06:00 - your time was %1.");
@@ -913,7 +913,7 @@ public class LocaleService {
                         "**To register a new raid:**\n!raid new *[Pokemon]* *[Ends at (HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid new entei 09:25 Solna Platform\n\n" +
                         "**To register a new EX raid:**\n!raid ex *[Pokemon]* *[Ends at (yyyy-mm-dd HH:MM)]* *[Gym name]*\n" +
-                        "*Example:* !raid ex mewtwo 2017-10-10 09:25 Solna Platform\n\n" +
+                        "*Example:* !raid ex deoxys 2017-10-10 09:25 Solna Platform\n\n" +
                         "**To register a new raid via start time:**\n!raid start *[Pokemon]* " +
                         "*[Starts at (HH:MM)]* *[Gym name]*\n" +
                         "*Example:* !raid start entei 08:40 Solna Platform\n\n" +
@@ -938,7 +938,7 @@ public class LocaleService {
                         "*Exempel:* !raid new entei 09:25 Solna Platform\n\n" +
                         "**För att registrera en EX raid:**\n!raid ex *[Pokemon]* " +
                         "*[Slutar (yyyy-mm-dd HH:MM)]* *[Gym-namn]*\n" +
-                        "*Exempel:* !raid ex mewtwo 2017-10-10 09:25 Solna Platform\n\n" +
+                        "*Exempel:* !raid ex deoxys 2017-10-10 09:25 Solna Platform\n\n" +
                         "**För att registrera en raid via starttid:**\n!raid start *[Pokemon]* " +
                         "*[Startar klockan (HH:MM)]* *[Gym-namn]*\n" +
                         "*Exempel:* !raid start entei 08:40 Solna Platform\n\n" +

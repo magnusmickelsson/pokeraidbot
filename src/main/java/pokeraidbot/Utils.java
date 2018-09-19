@@ -34,6 +34,7 @@ public class Utils {
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
     public static final int RAID_DURATION_IN_MINUTES = 90;
+    private static final String EX_RAID_BOSS = "deoxys";
     private static ClockService clockService = new ClockService();
     private static ResistanceTable resistanceTable = new ResistanceTable();
 
@@ -209,7 +210,7 @@ public class Utils {
 
     public static boolean isRaidExPokemon(String pokemonName) {
         // todo: configurable ex raid list when we have non-free DB
-        return pokemonName.equalsIgnoreCase("mewtwo");
+        return pokemonName.equalsIgnoreCase(EX_RAID_BOSS);
     }
 
     public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {

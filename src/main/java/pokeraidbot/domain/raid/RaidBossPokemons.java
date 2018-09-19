@@ -83,12 +83,15 @@ public enum RaidBossPokemons {
     // Tier 5
     Groudon(5),
     Registeel(5),
+    Regice(5),
+    Regirock(5),
     Latios(5),
     Rayquaza(5),
     Latias(5),
     Mew(5),
     Celebi(5),
-    Kyogre(5);
+    Kyogre(5),
+    Deoxys(5);
 
     private final int tier;
 

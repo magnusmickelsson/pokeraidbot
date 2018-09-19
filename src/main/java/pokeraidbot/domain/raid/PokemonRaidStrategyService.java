@@ -131,7 +131,8 @@ public class PokemonRaidStrategyService {
             "Celebi".toUpperCase(),
             "Regice".toUpperCase(),
             "Regirock".toUpperCase(),
-            "Registeel".toUpperCase()
+            "Registeel".toUpperCase(),
+            "deoxys".toUpperCase()
     };
 
     public PokemonRaidStrategyService(PokemonRepository pokemonRepository) {
