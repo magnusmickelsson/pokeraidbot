@@ -3,10 +3,11 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
-1.8.78 (2018-09-19)
+1.8.78 (2018-09-21)
 =====
 * Deoxys new EX boss instead of Mewtwo
 * Some changes to i18n texts
+* Gym data update
 
 1.8.77 (2018-09-14)
 =====
