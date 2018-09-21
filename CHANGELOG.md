@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.79 (2018-09-21)
+=====
+* Raid timers 60 minutes for now
+
 1.8.78 (2018-09-21)
 =====
 * Deoxys new EX boss instead of Mewtwo
