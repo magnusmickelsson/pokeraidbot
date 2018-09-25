@@ -3,6 +3,14 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.81 (2018-09-25)
+=====
+* Gym data update
+
+1.8.80 (2018-09-22)
+=====
+* Gym data update
+
 1.8.79 (2018-09-21)
 =====
 * Raid timers 60 minutes for now
