@@ -2,6 +2,7 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import main.BotServerMain;
 import net.dv8tion.jda.core.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
@@ -88,7 +89,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         raidRepository.newRaid(user, raid, commandEvent.getGuild(), config,
                 "!raid ex " + raid.getPokemon().getName() + " " + printTimeIfSameDay(raid.getEndOfRaid()) +
         " " + gym.getName());
-        replyBasedOnConfig(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
-                locale, raid.toString(locale)));
+        replyBasedOnConfigAndRemoveAfter(config, commandEvent, localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
+                locale, raid.toString(locale)), BotServerMain.timeToRemoveFeedbackInSeconds);
     }
 }
