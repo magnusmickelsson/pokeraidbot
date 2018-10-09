@@ -127,7 +127,7 @@ public class GymRepositoryTest {
 
     @Test
     public void allGymsAreReadForUmea() {
-        assertThat(repo.getAllGymsForRegion("umeå").size(), is(149));
+        assertThat(repo.getAllGymsForRegion("umeå").size(), is(153));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class GymRepositoryTest {
 
     @Test
     public void allGymsAreReadForVannas() {
-        assertThat(repo.getAllGymsForRegion("vännäs").size(), is(13));
+        assertThat(repo.getAllGymsForRegion("vännäs").size(), is(14));
     }
 
     @Test
