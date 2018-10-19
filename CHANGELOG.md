@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.89 (2018-10-19)
+=====
+* Gym data update
+
 1.8.88 (2018-10-17)
 =====
 * Generation 4 pokemons
