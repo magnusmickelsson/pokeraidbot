@@ -9,7 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(value = {"cluster_rating", "cluster_ratingclose", "maxclusters", "usermark", "sponsor_status", "task_status", "markas_status"})
+@JsonIgnoreProperties(value = {"cluster_rating", "cluster_ratingclose", "maxclusters", "usermark", "sponsor_status",
+        "task_status", "markas_status", "realrand", "exmarkas_status", "verified"})
 public class GymResponse {
     @JsonProperty("raid_status")
     private Integer raidStatus;
@@ -46,6 +47,9 @@ public class GymResponse {
 
     @JsonProperty("rfs21d")
     private String name;
+
+    @JsonProperty("exraid_status")
+    private String exStatus;
 
     public GymResponse() {
     }
@@ -168,10 +172,19 @@ public class GymResponse {
         this.name = name;
     }
 
+    public String getExStatus() {
+        return exStatus;
+    }
+
+    public void setExStatus(String exStatus) {
+        this.exStatus = exStatus;
+    }
+
     @Override
     public String toString() {
         return "GymResponse{" +
                 "raidStatus=" + raidStatus +
+                "exStatus=" + exStatus +
                 ", raidTimer=" + raidTimer +
                 ", raidLevel=" + raidLevel +
                 ", lureTimer=" + lureTimer +

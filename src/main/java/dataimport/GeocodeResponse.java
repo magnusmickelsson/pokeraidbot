@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect
-@JsonIgnoreProperties("onesec")
+@JsonIgnoreProperties({"onesec", "boundingbox"})
 public class GeocodeResponse {
     @JsonProperty("lat")
     private String lat;

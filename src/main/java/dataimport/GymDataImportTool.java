@@ -182,7 +182,7 @@ public class GymDataImportTool {
             // Delays so we don't overload the site and get banned
             Thread.sleep(1000);
 
-            address = "https://www.pokemongomap.info/includes/geocode.php";
+            address = "https://www.pokemongomap.info/includes/geocode4.php";
             uri = new URI(address);
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.put("searchloc", asList(location));
@@ -212,12 +212,13 @@ public class GymDataImportTool {
 
             Thread.sleep(2000);
 
-            String pokeStopUrl = "https://www.pokemongomap.info/includes/it88nmsq9.php";// https://www.pokemongomap.info/includes/it88nmsq9.php
+            String pokeStopUrl = "https://www.pokemongomap.info/includes/it112nmsq9.php";// https://www.pokemongomap.info/includes/it88nmsq9.php
             address = new String(pokeStopUrl);
             headers.put("Accept", asList("*/*"));
             body = new LinkedMultiValueMap<>();
-            final Double lat = new Double(geocodeResponse.getLat());
-            final Double lng = new Double(geocodeResponse.getLng());
+            // todo: so they are obfuscating their latitude/longitude now, cute. wrong constants right now, fix this.
+            final Double lat = new Double(geocodeResponse.getLat()) * 38.807525694175534776010054699272d;
+            final Double lng = new Double(geocodeResponse.getLng()) * 45.266093686386728442053014634545d;
 
             Double cubeInDegrees = widthCube / 111.409d;
             body.put("fromlat", asList("" + (lat - cubeInDegrees)));
@@ -229,6 +230,7 @@ public class GymDataImportTool {
             body.put("farm", asList("0")); // 1 = ??
             body.put("nests", asList("0")); // 1 = include nest locations (don't use this)
             body.put("raid", asList("1")); // 1 = include raids
+            body.put("ftasks", asList("1")); // 1 = ?
             body.put("sponsor", asList("0")); // 1 = include sponsor gyms/stops
             body.put("usermarks", asList("1")); // 1 = include user reported stops/gyms
             request = new RequestEntity<>(body, headers, HttpMethod.POST, new URI(pokeStopUrl));
