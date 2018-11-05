@@ -3,6 +3,11 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.94 (2018-11-05)
+=====
+* Gym data update
+* Setting Giratina as raidboss created via bot integration
+
 1.8.93 (2018-11-01)
 =====
 * Gym data update

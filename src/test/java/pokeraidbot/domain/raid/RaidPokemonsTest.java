@@ -193,5 +193,12 @@ public class RaidPokemonsTest {
         assertThat(raidInfo.getBossTier(), is(4));
         assertThat(counters.getGoodCounters().size(), is(4));
         assertThat(counters.getSupremeCounters().size(), is(3));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("giratina", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(5));
+        counters = strategyService.getCounters(raidInfo.getPokemon());
+        assertThat(counters.getGoodCounters().size(), is(3));
+        assertThat(counters.getSupremeCounters().size(), is(1));
     }
 }

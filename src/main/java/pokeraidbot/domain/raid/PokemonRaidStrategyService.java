@@ -132,6 +132,7 @@ public class PokemonRaidStrategyService {
             "Regice".toUpperCase(),
             "Regirock".toUpperCase(),
             "Registeel".toUpperCase(),
+            "Giratina".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -314,6 +315,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Latias", "1929", 5);
         populateRaidInfoForBoss(pokemonRepository, "Mew", "1766", 5);
         populateRaidInfoForBoss(pokemonRepository, "Celebi", "1766", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Giratina", "1931", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
