@@ -2,8 +2,10 @@ package pokeraidbot.commands;
 
 import com.jagrosh.jdautilities.commandclient.CommandEvent;
 import com.jagrosh.jdautilities.commandclient.CommandListener;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,8 +27,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.net.SocketTimeoutException;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -87,9 +88,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         localeService.getMessageFor(LocaleService.OVERVIEW_EXISTS, locale));
             }
         } else {
-            final String messageString = getOverviewMessage(config,
+            final Map<String, String> messages = getOverviewMessagesMap(config,
                     localeService, raidRepository, clockService, locale, strategyService);
-            commandEvent.getChannel().sendMessage(messageString).queue(msg -> {
+            final EmbedBuilder embedBuilder = new EmbedBuilder();
+            for (String boss : messages.keySet()) {
+                embedBuilder.addField(boss, messages.get(boss), false);
+            }
+            final MessageEmbed messageEmbed = embedBuilder.build();
+            commandEvent.getChannel().sendMessage(messageEmbed).queue(msg -> {
                 final String messageId = msg.getId();
                 serverConfigRepository.setOverviewMessageIdForServer(server, messageId);
                 final Callable<Boolean> refreshEditThreadTask =
@@ -121,10 +127,14 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Message message = messageChannel.getMessageById(messageId).complete();
                 if (config.getOverviewMessageId() != null &&
                         message != null) {
-                    final String messageString = getOverviewMessage(config,
+                    final Map<String, String> messages = getOverviewMessagesMap(config,
                             localeService, raidRepository, clockService, locale, strategyService);
-                    messageChannel.editMessageById(messageId,
-                            messageString)
+                    final EmbedBuilder embedBuilder = new EmbedBuilder();
+                    for (String boss : messages.keySet()) {
+                        embedBuilder.addField(boss, messages.get(boss), false);
+                    }
+                    final MessageEmbed newEmbed = embedBuilder.build();
+                    messageChannel.editMessageById(messageId, newEmbed)
                             .queue(m -> {
                             }, m -> {
                                 LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
@@ -191,52 +201,59 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
         }
     }
 
-    private static String getOverviewMessage(Config config,
-                                             LocaleService localeService,
-                                             RaidRepository raidRepository,
-                                             ClockService clockService, Locale locale,
-                                             PokemonRaidStrategyService strategyService) {
+    private static Map<String, String> getOverviewMessagesMap(Config config,
+                                                              LocaleService localeService,
+                                                              RaidRepository raidRepository,
+                                                              ClockService clockService, Locale locale,
+                                                              PokemonRaidStrategyService strategyService) {
         Set<Raid> raids = raidRepository.getAllRaidsForRegion(config.getRegion());
+        final Map<String, String> overviewMessagePerBoss = new LinkedHashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         if (raids.size() == 0) {
             stringBuilder.append(localeService.getMessageFor(LocaleService.LIST_NO_RAIDS, locale));
+            overviewMessagePerBoss.put("RAIDS", stringBuilder.toString());
         } else {
             StringBuilder exRaids = new StringBuilder();
-            stringBuilder.append("**").append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
-            stringBuilder.append(":**");
-            stringBuilder.append("\n").append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
-                    locale)).append("\n");
-            Pokemon currentPokemon = null;
+            stringBuilder.append(localeService.getMessageFor(LocaleService.CURRENT_RAIDS, locale));
+            stringBuilder.append(":");
+            final String raidHeadline = stringBuilder.toString();
+            stringBuilder = new StringBuilder();
+//            stringBuilder.append(localeService.getMessageFor(LocaleService.RAID_DETAILS,
+//                    locale));
+            overviewMessagePerBoss.put(raidHeadline, stringBuilder.toString());
+
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
-                if (!raid.isExRaid() && (currentPokemon == null || (!currentPokemon.equals(raidBoss)))) {
-                    currentPokemon = raid.getPokemon();
-                    final PokemonRaidInfo raidInfo = strategyService.getRaidInfo(currentPokemon);
-                    stringBuilder.append("\n**").append(currentPokemon.getName()).append("**");
-                    if (raidInfo != null && raidInfo.getBossTier() > 0) {
-                        stringBuilder.append(" (").append(raidInfo.getBossTier()).append(")");
-                    }
-                    stringBuilder.append("\n");
+                final PokemonRaidInfo raidInfo = strategyService.getRaidInfo(raidBoss);
+                String pokemonName = raidBoss.getName();
+                if (raidInfo != null && raidInfo.getBossTier() > 0) {
+                    pokemonName = pokemonName + " (" + raidInfo.getBossTier() + ")";
+                }
+                StringBuilder bossStringBuilder = new StringBuilder();
+                if (!Utils.isRaidEx(raid)) {
+                    overviewMessagePerBoss.putIfAbsent(pokemonName, "");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
                 if (!raid.isExRaid()) {
                     if (raidGym.isExGym()) {
-                        stringBuilder.append("**").append(raidGym.getName()).append(Emotes.STAR + "**");
+                        bossStringBuilder.append("**").append(raidGym.getName()).append(Emotes.STAR + "**");
                     } else {
-                        stringBuilder.append("*").append(raidGym.getName()).append("*");
+                        bossStringBuilder.append("*").append(raidGym.getName()).append("*");
                     }
-                    stringBuilder.append(" ")
+                    bossStringBuilder.append(" ")
                             .append(printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), false))).append("-")
                             .append(printTime(raid.getEndOfRaid().toLocalTime()));
                     if (groups.size() < 1) {
-                        stringBuilder.append(" (**").append(numberOfPeople)
+                        bossStringBuilder.append(" (**").append(numberOfPeople)
                                 .append("**)");
                     } else {
-                        stringBuilder.append(raidRepository.listGroupsForRaid(raid, groups));
+                        bossStringBuilder.append(raidRepository.listGroupsForRaid(raid, groups));
                     }
-                    stringBuilder.append("\n");
+                    bossStringBuilder.append("\n");
+                    overviewMessagePerBoss.put(pokemonName,
+                            overviewMessagePerBoss.get(pokemonName) + bossStringBuilder.toString());
                 } else {
                     exRaids.append("\n*").append(raidGym.getName());
                     exRaids.append("* ")
@@ -253,10 +270,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             }
             final String exRaidList = exRaids.toString();
             if (exRaidList.length() > 1) {
-                stringBuilder.append("\n**Raid-EX:**").append(exRaidList);
+                overviewMessagePerBoss.put("**Raid-EX:**", exRaidList);
             }
         }
-        stringBuilder.append("\n\n")
+        stringBuilder = new StringBuilder();
+        stringBuilder.append("\n")
                 .append(localeService.getMessageFor(LocaleService.UPDATED_EVERY_X,
                         locale, LocaleService.asString(TimeUnit.SECONDS, locale),
                         String.valueOf(60)))
@@ -264,6 +282,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 .append(localeService.getMessageFor(LocaleService.LAST_UPDATE,
                         locale,
                         printTime(clockService.getCurrentTime())));
-        return stringBuilder.toString();
+        overviewMessagePerBoss.put("", stringBuilder.toString());
+        return overviewMessagePerBoss;
     }
 }
