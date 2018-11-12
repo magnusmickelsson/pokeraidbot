@@ -205,12 +205,12 @@ public class GymHuntrRaidEventListener implements EventListener {
         StringBuilder sb = new StringBuilder();
         sb.append(localeService.getMessageFor(LocaleService.NEW_RAID_CREATED,
                 locale, createdRaid.toString(locale)));
-        if (user != null && channel != null) {
-            createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
-                    pokemonRaidInfo, now, createdRaid, channel);
-        } else {
-            LOGGER.warn("Could not create group, as some input values were null!");
-        }
+//        if (user != null && channel != null) {
+//            createGroupIfConfigSaysSo(user, guildEvent, config, clockService,
+//                    pokemonRaidInfo, now, createdRaid, channel);
+//        } else {
+//            LOGGER.warn("Could not create group, as some input values were null!");
+//        }
 
         embedBuilder.setDescription(sb.toString());
         final MessageEmbed messageEmbed = embedBuilder.build();
