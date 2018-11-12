@@ -83,6 +83,8 @@ public class PokemonRaidStrategyService {
             "squirtle".toUpperCase(),
             "makuhita".toUpperCase(),
             "meditite".toUpperCase(),
+            "shinx".toUpperCase(),
+            "buizel".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -114,6 +116,7 @@ public class PokemonRaidStrategyService {
             "raichu".toUpperCase(),
             "donphan".toUpperCase(),
             "tangela".toUpperCase(),
+            "Sharpedo".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -121,6 +124,7 @@ public class PokemonRaidStrategyService {
             "Aggron".toUpperCase(),
             "Walrein".toUpperCase(),
             "Houndoom".toUpperCase(),
+            "Togetic".toUpperCase(),
             // Tier 5
             "Groudon".toUpperCase(),
             "Kyogre".toUpperCase(),
@@ -262,6 +266,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Squirtle", "462", 1);
         populateRaidInfoForBoss(pokemonRepository, "Makuhita", "426", 1);
         populateRaidInfoForBoss(pokemonRepository, "Meditite", "317", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Shinx", "500", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Buizel", "602", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "848", 2);
@@ -295,6 +301,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Raichu", "1224", 3);
         populateRaidInfoForBoss(pokemonRepository, "Donphan", "1727", 3);
         populateRaidInfoForBoss(pokemonRepository, "Tangela", "1262", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Sharpedo", "1134", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
@@ -303,6 +310,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Salamence", "2018", 4);
         populateRaidInfoForBoss(pokemonRepository, "Walrein", "1489", 4);
         populateRaidInfoForBoss(pokemonRepository, "Houndoom", "1445", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Togetic", "881", 4);
 
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
