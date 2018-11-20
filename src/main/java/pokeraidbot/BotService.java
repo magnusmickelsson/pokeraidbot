@@ -8,7 +8,6 @@ import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
 import net.dv8tion.jda.core.*;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +58,7 @@ public class BotService {
     public static List<String> currentTier5Bosses = new CopyOnWriteArrayList<>();
     static {
         if (LocalDate.now().isAfter(LocalDate.of(2018, Month.NOVEMBER, 1)) &&
-                LocalDate.now().isBefore(LocalDate.of(2018, Month.NOVEMBER, 20))) {
+                LocalDate.now().isBefore(LocalDate.of(2018, Month.NOVEMBER, 21))) {
             currentTier5Bosses.add("Giratina");
         }
     }

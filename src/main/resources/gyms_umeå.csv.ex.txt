@@ -6,7 +6,7 @@ Arrow Sculpture
 Mariehemsbron
 Stone Head
 Döbelns Plan
-Giant Clothespin
+SKIN 4 av Mehmet Ali Uysal
 Najad
 Gamla Officers Massen
 Tellus
@@ -27,3 +27,4 @@ UFO
 Bigarråbackens Lekplats
 Umeå Softballplan
 Bagarstugan
+Morkullevägens Lekplats

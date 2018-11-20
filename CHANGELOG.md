@@ -3,6 +3,12 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.98 (2018-11-20)
+=====
+* Gym data update
+* Update some raid bosses max cp and tier
+* Prepare for Palkia and Dialga
+
 1.8.97 (2018-11-15)
 =====
 * Gym data update
