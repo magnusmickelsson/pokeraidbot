@@ -7,7 +7,7 @@
 =====
 * Gym data update
 * Update some raid bosses max cp and tier
-* Prepare for Palkia and Dialga
+* Prepare for Palkia, Dialga and Cresselia
 
 1.8.97 (2018-11-15)
 =====

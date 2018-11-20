@@ -143,6 +143,7 @@ public class PokemonRaidStrategyService {
             "Giratina".toUpperCase(),
             "palkia".toUpperCase(),
             "dialga".toUpperCase(),
+            "cresselia".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -336,6 +337,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Giratina", "1931", 5);
         populateRaidInfoForBoss(pokemonRepository, "Palkia", "2280", 5);
         populateRaidInfoForBoss(pokemonRepository, "Dialga", "2307", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Cresselia", "1633", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
