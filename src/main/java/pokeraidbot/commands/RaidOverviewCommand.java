@@ -225,10 +225,11 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             for (Raid raid : raids) {
                 final Pokemon raidBoss = raid.getPokemon();
                 final PokemonRaidInfo raidInfo = strategyService.getRaidInfo(raidBoss);
-                String pokemonName = raidBoss.getName();
+                String pokemonName = "**" + raidBoss.getName();
                 if (raidInfo != null && raidInfo.getBossTier() > 0) {
                     pokemonName = pokemonName + " (" + raidInfo.getBossTier() + ")";
                 }
+                pokemonName += "**";
                 StringBuilder bossStringBuilder = new StringBuilder();
                 if (!Utils.isRaidEx(raid)) {
                     overviewMessagePerBoss.putIfAbsent(pokemonName, "");
@@ -238,7 +239,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
                 if (!raid.isExRaid()) {
                     if (raidGym.isExGym()) {
-                        bossStringBuilder.append("**").append(raidGym.getName()).append(Emotes.STAR + "**");
+                        bossStringBuilder.append("*").append(raidGym.getName()).append(Emotes.STAR + "*");
                     } else {
                         bossStringBuilder.append("*").append(raidGym.getName()).append("*");
                     }
@@ -270,7 +271,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             }
             final String exRaidList = exRaids.toString();
             if (exRaidList.length() > 1) {
-                overviewMessagePerBoss.put("**Raid-EX:**", exRaidList);
+                overviewMessagePerBoss.put("\n**Raid-EX:**", exRaidList);
             }
         }
         stringBuilder = new StringBuilder();

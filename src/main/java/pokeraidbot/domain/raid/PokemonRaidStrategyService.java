@@ -121,6 +121,8 @@ public class PokemonRaidStrategyService {
             "tangela".toUpperCase(),
             "Sharpedo".toUpperCase(),
             "Skarmory".toUpperCase(),
+            "Espeon".toUpperCase(),
+            "Umbreon".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -186,7 +188,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "ARCANINE", "1622", 3);
 
-        populateRaidInfoForBoss(pokemonRepository, "FLAREON", "1659", 3);
+        populateRaidInfoForBoss(pokemonRepository, "FLAREON", "1730", 3);
 
         populateRaidInfoForBoss(pokemonRepository, "GENGAR", "1496", 3);
 
@@ -194,7 +196,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "MACHAMP", "1650", 3);
 
-        populateRaidInfoForBoss(pokemonRepository, "VAPOREON", "1804", 3);
+        populateRaidInfoForBoss(pokemonRepository, "VAPOREON", "1779", 3);
 
         populateRaidInfoForBoss(pokemonRepository, "Blastoise", "1309", 4);
 
@@ -313,6 +315,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Tangela", "1262", 3);
         populateRaidInfoForBoss(pokemonRepository, "Sharpedo", "1134", 3);
         populateRaidInfoForBoss(pokemonRepository, "Skarmory", "1204", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Espeon", "1811", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Umbreon", "1221", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);

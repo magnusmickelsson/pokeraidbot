@@ -3,6 +3,12 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.99 (2018-11-26)
+=====
+* Gym data update
+* Update some raid bosses max cp and tier
+* Overview presentation minor changes
+
 1.8.98 (2018-11-20)
 =====
 * Gym data update
