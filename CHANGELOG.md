@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.100 (2018-12-15)
+=====
+* Ho-Oh and Lugia comeback
+
 1.8.99 (2018-11-26)
 =====
 * Gym data update
