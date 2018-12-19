@@ -12,27 +12,27 @@ Quick Move	Charge Move
 Mud Slap
 Earthquake
 Good Counters
-Machamp
+Rhydon
 
-Machamp
+Rhydon
 Quick Move	Charge Move
 Counter
 Karate Chop
 Dynamic Punch
 Close Combat
 Cross Chop
-Hariyama
+Swampert
 
-Hariyama
+Swampert
 Quick Move	Charge Move
 Counter
 Karate Chop
 Dynamic Punch
 Close Combat
 Cross Chop
-Heracross
+Golem
 
-Heracross
+Golem
 Quick Move	Charge Move
 Counter
 Karate Chop

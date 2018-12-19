@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.101 (2018-12-19)
+=====
+* Heatran new tier 5 raidboss
+
 1.8.100 (2018-12-15)
 =====
 * Ho-Oh and Lugia comeback
