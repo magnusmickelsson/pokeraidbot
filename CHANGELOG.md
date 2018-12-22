@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.102 (2018-12-22)
+=====
+* Gym data update
+
 1.8.101 (2018-12-19)
 =====
 * Heatran new tier 5 raidboss
