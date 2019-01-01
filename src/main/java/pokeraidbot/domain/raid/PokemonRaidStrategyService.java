@@ -177,7 +177,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "ELECTABUZZ", "1333", 2);
 
-        populateRaidInfoForBoss(pokemonRepository, "EXEGGUTOR", "1722", 4);
+        populateRaidInfoForBoss(pokemonRepository, "EXEGGUTOR", "1722", 2);
 
         populateRaidInfoForBoss(pokemonRepository, "MAGMAR", "1288", 2);
 

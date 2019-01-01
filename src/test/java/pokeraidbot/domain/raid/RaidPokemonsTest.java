@@ -221,5 +221,9 @@ public class RaidPokemonsTest {
         counters = strategyService.getCounters(raidInfo.getPokemon());
         assertThat(counters.getGoodCounters().size(), is(2));
         assertThat(counters.getSupremeCounters().size(), is(2));
+
+        raidInfo = strategyService.getRaidInfo(pokemonRepository.search("exeggutor", null));
+        assertNotNull(raidInfo);
+        assertThat(raidInfo.getBossTier(), is(2)); // Right now, Alolan
     }
 }

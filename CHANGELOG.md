@@ -3,6 +3,11 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.103 (2019-01-02)
+=====
+* Gym data update
+* Alolan Exeggutor
+
 1.8.102 (2018-12-22)
 =====
 * Gym data update
