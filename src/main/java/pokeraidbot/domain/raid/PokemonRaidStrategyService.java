@@ -169,9 +169,9 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "BAYLEEF", "740", 1);
 
-        populateRaidInfoForBoss(pokemonRepository, "CROCONAW", "913", 1);
+        populateRaidInfoForBoss(pokemonRepository, "CROCONAW", "984", 2);
 
-        populateRaidInfoForBoss(pokemonRepository, "MAGIKARP", "125", 1);
+        populateRaidInfoForBoss(pokemonRepository, "MAGIKARP", "157", 1);
 
         populateRaidInfoForBoss(pokemonRepository, "QUILAVA", "847", 1);
 
@@ -195,7 +195,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "JOLTEON", "1650", 3);
 
-        populateRaidInfoForBoss(pokemonRepository, "MACHAMP", "1650", 3);
+        populateRaidInfoForBoss(pokemonRepository, "MACHAMP", "1746", 3);
 
         populateRaidInfoForBoss(pokemonRepository, "VAPOREON", "1779", 3);
 
@@ -205,11 +205,11 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "Lapras", "1487", 4);
 
-        populateRaidInfoForBoss(pokemonRepository, "Rhydon", "1886", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Rhydon", "1816", 4);
 
         populateRaidInfoForBoss(pokemonRepository, "Snorlax", "1917", 4);
 
-        populateRaidInfoForBoss(pokemonRepository, "Tyranitar", "2097", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Tyranitar", "2191", 4);
 
         populateRaidInfoForBoss(pokemonRepository, "Venusaur", "1467", 4);
 
@@ -239,7 +239,7 @@ public class PokemonRaidStrategyService {
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Magneton", "1278", 2);
         populateRaidInfoForBoss(pokemonRepository, "Sableye", "745", 2);
-        populateRaidInfoForBoss(pokemonRepository, "Sandslash", "1330", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Sandslash", "1356", 2);
         populateRaidInfoForBoss(pokemonRepository, "Tentacruel", "1356", 2);
         populateRaidInfoForBoss(pokemonRepository, "Cloyster", "1414", 2);
         populateRaidInfoForBoss(pokemonRepository, "egg2", "1", 2);
@@ -255,7 +255,7 @@ public class PokemonRaidStrategyService {
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Poliwrath", "1395", 4);
         populateRaidInfoForBoss(pokemonRepository, "Victreebel", "1296", 4);
-        populateRaidInfoForBoss(pokemonRepository, "Golem", "1666", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Golem", "1685", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoking", "1363", 4);
         populateRaidInfoForBoss(pokemonRepository, "Nidoqueen", "1336", 4);
         populateRaidInfoForBoss(pokemonRepository, "egg4", "1", 4);
@@ -266,7 +266,7 @@ public class PokemonRaidStrategyService {
 
         // ==== Gen 3 ====
         // Tier 1
-        populateRaidInfoForBoss(pokemonRepository, "Wailmer", "814", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Wailmer", "838", 1);
         populateRaidInfoForBoss(pokemonRepository, "Snorunt", "441", 1);
         populateRaidInfoForBoss(pokemonRepository, "Swablu", "412", 1);
         populateRaidInfoForBoss(pokemonRepository, "Shuppet", "498", 1);
@@ -274,7 +274,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Bulbasaur", "560", 1);
         populateRaidInfoForBoss(pokemonRepository, "Charmander", "475", 1);
         populateRaidInfoForBoss(pokemonRepository, "Squirtle", "462", 1);
-        populateRaidInfoForBoss(pokemonRepository, "Makuhita", "426", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Makuhita", "467", 1);
         populateRaidInfoForBoss(pokemonRepository, "Meditite", "317", 1);
         populateRaidInfoForBoss(pokemonRepository, "Shinx", "500", 1);
         populateRaidInfoForBoss(pokemonRepository, "Buizel", "602", 1);
@@ -301,20 +301,20 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Aerodactyl", "1490", 3);
         populateRaidInfoForBoss(pokemonRepository, "Jynx", "1435", 3);
         populateRaidInfoForBoss(pokemonRepository, "Piloswine", "1305", 3);
-        populateRaidInfoForBoss(pokemonRepository, "Starmie", "1316", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Starmie", "1476", 3);
         populateRaidInfoForBoss(pokemonRepository, "Claydol", "1018", 3);
         populateRaidInfoForBoss(pokemonRepository, "Pinsir", "1583", 3);
         populateRaidInfoForBoss(pokemonRepository, "Granbull", "1394", 3);
         populateRaidInfoForBoss(pokemonRepository, "Aerodactyl", "1490", 3);
         populateRaidInfoForBoss(pokemonRepository, "Kabutops", "1438", 3);
         populateRaidInfoForBoss(pokemonRepository, "Onix", "572", 3);
-        populateRaidInfoForBoss(pokemonRepository, "Breloom", "1375", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Breloom", "1375", 2);
         populateRaidInfoForBoss(pokemonRepository, "Hitmonlee", "1375", 3);
         populateRaidInfoForBoss(pokemonRepository, "Hitmonchan", "1199", 3);
         populateRaidInfoForBoss(pokemonRepository, "Raichu", "1247", 3);
-        populateRaidInfoForBoss(pokemonRepository, "Donphan", "1727", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Donphan", "1722", 3);
         populateRaidInfoForBoss(pokemonRepository, "Tangela", "1262", 3);
-        populateRaidInfoForBoss(pokemonRepository, "Sharpedo", "1134", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Sharpedo", "1246", 3);
         populateRaidInfoForBoss(pokemonRepository, "Skarmory", "1204", 3);
         populateRaidInfoForBoss(pokemonRepository, "Espeon", "1811", 3);
         populateRaidInfoForBoss(pokemonRepository, "Umbreon", "1221", 3);
@@ -344,6 +344,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Dialga", "2307", 5);
         populateRaidInfoForBoss(pokemonRepository, "Cresselia", "1633", 5);
         populateRaidInfoForBoss(pokemonRepository, "Heatran", "2145", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1474", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

@@ -7,7 +7,6 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRaidInfo;
 import pokeraidbot.domain.pokemon.PokemonRepository;
-import pokeraidbot.infrastructure.CounterTextFileParser;
 import pokeraidbot.infrastructure.jpa.config.UserConfigRepository;
 
 import java.util.HashSet;
@@ -31,25 +30,6 @@ public class RaidPokemonsTest {
         localeService = new LocaleService("sv", userConfigRepository);
         pokemonRepository = new PokemonRepository("/pokemons.csv", localeService);
         strategyService = new PokemonRaidStrategyService(pokemonRepository);
-    }
-
-    @Test
-    public void verifyAllRaidBossesInRepo() throws Exception {
-        for (RaidBossPokemons raidBoss : RaidBossPokemons.values()) {
-            try {
-                assertThat(pokemonRepository.search(raidBoss.name(), null) != null, is(true));
-                CounterTextFileParser parser = new CounterTextFileParser("/counters", raidBoss.name(), pokemonRepository);
-                assertThat(parser.getGoodCounters() != null, is(true));
-                assertThat(parser.getBestCounters() != null, is(true));
-            } catch (RuntimeException e) {
-                System.err.println("Problem with pokemon " + raidBoss + ".");
-                if (e == null || e.getMessage() == null) {
-                    System.err.println("Could not read and parse counter file: " + e);
-                } else {
-                    System.err.println(e.getMessage());
-                }
-            }
-        }
     }
 
     @Test
