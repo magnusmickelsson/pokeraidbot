@@ -3,6 +3,11 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.105 (2019-01-20)
+=====
+* Raidboss data update
+* Gym data update
+
 1.8.104 (2019-01-06)
 =====
 * Raidboss data update
