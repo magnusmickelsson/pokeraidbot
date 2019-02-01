@@ -185,7 +185,7 @@ public class RaidPokemonsTest {
         assertNotNull(raidInfo);
         assertThat(raidInfo.getBossTier(), is(5));
         counters = strategyService.getCounters(raidInfo.getPokemon());
-        assertThat(counters.getGoodCounters().size(), is(2));
+        assertThat(counters.getGoodCounters().size(), is(3));
         assertThat(counters.getSupremeCounters().size(), is(1));
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("dialga", null));
