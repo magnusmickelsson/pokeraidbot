@@ -90,6 +90,8 @@ public class PokemonRaidStrategyService {
             "minun".toUpperCase(),
             "plusle".toUpperCase(),
             "wingull".toUpperCase(),
+            "dratini".toUpperCase(),
+            "feebas".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -141,6 +143,7 @@ public class PokemonRaidStrategyService {
             "Togetic".toUpperCase(),
             "Metagross".toUpperCase(),
             "Shiftry".toUpperCase(),
+            "Ursaring".toUpperCase(),
             // Tier 5
             "Groudon".toUpperCase(),
             "Kyogre".toUpperCase(),
@@ -195,7 +198,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "WEEZING", "1247", 2);
 
-        populateRaidInfoForBoss(pokemonRepository, "ALAKAZAM", "1649", 3);
+        populateRaidInfoForBoss(pokemonRepository, "ALAKAZAM", "1747", 3);
 
         populateRaidInfoForBoss(pokemonRepository, "ARCANINE", "1622", 3);
 
@@ -278,7 +281,7 @@ public class PokemonRaidStrategyService {
         // Tier 1
         populateRaidInfoForBoss(pokemonRepository, "Wailmer", "838", 1);
         populateRaidInfoForBoss(pokemonRepository, "Snorunt", "441", 1);
-        populateRaidInfoForBoss(pokemonRepository, "Swablu", "412", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Swablu", "470", 1);
         populateRaidInfoForBoss(pokemonRepository, "Shuppet", "581", 1);
         populateRaidInfoForBoss(pokemonRepository, "Duskull", "403", 1);
         populateRaidInfoForBoss(pokemonRepository, "Bulbasaur", "560", 1);
@@ -293,6 +296,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Minun", "968", 1);
         populateRaidInfoForBoss(pokemonRepository, "Plusle", "1016", 1);
         populateRaidInfoForBoss(pokemonRepository, "Wingull", "437", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Dratini", "574", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Feebas", "157", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -312,7 +317,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Marshtomp", "1015", 2);
 
         // Tier 3
-        populateRaidInfoForBoss(pokemonRepository, "Azumarill", "858", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
         populateRaidInfoForBoss(pokemonRepository, "Aerodactyl", "1490", 3);
         populateRaidInfoForBoss(pokemonRepository, "Jynx", "1435", 3);
         populateRaidInfoForBoss(pokemonRepository, "Piloswine", "1305", 3);
@@ -347,6 +352,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Togetic", "881", 4);
         populateRaidInfoForBoss(pokemonRepository, "Metagross", "2166", 4);
         populateRaidInfoForBoss(pokemonRepository, "Shiftry", "1333", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Ursaring", "1682", 4);
 
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
