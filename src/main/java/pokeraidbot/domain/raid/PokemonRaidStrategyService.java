@@ -108,6 +108,7 @@ public class PokemonRaidStrategyService {
             "lanturn".toUpperCase(),
             "grovyle".toUpperCase(),
             "marshtomp".toUpperCase(),
+            "monferno".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -315,6 +316,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Lanturn", "1191", 2);
         populateRaidInfoForBoss(pokemonRepository, "Grovyle", "956", 2);
         populateRaidInfoForBoss(pokemonRepository, "Marshtomp", "1015", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Monferno", "899", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
