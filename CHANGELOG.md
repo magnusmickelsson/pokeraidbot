@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.106 (2019-03-18)
+=====
+* Bugfix for when fields in overview embed message are too large (>1024 chars)
+
 1.8.105 (2019-01-20)
 =====
 * Raidboss data update

@@ -131,7 +131,8 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                             localeService, raidRepository, clockService, locale, strategyService);
                     final EmbedBuilder embedBuilder = new EmbedBuilder();
                     for (String boss : messages.keySet()) {
-                        embedBuilder.addField(boss, messages.get(boss), false);
+                        final String bossMessage = messages.get(boss);
+                        addFieldSplitMessageIfNeeded(embedBuilder, boss, bossMessage);
                     }
                     final MessageEmbed newEmbed = embedBuilder.build();
                     messageChannel.editMessageById(messageId, newEmbed)
@@ -171,6 +172,33 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             return false;
         };
         return refreshEditThreadTask;
+    }
+
+    protected static void addFieldSplitMessageIfNeeded(final EmbedBuilder embedBuilder, final String boss, final String bossMessage) {
+        if (bossMessage.length() < 1000) {
+            embedBuilder.addField(boss, bossMessage, false);
+        } else {
+            // Split into more fields because the message has a risk of being too big (1024 char limit in discord API for field size)
+            Map<Integer, String> fields = new HashMap<>();
+            int currentPosition = 0;
+            int currentSearchPosition = 900;
+            int counter = 0;
+            do {
+                counter++;
+                int splitAt = bossMessage.indexOf("\n", currentSearchPosition);
+                String currentFieldString = bossMessage.substring(currentPosition, splitAt);
+                fields.put(counter, currentFieldString);
+                currentPosition = splitAt + 1;
+                currentSearchPosition = splitAt + 900;
+            } while (currentSearchPosition < bossMessage.length());
+
+            fields.put(counter + 1, bossMessage.substring(currentPosition));
+
+            final int fieldsSize = fields.size();
+            for (Integer fieldKey : fields.keySet()) {
+                embedBuilder.addField(boss + " " + fieldKey + "/" + fieldsSize, fields.get(fieldKey), false);
+            }
+        }
     }
 
     private static void cleanUp(Config config, String messageId,
