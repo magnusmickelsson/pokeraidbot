@@ -92,6 +92,9 @@ public class PokemonRaidStrategyService {
             "wingull".toUpperCase(),
             "dratini".toUpperCase(),
             "feebas".toUpperCase(),
+            "lotad".toUpperCase(),
+            "chikorita".toUpperCase(),
+            "sunkern".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -299,6 +302,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Wingull", "437", 1);
         populateRaidInfoForBoss(pokemonRepository, "Dratini", "574", 1);
         populateRaidInfoForBoss(pokemonRepository, "Feebas", "157", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Lotad", "342", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Sunkern", "226", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Chikorita", "534", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
