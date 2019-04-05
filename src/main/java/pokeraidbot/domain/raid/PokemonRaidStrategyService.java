@@ -95,6 +95,9 @@ public class PokemonRaidStrategyService {
             "lotad".toUpperCase(),
             "chikorita".toUpperCase(),
             "sunkern".toUpperCase(),
+            "Kricketot".toUpperCase(),
+            "Skorupi".toUpperCase(),
+            "Caterpie".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -112,6 +115,9 @@ public class PokemonRaidStrategyService {
             "grovyle".toUpperCase(),
             "marshtomp".toUpperCase(),
             "monferno".toUpperCase(),
+            "Combee".toUpperCase(),
+            "Masquerain".toUpperCase(),
+            "pineco".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -137,6 +143,7 @@ public class PokemonRaidStrategyService {
             "Crawdaunt".toUpperCase(),
             "Lunatone".toUpperCase(),
             "Solrock".toUpperCase(),
+            "Shuckle".toUpperCase(),
             // Tier 4
             "feraligatr".toUpperCase(),
             "Absol".toUpperCase(),
@@ -148,6 +155,7 @@ public class PokemonRaidStrategyService {
             "Metagross".toUpperCase(),
             "Shiftry".toUpperCase(),
             "Ursaring".toUpperCase(),
+            "ninjask".toUpperCase(),
             // Tier 5
             "Groudon".toUpperCase(),
             "Kyogre".toUpperCase(),
@@ -305,6 +313,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Lotad", "342", 1);
         populateRaidInfoForBoss(pokemonRepository, "Sunkern", "226", 1);
         populateRaidInfoForBoss(pokemonRepository, "Chikorita", "534", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Skorupi", "576", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Kricketot", "229", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Caterpie", "249", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -323,6 +334,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Grovyle", "956", 2);
         populateRaidInfoForBoss(pokemonRepository, "Marshtomp", "1015", 2);
         populateRaidInfoForBoss(pokemonRepository, "Monferno", "899", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Pineco", "633", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Masquerain", "1297", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Combee", "282", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
@@ -349,6 +363,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Crawdaunt", "1413", 3);
         populateRaidInfoForBoss(pokemonRepository, "Lunatone", "1330", 3);
         populateRaidInfoForBoss(pokemonRepository, "Solrock", "1330", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Shuckle", "231", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
@@ -361,6 +376,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Metagross", "2166", 4);
         populateRaidInfoForBoss(pokemonRepository, "Shiftry", "1333", 4);
         populateRaidInfoForBoss(pokemonRepository, "Ursaring", "1682", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Ninjask", "1125", 4);
 
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
