@@ -98,6 +98,8 @@ public class PokemonRaidStrategyService {
             "Kricketot".toUpperCase(),
             "Skorupi".toUpperCase(),
             "Caterpie".toUpperCase(),
+            "Drifloon".toUpperCase(),
+            "Bagon".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -316,6 +318,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Skorupi", "576", 1);
         populateRaidInfoForBoss(pokemonRepository, "Kricketot", "229", 1);
         populateRaidInfoForBoss(pokemonRepository, "Caterpie", "249", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Drifloon", "684", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Bagon", "660", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -389,12 +393,12 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Latias", "1929", 5);
         populateRaidInfoForBoss(pokemonRepository, "Mew", "1766", 5);
         populateRaidInfoForBoss(pokemonRepository, "Celebi", "1766", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Giratina", "1931", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Giratina", "2105", 5);
         populateRaidInfoForBoss(pokemonRepository, "Palkia", "2280", 5);
         populateRaidInfoForBoss(pokemonRepository, "Dialga", "2307", 5);
         populateRaidInfoForBoss(pokemonRepository, "Cresselia", "1633", 5);
         populateRaidInfoForBoss(pokemonRepository, "Heatran", "2145", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1474", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1299", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
