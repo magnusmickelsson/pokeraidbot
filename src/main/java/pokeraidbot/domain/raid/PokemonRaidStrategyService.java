@@ -174,6 +174,9 @@ public class PokemonRaidStrategyService {
             "dialga".toUpperCase(),
             "cresselia".toUpperCase(),
             "heatran".toUpperCase(),
+            "uxie".toUpperCase(),
+            "mesprit".toUpperCase(),
+            "azelf".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -399,6 +402,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Cresselia", "1633", 5);
         populateRaidInfoForBoss(pokemonRepository, "Heatran", "2145", 5);
         populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1299", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Uxie", "1442", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Mesprit", "1669", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Azelf", "1834", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
