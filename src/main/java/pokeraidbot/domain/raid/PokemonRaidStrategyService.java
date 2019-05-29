@@ -100,6 +100,7 @@ public class PokemonRaidStrategyService {
             "Caterpie".toUpperCase(),
             "Drifloon".toUpperCase(),
             "Bagon".toUpperCase(),
+            "Bronzor".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -323,6 +324,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Caterpie", "249", 1);
         populateRaidInfoForBoss(pokemonRepository, "Drifloon", "684", 1);
         populateRaidInfoForBoss(pokemonRepository, "Bagon", "660", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Bronzor", "344", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
