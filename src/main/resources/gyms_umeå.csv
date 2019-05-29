@@ -2,13 +2,13 @@ ID;LOCATION;NAME;AREA
 001;"63.791471;20.306354";Sofiehems Tegelbruk;Umeå
 002;"63.792956;20.290108";Umeå Airport;Umeå
 003;"63.79627;20.321302";Carlshöjds Playground;Umeå
-004;"63.796591;20.303515";Strömpilsbron ;Umeå
+004;"63.796591;20.303515";Strömpilsbron;Umeå
 005;"63.797166;20.317603";Lustiga Huset Carlshem;Umeå
 006;"63.798598;20.326701";Carlshöjds Skatepark;Umeå
 007;"63.799327;20.29999";Line of Thoughts Sculpture;Umeå
 008;"63.799535;20.301793";Sofiehems Träsliperi;Umeå
 009;"63.799942;20.301327";Zip It;Umeå
-010;"63.800865;20.289113";Ön ;Umeå
+010;"63.800865;20.289113";Ön;Umeå
 011;"63.801319;20.201615";P. A. Stromberg;Umeå
 012;"63.801396;20.31588";Funny Slide;Umeå
 013;"63.804125;20.349245";Gröna Lekplatsen;Umeå
@@ -54,11 +54,11 @@ ID;LOCATION;NAME;AREA
 053;"63.818143;20.212593";Böleängs Klocktorn;Umeå
 054;"63.818627;20.201992";Bigarråbackens Lekplats;Umeå
 055;"63.818737;20.306318";Forskaren;Umeå
-056;"63.819186;20.31608";Runsten ;Umeå
+056;"63.819186;20.31608";Runsten;Umeå
 057;"63.819339;20.358625";Sjökanten;Umeå
 058;"63.819644;20.279101";SKIN 4 av Mehmet Ali Uysal;Umeå
 059;"63.820264;20.302995";Eoner;Umeå
-060;"63.820549;20.30585";Vågspel ;Umeå
+060;"63.820549;20.30585";Vågspel;Umeå
 061;"63.82056;20.213282";Päronvägens Lekplats;Umeå
 062;"63.82084;20.281491";Kakeltornen;Umeå
 063;"63.821069;20.285771";Snabelkanan;Umeå
@@ -71,7 +71,7 @@ ID;LOCATION;NAME;AREA
 070;"63.823184;20.265083";Pink World;Umeå
 071;"63.823201;20.308329";Measurement of Time;Umeå
 072;"63.82337;20.310404";Campus Arena;Umeå
-073;"63.82362;20.267859";Umeå Stadskyrka ;Umeå
+073;"63.82362;20.267859";Umeå Stadskyrka;Umeå
 074;"63.823634;20.296854";Rost;Umeå
 075;"63.823655;20.244577";Körsbärsdalen Skatepark;Umeå
 076;"63.823735;20.24829";Gamla bron;Umeå
@@ -97,16 +97,16 @@ ID;LOCATION;NAME;AREA
 096;"63.829556;20.180623";Cammererarens Gångstig;Umeå
 097;"63.829624;20.139689";Baggböleörens Grillplats;Umeå
 098;"63.830202;20.266082";Lev!;Umeå
-099;"63.830417;20.167826";Backenkyrkans Kapell ;Umeå
+099;"63.830417;20.167826";Backenkyrkans Kapell;Umeå
 100;"63.83075;20.116663";Klabböle Missionshus;Umeå
 101;"63.830965;20.318365";Mariehemsbron;Umeå
 102;"63.83143;20.278828";Najad;Umeå
 103;"63.831548;20.279833";Östra Hagaparken Playground;Umeå
-104;"63.831632;20.235488";Hedlundakyrkan ;Umeå
+104;"63.831632;20.235488";Hedlundakyrkan;Umeå
 105;"63.831638;20.239699";Orange Blobbs;Umeå
 106;"63.832242;20.154294";EFS gården;Umeå
 107;"63.832366;20.305211";Lummerstigens Lekplats;Umeå
-108;"63.832891;20.242994";NOLIA ;Umeå
+108;"63.832891;20.242994";NOLIA;Umeå
 109;"63.833079;20.217595";Hartan Ungdomsgård;Umeå
 110;"63.833244;20.187383";Kossorna;Umeå
 111;"63.833752;20.245199";Posten Signalvägen;Umeå
@@ -125,7 +125,7 @@ ID;LOCATION;NAME;AREA
 124;"63.836285;20.264801";Vildmannavallen;Umeå
 125;"63.836545;20.339719";Nydala badet;Umeå
 126;"63.836629;20.226478";UFO;Umeå
-127;"63.836649;20.262393";Umevatoriet ;Umeå
+127;"63.836649;20.262393";Umevatoriet;Umeå
 128;"63.836677;20.232972";St:Staffan Västerslätt;Umeå
 129;"63.836941;20.253033";Draken;Umeå
 130;"63.837357;20.296936";Utegymmet I Skogen;Umeå
@@ -136,9 +136,9 @@ ID;LOCATION;NAME;AREA
 135;"63.837925;20.18055";Mister Mailbox;Umeå
 136;"63.83799;20.122961";Arboretum Norr;Umeå
 137;"63.838457;20.168453";Löftets Lekplats;Umeå
-138;"63.838824;20.342517";Konstsnöspåret ;Umeå
+138;"63.838824;20.342517";Konstsnöspåret;Umeå
 139;"63.838864;20.320725";Morkullevägens Lekplats;Umeå
-140;"63.839163;20.158495";A New Perspective ;Umeå
+140;"63.839163;20.158495";A New Perspective;Umeå
 141;"63.839497;20.159378";Kastenhaus 1166;Umeå
 142;"63.839569;20.115036";Buddha;Umeå
 143;"63.839766;20.315051";Umeå Softballplan;Umeå
@@ -161,22 +161,22 @@ ID;LOCATION;NAME;AREA
 160;"63.845597;20.329138";Mariebergparkens Lekplats;Umeå
 161;"63.845656;20.295643";Tre Flickor, 1988;Umeå
 162;"63.845951;20.332601";Slottet På Björnvägen;Umeå
-163;"63.845992;20.307007";Fotbollsplan ;Umeå
+163;"63.845992;20.307007";Fotbollsplan;Umeå
 164;"63.846874;20.295642";Betelskyrkan;Umeå
 165;"63.848884;20.32294";Motionshuset;Umeå
 166;"63.850755;20.31549";Sverkers Dustbin Monument;Umeå
 167;"63.850855;20.314086";Crying Man;Umeå
-168;"63.851207;20.298955";No Rain on Me ;Umeå
+168;"63.851207;20.298955";No Rain on Me;Umeå
 169;"63.852947;20.318099";Lekplats Mesosten;Umeå
 170;"63.854244;20.335651";Kärnvägens lekplats;Umeå
 171;"63.85492;20.336773";Tennisplan;Umeå
-172;"63.856552;20.332314";Arken ;Umeå
+172;"63.856552;20.332314";Arken;Umeå
 173;"63.857006;20.312213";Ersbodakyrkan;Umeå
 174;"63.857312;20.312707";Vinter Sya;Umeå
 175;"63.857566;20.335739";Ersboda Folkets Hus;Umeå
 176;"63.857677;20.307303";Västra Ersboda Sportområde;Umeå
 177;"63.858275;20.334412";Sølje, 1988;Umeå
-178;"63.858401;20.322478";Björklöv, Ersboda ;Umeå
+178;"63.858401;20.322478";Björklöv, Ersboda;Umeå
 179;"63.858948;20.327004";Äventyrslekparken Ersboda;Umeå
 180;"63.860419;20.304275";Måttgränds Lekplats;Umeå
 181;"63.861986;20.340935";Filgränds Lekplats;Umeå
