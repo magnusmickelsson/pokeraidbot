@@ -101,6 +101,8 @@ public class PokemonRaidStrategyService {
             "Drifloon".toUpperCase(),
             "Bagon".toUpperCase(),
             "Bronzor".toUpperCase(),
+            "Horsea".toUpperCase(),
+            "Nidoran".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -258,7 +260,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "Suicune", "1613", 5);
 
-        populateRaidInfoForBoss(pokemonRepository, "Mewtwo", "2275", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Mewtwo", "1821", 5);
 
         // New bosses after Niantic surprise attack :p
         // Tier 1
@@ -325,6 +327,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Drifloon", "684", 1);
         populateRaidInfoForBoss(pokemonRepository, "Bagon", "660", 1);
         populateRaidInfoForBoss(pokemonRepository, "Bronzor", "344", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Horsea", "603", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Nidoran", "491", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -403,7 +407,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Dialga", "2307", 5);
         populateRaidInfoForBoss(pokemonRepository, "Cresselia", "1633", 5);
         populateRaidInfoForBoss(pokemonRepository, "Heatran", "2145", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1299", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Deoxys", "1645", 5);
         populateRaidInfoForBoss(pokemonRepository, "Uxie", "1442", 5);
         populateRaidInfoForBoss(pokemonRepository, "Mesprit", "1669", 5);
         populateRaidInfoForBoss(pokemonRepository, "Azelf", "1834", 5);
