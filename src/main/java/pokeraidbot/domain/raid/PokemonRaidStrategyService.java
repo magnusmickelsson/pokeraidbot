@@ -103,6 +103,9 @@ public class PokemonRaidStrategyService {
             "Bronzor".toUpperCase(),
             "Horsea".toUpperCase(),
             "Nidoran".toUpperCase(),
+            "Sentret".toUpperCase(),
+            "Murkrow".toUpperCase(),
+            "snubbull".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -123,6 +126,8 @@ public class PokemonRaidStrategyService {
             "Combee".toUpperCase(),
             "Masquerain".toUpperCase(),
             "pineco".toUpperCase(),
+            "houndour".toUpperCase(),
+            "gligar".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -329,6 +334,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Bronzor", "344", 1);
         populateRaidInfoForBoss(pokemonRepository, "Horsea", "603", 1);
         populateRaidInfoForBoss(pokemonRepository, "Nidoran", "491", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Murkrow", "892", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Sentret", "353", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Snubbull", "656", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -350,6 +358,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Pineco", "633", 2);
         populateRaidInfoForBoss(pokemonRepository, "Masquerain", "1297", 2);
         populateRaidInfoForBoss(pokemonRepository, "Combee", "282", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Gligar", "1061", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Houndour", "705", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
