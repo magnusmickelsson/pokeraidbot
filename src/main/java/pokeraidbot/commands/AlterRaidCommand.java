@@ -406,19 +406,21 @@ public class AlterRaidCommand extends ConfigAwareCommand {
         gym = gymRepository.search(user, gymName, config.getRegion());
         Raid pokemonRaid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, config.getRegion(), user);
         final Pokemon pokemon = pokemonRepository.search(whatToChangeTo, user);
-        if (pokemonRaid.isExRaid()) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(
-                    LocaleService.EX_NO_CHANGE_POKEMON,
-                    localeService.getLocaleForUser(user)));
-        }
+        // TODO: temporary since the EX pokemon right now is the same as tier 5
+//        if (pokemonRaid.isExRaid()) {
+//            throw new UserMessedUpException(userName, localeService.getMessageFor(
+//                    LocaleService.EX_NO_CHANGE_POKEMON,
+//                    localeService.getLocaleForUser(user)));
+//        }
         // Anybody should be able to report hatched eggs
         if (!pokemonRaid.getPokemon().isEgg()) {
             verifyPermission(localeService, commandEvent, user, pokemonRaid, config);
         }
-        if (Utils.isRaidExPokemon(whatToChangeTo)) {
-            throw new UserMessedUpException(userName, localeService.getMessageFor(
-                    LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
-        }
+        // TODO: same as above
+//        if (Utils.isRaidExPokemon(whatToChangeTo)) {
+//            throw new UserMessedUpException(userName, localeService.getMessageFor(
+//                    LocaleService.EX_CANT_CHANGE_RAID_TYPE, localeService.getLocaleForUser(user)));
+//        }
         raid = raidRepository.changePokemon(pokemonRaid, pokemon, commandEvent.getGuild(), config, user,
                 "!raid change pokemon " + pokemon.getName() + " " + gymName);
         commandEvent.reactSuccess();

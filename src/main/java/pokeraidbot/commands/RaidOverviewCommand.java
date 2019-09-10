@@ -27,6 +27,7 @@ import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;
 import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.net.SocketTimeoutException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -259,13 +260,15 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 }
                 pokemonName += "**";
                 StringBuilder bossStringBuilder = new StringBuilder();
-                if (!Utils.isRaidEx(raid)) {
+                // If not an EX raid that is after today, add boss name
+                boolean isExRaidAfterToday = raid.getEndOfRaid().toLocalDate().isAfter(LocalDate.now());
+                if (!isExRaidAfterToday) {
                     overviewMessagePerBoss.putIfAbsent(pokemonName, "");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
-                if (!raid.isExRaid()) {
+                if (!isExRaidAfterToday) {
                     if (raidGym.isExGym()) {
                         bossStringBuilder.append("*").append(raidGym.getName()).append(Emotes.STAR + "*");
                     } else {
@@ -299,7 +302,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             }
             final String exRaidList = exRaids.toString();
             if (exRaidList.length() > 1) {
-                overviewMessagePerBoss.put("\n**Raid-EX:**", exRaidList);
+                overviewMessagePerBoss.put("\n**EX-raid:**", exRaidList);
             }
         }
         stringBuilder = new StringBuilder();
