@@ -48,7 +48,7 @@ public class RaidEntity implements Serializable {
     private String region;
     @Basic
     @Column
-    private Boolean ex = true;
+    private Boolean ex;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "raidid", referencedColumnName = "id")
     @BatchSize(size = 5)
