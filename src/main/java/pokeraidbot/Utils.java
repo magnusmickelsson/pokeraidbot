@@ -33,7 +33,8 @@ public class Utils {
     public static final DateTimeFormatter timePrintFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter dateAndTimePrintFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public static final int HIGH_LIMIT_FOR_SIGNUPS = 20;
-    public static final int RAID_DURATION_IN_MINUTES = 45;
+    public static final int RAID_DURATION_IN_MINUTES = 90;
+    public static final int EX_RAID_DURATION_IN_MINUTES = 90;
     private static final String EX_RAID_BOSS = "deoxys";
     private static ClockService clockService = new ClockService();
     private static ResistanceTable resistanceTable = new ResistanceTable();
@@ -96,7 +97,7 @@ public class Utils {
     }
 
     public static LocalDateTime getStartOfRaid(LocalDateTime endOfRaid, boolean isExRaid) {
-        return isExRaid ? endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES) :
+        return isExRaid ? endOfRaid.minusMinutes(EX_RAID_DURATION_IN_MINUTES) :
                 endOfRaid.minusMinutes(RAID_DURATION_IN_MINUTES);
     }
 

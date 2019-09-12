@@ -4,6 +4,8 @@ import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.FluentIterable;
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.format.annotation.DateTimeFormat;
 import pokeraidbot.Utils;
@@ -44,6 +46,9 @@ public class RaidEntity implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private String region;
+    @Basic
+    @Column
+    private Boolean ex = true;
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "raidid", referencedColumnName = "id")
     @BatchSize(size = 5)
@@ -53,13 +58,14 @@ public class RaidEntity implements Serializable {
     protected RaidEntity() {
     }
 
-    public RaidEntity(String id, String pokemon, LocalDateTime endOfRaid, String gym, String creator, String region) {
+    public RaidEntity(String id, String pokemon, LocalDateTime endOfRaid, String gym, String creator, String region, Boolean ex) {
         this.id = id;
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
         this.creator = creator;
         this.region = region;
+        this.ex = ex;
     }
 
     public String getCreator() {
@@ -136,31 +142,37 @@ public class RaidEntity implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RaidEntity)) return false;
 
-        RaidEntity entity = (RaidEntity) o;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
-        if (pokemon != null ? !pokemon.equals(entity.pokemon) : entity.pokemon != null) return false;
-        if (endOfRaid != null ? !endOfRaid.equals(entity.endOfRaid) : entity.endOfRaid != null) return false;
-        if (gym != null ? !gym.equals(entity.gym) : entity.gym != null) return false;
-        if (creator != null ? !creator.equals(entity.creator) : entity.creator != null) return false;
-        if (signUps != null ? !signUps.equals(entity.signUps) : entity.signUps != null) return false;
-        if (region != null ? !region.equals(entity.region) : entity.region != null) return false;
-        return groups != null ? groups.equals(entity.groups) : entity.groups == null;
+        RaidEntity that = (RaidEntity) o;
+
+        return new EqualsBuilder()
+                .append(id, that.id)
+                .append(pokemon, that.pokemon)
+                .append(endOfRaid, that.endOfRaid)
+                .append(gym, that.gym)
+                .append(creator, that.creator)
+                .append(signUps, that.signUps)
+                .append(region, that.region)
+                .append(ex, that.ex)
+                .append(groups, that.groups)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (pokemon != null ? pokemon.hashCode() : 0);
-        result = 31 * result + (endOfRaid != null ? endOfRaid.hashCode() : 0);
-        result = 31 * result + (gym != null ? gym.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
-        result = 31 * result + (region != null ? region.hashCode() : 0);
-        result = 31 * result + (groups != null ? groups.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(pokemon)
+                .append(endOfRaid)
+                .append(gym)
+                .append(creator)
+                .append(signUps)
+                .append(region)
+                .append(ex)
+                .append(groups)
+                .toHashCode();
     }
 
     @Override
@@ -172,6 +184,7 @@ public class RaidEntity implements Serializable {
                 ", gym='" + gym + '\'' +
                 ", creator='" + creator + '\'' +
                 ", region='" + region + '\'' +
+                ", ex=" + ex +
                 '}';
     }
 
@@ -212,8 +225,9 @@ public class RaidEntity implements Serializable {
         return sortedGroups;
     }
 
+    // Backwards compatible to already saved EX raids that last over the day
     public boolean isExRaid() {
-        return Utils.isRaidExPokemon(pokemon);
+        return ex == null ? true : ex;
     }
 
     public RaidGroup removeGroup(String groupId) {

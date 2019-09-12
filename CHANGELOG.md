@@ -3,6 +3,10 @@
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
 
+1.8.107 (2019-09-12)
+=====
+* Support for tier 5 boss and EX boss being the same, while having different raid durations. (Thanks Niantic)
+
 1.8.106 (2019-03-18)
 =====
 * Bugfix for when fields in overview embed message are too large (>1024 chars)

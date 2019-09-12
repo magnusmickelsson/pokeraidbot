@@ -168,7 +168,8 @@ public class RaidRepository {
                 raid.getEndOfRaid(),
                 raid.getGym().getName(),
                 raidCreator.getName(),
-                raid.getRegion());
+                raid.getRegion(),
+                raid.isExRaid());
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Creating raid: " + toBeSaved);
         }
@@ -181,7 +182,7 @@ public class RaidRepository {
         final String region = raidEntity.getRegion();
         final Raid raid = new Raid(pokemonRepository.getByName(raidEntity.getPokemon()),
                 raidEntity.getEndOfRaid(),
-                gymRepository.findByName(raidEntity.getGym(), region), localeService, region);
+                gymRepository.findByName(raidEntity.getGym(), region), localeService, region, raidEntity.isExRaid());
         raid.setCreator(raidEntity.getCreator());
         raid.setId(raidEntity.getId());
         Map<String, SignUp> signUps = new ConcurrentHashMap<>();
@@ -210,7 +211,7 @@ public class RaidRepository {
             if (entity.isExpired(clockService)) {
                 LOGGER.info("Removing expired raid: " + entity.getId());
                 raidEntityRepository.delete(entity);
-            } else if (Utils.isRaidExPokemon(entity.getPokemon())) {
+            } else if (entity.isExRaid()) {
                 exEntity = entity;
                 break;
             } else {

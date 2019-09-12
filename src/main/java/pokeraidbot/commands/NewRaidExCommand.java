@@ -81,7 +81,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         }
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
-        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
+        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion(), true);
         if (!raid.isExRaid()) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NOT_EX_RAID,
                     locale, pokemonName));

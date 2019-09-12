@@ -244,7 +244,7 @@ public class UtilsTest {
         when(localeService.getMessageFor(any(), any(), any())).thenReturn("Mupp");
         Raid raid = new Raid(pokemonRepository.getByName("Tyranitar"), end,
                 new Gym("Test", "id", "10", "10", null),
-                localeService, "Test");
+                localeService, "Test", false);
         checkWhetherAssertFails(user, same, localeService, raid, false);
         checkWhetherAssertFails(user, after, localeService, raid, false);
         checkWhetherAssertFails(user, before, localeService, raid, true);

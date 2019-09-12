@@ -34,6 +34,7 @@ public class RaidEntityRepositoryTest {
     RaidEntityRepository entityRepository;
     private static final ExecutorService executorService =
             new ThreadPoolExecutor(3, 3, 20, TimeUnit.SECONDS, new LinkedTransferQueue<>());
+
     @Before
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setUp() throws Exception {
@@ -51,7 +52,7 @@ public class RaidEntityRepositoryTest {
         final String id = "id1";
         RaidEntity raidEntity = new RaidEntity(id, "Mupp",
                 LocalDateTime.now().plusMinutes(20),
-                "Thegym", "Theuser", "Theregion");
+                "Thegym", "Theuser", "Theregion", false);
         final RaidGroup group = new RaidGroup("testserver", "channel", "abc1", "abc2", "testId",
                 LocalDateTime.now().plusMinutes(10));
         assertThat(raidEntity.addGroup(group), is(true));
@@ -72,9 +73,20 @@ public class RaidEntityRepositoryTest {
         final String id = "id1";
         final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
                 LocalDateTime.now().plusMinutes(20),
-                "Thegym", "Theuser", "Theregion"));
+                "Thegym", "Theuser", "Theregion", false));
         assertNotNull(raidEntity);
         assertThat(entityRepository.findOne(id), is(raidEntity));
+    }
+
+    @Test
+    public void createEx() {
+        final String id = "id1";
+        final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
+                LocalDateTime.now().plusMinutes(20),
+                "Thegym", "Theuser", "Theregion", true));
+        RaidEntity loadedEntity = entityRepository.findOne(id);
+        assertThat(loadedEntity.isExRaid(), is(true));
+        assertThat(loadedEntity, is(raidEntity));
     }
 
     @Test
@@ -82,7 +94,7 @@ public class RaidEntityRepositoryTest {
         final String id = "id1";
         final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
                 LocalDateTime.now().plusMinutes(20),
-                "Thegym", "Theuser", "Theregion"));
+                "Thegym", "Theuser", "Theregion", false));
         final LocalTime now = LocalTime.now();
 
         // Create signups with 100 ms interval, during ~3 seconds

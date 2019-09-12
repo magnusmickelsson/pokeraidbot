@@ -159,7 +159,7 @@ public class GymHuntrRaidEventListener implements EventListener {
             final Raid raidToCreate = new Raid(raidBoss,
                     endOfRaid,
                     raidGym,
-                    localeService, config.getRegion());
+                    localeService, config.getRegion(), false);
             final MessageChannel channel = guildEvent.getChannel();
             try {
                 if (raidRepository.isActiveOrExRaidAt(raidGym, config.getRegion())) {

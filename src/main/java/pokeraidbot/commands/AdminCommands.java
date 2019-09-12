@@ -202,7 +202,7 @@ public class AdminCommands extends Command {
                 final String region = configForServer.getRegion();
                 Raid raid = new Raid(pokemonRepository.search(pokemon, user),
                         startsAt.plusMinutes(Utils.RAID_DURATION_IN_MINUTES),
-                        gymRepository.search(user, gymName, region), localeService, region);
+                        gymRepository.search(user, gymName, region), localeService, region, false);
                 final Raid createdRaid = raidRepository.newRaid(botService.getBot().getSelfUser(), raid,
                         event.getGuild(), configForServer,
                         event.getMessage().getContentRaw());

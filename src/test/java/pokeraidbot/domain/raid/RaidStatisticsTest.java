@@ -59,7 +59,7 @@ public class RaidStatisticsTest {
     public void updateStatisticsWithRaid() throws Exception {
         RaidStatistics statistics = new RaidStatistics();
         Raid raid = new Raid(pokemonRepository.getByName("Groudon"), clockService.getCurrentDateTime(),
-                gymRepository.findByName("Blenda", uppsalaRegion), localeService, uppsalaRegion);
+                gymRepository.findByName("Blenda", uppsalaRegion), localeService, uppsalaRegion, false);
         User user = mock(User.class);
         when(user.getName()).thenReturn("test");
         raid.signUp(user, 4, currentTime.plusMinutes(10), repo);

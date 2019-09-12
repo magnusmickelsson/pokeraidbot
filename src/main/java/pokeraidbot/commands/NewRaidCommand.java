@@ -70,7 +70,7 @@ public class NewRaidCommand extends ConfigAwareCommand {
         }
         String gymName = gymNameBuilder.toString().trim();
         final Gym gym = gymRepository.search(user, gymName, config.getRegion());
-        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion());
+        final Raid raid = new Raid(pokemon, endsAt, gym, localeService, config.getRegion(), false);
         raidRepository.newRaid(user, raid, commandEvent.getGuild(), config, "!raid new " +
                 raid.getPokemon().getName() + " " + printTimeIfSameDay(raid.getEndOfRaid()) + " " +
                 raid.getGym().getName());

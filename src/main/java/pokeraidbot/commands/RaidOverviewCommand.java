@@ -260,15 +260,15 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 }
                 pokemonName += "**";
                 StringBuilder bossStringBuilder = new StringBuilder();
-                // If not an EX raid that is after today, add boss name
-                boolean isExRaidAfterToday = raid.getEndOfRaid().toLocalDate().isAfter(LocalDate.now());
-                if (!isExRaidAfterToday) {
+                // If not an EX raid, add boss name
+                boolean isExRaid = raid.isExRaid();
+                if (!isExRaid) {
                     overviewMessagePerBoss.putIfAbsent(pokemonName, "");
                 }
                 final int numberOfPeople = raid.getNumberOfPeopleSignedUp();
                 final Gym raidGym = raid.getGym();
                 final Set<RaidGroup> groups = raidRepository.getGroups(raid);
-                if (!isExRaidAfterToday) {
+                if (!isExRaid) {
                     if (raidGym.isExGym()) {
                         bossStringBuilder.append("*").append(raidGym.getName()).append(Emotes.STAR + "*");
                     } else {
@@ -290,7 +290,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     exRaids.append("\n*").append(raidGym.getName());
                     exRaids.append("* ")
                             .append(localeService.getMessageFor(LocaleService.RAID_BETWEEN, locale,
-                                    printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), true)),
+                                    printTimeIfSameDay(getStartOfRaid(raid.getEndOfRaid(), raid.isExRaid())),
                                     printTime(raid.getEndOfRaid().toLocalTime())));
                     if (groups.size() < 1) {
                         exRaids.append(" (**").append(numberOfPeople)

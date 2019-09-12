@@ -1,6 +1,8 @@
 package pokeraidbot.domain.raid;
 
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.gym.Gym;
@@ -25,13 +27,15 @@ public class Raid {
     private String region;
     private String creator;
     private String id;
+    private Boolean ex;
 
-    public Raid(Pokemon pokemon, LocalDateTime endOfRaid, Gym gym, LocaleService localeService, String region) {
+    public Raid(Pokemon pokemon, LocalDateTime endOfRaid, Gym gym, LocaleService localeService, String region, boolean ex) {
         this.pokemon = pokemon;
         this.endOfRaid = endOfRaid;
         this.gym = gym;
         this.localeService = localeService;
         this.region = region;
+        this.ex = ex;
     }
 
     void setId(String id) {
@@ -61,29 +65,37 @@ public class Raid {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Raid)) return false;
+
+        if (o == null || getClass() != o.getClass()) return false;
 
         Raid raid = (Raid) o;
 
-        if (pokemon != null ? !pokemon.equals(raid.pokemon) : raid.pokemon != null) return false;
-        if (endOfRaid != null ? !endOfRaid.equals(raid.endOfRaid) : raid.endOfRaid != null) return false;
-        if (gym != null ? !gym.equals(raid.gym) : raid.gym != null) return false;
-        if (signUps != null ? !signUps.equals(raid.signUps) : raid.signUps != null) return false;
-        if (region != null ? !region.equals(raid.region) : raid.region != null) return false;
-        if (creator != null ? !creator.equals(raid.creator) : raid.creator != null) return false;
-        return id != null ? id.equals(raid.id) : raid.id == null;
+        return new EqualsBuilder()
+                .append(pokemon, raid.pokemon)
+                .append(endOfRaid, raid.endOfRaid)
+                .append(gym, raid.gym)
+                .append(localeService, raid.localeService)
+                .append(signUps, raid.signUps)
+                .append(region, raid.region)
+                .append(creator, raid.creator)
+                .append(id, raid.id)
+                .append(ex, raid.ex)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = pokemon != null ? pokemon.hashCode() : 0;
-        result = 31 * result + (endOfRaid != null ? endOfRaid.hashCode() : 0);
-        result = 31 * result + (gym != null ? gym.hashCode() : 0);
-        result = 31 * result + (signUps != null ? signUps.hashCode() : 0);
-        result = 31 * result + (region != null ? region.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder(17, 37)
+                .append(pokemon)
+                .append(endOfRaid)
+                .append(gym)
+                .append(localeService)
+                .append(signUps)
+                .append(region)
+                .append(creator)
+                .append(id)
+                .append(ex)
+                .toHashCode();
     }
 
     @Override
@@ -157,6 +169,6 @@ public class Raid {
     }
 
     public boolean isExRaid() {
-        return Utils.isRaidEx(this);
+        return ex;
     }
 }
