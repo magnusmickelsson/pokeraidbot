@@ -71,7 +71,7 @@ public class PokemonRaidStrategyService {
             // Tier 5 /EX
             "egg5".toUpperCase(),
             "Ho-oh".toUpperCase(),
-            // ==== Generation 3 ====
+            // ==== Generation 3+ ====
             // Tier 1
             "Wailmer".toUpperCase(),
             "snorunt".toUpperCase(),
@@ -106,6 +106,9 @@ public class PokemonRaidStrategyService {
             "Sentret".toUpperCase(),
             "Murkrow".toUpperCase(),
             "snubbull".toUpperCase(),
+            "patrat".toUpperCase(),
+            "lillipup".toUpperCase(),
+            "klink".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -128,6 +131,7 @@ public class PokemonRaidStrategyService {
             "pineco".toUpperCase(),
             "houndour".toUpperCase(),
             "gligar".toUpperCase(),
+            "feebas".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -265,7 +269,7 @@ public class PokemonRaidStrategyService {
 
         populateRaidInfoForBoss(pokemonRepository, "Suicune", "1613", 5);
 
-        populateRaidInfoForBoss(pokemonRepository, "Mewtwo", "1821", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Mewtwo", "2387", 5);
 
         // New bosses after Niantic surprise attack :p
         // Tier 1
@@ -302,7 +306,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "egg5", "1", 5);
         populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
 
-        // ==== Gen 3 ====
+        // ==== Gen 3+ ====
         // Tier 1
         populateRaidInfoForBoss(pokemonRepository, "Wailmer", "838", 1);
         populateRaidInfoForBoss(pokemonRepository, "Snorunt", "441", 1);
@@ -337,6 +341,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Murkrow", "892", 1);
         populateRaidInfoForBoss(pokemonRepository, "Sentret", "353", 1);
         populateRaidInfoForBoss(pokemonRepository, "Snubbull", "656", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Patrat", "452", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Lillipup", "523", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Klink", "546", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -360,6 +367,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Combee", "282", 2);
         populateRaidInfoForBoss(pokemonRepository, "Gligar", "1061", 2);
         populateRaidInfoForBoss(pokemonRepository, "Houndour", "705", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Feebas", "157", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
