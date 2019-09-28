@@ -9,8 +9,10 @@ import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;
 import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.pokemon.Pokemon;
+import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.pokemon.PokemonTypes;
 import pokeraidbot.domain.pokemon.ResistanceTable;
+import pokeraidbot.domain.raid.PokemonRaidStrategyService;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.signup.SignUp;
 
@@ -209,9 +211,9 @@ public class Utils {
                 (endOfRaid.isBefore(endOfRaidTwo) && endOfRaid.isAfter(startTimeTwo));
     }
 
-    public static boolean isRaidExPokemon(String pokemonName) {
-        // todo: configurable ex raid list when we have non-free DB
-        return pokemonName.equalsIgnoreCase(EX_RAID_BOSS);
+    public static boolean isRaidExPokemon(String pokemonName, PokemonRaidStrategyService strategyService, PokemonRepository pokemonRepository) {
+        Pokemon pokemon = pokemonRepository.getByName(pokemonName);
+        return strategyService.getRaidInfo(pokemon).getBossTier() == 5;
     }
 
     public static LocalTime parseTime(User user, String timeString, LocaleService localeService) {
@@ -283,8 +285,8 @@ public class Utils {
         return commandEvent.getArgs().replaceAll("\\s{2,4}", " ").split(" ");
     }
 
-    public static boolean isRaidEx(Raid raid) {
-        return isRaidExPokemon(raid.getPokemon().getName());
+    public static boolean isRaidEx(Raid raid, PokemonRaidStrategyService strategyService, PokemonRepository pokemonRepository) {
+        return isRaidExPokemon(raid.getPokemon().getName(), strategyService, pokemonRepository);
     }
 
     public static String preProcessTimeString(String timeString) {

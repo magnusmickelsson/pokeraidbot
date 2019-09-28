@@ -120,7 +120,7 @@ public class BotService {
                 new NewRaidStartsAtCommand(gymRepository, raidRepository, pokemonRepository, localeService,
                         serverConfigRepository, aggregateCommandListener),
                 new NewRaidExCommand(gymRepository, raidRepository, pokemonRepository, localeService,
-                        serverConfigRepository, aggregateCommandListener),
+                        serverConfigRepository, aggregateCommandListener, raidInfoService),
                 new UserConfigCommand(serverConfigRepository, aggregateCommandListener, localeService,
                         userConfigRepository),
                 new RaidStatusCommand(gymRepository, raidRepository, localeService,

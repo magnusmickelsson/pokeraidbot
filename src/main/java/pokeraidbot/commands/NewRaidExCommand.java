@@ -11,6 +11,7 @@ import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.Pokemon;
 import pokeraidbot.domain.pokemon.PokemonRepository;
+import pokeraidbot.domain.raid.PokemonRaidStrategyService;
 import pokeraidbot.domain.raid.Raid;
 import pokeraidbot.domain.raid.RaidRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -24,7 +25,7 @@ import java.util.Locale;
 import static pokeraidbot.Utils.*;
 
 /**
- * Create EX raid (right now only Mewtwo)
+ * Create EX raid
  * !raid ex [Pokemon] [Ends at (yyyy-MM-dd HH:mm)] [Pokestop name]
  */
 public class NewRaidExCommand extends ConfigAwareCommand {
@@ -32,14 +33,16 @@ public class NewRaidExCommand extends ConfigAwareCommand {
     private final RaidRepository raidRepository;
     private final PokemonRepository pokemonRepository;
     private final LocaleService localeService;
+    private final PokemonRaidStrategyService strategyService;
 
     public NewRaidExCommand(GymRepository gymRepository, RaidRepository raidRepository,
                             PokemonRepository pokemonRepository, LocaleService localeService,
                             ServerConfigRepository serverConfigRepository,
-                            CommandListener commandListener) {
+                            CommandListener commandListener, PokemonRaidStrategyService strategyService) {
         super(serverConfigRepository, commandListener, localeService);
         this.pokemonRepository = pokemonRepository;
         this.localeService = localeService;
+        this.strategyService = strategyService;
         this.name = "ex";
         this.help = localeService.getMessageFor(LocaleService.NEW_EX_RAID_HELP, LocaleService.DEFAULT);
         this.gymRepository = gymRepository;
@@ -57,7 +60,7 @@ public class NewRaidExCommand extends ConfigAwareCommand {
         String pokemonName = args[0];
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final Locale locale = localeService.getLocaleForUser(user);
-        if (!Utils.isRaidExPokemon(pokemon.getName())) {
+        if (!Utils.isRaidExPokemon(pokemon.getName(), strategyService, pokemonRepository)) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.NOT_EX_RAID,
                     locale, pokemonName));
         }
