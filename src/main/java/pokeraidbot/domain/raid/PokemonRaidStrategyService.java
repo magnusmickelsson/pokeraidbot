@@ -109,6 +109,7 @@ public class PokemonRaidStrategyService {
             "patrat".toUpperCase(),
             "lillipup".toUpperCase(),
             "klink".toUpperCase(),
+            "beldum".toUpperCase(),
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -133,6 +134,8 @@ public class PokemonRaidStrategyService {
             "gligar".toUpperCase(),
             "feebas".toUpperCase(),
             "yamask".toUpperCase(),
+            "anorith".toUpperCase(),
+            "lileep".toUpperCase(),
             // Tier 3
             "azumarill".toUpperCase(),
             "jynx".toUpperCase(),
@@ -172,6 +175,9 @@ public class PokemonRaidStrategyService {
             "Shiftry".toUpperCase(),
             "Ursaring".toUpperCase(),
             "ninjask".toUpperCase(),
+            "Regice".toUpperCase(),
+            "Regirock".toUpperCase(),
+            "Registeel".toUpperCase(),
             // Tier 5
             "Groudon".toUpperCase(),
             "Kyogre".toUpperCase(),
@@ -180,9 +186,6 @@ public class PokemonRaidStrategyService {
             "Latias".toUpperCase(),
             "Mew".toUpperCase(),
             "Celebi".toUpperCase(),
-            "Regice".toUpperCase(),
-            "Regirock".toUpperCase(),
-            "Registeel".toUpperCase(),
             "Giratina".toUpperCase(),
             "palkia".toUpperCase(),
             "dialga".toUpperCase(),
@@ -192,6 +195,7 @@ public class PokemonRaidStrategyService {
             "mesprit".toUpperCase(),
             "azelf".toUpperCase(),
             "darkrai".toUpperCase(),
+            "cobalion".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -347,6 +351,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Patrat", "452", 1);
         populateRaidInfoForBoss(pokemonRepository, "Lillipup", "523", 1);
         populateRaidInfoForBoss(pokemonRepository, "Klink", "546", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Beldum", "513", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -372,6 +377,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Houndour", "705", 2);
         populateRaidInfoForBoss(pokemonRepository, "Feebas", "157", 2);
         populateRaidInfoForBoss(pokemonRepository, "Yamask", "561", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Anorith", "874", 2);
+        populateRaidInfoForBoss(pokemonRepository, "Lileep", "738", 2);
 
         // Tier 3
         populateRaidInfoForBoss(pokemonRepository, "Azumarill", "849", 3);
@@ -413,14 +420,14 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Shiftry", "1333", 4);
         populateRaidInfoForBoss(pokemonRepository, "Ursaring", "1682", 4);
         populateRaidInfoForBoss(pokemonRepository, "Ninjask", "1125", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Registeel", "1398", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Regice", "1784", 4);
+        populateRaidInfoForBoss(pokemonRepository, "Regirock", "1784", 4);
 
         // Tier 5
         populateRaidInfoForBoss(pokemonRepository, "Groudon", "2328", 5);
         populateRaidInfoForBoss(pokemonRepository, "Latios", "2082", 5);
         populateRaidInfoForBoss(pokemonRepository, "Kyogre", "2328", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Registeel", "1292", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Regice", "1764", 5);
-        populateRaidInfoForBoss(pokemonRepository, "Regirock", "1764", 5);
         populateRaidInfoForBoss(pokemonRepository, "Rayquaza", "2083", 5);
         populateRaidInfoForBoss(pokemonRepository, "Latias", "1929", 5);
         populateRaidInfoForBoss(pokemonRepository, "Mew", "1766", 5);
@@ -435,6 +442,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Mesprit", "1669", 5);
         populateRaidInfoForBoss(pokemonRepository, "Azelf", "1834", 5);
         populateRaidInfoForBoss(pokemonRepository, "Darkrai", "2136", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Cobalion", "1727", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }

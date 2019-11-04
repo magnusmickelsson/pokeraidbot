@@ -115,7 +115,7 @@ public class RaidPokemonsTest {
 
         raidInfo = strategyService.getRaidInfo(pokemonRepository.search("registeel", null));
         assertNotNull(raidInfo);
-        assertThat(raidInfo.getBossTier(), is(5));
+        assertThat(raidInfo.getBossTier(), is(4));
         counters = strategyService.getCounters(raidInfo.getPokemon());
         assertThat(counters.getGoodCounters().size(), is(3));
         assertThat(counters.getSupremeCounters().size(), is(4));
