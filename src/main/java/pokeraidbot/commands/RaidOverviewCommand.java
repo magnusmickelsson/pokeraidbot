@@ -92,8 +92,22 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             final Map<String, String> messages = getOverviewMessagesMap(config,
                     localeService, raidRepository, clockService, locale, strategyService);
             final EmbedBuilder embedBuilder = new EmbedBuilder();
+            int messageSize = 0;
+            boolean isOverLimit = false;
             for (String boss : messages.keySet()) {
-                embedBuilder.addField(boss, messages.get(boss), false);
+                String bossFieldContent = messages.get(boss);
+                if (messageSize + bossFieldContent.length() < 5500) {
+                    embedBuilder.addField(boss, bossFieldContent, false);
+                    messageSize = messageSize + boss.length() + bossFieldContent.length();
+                } else {
+                    isOverLimit = true;
+                }
+            }
+            if (isOverLimit) {
+                // TODO: i18n
+                embedBuilder.addField("Varning:", "Tyvärr överskrider översikten maxstorleken för " +
+                        "Discord-meddelanden och behöver därför kortas ner tills vidare. " +
+                        "Alla raider kommer inte listas.", false);
             }
             final MessageEmbed messageEmbed = embedBuilder.build();
             commandEvent.getChannel().sendMessage(messageEmbed).queue(msg -> {
