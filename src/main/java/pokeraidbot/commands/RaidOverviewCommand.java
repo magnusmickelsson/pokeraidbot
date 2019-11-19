@@ -96,7 +96,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             boolean isOverLimit = false;
             for (String boss : messages.keySet()) {
                 String bossFieldContent = messages.get(boss);
-                if (messageSize + bossFieldContent.length() < 5500) {
+                if (embedBuilder.length() < 5500) {
                     embedBuilder.addField(boss, bossFieldContent, false);
                     messageSize = messageSize + boss.length() + bossFieldContent.length();
                 } else {
@@ -205,13 +205,15 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                 fields.put(counter, currentFieldString);
                 currentPosition = splitAt + 1;
                 currentSearchPosition = splitAt + 900;
-            } while (currentSearchPosition < bossMessage.length());
+            } while (currentSearchPosition < bossMessage.length() && embedBuilder.length() < 4500);
 
             fields.put(counter + 1, bossMessage.substring(currentPosition));
 
             final int fieldsSize = fields.size();
             for (Integer fieldKey : fields.keySet()) {
-                embedBuilder.addField(boss + " " + fieldKey + "/" + fieldsSize, fields.get(fieldKey), false);
+                if (embedBuilder.length() + fields.get(fieldKey).length() < 5500) {
+                    embedBuilder.addField(boss + " " + fieldKey + "/" + fieldsSize, fields.get(fieldKey), false);
+                }
             }
         }
     }

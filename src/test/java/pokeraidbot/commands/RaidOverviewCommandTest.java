@@ -32,7 +32,8 @@ public class RaidOverviewCommandTest {
 
         builder = new EmbedBuilder();
         RaidOverviewCommand.addFieldSplitMessageIfNeeded(builder, "Testboss", longMessage);
-        assertThat(builder.getFields().size(), is(7));
+        // Since message is too long according to discord embed message limit, size should be 5.
+        assertThat(builder.getFields().size(), is(5));
         String firstField = builder.getFields().get(0).getValue();
         // Verify we strip the /n char when splitting fields
         assertThat(firstField.endsWith("\n"), is(false));
