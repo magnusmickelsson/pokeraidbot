@@ -96,7 +96,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             boolean isOverLimit = false;
             for (String boss : messages.keySet()) {
                 String bossFieldContent = messages.get(boss);
-                if (embedBuilder.length() < 5500) {
+                if (embedBuilder.length() < 4500) {
                     embedBuilder.addField(boss, bossFieldContent, false);
                     messageSize = messageSize + boss.length() + bossFieldContent.length();
                 } else {
@@ -150,15 +150,19 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                         addFieldSplitMessageIfNeeded(embedBuilder, boss, bossMessage);
                     }
                     final MessageEmbed newEmbed = embedBuilder.build();
-                    messageChannel.editMessageById(messageId, newEmbed)
-                            .queue(m -> {
-                            }, m -> {
-                                LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
-                                if (m instanceof SocketTimeoutException) {
-                                    LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
-                                            "down. Let's not clean up things before we know if it works or not.");
-                                }
-                            });
+                    if (newEmbed.getLength() < 5900) {
+                        messageChannel.editMessageById(messageId, newEmbed)
+                                .queue(m -> {
+                                }, m -> {
+                                    LOGGER.warn(m.getClass().getSimpleName() + " thrown: " + m.getMessage());
+                                    if (m instanceof SocketTimeoutException) {
+                                        LOGGER.debug("We got a socket timeout, which could be that the server is temporarily " +
+                                                "down. Let's not clean up things before we know if it works or not.");
+                                    }
+                                });
+                    } else {
+                        LOGGER.warn("Update message is too big for server " + server + ", so skipping the update.");
+                    }
                     return true;
                 } else {
                     LOGGER.warn("Could not find message for overview - config ID: " +
@@ -211,7 +215,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
 
             final int fieldsSize = fields.size();
             for (Integer fieldKey : fields.keySet()) {
-                if (embedBuilder.length() + fields.get(fieldKey).length() < 5500) {
+                if (embedBuilder.length() + fields.get(fieldKey).length() < 4700) {
                     embedBuilder.addField(boss + " " + fieldKey + "/" + fieldsSize, fields.get(fieldKey), false);
                 }
             }
