@@ -3,7 +3,6 @@ package pokeraidbot.domain;
 import net.dv8tion.jda.core.entities.User;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import pokeraidbot.TestServerMain;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.GymNotFoundException;
@@ -20,8 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.text.MatchesPattern.matchesPattern;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -89,6 +88,18 @@ public class GymRepositoryTest {
                 final Gym gymFromRepo = repo.findByName(gym.getName(), region);
                 assertThat("Seems we have a duplicate for gymname: " + gym.getName() +
                         " \n" + gymFromRepo.toStringDetails() + " != " + gym.toStringDetails(), gymFromRepo, is(gym));
+            }
+        }
+    }
+
+
+    @Test
+    public void allLocationsHasCorrectFormat() {
+        Map<String, Set<Gym>> gymData = repo.getAllGymData();
+        for (Set<Gym> gyms : gymData.values()) {
+            for (Gym gym : gyms) {
+                assertThat(gym.getX(), matchesPattern("\\-?[0-9]+\\.[0-9]+"));
+                assertThat(gym.getY(), matchesPattern("\\-?[0-9]+\\.[0-9]+"));
             }
         }
     }
