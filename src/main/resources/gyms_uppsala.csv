@@ -165,7 +165,7 @@ ID;LOCATION;NAME;AREA
 9670244;"59.863559;17.645396";PaRad;Uppsala
 245897;"59.946166;17.528961";Bälinge Kyrka;Uppsala
 49123864;"59.863966000000005;17.734154";Danska stenen;Uppsala
-3689818;"59.832674;17.622048";Stadsskogen SE;Uppsala
+3689818;"59.832674;17.622048";Stadsskogen SW;Uppsala
 12013109;"59.886029;17.637362";Ödhumla och Särimner;Uppsala
 36553317;"59.724413;17.776155";Art Wall of Angby;Uppsala
 3690239;"59.846118;17.691653";Cows;Uppsala
@@ -258,7 +258,7 @@ ID;LOCATION;NAME;AREA
 2000000027;"59.87047;17.6905";Timjansgatan Lekplats;Uppsala
 2000000028;"59.86665;17.69087";Årstaparken;Uppsala
 2000000029;"59.805514;17.626571";Jenny Lind Mural;Uppsala
-2000000030;"59.826088;17.631286";Malma backe statue;Uppsala
+2000000030;"59.826088;17.631286";Malma backe;Uppsala
 2000000031;"59.834612;17.605767";Norby Soldattorp;Uppsala
 2000000032;"59.856714;17.600551";Får I Hagen;Uppsala
 2000000033;"59.833864;17.637211";Kronparken (Rosendal);Uppsala
@@ -269,7 +269,6 @@ ID;LOCATION;NAME;AREA
 2000000038;"59.821764;17.625374";Nice Ice Arena;Uppsala
 2000000039;"59.8922790;17.6356238";Yrsa fotbollsplaner;Uppsala
 2000000040;"59.8204637;17.6562655";Wave mosaic mural;Uppsala
-2000000041;"59.8261437;17.6309578";Malma Backe;Uppsala
 2000000042;"59.847428;17.595113";Norra lekplatsen på Säves väg;Uppsala
 2000000043;"59.81066;17.702919";Sävja Kulturcentrum;Uppsala
 2000000044;"59.795047;17.661237";Getryggen;Uppsala
@@ -315,3 +314,18 @@ ID;LOCATION;NAME;AREA
 2000000084;"59.9570471;17.5729923";Lekparken vid Blåtistelvägen;Uppsala
 2000000085;"59.785087;17.645845";Friluftsgården Alnäs;Uppsala
 2000000086;"59.826858;17.626420";Skivlingsparken;Uppsala
+2000000087;"59.854850;17.708419";Elefant (Fyrislund);Uppsala
+2000000088;"59.827175;17.595637";Södra Norbybron;Uppsala
+2000000089;"59.861438;17.611551";Bugande giraffe;Uppsala
+2000000090;"59.802536;17.634364";Marsvinet;Uppsala
+2000000091;"59.796827;17.628106";Cembratallarna;Uppsala
+2000000092;"59.798291;17.625461";Alkärret;Uppsala
+2000000093;"59.793748;17.631055";Lärkträdet;Uppsala
+2000000094;"59.787682;17.630602";Hamlade Asken;Uppsala
+2000000095;"59.829994;17.57856";Orienteringstavla 4 utmed Hågapromenaden;Uppsala
+2000000096;"59.791024;17.623178";Vårdsätra naturreservat;Uppsala
+2000000097;"59.8317738;17.5408933";Blåvingarnas paradis;Uppsala
+2000000098;"59.800744;17.648569";Svalparken;Uppsala
+2000000099;"59.804774;17.646025";Beachvolleyboll i Lilla Sunnersta;Uppsala
+2000000100;"60.0417045;17.5589392";Granbolundsvägens fotbollsplan;Uppsala
+2000000101;"59.9730214;17.5923400";Ärentuna Sportklubb;Uppsala
