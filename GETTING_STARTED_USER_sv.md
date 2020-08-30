@@ -135,7 +135,7 @@ Lycka till!
 
 * Kan jag rapportera ägg innan en raidboss kläckts?
 
-**Ja.** Man kan ersätta raidbossens namn med Egg1-5, beroende på bossnivå. Om det är ett tier 5-ägg, blir
+**Ja.** Man kan ersätta raidbossens namn med Egg1-6, beroende på bossnivå. Om det är ett tier 5-ägg, blir
 pokemonnamn "Egg5". Exempel på hur man skapar en raid för ett tier5-ägg som kläcks kl 9.00 vid gymmet Blenda:
 
     !raid start Egg5 9:00 Blenda

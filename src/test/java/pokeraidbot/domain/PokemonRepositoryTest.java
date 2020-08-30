@@ -75,6 +75,7 @@ public class PokemonRepositoryTest {
         assertEggExistsForTier(eggName, eggSearchName, 3);
         assertEggExistsForTier(eggName, eggSearchName, 4);
         assertEggExistsForTier(eggName, eggSearchName, 5);
+        assertEggExistsForTier(eggName, eggSearchName, 6);
     }
 
     private void assertEggExistsForTier(String eggName, String eggSearchName, int eggTier) {

@@ -140,7 +140,7 @@ Good luck and have fun!
 
 * Can I report an egg without the raidboss having hatched?
 
-**Yes.** You can replace the raidboss' name with Egg1-5, depending on the tier of the raid (level 1-5).
+**Yes.** You can replace the raidboss' name with Egg1-6, depending on the tier of the raid (level 1-6).
 
 If the boss is an unhatched tier 5 boss, the pokemon name should be "Egg5". 
 

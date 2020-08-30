@@ -14,7 +14,7 @@ public class PokemonRaidInfo {
     public PokemonRaidInfo(Pokemon pokemon, int maxCp, int bossTier) {
         Validate.notNull(pokemon, "Pokemon");
         Validate.isTrue(maxCp > 0 && maxCp < 4000, "Max CP for raidboss is in interval 0 to 3000");
-        Validate.isTrue(bossTier > 0 && bossTier < 6, "Raid bosses are in tier 1 to 5");
+        Validate.isTrue(bossTier > 0 && bossTier <= 6, "Raid bosses are in tier 1 to 6"); // Support mega bosses
         this.pokemon = pokemon;
         this.maxCp = maxCp;
         this.bossTier = bossTier;

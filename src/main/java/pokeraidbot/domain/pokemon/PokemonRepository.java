@@ -20,6 +20,7 @@ public class PokemonRepository {
     public static final String EGG_3 = "Egg3";
     public static final String EGG_4 = "Egg4";
     public static final String EGG_5 = "Egg5";
+    public static final String EGG_6 = "Egg6";
     private Map<String, Pokemon> pokemons = new LinkedHashMap<>();
 
     public PokemonRepository(String resourceName, LocaleService localeService) {
@@ -44,6 +45,9 @@ public class PokemonRepository {
                     "", new HashSet<>(),
                     new HashSet<>()));
             this.pokemons.put("EGG5", new Pokemon(99995, EGG_5, "Tier 5 egg", PokemonTypes.NONE,
+                    "", new HashSet<>(),
+                    new HashSet<>()));
+            this.pokemons.put("EGG6", new Pokemon(99994, EGG_6, "Tier 6 egg", PokemonTypes.NONE,
                     "", new HashSet<>(),
                     new HashSet<>()));
         } catch (Throwable e) {
