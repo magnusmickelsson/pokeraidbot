@@ -60,12 +60,15 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         String pokemonName = args[0].trim().toLowerCase();
         final String[] gymArguments = ArrayUtils.removeAll(args, 0);
         String gymName = StringUtils.join(gymArguments, " ");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Getting data for hatching part 1...");
+        }
         final String region = config.getRegion();
         final Gym gym = gymRepository.search(user, gymName, region);
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, region, user);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Getting data for hatching...");
+            LOGGER.debug("Getting data for hatching part 2...");
         }
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final PokemonRaidInfo existingRaidInfo = raidStrategyService.getRaidInfo(raid.getPokemon());
