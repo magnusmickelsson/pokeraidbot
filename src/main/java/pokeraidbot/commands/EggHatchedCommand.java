@@ -64,15 +64,25 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         final Gym gym = gymRepository.search(user, gymName, region);
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, region, user);
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Getting data for hatching...");
+        }
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final PokemonRaidInfo existingRaidInfo = raidStrategyService.getRaidInfo(raid.getPokemon());
         final PokemonRaidInfo hatchRaidInfo = raidStrategyService.getRaidInfo(pokemon);
         // We allow null hatch info if it's a new boss that doesn't have tier/counter data yet
         final int newBossTier = hatchRaidInfo != null ? hatchRaidInfo.getBossTier() : existingRaidInfo.getBossTier();
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Check if egg is an egg or has been hatched already: " + raid.getPokemon().isEgg());
+        }
+
         if (!raid.getPokemon().isEgg()) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.EGG_ALREADY_HATCHED,
                             localeService.getLocaleForUser(user), raid.getPokemon().toString()));
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Check if trying to hatch to an egg or if tier is wrong: " + existingRaidInfo.getBossTier() + " to " + newBossTier);
         }
         // Mega raids could be hatched to whatever in the future so be more lenient here
         if (pokemon.isEgg() || (existingRaidInfo.getBossTier() != 6 && newBossTier != existingRaidInfo.getBossTier())) {
