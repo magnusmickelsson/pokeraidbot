@@ -319,6 +319,12 @@ public class GymHuntrRaidEventListener implements EventListener {
                     .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
             gym = title.split("has a level 5")[0].trim();
             pokemon = getTier5RaidBossBasedOnSeason(clockService);
+        } else if (title.contains("has a level 6") && description.contains("will hatch")) {
+            final String[] descriptionSplit = description.split(" ");
+            timeString = printTime(LocalTime.parse(descriptionSplit[descriptionSplit.length - 3])
+                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            gym = title.split("has a level 6")[0].trim();
+            pokemon = PokemonRepository.EGG_6;
         } else {
             return new ArrayList<>(); // We shouldn't create a raid for this case, non-tier 5 egg
         }
@@ -364,6 +370,19 @@ public class GymHuntrRaidEventListener implements EventListener {
                     .plusSeconds(Long.parseLong(timeArguments[2]))
                     .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
             pokemon = getTier5RaidBossBasedOnSeason(clockService);
+        } else if (title.contains("Level 6 Raid is starting soon!")) {
+            final String[] firstPass = description.replaceAll("[*]", "")
+                    .replaceAll("[.]", "")
+                    .replaceAll("Raid Starting: ", "").split("\n");
+            gym = firstPass[0].trim();
+            final String[] timeArguments = firstPass[1].replaceAll("hours ", "")
+                    .replaceAll("min ", "").replaceAll("sec", "").split(" ");
+            timeString = printTime(clockService.getCurrentTime()
+                    .plusHours(Long.parseLong(timeArguments[0]))
+                    .plusMinutes(Long.parseLong(timeArguments[1]))
+                    .plusSeconds(Long.parseLong(timeArguments[2]))
+                    .plusMinutes(Utils.RAID_DURATION_IN_MINUTES));
+            pokemon = PokemonRepository.EGG_6;
         } else {
             return new ArrayList<>(); // = We shouldn't create this raid, since it is a non-tier 5 egg
         }

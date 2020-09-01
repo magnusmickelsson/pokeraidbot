@@ -74,7 +74,8 @@ public class EggHatchedCommand extends ConfigAwareCommand {
                     localeService.getMessageFor(LocaleService.EGG_ALREADY_HATCHED,
                             localeService.getLocaleForUser(user), raid.getPokemon().toString()));
         }
-        if (pokemon.isEgg() || newBossTier != existingRaidInfo.getBossTier()) {
+        // Mega raids could be hatched to whatever in the future so be more lenient here
+        if (pokemon.isEgg() || (existingRaidInfo.getBossTier() != 6 && newBossTier != existingRaidInfo.getBossTier())) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EGG_WRONG_TIER,
                     localeService.getLocaleForUser(user)));
         }
