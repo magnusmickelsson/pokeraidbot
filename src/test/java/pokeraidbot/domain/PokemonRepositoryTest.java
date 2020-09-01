@@ -79,7 +79,9 @@ public class PokemonRepositoryTest {
     }
 
     private void assertEggExistsForTier(String eggName, String eggSearchName, int eggTier) {
-        Pokemon pokemon = pokemonRepository.search(eggName + eggTier, null);
+        Pokemon pokemon = pokemonRepository.getByName(eggName + eggTier);
+        assertThat(pokemon != null, is(true));
+        pokemon = pokemonRepository.search(eggName + eggTier, null);
         assertThat(pokemon != null, is(true));
         assertThat(pokemon.getTypes(), is(new PokemonTypes()));
         Pokemon search = pokemonRepository.search(eggSearchName + eggTier, null);

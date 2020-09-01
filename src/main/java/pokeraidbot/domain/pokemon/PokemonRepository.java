@@ -47,7 +47,7 @@ public class PokemonRepository {
             this.pokemons.put("EGG5", new Pokemon(99995, EGG_5, "Tier 5 egg", PokemonTypes.NONE,
                     "", new HashSet<>(),
                     new HashSet<>()));
-            this.pokemons.put("EGG6", new Pokemon(99994, EGG_6, "Tier 6 egg", PokemonTypes.NONE,
+            this.pokemons.put("EGG6", new Pokemon(99994, EGG_6, "MEGA raid", PokemonTypes.NONE,
                     "", new HashSet<>(),
                     new HashSet<>()));
         } catch (Throwable e) {

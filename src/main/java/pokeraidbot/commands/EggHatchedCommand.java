@@ -52,7 +52,6 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
-        LOGGER.debug("Hatch arguments: " + commandEvent.getArgs());
         if (args.length < 2) {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
@@ -61,35 +60,23 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         String pokemonName = args[0].trim().toLowerCase();
         final String[] gymArguments = ArrayUtils.removeAll(args, 0);
         String gymName = StringUtils.join(gymArguments, " ");
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Getting data for hatching part 1...");
-        }
         final String region = config.getRegion();
         final Gym gym = gymRepository.search(user, gymName, region);
         final Raid raid = raidRepository.getActiveRaidOrFallbackToExRaid(gym, region, user);
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Getting data for hatching part 2...");
-        }
         final Pokemon pokemon = pokemonRepository.search(pokemonName, user);
         final PokemonRaidInfo existingRaidInfo = raidStrategyService.getRaidInfo(raid.getPokemon());
         final PokemonRaidInfo hatchRaidInfo = raidStrategyService.getRaidInfo(pokemon);
         // We allow null hatch info if it's a new boss that doesn't have tier/counter data yet
         final int newBossTier = hatchRaidInfo != null ? hatchRaidInfo.getBossTier() : existingRaidInfo.getBossTier();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Check if egg is an egg or has been hatched already: " + raid.getPokemon().isEgg());
-        }
 
         if (!raid.getPokemon().isEgg()) {
             throw new UserMessedUpException(user,
                     localeService.getMessageFor(LocaleService.EGG_ALREADY_HATCHED,
                             localeService.getLocaleForUser(user), raid.getPokemon().toString()));
         }
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Check if trying to hatch to an egg or if tier is wrong: " + existingRaidInfo.getBossTier() + " to " + newBossTier);
-        }
         // Mega raids could be hatched to whatever in the future so be more lenient here
-        if (pokemon.isEgg() || (existingRaidInfo.getBossTier() != 6 && newBossTier != existingRaidInfo.getBossTier())) {
+        if (pokemon.isEgg() || (existingRaidInfo != null && existingRaidInfo.getBossTier() != 6 && newBossTier != existingRaidInfo.getBossTier())) {
             throw new UserMessedUpException(user, localeService.getMessageFor(LocaleService.EGG_WRONG_TIER,
                     localeService.getLocaleForUser(user)));
         }
