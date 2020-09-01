@@ -180,9 +180,17 @@ public class RaidRepository {
     private Raid getRaidInstance(RaidEntity raidEntity) {
         Validate.notNull(raidEntity);
         final String region = raidEntity.getRegion();
-        final Raid raid = new Raid(pokemonRepository.getByName(raidEntity.getPokemon()),
+        Pokemon pokemon = pokemonRepository.getByName(raidEntity.getPokemon());
+        if (pokemon == null) {
+            LOGGER.warn("Could not find pokemon for this raid in repository: " + raidEntity.getPokemon());
+        }
+        Gym gym = gymRepository.findByName(raidEntity.getGym(), region);
+        if (gym == null) {
+            LOGGER.warn("Could not find gym for this raid in repository: " + raidEntity.getGym());
+        }
+        final Raid raid = new Raid(pokemon,
                 raidEntity.getEndOfRaid(),
-                gymRepository.findByName(raidEntity.getGym(), region), localeService, region, raidEntity.isExRaid());
+                gym, localeService, region, raidEntity.isExRaid());
         raid.setCreator(raidEntity.getCreator());
         raid.setId(raidEntity.getId());
         Map<String, SignUp> signUps = new ConcurrentHashMap<>();

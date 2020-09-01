@@ -52,6 +52,7 @@ public class EggHatchedCommand extends ConfigAwareCommand {
         final User user = commandEvent.getAuthor();
         final String userName = user.getName();
         final String[] args = commandEvent.getArgs().split(" ");
+        LOGGER.debug("Hatch arguments: " + commandEvent.getArgs());
         if (args.length < 2) {
             throw new UserMessedUpException(userName,
                     localeService.getMessageFor(LocaleService.BAD_SYNTAX, localeService.getLocaleForUser(user),
