@@ -345,6 +345,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "egg5", "1", 5);
         populateRaidInfoForBoss(pokemonRepository, "Ho-oh", "2222", 5);
 
+        // MEGA
+        populateRaidInfoForBoss(pokemonRepository, "egg6", "1", 6);
+
         // ==== Gen 3+ ====
         // Tier 1
         populateRaidInfoForBoss(pokemonRepository, "Wailmer", "838", 1);
