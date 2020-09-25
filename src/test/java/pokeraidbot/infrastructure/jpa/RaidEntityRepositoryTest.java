@@ -18,6 +18,7 @@ import pokeraidbot.infrastructure.jpa.raid.RaidGroup;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -51,10 +52,10 @@ public class RaidEntityRepositoryTest {
     public void createWithGroup() throws Exception {
         final String id = "id1";
         RaidEntity raidEntity = new RaidEntity(id, "Mupp",
-                LocalDateTime.now().plusMinutes(20),
+                format(LocalDateTime.now().plusMinutes(20)),
                 "Thegym", "Theuser", "Theregion", false);
         final RaidGroup group = new RaidGroup("testserver", "channel", "abc1", "abc2", "testId",
-                LocalDateTime.now().plusMinutes(10));
+                format(LocalDateTime.now().plusMinutes(10)));
         assertThat(raidEntity.addGroup(group), is(true));
         raidEntity = entityRepository.save(raidEntity);
         final RaidEntity loaded = entityRepository.findOne(id);
@@ -68,11 +69,15 @@ public class RaidEntityRepositoryTest {
         assertThat(groupsForServer.iterator().next(), is(group));
     }
 
+    private LocalDateTime format(LocalDateTime localDateTime) {
+        return localDateTime.truncatedTo(ChronoUnit.MILLIS);
+    }
+
     @Test
     public void createAndGet() throws Exception {
         final String id = "id1";
         final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
-                LocalDateTime.now().plusMinutes(20),
+                format(LocalDateTime.now().plusMinutes(20)),
                 "Thegym", "Theuser", "Theregion", false));
         assertNotNull(raidEntity);
         assertThat(entityRepository.findOne(id), is(raidEntity));
@@ -82,7 +87,7 @@ public class RaidEntityRepositoryTest {
     public void createEx() {
         final String id = "id1";
         final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
-                LocalDateTime.now().plusMinutes(20),
+                format(LocalDateTime.now().plusMinutes(20)),
                 "Thegym", "Theuser", "Theregion", true));
         RaidEntity loadedEntity = entityRepository.findOne(id);
         assertThat(loadedEntity.isExRaid(), is(true));
@@ -93,7 +98,7 @@ public class RaidEntityRepositoryTest {
     public void createWithSignupsTryToCleanUpWithoutConcurrentModificationException() throws Exception {
         final String id = "id1";
         final RaidEntity raidEntity = entityRepository.save(new RaidEntity(id, "Mupp",
-                LocalDateTime.now().plusMinutes(20),
+                format(LocalDateTime.now().plusMinutes(20)),
                 "Thegym", "Theuser", "Theregion", false));
         final LocalTime now = LocalTime.now();
 
