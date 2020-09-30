@@ -1,13 +1,13 @@
 package pokeraidbot.domain.raid.signup;
 
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.message.guild.react.GenericGuildMessageReactionEvent;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionRemoveEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GenericGuildMessageReactionEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +81,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         String reactionMessageId = null;
         User user = null;
         if (emoteMessageId == null && infoMessageId == null) {
@@ -207,7 +207,7 @@ public class EmoticonSignUpMessageListener implements EventListener {
         }
     }
 
-    private String printInfoAbout(Event event) {
+    private String printInfoAbout(GenericEvent event) {
         try {
             StringBuilder sb = new StringBuilder();
             if (event == null) {

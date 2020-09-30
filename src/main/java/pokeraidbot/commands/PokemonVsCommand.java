@@ -1,7 +1,7 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.command.CommandListener;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;

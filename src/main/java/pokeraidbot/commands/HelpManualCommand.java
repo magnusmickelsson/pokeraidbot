@@ -1,7 +1,7 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.command.CommandListener;
 import main.BotServerMain;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.config.LocaleService;
@@ -66,7 +66,7 @@ public class HelpManualCommand extends ConfigAwareCommand {
 
         // If bad arguments
         if (args.length < 1 || args.length > 2) {
-            commandEvent.replyInDM(helpText);
+            commandEvent.replyInDm(helpText);
         } else { // If user wants full manual (=ALL)
             final String replyIn = args.length > 1 ? args[1] : null;
             if ("ALL".equalsIgnoreCase(args[0])) {
@@ -86,14 +86,14 @@ public class HelpManualCommand extends ConfigAwareCommand {
                                                      String replyIn,
                                                      Map<String, String> helpTopicTexts) {
         if (helpTopicTexts == null) {
-            commandEvent.replyInDM(helpText);
+            commandEvent.replyInDm(helpText);
         } else {
             final String text = helpTopicTexts.get(language);
             if (text == null) {
-                commandEvent.replyInDM(helpText);
+                commandEvent.replyInDm(helpText);
             } else {
                 if (!StringUtils.isEmpty(replyIn) && (replyIn.equalsIgnoreCase("dm"))) {
-                    commandEvent.replyInDM(text);
+                    commandEvent.replyInDm(text);
                 } else {
                     replyBasedOnConfigAndRemoveAfter(config, commandEvent, text,
                             BotServerMain.timeToRemoveFeedbackInSeconds * 3);

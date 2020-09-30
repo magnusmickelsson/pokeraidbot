@@ -1,14 +1,14 @@
 package pokeraidbot;
 
-import com.jagrosh.jdautilities.commandclient.CommandClient;
-import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import com.jagrosh.jdautilities.commandclient.examples.AboutCommand;
-import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
-import com.jagrosh.jdautilities.waiter.EventWaiter;
-import net.dv8tion.jda.core.*;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.hooks.EventListener;
+import com.jagrosh.jdautilities.command.CommandClient;
+import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.jagrosh.jdautilities.command.CommandListener;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import com.jagrosh.jdautilities.examples.command.AboutCommand;
+import com.jagrosh.jdautilities.examples.command.PingCommand;
+import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,7 +102,7 @@ public class BotService {
         client.setEmojis(Emotes.OK, "\uD83D\uDE2E", Emotes.ERROR);
         client.setPrefix("!raid ");
         client.setAlternativePrefix("!r ");
-        client.setGame(Game.of(Game.GameType.DEFAULT, "Type !raid usage"));
+        client.setActivity(Activity.playing("Type !raid usage"));
         client.addCommands(
                 new WhatsNewCommand(serverConfigRepository, aggregateCommandListener, localeService),
                 new HelpManualCommand(localeService, serverConfigRepository, aggregateCommandListener),
@@ -174,23 +174,23 @@ public class BotService {
 
                     // set the game for when the bot is loading
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                    .setGame(Game.of(Game.GameType.DEFAULT, "loading..."))
+                    .setActivity(Activity.playing("loading..."))
 
                     // Network-related settings
                     .setRequestTimeoutRetry(true)
                     .setAutoReconnect(true)
 
                     // add the listeners
-                    .addEventListener(waiter)
-                    .addEventListener(commandClient)
+                    .addEventListeners(waiter,
+                            commandClient,
 //                    .addEventListener(eventLoggingListener)
-                    .addEventListener(startUpEventListener)
-                    .addEventListener(plusCommandEventListener)
-                    .addEventListener(minusCommandEventListener)
-                    .addEventListener(gymHuntrRaidEventListener)
+                    startUpEventListener,
+                    plusCommandEventListener,
+                    minusCommandEventListener,
+                    gymHuntrRaidEventListener)
 
                     // start it up!
-                    .buildBlocking();
+                    .build();
             LOGGER.info("JDA client started.");
 
             LOGGER.info("Setting up event listeners...");
@@ -198,7 +198,7 @@ public class BotService {
                 botInstance.addEventListener(extraListener);
                 LOGGER.info("Added extra event listener after initialization: " + extraListener);
             }
-        } catch (LoginException | InterruptedException e) {
+        } catch (LoginException e) {
             throw new RuntimeException(e);
         }
     }

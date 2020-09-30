@@ -1,7 +1,7 @@
 package pokeraidbot;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.entities.User;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.ClockService;

@@ -1,14 +1,15 @@
 package pokeraidbot.infrastructure.botsupport.gymhuntr;
 
 import main.BotServerMain;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -68,7 +69,7 @@ public class GymHuntrRaidEventListener implements EventListener {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         if (event instanceof GuildMessageReceivedEvent) {
             GuildMessageReceivedEvent guildEvent = (GuildMessageReceivedEvent) event;
             final User messageAuthor = guildEvent.getAuthor();

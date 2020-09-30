@@ -1,8 +1,8 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.entities.User;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.command.CommandListener;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.BotService;

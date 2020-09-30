@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure.jpa.config;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.pokemon.Pokemon;

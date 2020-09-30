@@ -1,7 +1,7 @@
 package pokeraidbot.commands;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

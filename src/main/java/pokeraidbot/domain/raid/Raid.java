@@ -1,6 +1,6 @@
 package pokeraidbot.domain.raid;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import pokeraidbot.Utils;

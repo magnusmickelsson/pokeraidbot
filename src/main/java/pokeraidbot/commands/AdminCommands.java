@@ -1,19 +1,18 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
 import main.BotServerMain;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.BotService;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
-import pokeraidbot.domain.gym.Gym;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.domain.pokemon.PokemonRepository;
 import pokeraidbot.domain.raid.Raid;
@@ -28,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -74,7 +72,7 @@ public class AdminCommands extends Command {
     protected void execute(CommandEvent event) {
         final User user = event.getAuthor();
         if (user == null || user.getId() == null || (!user.getId().equals(BotServerMain.BOT_CREATOR_USERID))) {
-            event.replyInDM("This command is reserved only for bot creator. Hands off! ;p Your user ID was: " +
+            event.replyInDm("This command is reserved only for bot creator. Hands off! ;p Your user ID was: " +
                     String.valueOf(user.getId()));
             return;
         } else {
@@ -83,11 +81,11 @@ public class AdminCommands extends Command {
                 String userId = eventArgs.replaceAll("userconfig\\s{1,3}", "");
                 final UserConfig userConfig = userConfigRepository.findOne(userId);
                 if (userConfig == null) {
-                    event.replyInDM("No user with ID " + userId);
+                    event.replyInDm("No user with ID " + userId);
                     return;
                 } else {
                     userConfigRepository.delete(userConfig);
-                    event.replyInDM("Removed user configuration for user with ID " + userId);
+                    event.replyInDm("Removed user configuration for user with ID " + userId);
                     return;
                 }
             } else if (eventArgs.startsWith("permissions")) {
@@ -98,7 +96,7 @@ public class AdminCommands extends Command {
                 for (Guild guild : guilds) {
                     final Member member = guild.getMember(bot.getSelfUser());
                     if (member == null) {
-                        event.replyInDM("Could not get bot as servermember!");
+                        event.replyInDm("Could not get bot as servermember!");
                         return;
                     }
                     sb.append("*").append(guild.getName()).append("*\n");
@@ -108,11 +106,11 @@ public class AdminCommands extends Command {
                     }
                     sb.append("\n\n");
                 }
-                event.replyInDM(sb.toString());
+                event.replyInDm(sb.toString());
                 return;
             } else if (eventArgs.startsWith("clear tracking")) {
                 trackingCommandListener.clearCache();
-                event.replyInDM("Cleared tracking cache.");
+                event.replyInDm("Cleared tracking cache.");
                 return;
             } else if (eventArgs.startsWith("announce")) {
                 final JDA bot = botService.getBot();
@@ -128,7 +126,7 @@ public class AdminCommands extends Command {
                                 .append(": ").append(t.getMessage()).append("\n");
                     }
                 }
-                event.replyInDM(sb.toString());
+                event.replyInDm(sb.toString());
                 return;
             } else if (eventArgs.startsWith("ismember")) {
                 String userIdAndGuildName = eventArgs.replaceAll("ismember\\s{1,3}", "");

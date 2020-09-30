@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.FluentIterable;
 import org.apache.commons.lang3.Validate;

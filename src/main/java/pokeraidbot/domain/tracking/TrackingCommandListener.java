@@ -1,7 +1,7 @@
 package pokeraidbot.domain.tracking;
 
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.entities.User;
+import com.jagrosh.jdautilities.command.CommandListener;
+import net.dv8tion.jda.api.entities.User;
 import pokeraidbot.infrastructure.jpa.config.Config;
 
 import java.util.Set;

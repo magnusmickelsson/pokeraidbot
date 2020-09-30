@@ -1,11 +1,10 @@
 package pokeraidbot.jda;
 
-import main.BotServerMain;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ public class SignupWithPlusCommandListener implements EventListener {
 
     public static final String plusXRegExp = "^[+]\\d{1,2}\\s{1,2}\\d{1,2}[:.]?\\d{2}\\s{1,2}.*";
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         if (event instanceof GuildMessageReceivedEvent) {
             final GuildMessageReceivedEvent guildMessageReceivedEvent = (GuildMessageReceivedEvent) event;
             if (guildMessageReceivedEvent.getAuthor().isBot()) {

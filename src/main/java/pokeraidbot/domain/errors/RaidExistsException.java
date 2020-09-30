@@ -1,6 +1,6 @@
 package pokeraidbot.domain.errors;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.raid.Raid;
 

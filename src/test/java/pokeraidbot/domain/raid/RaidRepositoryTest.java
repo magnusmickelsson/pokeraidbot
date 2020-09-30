@@ -1,7 +1,7 @@
 package pokeraidbot.domain.raid;
 
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ package pokeraidbot.domain.pokemon;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;

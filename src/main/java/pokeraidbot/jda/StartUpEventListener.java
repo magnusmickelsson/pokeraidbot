@@ -1,13 +1,13 @@
 package pokeraidbot.jda;
 
 import main.BotServerMain;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.exceptions.ErrorResponseException;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.hooks.EventListener;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,7 @@ public class StartUpEventListener implements EventListener {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         if (event instanceof ReadyEvent) {
             LOGGER.info("ReadyEvent received, connecting to server overviews ..");
             final List<Guild> guilds = event.getJDA().getGuilds();
@@ -164,7 +164,7 @@ public class StartUpEventListener implements EventListener {
     private boolean attachToOverviewMessageIfExists(Guild guild, Config config, String messageId,
                                                     MessageChannel channel, PokemonRaidStrategyService raidStrategyService) {
         try {
-            if (channel.getMessageById(messageId).complete() != null) {
+            if (channel.retrieveMessageById(messageId).complete() != null) {
                 final Locale locale = config.getLocale();
                 final Callable<Boolean> overviewTask =
                         RaidOverviewCommand.getMessageRefreshingTaskToSchedule(

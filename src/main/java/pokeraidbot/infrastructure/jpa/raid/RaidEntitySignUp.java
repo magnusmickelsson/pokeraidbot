@@ -1,6 +1,6 @@
 package pokeraidbot.infrastructure.jpa.raid;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import pokeraidbot.Utils;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.domain.errors.UserMessedUpException;

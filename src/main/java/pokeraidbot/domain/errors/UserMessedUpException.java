@@ -1,6 +1,6 @@
 package pokeraidbot.domain.errors;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 public class UserMessedUpException extends RuntimeException {
     public UserMessedUpException(User user, String message) {

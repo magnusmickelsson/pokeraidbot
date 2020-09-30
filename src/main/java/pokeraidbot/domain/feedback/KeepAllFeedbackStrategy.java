@@ -1,9 +1,9 @@
 package pokeraidbot.domain.feedback;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -15,7 +15,7 @@ public class KeepAllFeedbackStrategy implements FeedbackStrategy {
     @Override
     public void reply(Config config, CommandEvent commandEvent, String message) {
         if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
+            commandEvent.replyInDm(message);
             commandEvent.reactSuccess();
         } else {
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -29,7 +29,7 @@ public class KeepAllFeedbackStrategy implements FeedbackStrategy {
     @Override
     public void reply(Config config, CommandEvent commandEvent, MessageEmbed message) {
         if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
+            commandEvent.replyInDm(message);
             commandEvent.reactSuccess();
         } else {
             commandEvent.reply(message);
@@ -63,7 +63,7 @@ public class KeepAllFeedbackStrategy implements FeedbackStrategy {
     @Override
     public void replyError(Config config, CommandEvent commandEvent, Throwable throwable, LocaleService localeService) {
         if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(throwable.getMessage());
+            commandEvent.replyInDm(throwable.getMessage());
             commandEvent.reactError();
         } else {
             commandEvent.reactError();
@@ -81,7 +81,7 @@ public class KeepAllFeedbackStrategy implements FeedbackStrategy {
                       LocaleService localeService) {
         Validate.isTrue(numberOfSecondsBeforeRemove > 5);
         if (config != null && config.getReplyInDmWhenPossible()) {
-            commandEvent.replyInDM(message);
+            commandEvent.replyInDm(message);
             commandEvent.reactSuccess();
         } else {
             commandEvent.reactSuccess();

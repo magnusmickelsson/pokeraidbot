@@ -1,8 +1,8 @@
 package pokeraidbot.domain.feedback;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pokeraidbot.domain.config.LocaleService;

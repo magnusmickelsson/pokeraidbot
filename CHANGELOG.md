@@ -1,7 +1,11 @@
-1.9.0 (?)
+2.0.0 (?)
 =====
 * Snooze button for raid groups
 * Possible to list gyms for the server's region
+
+1.9.0 (2020-10-05)
+=====
+* Upgrade JDA dependencies, which led to a big update
 
 1.8.107 (2019-09-12)
 =====

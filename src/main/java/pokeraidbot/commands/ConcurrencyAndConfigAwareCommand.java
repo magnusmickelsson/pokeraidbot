@@ -1,6 +1,6 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.CommandListener;
+import com.jagrosh.jdautilities.command.CommandListener;
 import org.apache.commons.lang3.Validate;
 import pokeraidbot.domain.config.LocaleService;
 import pokeraidbot.infrastructure.jpa.config.ServerConfigRepository;

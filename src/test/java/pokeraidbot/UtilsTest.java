@@ -1,6 +1,6 @@
 package pokeraidbot;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;

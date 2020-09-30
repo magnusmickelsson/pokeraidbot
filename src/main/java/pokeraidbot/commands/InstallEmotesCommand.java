@@ -1,24 +1,27 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.ISnowflake;
-import net.dv8tion.jda.core.entities.Icon;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.impl.EmoteImpl;
-import net.dv8tion.jda.core.entities.impl.GuildImpl;
-import net.dv8tion.jda.core.requests.Request;
-import net.dv8tion.jda.core.requests.Response;
-import net.dv8tion.jda.core.requests.Route;
-import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
-import org.json.JSONArray;
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.requests.Request;
+import net.dv8tion.jda.api.requests.Response;
+import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.api.utils.data.DataArray;
+import net.dv8tion.jda.api.utils.data.DataObject;
+import net.dv8tion.jda.internal.entities.EmoteImpl;
+import net.dv8tion.jda.internal.entities.GuildImpl;
+import net.dv8tion.jda.internal.requests.Route;
+import net.dv8tion.jda.internal.requests.restaction.AuditableRestActionImpl;
 import org.json.JSONObject;
 import pokeraidbot.domain.config.LocaleService;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -82,22 +85,26 @@ public class InstallEmotesCommand extends Command {
                     Stream.of(roles).filter(Objects::nonNull).map(ISnowflake::getId).collect(Collectors.toSet()));
         }
 
+        StringWriter writer = new StringWriter();
+        body.write(writer);
+        DataObject dataObject = DataObject.fromJson(writer.toString());
+
         GuildImpl guild = (GuildImpl) commandEvent.getGuild();
         JDA jda = commandEvent.getJDA();
         Route.CompiledRoute route = Route.Emotes.CREATE_EMOTE.compile(guild.getId());
-        AuditableRestAction<Emote> action = new AuditableRestAction<Emote>(jda, route, body)
+        AuditableRestAction<Emote> action = new AuditableRestActionImpl<Emote>(jda, route, dataObject)
         {
             @Override
-            protected void handleResponse(Response response, Request<Emote> request)
+            public void handleResponse(Response response, Request<Emote> request)
             {
                 if (response.isOk()) {
-                    JSONObject obj = response.getObject();
+                    DataObject obj = response.getObject();
                     final long id = obj.getLong("id");
                     String name = obj.getString("name");
                     EmoteImpl emote = new EmoteImpl(id, guild).setName(name);
                     // managed is false by default, should always be false for emotes created by client accounts.
 
-                    JSONArray rolesArr = obj.getJSONArray("roles");
+                    DataArray rolesArr = obj.getArray("roles");
                     Set<Role> roleSet = emote.getRoleSet();
                     for (int i = 0; i < rolesArr.length(); i++)
                     {
@@ -105,7 +112,7 @@ public class InstallEmotesCommand extends Command {
                     }
 
                     // put emote into cache
-                    guild.getEmoteMap().put(id, emote);
+                    guild.createEmote(name, icon, roles);
 
                     request.onSuccess(emote);
                 }

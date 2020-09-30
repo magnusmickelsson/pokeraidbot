@@ -5,7 +5,7 @@
 
     <groupId>itactually.rocks</groupId>
     <artifactId>pokeraidbot</artifactId>
-    <version>1.8.107</version>
+    <version>1.9.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -43,15 +43,16 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>3.7.1_385</version>
+            <groupId>com.jagrosh</groupId>
+            <artifactId>jda-utilities</artifactId>
+            <version>3.0.4</version>
+            <scope>compile</scope>
+            <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>com.jagrosh</groupId>
-            <artifactId>JDA-Utilities</artifactId>
-            <version>1.9</version>
-            <scope>compile</scope>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>4.1.1_108</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>

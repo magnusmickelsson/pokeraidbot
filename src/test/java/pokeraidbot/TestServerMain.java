@@ -1,6 +1,6 @@
 package pokeraidbot;
 
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

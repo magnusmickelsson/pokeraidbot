@@ -1,8 +1,8 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import net.dv8tion.jda.core.Permission;
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.Permission;
 import org.apache.commons.lang3.StringUtils;
 import pokeraidbot.domain.gym.GymRepository;
 import pokeraidbot.infrastructure.jpa.config.Config;
@@ -34,13 +34,13 @@ public class InstallCommand extends Command {
         String args = event.getArgs();
         if (StringUtils.isEmpty(args)) {
             // Answer with how-to
-            event.replyInDM("Re-run the command !raid install, but with the following syntax:");
-            event.replyInDM("!raid install server=[server name];region=[region dataset reference];" +
+            event.replyInDm("Re-run the command !raid install, but with the following syntax:");
+            event.replyInDm("!raid install server=[server name];region=[region dataset reference];" +
                     "replyInDm=[true or false];locale=[2 char language code];mods=[group for mods (optional)]" +
                     ";feedback=[feedback strategy (optional)];groupCreation=[group creation strategy (optional)];" +
                     "groupChannel=[if using named channel strategy, channel name (optional)];botIntegration=[true or false " +
                     "(optional)];pinGroups=[true or false (optional)]");
-            event.replyInDM("Example: !raid install server=My test server;region=stockholm;" +
+            event.replyInDm("Example: !raid install server=My test server;region=stockholm;" +
                     "replyInDm=false;locale=sv;mods=mods;feedback=REMOVE_ALL_EXCEPT_MAP;groupCreation=NAMED_CHANNEL;" +
                     "groupChannel=raidgroups;botIntegration=true;pinGroups=true");
             event.reactSuccess();
@@ -49,7 +49,7 @@ public class InstallCommand extends Command {
             Map<String, String> settingsToSet = new HashMap<>();
             final String[] arguments = args.split(";");
             if (arguments.length < 4 || arguments.length > 10) {
-                event.replyInDM("Wrong syntax of install command. Do this again, and this time " +
+                event.replyInDm("Wrong syntax of install command. Do this again, and this time " +
                         "follow instructions, please: !raid install");
                 event.reactError();
                 return;
@@ -57,7 +57,7 @@ public class InstallCommand extends Command {
             for (String argument : arguments) {
                 final String[] keyValue = argument.split("=");
                 if (keyValue.length != 2 || StringUtils.isEmpty(keyValue[0]) || StringUtils.isEmpty(keyValue[1])) {
-                    event.replyInDM("Wrong syntax of install command. Do this again, and this " +
+                    event.replyInDm("Wrong syntax of install command. Do this again, and this " +
                             "time follow instructions, please: !raid install");
                     event.reactError();
                     return;
@@ -103,14 +103,14 @@ public class InstallCommand extends Command {
                 config.setGroupCreationChannel(groupChannel);
                 config.setUseBotIntegration(botIntegration);
                 config.setPinGroups(pinGroups);
-                event.replyInDM("Configuration complete. Saved configuration: " + serverConfigRepository.save(config));
-                event.replyInDM("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
+                event.replyInDm("Configuration complete. Saved configuration: " + serverConfigRepository.save(config));
+                event.replyInDm("Now, run \"!raid install-emotes\" in your server's text chat to install the custom " +
                         "emotes the bot needs.");
                 event.reactSuccess();
                 gymRepository.reloadGymData();
             } catch (Throwable t) {
-                event.replyInDM("There was an error: " + t.getMessage());
-                event.replyInDM("Make sure you have followed the instructions correctly. " +
+                event.replyInDm("There was an error: " + t.getMessage());
+                event.replyInDm("Make sure you have followed the instructions correctly. " +
                         "If you have, contact magnus.mickelsson@gmail.com for support " +
                         "and ensure you include the error message you got above ...");
                 event.reactError();
@@ -124,7 +124,7 @@ public class InstallCommand extends Command {
             try {
                 valueToSet = Config.FeedbackStrategy.valueOf(enumValue.toUpperCase());
             } catch (Throwable t) {
-                event.replyInDM("Bad value of " + Config.FeedbackStrategy.class.getSimpleName() + ". Available values: " +
+                event.replyInDm("Bad value of " + Config.FeedbackStrategy.class.getSimpleName() + ". Available values: " +
                         StringUtils.join(Config.FeedbackStrategy.values(), ", "));
                 event.reactError();
                 return null;
@@ -139,7 +139,7 @@ public class InstallCommand extends Command {
             try {
                 valueToSet = Config.RaidGroupCreationStrategy.valueOf(enumValue.toUpperCase());
             } catch (Throwable t) {
-                event.replyInDM("Bad value of " + Config.RaidGroupCreationStrategy.class.getSimpleName() +
+                event.replyInDm("Bad value of " + Config.RaidGroupCreationStrategy.class.getSimpleName() +
                         ". Available values: " +
                         StringUtils.join(Config.RaidGroupCreationStrategy.values(), ", "));
                 event.reactError();

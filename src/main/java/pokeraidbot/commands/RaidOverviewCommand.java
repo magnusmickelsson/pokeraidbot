@@ -1,12 +1,12 @@
 package pokeraidbot.commands;
 
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.command.CommandListener;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +74,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
             final String args = commandEvent.getArgs();
             if (!StringUtils.isEmpty(args) && args.equalsIgnoreCase("reset")) {
                 try {
-                    commandEvent.getChannel().getMessageById(msgId).complete().delete().queue();
+                    commandEvent.getChannel().retrieveMessageById(msgId).complete().delete().queue();
                 } catch (Throwable t) {
                     // Ignore, just means the message couldn't be cleared/deleted and have to be manually purged
                     LOGGER.debug("We couldn't find and delete overview for server " + server + ": " + t.getMessage());
@@ -139,7 +139,7 @@ public class RaidOverviewCommand extends ConcurrencyAndConfigAwareCommand {
                     LOGGER.trace("Thread: " + Thread.currentThread().getId() +
                             " - Updating for server " + config.getServer() + " with ID " + messageId);
                 }
-                final Message message = messageChannel.getMessageById(messageId).complete();
+                final Message message = messageChannel.retrieveMessageById(messageId).complete();
                 if (config.getOverviewMessageId() != null &&
                         message != null) {
                     final Map<String, String> messages = getOverviewMessagesMap(config,

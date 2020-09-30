@@ -1,14 +1,14 @@
 package pokeraidbot.jda;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-import com.jagrosh.jdautilities.commandclient.CommandListener;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.command.CommandListener;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class AggregateCommandListener implements CommandListener{
+public class AggregateCommandListener implements CommandListener {
     private LinkedList<CommandListener> listeners = new LinkedList<>();
 
     public AggregateCommandListener(Collection<CommandListener> listeners) {
