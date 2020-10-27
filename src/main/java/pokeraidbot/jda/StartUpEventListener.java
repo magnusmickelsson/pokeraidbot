@@ -64,30 +64,34 @@ public class StartUpEventListener implements EventListener {
     @Override
     public void onEvent(Event event) {
         if (event instanceof ReadyEvent) {
+            LOGGER.info("ReadyEvent received, connecting to server overviews ..");
             final List<Guild> guilds = event.getJDA().getGuilds();
-            for (Guild guild : guilds) {
-                Config config = serverConfigRepository.getConfigForServer(guild.getName().trim().toLowerCase());
-                if (config != null) {
-                    final String messageId = config.getOverviewMessageId();
-                    if (!StringUtils.isEmpty(messageId)) {
-                        for (MessageChannel channel : guild.getTextChannels()) {
-                            if (attachToOverviewMessageIfExists(guild, config, messageId, channel,
-                                    pokemonRaidStrategyService)) {
-                                break;
-                            } else {
-                                if (LOGGER.isDebugEnabled()) {
-                                    LOGGER.debug("Didn't find overview in channel " + channel.getName());
+            executorService.execute(() -> {
+                for (Guild guild : guilds) {
+                    Config config = serverConfigRepository.getConfigForServer(guild.getName().trim().toLowerCase());
+                    if (config != null) {
+                        final String messageId = config.getOverviewMessageId();
+                        LOGGER.info("Trying to connect to overview for " + guild.getName() + ": " + messageId);
+                        if (!StringUtils.isEmpty(messageId)) {
+                            for (MessageChannel channel : guild.getTextChannels()) {
+                                if (attachToOverviewMessageIfExists(guild, config, messageId, channel,
+                                        pokemonRaidStrategyService)) {
+                                    break;
+                                } else {
+                                    if (LOGGER.isDebugEnabled()) {
+                                        LOGGER.debug("Didn't find overview in channel " + channel.getName());
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    final List<RaidGroup> groupsForServer = raidRepository.getGroupsForServer(config.getServer());
-                    for (RaidGroup group : groupsForServer) {
-                        attachToGroupMessage(guild, config, group);
+                        final List<RaidGroup> groupsForServer = raidRepository.getGroupsForServer(config.getServer());
+                        for (RaidGroup group : groupsForServer) {
+                            attachToGroupMessage(guild, config, group);
+                        }
                     }
                 }
-            }
+            });
         }
     }
 
