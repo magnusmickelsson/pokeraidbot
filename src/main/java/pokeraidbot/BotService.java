@@ -190,7 +190,7 @@ public class BotService {
                     gymHuntrRaidEventListener)
 
                     // start it up!
-                    .build();
+                    .build().awaitReady();
             LOGGER.info("JDA client started.");
 
             LOGGER.info("Setting up event listeners...");
@@ -198,7 +198,7 @@ public class BotService {
                 botInstance.addEventListener(extraListener);
                 LOGGER.info("Added extra event listener after initialization: " + extraListener);
             }
-        } catch (LoginException e) {
+        } catch (LoginException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
