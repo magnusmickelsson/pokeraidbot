@@ -167,6 +167,7 @@ public class BotService {
 
         try {
             commandClient = client.build();
+            LOGGER.info("Building JDA client...");
             botInstance = new JDABuilder(AccountType.BOT)
                     // set the token
                     .setToken(this.token)
@@ -190,6 +191,9 @@ public class BotService {
 
                     // start it up!
                     .buildBlocking();
+            LOGGER.info("JDA client started.");
+
+            LOGGER.info("Setting up event listeners...");
             for (EventListener extraListener : extraListeners) {
                 botInstance.addEventListener(extraListener);
                 LOGGER.info("Added extra event listener after initialization: " + extraListener);
