@@ -168,10 +168,7 @@ public class BotService {
         try {
             commandClient = client.build();
             LOGGER.info("Building JDA client...");
-            botInstance = new JDABuilder(AccountType.BOT)
-                    // set the token
-                    .setToken(this.token)
-
+            botInstance = JDABuilder.createLight(this.token) // Light means no caching - shouldn't be needed for our use case
                     // set the game for when the bot is loading
                     .setStatus(OnlineStatus.DO_NOT_DISTURB)
                     .setActivity(Activity.playing("loading..."))
