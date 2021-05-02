@@ -121,6 +121,10 @@ public class PokemonRaidStrategyService {
             "litwick".toUpperCase(),
             "pidove".toUpperCase(),
             "tepig".toUpperCase(),
+            "ducklett".toUpperCase(),
+            "espurr".toUpperCase(),
+            "trapinch".toUpperCase(),
+
             // Tier 2
             "Mawile".toUpperCase(),
             "dewgong".toUpperCase(),
@@ -184,6 +188,8 @@ public class PokemonRaidStrategyService {
             "Persian".toUpperCase(),
             "pidgeot".toUpperCase(),
             "mantine".toUpperCase(),
+            "hippowdon".toUpperCase(),
+            "meganium".toUpperCase(),
 
             // Tier 4
             "feraligatr".toUpperCase(),
@@ -226,6 +232,9 @@ public class PokemonRaidStrategyService {
             "terrakion".toUpperCase(),
             "virizion".toUpperCase(),
             "regigigas".toUpperCase(),
+            "tornadus".toUpperCase(),
+            "thundurus".toUpperCase(),
+            "landorus".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -398,6 +407,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Litwick", "575", 1);
         populateRaidInfoForBoss(pokemonRepository, "Pidove", "484", 1);
         populateRaidInfoForBoss(pokemonRepository, "Tepig", "618", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Trapinch", "728", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Ducklett", "489", 1);
+        populateRaidInfoForBoss(pokemonRepository, "Espurr", "719", 1);
 
         // Tier 2
         populateRaidInfoForBoss(pokemonRepository, "Mawile", "934", 2);
@@ -462,6 +474,8 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Persian", "965", 3);
         populateRaidInfoForBoss(pokemonRepository, "Mantine", "1204", 3);
         populateRaidInfoForBoss(pokemonRepository, "Pidgeot", "1216", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Hippowdon", "1763", 3);
+        populateRaidInfoForBoss(pokemonRepository, "Meganium", "1377", 3);
 
         // Tier 4
         populateRaidInfoForBoss(pokemonRepository, "Feraligatr", "1554", 4);
@@ -505,6 +519,9 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Terrakion", "2113", 5);
         populateRaidInfoForBoss(pokemonRepository, "Virizion", "1727", 5);
         populateRaidInfoForBoss(pokemonRepository, "Regigigas", "2478", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Tornadus", "1911", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Thundurus", "1911", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Landorus", "2050", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
