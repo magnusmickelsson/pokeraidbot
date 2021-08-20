@@ -1,0 +1,215 @@
+Grookey icon810	Grookey	GRASS
+310	50	65	50	40	40	65
+Thwackey icon811	Thwackey	GRASS
+420	70	85	70	55	60	80
+Rillaboom icon812	Rillaboom	GRASS
+530	100	125	90	60	70	85
+Scorbunny icon813	Scorbunny	FIRE
+310	50	71	40	40	40	69
+Raboot icon814	Raboot	FIRE
+420	65	86	60	55	60	94
+Cinderace icon815	Cinderace	FIRE
+530	80	116	75	65	75	119
+Sobble icon816	Sobble	WATER
+310	50	40	40	70	40	70
+Drizzile icon817	Drizzile	WATER
+420	65	60	55	95	55	90
+Inteleon icon818	Inteleon	WATER
+530	70	85	65	125	65	120
+Skwovet icon819	Skwovet	NORMAL
+275	70	55	55	35	35	25
+Greedent icon820	Greedent	NORMAL
+460	120	95	95	55	75	20
+Rookidee icon821	Rookidee	FLYING
+245	38	47	35	33	35	57
+Corvisquire icon822	Corvisquire	FLYING
+365	68	67	55	43	55	77
+Corviknight icon823	Corviknight	FLYING
+STEEL	495	98	87	105	53	85	67
+Blipbug icon824	Blipbug	BUG
+180	25	20	20	25	45	45
+Dottler icon825	Dottler	BUG
+PSYCHIC	335	50	35	80	50	90	30
+Orbeetle icon826	Orbeetle	BUG
+PSYCHIC	505	60	45	110	80	120	90
+Nickit icon827	Nickit	DARK
+245	40	28	28	47	52	50
+Thievul icon828	Thievul	DARK
+455	70	58	58	87	92	90
+Gossifleur icon829	Gossifleur	GRASS
+250	40	40	60	40	60	10
+Eldegoss icon830	Eldegoss	GRASS
+460	60	50	90	80	120	60
+Wooloo icon831	Wooloo	NORMAL
+270	42	40	55	40	45	48
+Dubwool icon832	Dubwool	NORMAL
+490	72	80	100	60	90	88
+Chewtle icon833	Chewtle	WATER
+284	50	64	50	38	38	44
+Drednaw icon834	Drednaw	WATER
+ROCK	485	90	115	90	48	68	74
+Yamper icon835	Yamper	ELECTRIC
+270	59	45	50	40	50	26
+Boltund icon836	Boltund	ELECTRIC
+490	69	90	60	90	60	121
+Rolycoly icon837	Rolycoly	ROCK
+240	30	40	50	40	50	30
+Carkol icon838	Carkol	ROCK
+FIRE	410	80	60	90	60	70	50
+Coalossal icon839	Coalossal	ROCK
+FIRE	510	110	80	120	80	90	30
+Applin icon840	Applin	GRASS
+DRAGON	260	40	40	80	40	40	20
+Flapple icon841	Flapple	GRASS
+DRAGON	485	70	110	80	95	60	70
+Appletun icon842	Appletun	GRASS
+DRAGON	485	110	85	80	100	80	30
+Silicobra icon843	Silicobra	GROUND
+315	52	57	75	35	50	46
+Sandaconda icon844	Sandaconda	GROUND
+510	72	107	125	65	70	71
+Cramorant icon845	Cramorant	FLYING
+WATER	475	70	85	55	85	95	85
+Arrokuda icon846	Arrokuda	WATER
+280	41	63	40	40	30	66
+Barraskewda icon847	Barraskewda	WATER
+490	61	123	60	60	50	136
+Toxel icon848	Toxel	ELECTRIC
+POISON	242	40	38	35	54	35	40
+Toxtricity (Low Key Form) icon849	Toxtricity
+Low Key Form	ELECTRIC
+POISON	502	75	98	70	114	70	75
+Toxtricity (Amped Form) icon849	Toxtricity
+Amped Form	ELECTRIC
+POISON	502	75	98	70	114	70	75
+Sizzlipede icon850	Sizzlipede	FIRE
+BUG	305	50	65	45	50	50	45
+Centiskorch icon851	Centiskorch	FIRE
+BUG	525	100	115	65	90	90	65
+Clobbopus icon852	Clobbopus	FIGHTING
+310	50	68	60	50	50	32
+Grapploct icon853	Grapploct	FIGHTING
+480	80	118	90	70	80	42
+Sinistea icon854	Sinistea	GHOST
+308	40	45	45	74	54	50
+Polteageist icon855	Polteageist	GHOST
+508	60	65	65	134	114	70
+Hatenna icon856	Hatenna	PSYCHIC
+265	42	30	45	56	53	39
+Hattrem icon857	Hattrem	PSYCHIC
+370	57	40	65	86	73	49
+Hatterene icon858	Hatterene	PSYCHIC
+FAIRY	510	57	90	95	136	103	29
+Impidimp icon859	Impidimp	DARK
+FAIRY	265	45	45	30	55	40	50
+Morgrem icon860	Morgrem	DARK
+FAIRY	370	65	60	45	75	55	70
+Grimmsnarl icon861	Grimmsnarl	DARK
+FAIRY	510	95	120	65	95	75	60
+Obstagoon icon862	Obstagoon	DARK
+NORMAL	520	93	90	101	60	81	95
+Perrserker icon863	Perrserker	STEEL
+440	70	110	100	50	60	50
+Cursola icon864	Cursola	GHOST
+510	60	95	50	145	130	30
+Sirfetch'd icon865	Sirfetch'd	FIGHTING
+507	62	135	95	68	82	65
+Mr. Rime icon866	Mr. Rime	ICE
+PSYCHIC	520	80	85	75	110	100	70
+Runerigus icon867	Runerigus	GROUND
+GHOST	483	58	95	145	50	105	30
+Milcery icon868	Milcery	FAIRY
+270	45	40	40	50	61	34
+Alcremie icon869	Alcremie	FAIRY
+495	65	60	75	110	121	64
+Falinks icon870	Falinks	FIGHTING
+470	65	100	100	70	60	75
+Pincurchin icon871	Pincurchin	ELECTRIC
+435	48	101	95	91	85	15
+Snom icon872	Snom	ICE
+BUG	185	30	25	35	45	30	20
+Frosmoth icon873	Frosmoth	ICE
+BUG	475	70	65	60	125	90	65
+Stonjourner icon874	Stonjourner	ROCK
+470	100	125	135	20	20	70
+Eiscue (Ice Face) icon875	Eiscue
+Ice Face	ICE
+470	75	80	110	65	90	50
+Eiscue (Noice Face) icon875	Eiscue
+Noice Face	ICE
+470	75	80	70	65	50	130
+Indeedee (Male) icon876	Indeedee
+Male	PSYCHIC
+NORMAL	475	60	65	55	105	95	95
+Indeedee (Female) icon876	Indeedee
+Female	PSYCHIC
+NORMAL	475	70	55	65	95	105	85
+Morpeko (Full Belly Mode) icon877	Morpeko
+Full Belly Mode	ELECTRIC
+DARK	436	58	95	58	70	58	97
+Morpeko (Hangry Mode) icon877	Morpeko
+Hangry Mode	ELECTRIC
+DARK	436	58	95	58	70	58	97
+Cufant icon878	Cufant	STEEL
+330	72	80	49	40	49	40
+Copperajah icon879	Copperajah	STEEL
+500	122	130	69	80	69	30
+Dracozolt icon880	Dracozolt	ELECTRIC
+DRAGON	505	90	100	90	80	70	75
+Arctozolt icon881	Arctozolt	ELECTRIC
+ICE	505	90	100	90	90	80	55
+Dracovish icon882	Dracovish	WATER
+DRAGON	505	90	90	100	70	80	75
+Arctovish icon883	Arctovish	WATER
+ICE	505	90	90	100	80	90	55
+Duraludon icon884	Duraludon	STEEL
+DRAGON	535	70	95	115	120	50	85
+Dreepy icon885	Dreepy	DRAGON
+GHOST	270	28	60	30	40	30	82
+Drakloak icon886	Drakloak	DRAGON
+GHOST	410	68	80	50	60	50	102
+Dragapult icon887	Dragapult	DRAGON
+GHOST	600	88	120	75	100	75	142
+Zacian (Crowned Sword) icon888	Zacian
+Crowned Sword	FAIRY
+STEEL	720	92	170	115	80	115	148
+Zacian (Hero of Many Battles) icon888	Zacian
+Hero of Many Battles	FAIRY
+670	92	130	115	80	115	138
+Zamazenta (Crowned Shield) icon889	Zamazenta
+Crowned Shield	FIGHTING
+STEEL	720	92	130	145	80	145	128
+Zamazenta (Hero of Many Battles) icon889	Zamazenta
+Hero of Many Battles	FIGHTING
+670	92	130	115	80	115	138
+Eternatus icon890	Eternatus	POISON
+DRAGON	690	140	85	95	145	95	130
+Eternatus (Eternamax) icon890	Eternatus
+Eternamax	POISON
+DRAGON	1125	255	115	250	125	250	130
+Kubfu icon891	Kubfu	FIGHTING
+385	60	90	60	53	50	72
+Urshifu (Single Strike Style) icon892	Urshifu
+Single Strike Style	FIGHTING
+DARK	550	100	130	100	63	60	97
+Urshifu (Rapid Strike Style) icon892	Urshifu
+Rapid Strike Style	FIGHTING
+WATER	550	100	130	100	63	60	97
+Zarude icon893	Zarude	DARK
+GRASS	600	105	120	105	70	95	105
+Regieleki icon894	Regieleki	ELECTRIC
+580	80	100	50	100	50	200
+Regidrago icon895	Regidrago	DRAGON
+580	200	100	50	100	50	80
+Glastrier icon896	Glastrier	ICE
+580	100	145	130	65	110	30
+Spectrier icon897	Spectrier	GHOST
+580	100	65	60	145	80	130
+Calyrex icon898	Calyrex	PSYCHIC
+GRASS	500	100	80	80	80	80	80
+Calyrex (Ice Rider) icon898	Calyrex
+Ice Rider	PSYCHIC
+ICE	680	100	165	150	85	130	50
+Calyrex (Shadow Rider) icon898	Calyrex
+Shadow Rider	PSYCHIC
+GHOST	680	100	85	80	165	100	150

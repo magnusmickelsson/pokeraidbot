@@ -51,6 +51,14 @@ public class PokemonRepositoryTest {
     }
 
     @Test
+    public void testGetGen8Mons() throws Exception {
+        Pokemon pokemon;
+        pokemon = pokemonRepository.search("Zacian", null);
+        assertThat(pokemon != null, is(true));
+        assertThat(pokemon.getTypes(), is(new PokemonTypes("Fairy")));
+    }
+
+    @Test
     public void testGetTyranitarWithFuzzySearch() throws Exception {
         Pokemon pokemon = pokemonRepository.search("Tyranitar", null);
         assertThat(pokemon != null, is(true));
