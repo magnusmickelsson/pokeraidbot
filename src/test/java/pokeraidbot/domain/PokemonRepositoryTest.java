@@ -56,6 +56,10 @@ public class PokemonRepositoryTest {
         pokemon = pokemonRepository.search("Zacian", null);
         assertThat(pokemon != null, is(true));
         assertThat(pokemon.getTypes(), is(new PokemonTypes("Fairy")));
+
+        pokemon = pokemonRepository.search("Zamazenta", null);
+        assertThat(pokemon != null, is(true));
+        assertThat(pokemon.getTypes(), is(new PokemonTypes("Fighting")));
     }
 
     @Test

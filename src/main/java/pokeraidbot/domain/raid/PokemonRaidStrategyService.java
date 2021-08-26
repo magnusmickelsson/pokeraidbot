@@ -236,6 +236,7 @@ public class PokemonRaidStrategyService {
             "thundurus".toUpperCase(),
             "landorus".toUpperCase(),
             "zacian".toUpperCase(),
+            "zamazenta".toUpperCase(),
             "deoxys".toUpperCase()
     };
 
@@ -524,6 +525,7 @@ public class PokemonRaidStrategyService {
         populateRaidInfoForBoss(pokemonRepository, "Thundurus", "1911", 5);
         populateRaidInfoForBoss(pokemonRepository, "Landorus", "2050", 5);
         populateRaidInfoForBoss(pokemonRepository, "Zacian", "2188", 5);
+        populateRaidInfoForBoss(pokemonRepository, "Zamazenta", "2188", 5);
 
         LOGGER.info("Configured " + pokemonRaidInfo.size() + " raid boss information entries.");
     }
