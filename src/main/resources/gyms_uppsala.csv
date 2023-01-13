@@ -355,7 +355,6 @@ ID;LOCATION;NAME;AREA
 2000000132;"59.81204;17.63086";Henrys lilla lekplats;Uppsala
 2000000133;"59.81856;17.66515";Ultuna Vattentorn;Uppsala
 2000000134;"59.8141346;17.6147626";Monica Zetterlunds;Uppsala
-2000000135;"59.867031;17.62998";Circle K. (Svartbäcken);Uppsala
 2000000136;"59.870024;17.657177";Circle K. (Gränby Bilgata);Uppsala
 2000000137;"59.83229;17.64891";Tower 22 of Kronåsen;Uppsala
 2000000138;"59.82936;17.65228";Dancing Man;Uppsala
@@ -365,13 +364,11 @@ ID;LOCATION;NAME;AREA
 2000000142;"59.81855;17.69401";Nöthårsvägens lekplats;Uppsala
 2000000143;"59.80974;17.69546";Vinge Människa;Uppsala
 2000000144;"59.82204;17.61509";The little swing;Uppsala
-2000000145;"59.8749653;17.6410814";Circle K (vid Scandic Uppsala Nord);Uppsala
 2000000146;"59.8703013;17.6557335";Underwater mural;Uppsala
 2000000147;"59.882575;17.615427";Bärby playground;Uppsala
 2000000148;"59.8900410;17.6025350";Anchor Monument;Uppsala
 2000000149;"59.8184181;17.6094589";Trädgårdsstadens motionsspår South;Uppsala
 2000000150;"59.7237118;17.7918119";Särsta Wärdshus;Uppsala
-2000000151;"59.7403067;17.8123033";Circle K (Knivsta);Uppsala
 2000000152;"59.7224672;17.7949903";Pillars with Copper;Uppsala
 2000000153;"59.7407372;17.8142117";Välkommen till Knivsta;Uppsala
 2000000154;"59.7403570;17.7945710";Utegym Elljusspåret i Knivsta;Uppsala
@@ -495,3 +492,6 @@ ID;LOCATION;NAME;AREA
 2000000272;"59.882595;17.61535";Bärbyparken;Uppsala
 2000000273;"59.951286;17.688";Himmelsvägens lekplats;Uppsala
 2000000274;"59.951782;17.687408";Fotbollsplan (Storvreta);Uppsala
+2000000275;"59.77700;17.55438";Grillplats Östbergstorpet;Uppsala
+2000000276;"59.867114;17.642624";Höganäsparken;Uppsala
+2000000277;"59.843338;17.641607";Raket;Uppsala
